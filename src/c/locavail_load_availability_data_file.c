@@ -98,7 +98,8 @@ extern void  LOCAVAIL_ResetFilterStateStruct(struct LaState *st);
 extern long  LOCAVAIL_AllocNodeArraysForState(struct LaState *st);
 extern void  LOCAVAIL_CopyFilterStateStructRetainRefs(struct LaState *dst,
                                                       struct LaState *src);
-extern long  NEWGRID_JMPTBL_MATH_Mulu32(long a, long b);
+extern long __asm NEWGRID_JMPTBL_MATH_Mulu32(register __d0 long a,
+                        register __d1 long b);
 extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
 extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,

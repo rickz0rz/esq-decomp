@@ -1,5 +1,5 @@
 /* RESTORES: PARSEINI_ScanLogoDirectory
- * MODULE:   modules/groups/b/a/parseini_p2.s
+ * MODULE:   modules/groups/b/a/parseini_p2_p1.s
  * STATUS:   behavioural
  *
  * Reconciles the logo directory against the configured logo list and DELETES

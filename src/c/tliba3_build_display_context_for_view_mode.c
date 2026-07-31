@@ -91,7 +91,8 @@ struct VmRuntime {                      /* 154 bytes */
 };
 
 extern void TLIBA3_InitPatternTable(void);
-extern long MATH_Mulu32(long a, long b);
+extern long __asm MATH_Mulu32(register __d0 long a,
+                        register __d1 long b);
 extern void TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag(void);
 
 extern struct VmPattern TLIBA3_VmArrayPatternTable[];

@@ -1,16 +1,16 @@
-    XDEF    GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers
-    XDEF    GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode
-    XDEF    GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData
-    XDEF    GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings
+    XDEF    _GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers
+    XDEF    _GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode
+    XDEF    _GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData
+    XDEF    _GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings
     XDEF    _GROUP_AB_JMPTBL_IOSTDREQ_Free
-    XDEF    GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries
-    XDEF    GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain
-    XDEF    GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources
-    XDEF    GROUP_AB_JMPTBL_UNKNOWN2A_Stub0
+    XDEF    _GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries
+    XDEF    _GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain
+    XDEF    _GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources
+    XDEF    _GROUP_AB_JMPTBL_UNKNOWN2A_Stub0
     XDEF    _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings   (Routine at GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings)
+; FUNC: _GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings   (Routine at _GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -28,11 +28,11 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings:
+_GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings:
     JMP     _ESQPARS_RemoveGroupEntryAndReleaseStrings
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers   (Routine at GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers)
+; FUNC: _GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers   (Routine at _GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -50,11 +50,11 @@ GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers:
+_GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers:
     JMP     _ESQFUNC_FreeLineTextBuffers
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData   (Routine at GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData)
+; FUNC: _GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData   (Routine at _GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -72,11 +72,11 @@ GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData:
+_GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData:
     JMP     _ESQIFF_DeallocateAdsAndLogoLstData
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries   (Routine at GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries)
+; FUNC: _GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries   (Routine at _GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -94,11 +94,11 @@ GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries:
+_GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries:
     JMP     _LADFUNC_FreeBannerRectEntries
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AB_JMPTBL_UNKNOWN2A_Stub0   (Routine at GROUP_AB_JMPTBL_UNKNOWN2A_Stub0)
+; FUNC: _GROUP_AB_JMPTBL_UNKNOWN2A_Stub0   (Routine at _GROUP_AB_JMPTBL_UNKNOWN2A_Stub0)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -116,11 +116,11 @@ GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AB_JMPTBL_UNKNOWN2A_Stub0:
+_GROUP_AB_JMPTBL_UNKNOWN2A_Stub0:
     JMP     UNKNOWN2A_Stub0
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources   (Routine at GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources)
+; FUNC: _GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources   (Routine at _GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -138,11 +138,11 @@ GROUP_AB_JMPTBL_UNKNOWN2A_Stub0:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources:
+_GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources:
     JMP     _NEWGRID_ShutdownGridResources
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain   (Routine at GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain)
+; FUNC: _GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain   (Routine at _GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -160,7 +160,7 @@ GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain:
+_GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain:
     JMP     _LOCAVAIL_FreeResourceChain
 
 ;------------------------------------------------------------------------------
@@ -208,7 +208,7 @@ _GROUP_AB_JMPTBL_IOSTDREQ_Free:
     JMP     IOSTDREQ_Free
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode   (Routine at GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode)
+; FUNC: _GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode   (Routine at _GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -226,7 +226,7 @@ _GROUP_AB_JMPTBL_IOSTDREQ_Free:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode:
+_GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode:
     JMP     _ESQIFF2_ClearLineHeadTailByMode
 
 ;!======

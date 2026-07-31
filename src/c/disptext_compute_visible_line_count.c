@@ -47,7 +47,8 @@
  *            version; see docs/compiler-version.md.
  */
 extern void  DISPTEXT_FinalizeLineTable(void);
-extern long  GROUP_AG_JMPTBL_MATH_Mulu32(long a, long b);
+extern long __asm GROUP_AG_JMPTBL_MATH_Mulu32(register __d0 long a,
+                        register __d1 long b);
 extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *s, long ch);
 
 extern unsigned short DISPTEXT_TargetLineIndex;

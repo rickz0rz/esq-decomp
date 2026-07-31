@@ -12,7 +12,7 @@
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   _GCOMMAND_GetBannerChar, SCRIPT3_JMPTBL_MATH_DivS32, _SCRIPT3_JMPTBL_MATH_Mulu32
+;   _GCOMMAND_GetBannerChar, _SCRIPT3_JMPTBL_MATH_DivS32, _SCRIPT3_JMPTBL_MATH_Mulu32
 ; READS:
 ;   _CONFIG_LRBN_FlagChar/_CONFIG_MSN_FlagChar, _Global_WORD_SELECT_CODE_IS_RAVESC, _SCRIPT_BannerTransitionActive
 ; WRITES:
@@ -104,7 +104,7 @@ _SCRIPT_BeginBannerCharTransition:
     MOVE.L  D6,D0
     MULU    #60,D0
     MOVE.L  #1000,D1
-    JSR     SCRIPT3_JMPTBL_MATH_DivS32(PC)
+    JSR     _SCRIPT3_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,-10(A5)
     BGT.S   .begin_banner_compute_step
@@ -139,7 +139,7 @@ _SCRIPT_BeginBannerCharTransition:
     MOVE.L  D2,D4
     MOVE.L  D4,D0
     MOVE.L  -10(A5),D1
-    JSR     SCRIPT3_JMPTBL_MATH_DivS32(PC)
+    JSR     _SCRIPT3_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D0,_SCRIPT_BannerTransitionStepDelta
     EXT.L   D0
@@ -151,7 +151,7 @@ _SCRIPT_BeginBannerCharTransition:
 
     MOVE.L  -10(A5),D0
     MOVE.L  D4,D1
-    JSR     SCRIPT3_JMPTBL_MATH_DivS32(PC)
+    JSR     _SCRIPT3_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D0,_SCRIPT_BannerTransitionStepBudget
     BRA.S   .begin_banner_finalize_step_sign

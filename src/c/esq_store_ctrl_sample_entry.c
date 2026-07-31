@@ -1,5 +1,5 @@
 /* RESTORES: ESQ_StoreCtrlSampleEntry
- * MODULE:   modules/groups/a/a/app2.s
+ * MODULE:   modules/groups/a/a/app2_esq_storectrlsampleentry.s
  * STATUS:   behavioural
  *
  * SASC-MISMATCH: scratch-register-locals

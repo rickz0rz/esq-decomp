@@ -1,11 +1,11 @@
-    XDEF    ESQIFF2_ApplyIncomingStatusPacket
+    XDEF    _ESQIFF2_ApplyIncomingStatusPacket
     XDEF    ESQIFF2_ApplyIncomingStatusPacket_Return
 
 
 ; Rename this file to its proper purpose.
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF2_ApplyIncomingStatusPacket   (Apply incoming status packet and refresh UI)
+; FUNC: _ESQIFF2_ApplyIncomingStatusPacket   (Apply incoming status packet and refresh UI)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -13,18 +13,18 @@
 ; CLOBBERS:
 ;   A0/A3/A7/D0/D1/D2/D6/D7
 ; CALLS:
-;   _ED_DrawDiagnosticModeText, ESQDISP_DrawStatusBanner, ESQPARS_JMPTBL_DST_RefreshBannerBuffer, ESQPARS_JMPTBL_DST_UpdateBannerQueue, ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds
+;   _ED_DrawDiagnosticModeText, _ESQDISP_DrawStatusBanner, _ESQPARS_JMPTBL_DST_RefreshBannerBuffer, _ESQPARS_JMPTBL_DST_UpdateBannerQueue, _ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds
 ; READS:
-;   _ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED, _ESQ_STR_B, CLOCK_MinuteEventBaseMinute, CLOCK_MinuteEventBaseOffset, _ESQ_STR_6, _ED_DiagVinModeChar, _LOCAVAIL_FilterModeFlag, _DST_BannerWindowPrimary, _ED_SavedScrollSpeedIndex, _ED_DiagnosticsScreenActive, _SCRIPT_RuntimeMode
+;   _ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED, _ESQ_STR_B, _CLOCK_MinuteEventBaseMinute, _CLOCK_MinuteEventBaseOffset, _ESQ_STR_6, _ED_DiagVinModeChar, _LOCAVAIL_FilterModeFlag, _DST_BannerWindowPrimary, _ED_SavedScrollSpeedIndex, _ED_DiagnosticsScreenActive, _SCRIPT_RuntimeMode
 ; WRITES:
-;   CLOCK_MinuteEventBaseMinute, CLOCK_MinuteEventBaseOffset, _ESQ_STR_6, _ESQPARS2_StateIndex, _SCRIPT_RuntimeModeDeferredFlag
+;   _CLOCK_MinuteEventBaseMinute, _CLOCK_MinuteEventBaseOffset, _ESQ_STR_6, _ESQPARS2_StateIndex, _SCRIPT_RuntimeModeDeferredFlag
 ; DESC:
 ;   Copies status payload bytes into globals, refreshes banner/status UI paths,
 ;   reseeds minute-event thresholds, and updates scroll-speed state/index.
 ; NOTES:
 ;   Triggers diagnostics redraw when diagnostics screen is active.
 ;------------------------------------------------------------------------------
-ESQIFF2_ApplyIncomingStatusPacket:
+_ESQIFF2_ApplyIncomingStatusPacket:
     MOVEM.L D2/D6-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
 
@@ -71,20 +71,20 @@ ESQIFF2_ApplyIncomingStatusPacket:
 
 .branch_2:
     PEA     _DST_BannerWindowPrimary
-    JSR     ESQPARS_JMPTBL_DST_UpdateBannerQueue(PC)
+    JSR     _ESQPARS_JMPTBL_DST_UpdateBannerQueue(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
     BNE.S   .branch_3
 
-    JSR     ESQPARS_JMPTBL_DST_RefreshBannerBuffer(PC)
+    JSR     _ESQPARS_JMPTBL_DST_RefreshBannerBuffer(PC)
 
 .branch_3:
     PEA     1.W
-    JSR     ESQDISP_DrawStatusBanner(PC)
+    JSR     _ESQDISP_DrawStatusBanner(PC)
 
     ADDQ.W  #4,A7
-    MOVE.B  CLOCK_MinuteEventBaseMinute,D0
+    MOVE.B  _CLOCK_MinuteEventBaseMinute,D0
     MOVEQ   #9,D1
     CMP.B   D1,D0
     BHI.S   .branch_4
@@ -95,10 +95,10 @@ ESQIFF2_ApplyIncomingStatusPacket:
 
 .branch_4:
     MOVEQ   #1,D2
-    MOVE.B  D2,CLOCK_MinuteEventBaseMinute
+    MOVE.B  D2,_CLOCK_MinuteEventBaseMinute
 
 .branch_5:
-    MOVE.B  CLOCK_MinuteEventBaseOffset,D0
+    MOVE.B  _CLOCK_MinuteEventBaseOffset,D0
     CMP.B   D1,D0
     BHI.S   .branch_6
 
@@ -108,16 +108,16 @@ ESQIFF2_ApplyIncomingStatusPacket:
 
 .branch_6:
     MOVEQ   #1,D1
-    MOVE.B  D1,CLOCK_MinuteEventBaseOffset
+    MOVE.B  D1,_CLOCK_MinuteEventBaseOffset
 
 .branch_7:
     MOVEQ   #0,D0
-    MOVE.B  CLOCK_MinuteEventBaseMinute,D0
+    MOVE.B  _CLOCK_MinuteEventBaseMinute,D0
     MOVEQ   #0,D1
-    MOVE.B  CLOCK_MinuteEventBaseOffset,D1
+    MOVE.B  _CLOCK_MinuteEventBaseOffset,D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds(PC)
+    JSR     _ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds(PC)
 
     ADDQ.W  #8,A7
     TST.W   _ED_DiagnosticsScreenActive

@@ -1,5 +1,5 @@
 /* RESTORES: ESQ_WriteDecFixedWidth
- * MODULE:   modules/groups/a/a/app2.s
+ * MODULE:   modules/groups/a/a/app2_esq_findsubstringcasefold.s
  * STATUS:   behavioural
  *
  * Writes a NUL-terminated fixed-width decimal number, right-aligned. Used for

@@ -1,8 +1,8 @@
-    XDEF    TLIBA3_DrawCenteredWrappedTextLines
+    XDEF    _TLIBA3_DrawCenteredWrappedTextLines
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA3_DrawCenteredWrappedTextLines   (TLIBA3_DrawCenteredWrappedTextLines)
+; FUNC: _TLIBA3_DrawCenteredWrappedTextLines   (_TLIBA3_DrawCenteredWrappedTextLines)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -27,7 +27,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-TLIBA3_DrawCenteredWrappedTextLines:
+_TLIBA3_DrawCenteredWrappedTextLines:
     LINK.W  A5,#-20
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3

@@ -1,9 +1,9 @@
-    XDEF    Global_STR_NEWGRID2_C_1
-    XDEF    Global_STR_NEWGRID2_C_2
-    XDEF    NEWGRID2_CachedModeIndex
-    XDEF    NEWGRID2_DispatchStateIndex
-    XDEF    NEWGRID2_PendingOperationId
-    XDEF    NEWGRID2_LastDispatchResult
+    XDEF    _Global_STR_NEWGRID2_C_1
+    XDEF    _Global_STR_NEWGRID2_C_2
+    XDEF    _NEWGRID2_CachedModeIndex
+    XDEF    _NEWGRID2_DispatchStateIndex
+    XDEF    _NEWGRID2_PendingOperationId
+    XDEF    _NEWGRID2_LastDispatchResult
     XDEF    _NEWGRID2_BufferAllocationFlag
     XDEF    _Global_STR_NEWGRID2_C_3
     XDEF    _Global_STR_NEWGRID2_C_4
@@ -12,30 +12,30 @@
     XDEF    _NEWGRID2_ErrorLogEntryPtr
 ; ========== NEWGRID2.c ==========
 
-Global_STR_NEWGRID2_C_1:
+_Global_STR_NEWGRID2_C_1:
     NStr    "NEWGRID2.c"
-Global_STR_NEWGRID2_C_2:
+_Global_STR_NEWGRID2_C_2:
     NStr    "NEWGRID2.c"
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID2_CachedModeIndex   (cached mode index)
+; SYM: _NEWGRID2_CachedModeIndex   (cached mode index)
 ; TYPE: s32
 ; PURPOSE: Caches baseline mode/index value for delta-based NEWGRID2 state updates.
-; USED BY: NEWGRID2_ProcessGridState
+; USED BY: _NEWGRID2_ProcessGridState
 ; NOTES: Initialized on first pass then adjusted by computed offsets.
 ;------------------------------------------------------------------------------
-NEWGRID2_CachedModeIndex:
+_NEWGRID2_CachedModeIndex:
     DC.L    0
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID2_DispatchStateIndex   (newgrid2 dispatch state index)
+; SYM: _NEWGRID2_DispatchStateIndex   (newgrid2 dispatch state index)
 ; TYPE: s32
 ; PURPOSE: Tracks current NEWGRID2 state-machine index for dispatch/update routines.
 ; USED BY: NEWGRID2_*
 ; NOTES: Operates as a bounded 0..5 state index in NEWGRID2 control flow.
 ;------------------------------------------------------------------------------
-NEWGRID2_DispatchStateIndex:
+_NEWGRID2_DispatchStateIndex:
     DC.L    0
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID2_PendingOperationId/NEWGRID2_LastDispatchResult   (dispatch staging/result)
+; SYM: _NEWGRID2_PendingOperationId/_NEWGRID2_LastDispatchResult   (dispatch staging/result)
 ; TYPE: s32/s32
 ; PURPOSE: Stages pending operation IDs and records most recent dispatch result.
 ; USED BY: _NEWGRID2_DispatchGridOperation
@@ -43,9 +43,9 @@ NEWGRID2_DispatchStateIndex:
 ;   PendingOperationId is reused when dispatch receives operation 0.
 ;   LastDispatchResult is booleanized before return.
 ;------------------------------------------------------------------------------
-NEWGRID2_PendingOperationId:
+_NEWGRID2_PendingOperationId:
     DC.L    0
-NEWGRID2_LastDispatchResult:
+_NEWGRID2_LastDispatchResult:
     DC.L    0
 ;------------------------------------------------------------------------------
 ; SYM: _NEWGRID2_BufferAllocationFlag   (buffer allocation gate)

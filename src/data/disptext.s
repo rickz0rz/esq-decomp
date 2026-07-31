@@ -1,32 +1,32 @@
     XDEF    _Global_STR_DISPTEXT_C_1
-    XDEF    DISPTEXT_STR_SINGLE_SPACE_MEASURE
-    XDEF    DISPTEXT_STR_SINGLE_SPACE_APPEND
-    XDEF    DISPTEXT_STR_SINGLE_SPACE_DELIM
+    XDEF    _DISPTEXT_STR_SINGLE_SPACE_MEASURE
+    XDEF    _DISPTEXT_STR_SINGLE_SPACE_APPEND
+    XDEF    _DISPTEXT_STR_SINGLE_SPACE_DELIM
     XDEF    _DISPTEXT_InitBuffersPending
     XDEF    _Global_STR_DISPTEXT_C_2
     XDEF    _Global_STR_DISPTEXT_C_3
     XDEF    _Global_STR_DISPTEXT_C_4
     XDEF    _Global_STR_DISPTEXT_C_5
-    XDEF    DISPTEXT_STR_SINGLE_SPACE_PREFIX_1
-    XDEF    DISPTEXT_STR_SINGLE_SPACE_PREFIX_2
-    XDEF    DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX
+    XDEF    _DISPTEXT_STR_SINGLE_SPACE_PREFIX_1
+    XDEF    _DISPTEXT_STR_SINGLE_SPACE_PREFIX_2
+    XDEF    _DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX
     XDEF    _DATETIME_MONTH_LENGTH_AND_DAY_OFFSET_TABLES
 ; ========== DISPTEXT.c ==========
 
 _Global_STR_DISPTEXT_C_1:
     NStr    "DISPTEXT.c"
 ;------------------------------------------------------------------------------
-; SYM: DISPTEXT_STR_SINGLE_SPACE_MEASURE   (single-space literal)
+; SYM: _DISPTEXT_STR_SINGLE_SPACE_MEASURE   (single-space literal)
 ; TYPE: cstring
 ; PURPOSE: Width measurement and separator helpers in line-layout routines.
-; USED BY: DISPTEXT_BuildLineWithWidth
+; USED BY: _DISPTEXT_BuildLineWithWidth
 ; NOTES: Multiple aliases preserve original callsite intent while sharing value.
 ;------------------------------------------------------------------------------
-DISPTEXT_STR_SINGLE_SPACE_MEASURE:
+_DISPTEXT_STR_SINGLE_SPACE_MEASURE:
     NStr    " "
-DISPTEXT_STR_SINGLE_SPACE_APPEND:
+_DISPTEXT_STR_SINGLE_SPACE_APPEND:
     NStr    " "
-DISPTEXT_STR_SINGLE_SPACE_DELIM:
+_DISPTEXT_STR_SINGLE_SPACE_DELIM:
     NStr    " "
 ; One-shot init guard for buffer allocation path.
 _DISPTEXT_InitBuffersPending:
@@ -39,11 +39,11 @@ _Global_STR_DISPTEXT_C_4:
     NStr    "DISPTEXT.c"
 _Global_STR_DISPTEXT_C_5:
     NStr    "DISPTEXT.c"
-DISPTEXT_STR_SINGLE_SPACE_PREFIX_1:
+_DISPTEXT_STR_SINGLE_SPACE_PREFIX_1:
     NStr    " "
-DISPTEXT_STR_SINGLE_SPACE_PREFIX_2:
+_DISPTEXT_STR_SINGLE_SPACE_PREFIX_2:
     NStr    " "
-DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX:
+_DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX:
     NStr    " "
 ;------------------------------------------------------------------------------
 ; SYM: _DATETIME_MONTH_LENGTH_AND_DAY_OFFSET_TABLES   (month tables)

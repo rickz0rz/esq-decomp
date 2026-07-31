@@ -56,62 +56,62 @@ _ED_DrawEditHelpText:
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     ED2_STR_PUSH_ANY_KEY_TO_CONTINUE_DOT
+    PEA     _ED2_STR_PUSH_ANY_KEY_TO_CONTINUE_DOT
     PEA     390.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     ED2_STR_STAR_STAR_LINE_SLASH_PAGE_COMMANDS_S
+    PEA     _ED2_STR_STAR_STAR_LINE_SLASH_PAGE_COMMANDS_S
     PEA     90.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     ED2_STR_F1_COLON_HOME_F6_COLON_CLEAR
+    PEA     _ED2_STR_F1_COLON_HOME_F6_COLON_CLEAR
     PEA     120.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     ED2_STR_F2_COLON_LINE_SLASH_PAGE_MODE_F7_COL
+    PEA     _ED2_STR_F2_COLON_LINE_SLASH_PAGE_MODE_F7_COL
     PEA     150.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     ED2_CMD_F3_COLON_CENTER_F8_COLON_DELETE_LINE
+    PEA     _ED2_CMD_F3_COLON_CENTER_F8_COLON_DELETE_LINE
     PEA     180.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     80(A7),A7
-    PEA     ED2_STR_F4_COLON_LEFT_JUSTIFY_F9_COLON_APPLY
+    PEA     _ED2_STR_F4_COLON_LEFT_JUSTIFY_F9_COLON_APPLY
     PEA     210.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     ED2_STR_F5_COLON_RIGHT_JUSTIFY_F10_COLON_INS
+    PEA     _ED2_STR_F5_COLON_RIGHT_JUSTIFY_F10_COLON_INS
     PEA     240.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_SHIFT_RIGHT_NEXT_AD_DEL_DELETE_CHAR
+    PEA     _Global_STR_SHIFT_RIGHT_NEXT_AD_DEL_DELETE_CHAR
     PEA     270.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_SHIFT_LEFT_PREV_AD_CTRLC_COLOR_MODE
+    PEA     _Global_STR_SHIFT_LEFT_PREV_AD_CTRLC_COLOR_MODE
     PEA     300.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_CTRLF_FOREGROUND_CTRLB_BACKGROUND
+    PEA     _Global_STR_CTRLF_FOREGROUND_CTRLB_BACKGROUND
     PEA     330.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)

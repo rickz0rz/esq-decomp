@@ -1,10 +1,10 @@
-    XDEF    BRUSH_SelectBrushSlot
+    XDEF    _BRUSH_SelectBrushSlot
     XDEF    BRUSH_SelectBrushSlot_Return
 
 
 ; Evaluate the tile slot a brush should occupy, adjusting bounds and offsets.
 ;------------------------------------------------------------------------------
-; FUNC: BRUSH_SelectBrushSlot   (Routine at BRUSH_SelectBrushSlot)
+; FUNC: _BRUSH_SelectBrushSlot   (Routine at _BRUSH_SelectBrushSlot)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -28,7 +28,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-BRUSH_SelectBrushSlot:
+_BRUSH_SelectBrushSlot:
     LINK.W  A5,#-24
     MOVEM.L D2-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3

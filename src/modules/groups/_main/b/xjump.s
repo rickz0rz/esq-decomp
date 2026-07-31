@@ -1,10 +1,10 @@
-    XDEF    GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode
-    XDEF    GROUP_MAIN_B_JMPTBL_DOS_Delay
-    XDEF    GROUP_MAIN_B_JMPTBL_MATH_Mulu32
-    XDEF    GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString
+    XDEF    _GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode
+    XDEF    _GROUP_MAIN_B_JMPTBL_DOS_Delay
+    XDEF    _GROUP_MAIN_B_JMPTBL_MATH_Mulu32
+    XDEF    _GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_MAIN_B_JMPTBL_DOS_Delay   (Routine at GROUP_MAIN_B_JMPTBL_DOS_Delay)
+; FUNC: _GROUP_MAIN_B_JMPTBL_DOS_Delay   (Routine at _GROUP_MAIN_B_JMPTBL_DOS_Delay)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -22,11 +22,11 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_MAIN_B_JMPTBL_DOS_Delay:
+_GROUP_MAIN_B_JMPTBL_DOS_Delay:
     JMP     DOS_Delay
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString   (Routine at GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString)
+; FUNC: _GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString   (Routine at _GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -44,11 +44,11 @@ GROUP_MAIN_B_JMPTBL_DOS_Delay:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString:
+_GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString:
     JMP     STREAM_BufferedWriteString
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_MAIN_B_JMPTBL_MATH_Mulu32   (Routine at GROUP_MAIN_B_JMPTBL_MATH_Mulu32)
+; FUNC: _GROUP_MAIN_B_JMPTBL_MATH_Mulu32   (Routine at _GROUP_MAIN_B_JMPTBL_MATH_Mulu32)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -66,11 +66,11 @@ GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_MAIN_B_JMPTBL_MATH_Mulu32:
+_GROUP_MAIN_B_JMPTBL_MATH_Mulu32:
     JMP     _MATH_Mulu32
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode   (Routine at GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode)
+; FUNC: _GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode   (Routine at _GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -88,7 +88,7 @@ GROUP_MAIN_B_JMPTBL_MATH_Mulu32:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode:
+_GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode:
     JMP     BUFFER_FlushAllAndCloseWithCode
 
 ;!======

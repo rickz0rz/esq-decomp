@@ -105,7 +105,7 @@ echo "==> linking"
 # supplied as a synthesised EXT_ABS object. src/modules/c-exports.s asserts these
 # values still match hardware-addresses.s. Appended last: it defines symbols only
 # and contributes no bytes, so it cannot affect layout.
-python3 tools/mkabsdefs.py "$OBJ/absdefs.o" _VPOSR=0xDFF004 _CIAB_PRA=0xBFD000 _SERDAT=0xDFF030 _INTENA=0xDFF09A _SysBase=0x4
+python3 tools/mkabsdefs.py "$OBJ/absdefs.o" _VPOSR=0xDFF004 _CIAB_PRA=0xBFD000 _SERDAT=0xDFF030 _INTENA=0xDFF09A _COP1LCH=0xDFF080 _SysBase=0x4
 echo "$OBJ/absdefs.o" >> "$BUILD/objlist"
 # SCLIB pulls in SAS/C's runtime helpers (__CXD33 and friends -- the 32-bit
 # divide routines the compiler calls for `/` and `%`). Only a maximum-C build

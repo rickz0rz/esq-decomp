@@ -7,14 +7,14 @@
     XDEF    _ESQDISP_StatusBannerClampGateFlag
     XDEF    _ESQDISP_PendingGridReinitFlag
     XDEF    _ESQDISP_PrimarySecondaryMirrorFlag
-    XDEF    ESQDISP_SecondaryPersistRequestFlag
+    XDEF    _ESQDISP_SecondaryPersistRequestFlag
     XDEF    _ESQDISP_StatusRefreshPendingFlag
     XDEF    _ESQDISP_ProgramInfoZeroTag
-    XDEF    ESQDISP_LatchedInputModeBit
-    XDEF    ESQDISP_InputModeDebounceCount
-    XDEF    ESQDISP_LastPrimaryCountdownValue
-    XDEF    ESQDISP_SecondaryPersistArmGateFlag
-    XDEF    ESQDISP_SecondaryPropagationDoneFlag
+    XDEF    _ESQDISP_LatchedInputModeBit
+    XDEF    _ESQDISP_InputModeDebounceCount
+    XDEF    _ESQDISP_LastPrimaryCountdownValue
+    XDEF    _ESQDISP_SecondaryPersistArmGateFlag
+    XDEF    _ESQDISP_SecondaryPropagationDoneFlag
 ; ========== ESQDISP.c ==========
 
 _Global_STR_ESQDISP_C:
@@ -78,7 +78,7 @@ _ESQDISP_StatusBannerClampGateFlag:
 ; SYM: _ESQDISP_PendingGridReinitFlag   (pending grid reinit)
 ; TYPE: u16 flag
 ; PURPOSE: Requests NEWGRID2 to reinitialize grid context after state commit.
-; USED BY: ESQFUNC_CommitSecondaryStateAndPersist, _NEWGRID2_DispatchGridOperation
+; USED BY: _ESQFUNC_CommitSecondaryStateAndPersist, _NEWGRID2_DispatchGridOperation
 ; NOTES: Producer sets to 1; NEWGRID2 consumes and clears.
 ;------------------------------------------------------------------------------
 _ESQDISP_PendingGridReinitFlag:
@@ -93,13 +93,13 @@ _ESQDISP_PendingGridReinitFlag:
 _ESQDISP_PrimarySecondaryMirrorFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_SecondaryPersistRequestFlag   (secondary persist request)
+; SYM: _ESQDISP_SecondaryPersistRequestFlag   (secondary persist request)
 ; TYPE: u32 flag
 ; PURPOSE: Requests secondary-state persistence/update work in frame tick processing.
 ; USED BY: _ESQDISP_DrawStatusBanner_Impl, _ESQFUNC_ProcessUiFrameTick
 ; NOTES: Armed by banner timing path and consumed/cleared by frame tick.
 ;------------------------------------------------------------------------------
-ESQDISP_SecondaryPersistRequestFlag:
+_ESQDISP_SecondaryPersistRequestFlag:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: _ESQDISP_StatusRefreshPendingFlag   (status refresh pending)
@@ -114,53 +114,53 @@ _ESQDISP_StatusRefreshPendingFlag:
 ; SYM: _ESQDISP_ProgramInfoZeroTag   (program info default "00")
 ; TYPE: char[3]
 ; PURPOSE: Fallback two-digit token used when parsed program-info digits are absent.
-; USED BY: ESQDISP_ParseProgramInfoCommandRecord
+; USED BY: _ESQDISP_ParseProgramInfoCommandRecord
 ; NOTES: NUL-terminated.
 ;------------------------------------------------------------------------------
 _ESQDISP_ProgramInfoZeroTag:
     DC.B    "00",0
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_LatchedInputModeBit   (latched input mode bit)
+; SYM: _ESQDISP_LatchedInputModeBit   (latched input mode bit)
 ; TYPE: u8
 ; PURPOSE: Stores last stable CIAB input-mode bit for debounce comparison.
-; USED BY: ESQDISP_PollInputModeAndRefreshSelection
+; USED BY: _ESQDISP_PollInputModeAndRefreshSelection
 ; NOTES: Seed value $FF guarantees first sampled bit is treated as a change.
 ;------------------------------------------------------------------------------
-ESQDISP_LatchedInputModeBit:
+_ESQDISP_LatchedInputModeBit:
     DC.B    $ff
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_InputModeDebounceCount   (input-mode debounce counter)
+; SYM: _ESQDISP_InputModeDebounceCount   (input-mode debounce counter)
 ; TYPE: u32
 ; PURPOSE: Counts consecutive identical input-mode samples before accepting state.
-; USED BY: ESQDISP_PollInputModeAndRefreshSelection
+; USED BY: _ESQDISP_PollInputModeAndRefreshSelection
 ; NOTES: Threshold compares against 5 samples.
 ;------------------------------------------------------------------------------
-ESQDISP_InputModeDebounceCount:
+_ESQDISP_InputModeDebounceCount:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_LastPrimaryCountdownValue   (cached primary countdown)
+; SYM: _ESQDISP_LastPrimaryCountdownValue   (cached primary countdown)
 ; TYPE: u16
 ; PURPOSE: Caches previous _DST_PrimaryCountdown for edge-triggered slot handling.
 ; USED BY: _ESQDISP_DrawStatusBanner_Impl
 ; NOTES: Detects countdown transitions (including 1->0 events).
 ;------------------------------------------------------------------------------
-ESQDISP_LastPrimaryCountdownValue:
+_ESQDISP_LastPrimaryCountdownValue:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_SecondaryPersistArmGateFlag   (secondary persist arm gate)
+; SYM: _ESQDISP_SecondaryPersistArmGateFlag   (secondary persist arm gate)
 ; TYPE: u16 flag
 ; PURPOSE: One-shot gate controlling when secondary persist request can be re-armed.
 ; USED BY: _ESQDISP_DrawStatusBanner_Impl
 ; NOTES: Behavior is slot-index dependent; naming remains conservative.
 ;------------------------------------------------------------------------------
-ESQDISP_SecondaryPersistArmGateFlag:
+_ESQDISP_SecondaryPersistArmGateFlag:
     DC.W    $0001
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_SecondaryPropagationDoneFlag   (secondary propagation done gate)
+; SYM: _ESQDISP_SecondaryPropagationDoneFlag   (secondary propagation done gate)
 ; TYPE: u16 flag
 ; PURPOSE: Prevents duplicate secondary metadata propagation within a slot window.
 ; USED BY: _ESQDISP_DrawStatusBanner_Impl
 ; NOTES: Cleared at window start and set after propagation routine runs.
 ;------------------------------------------------------------------------------
-ESQDISP_SecondaryPropagationDoneFlag:
+_ESQDISP_SecondaryPropagationDoneFlag:
     DC.W    $0001

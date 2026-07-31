@@ -9,10 +9,22 @@
 # columns: <C file, relative to src/>   <sc options>
 
 c/esqiff_set_apen_to_brightest_palette_index.c   SHORTINT
-c/textdisp_find_entry_match_index.c              SHORTINT
-c/newgrid_process_schedule_state.c                SHORTINT
+# REMOVED 2026-07-31: SHORTINT breaks the parameter ABI here. These take a
+# short followed by another parameter; SHORTINT makes the short a 2-byte
+# slot while the assembly callers push 4. Every later argument is then read
+# from the wrong offset. newgrid_set_row_color painted every red pen blue.
+#c/textdisp_find_entry_match_index.c              SHORTINT
+# REMOVED 2026-07-31: SHORTINT breaks the parameter ABI here. These take a
+# short followed by another parameter; SHORTINT makes the short a 2-byte
+# slot while the assembly callers push 4. Every later argument is then read
+# from the wrong offset. newgrid_set_row_color painted every red pen blue.
+#c/newgrid_process_schedule_state.c                SHORTINT
 c/gcommand_apply_highlight_flag.c                 SHORTINT
-c/newgrid_set_row_color.c                         SHORTINT
+# REMOVED 2026-07-31: SHORTINT breaks the parameter ABI here. These take a
+# short followed by another parameter; SHORTINT makes the short a 2-byte
+# slot while the assembly callers push 4. Every later argument is then read
+# from the wrong offset. newgrid_set_row_color painted every red pen blue.
+#c/newgrid_set_row_color.c                         SHORTINT
 c/newgrid_test_prime_time_window.c                SHORTINT
 c/dst_handle_banner_command32_33.c                SHORTINT
 c/script_update_runtime_mode_for_playback_cursor.c SHORTINT

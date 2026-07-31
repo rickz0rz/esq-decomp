@@ -15,7 +15,7 @@
 ; CALLS:
 ;   _MATH_DivS32, _MATH_Mulu32, _WDISP_SPrintf, _LVODraw, _LVOMove, _LVOText, _LVOTextLength
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, LAB_182E, LAB_1832, TLIBA1_FMT_PCT_03LD_HorizontalScaleTick, return
+;   Global_REF_GRAPHICS_LIBRARY, LAB_182E, LAB_1832, _TLIBA1_FMT_PCT_03LD_HorizontalScaleTick, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -84,7 +84,7 @@ _TLIBA3_DrawHorizontalScaleTicks:
     JSR     _LVODraw(A6)
 
     MOVE.L  D6,-(A7)
-    PEA     TLIBA1_FMT_PCT_03LD_HorizontalScaleTick
+    PEA     _TLIBA1_FMT_PCT_03LD_HorizontalScaleTick
     PEA     -84(A5)
     JSR     _WDISP_SPrintf(PC)
 

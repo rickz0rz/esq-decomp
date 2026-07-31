@@ -1,8 +1,8 @@
-    XDEF    DISPTEXT_BuildLineWithWidth
+    XDEF    _DISPTEXT_BuildLineWithWidth
 
 
 ;------------------------------------------------------------------------------
-; FUNC: DISPTEXT_BuildLineWithWidth   (Format text into line buffer with width constraintuncertain)
+; FUNC: _DISPTEXT_BuildLineWithWidth   (Format text into line buffer with width constraintuncertain)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -14,9 +14,9 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   _LVOTextLength, _GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AI_JMPTBL_STR_SkipClass3Chars, GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN
+;   _LVOTextLength, _GROUP_AI_JMPTBL_STRING_AppendAtNull, _GROUP_AI_JMPTBL_STR_SkipClass3Chars, _GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN
 ; READS:
-;   DISPTEXT_STR_SINGLE_SPACE_MEASURE..DISPTEXT_STR_SINGLE_SPACE_DELIM, _DISPTEXT_CurrentLineIndex/21D9/21DA/21DC
+;   _DISPTEXT_STR_SINGLE_SPACE_MEASURE.._DISPTEXT_STR_SINGLE_SPACE_DELIM, _DISPTEXT_CurrentLineIndex/21D9/21DA/21DC
 ; WRITES:
 ;   output buffer, _DISPTEXT_ControlMarkersEnabledFlag
 ; DESC:
@@ -24,14 +24,14 @@
 ; NOTES:
 ;   Uses 0x13/0x12 separators (see data tables).
 ;------------------------------------------------------------------------------
-DISPTEXT_BuildLineWithWidth:
+_DISPTEXT_BuildLineWithWidth:
     LINK.W  A5,#-76
     MOVEM.L D2-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEA.L 12(A5),A2
     MOVE.L  20(A5),D7
     MOVEA.L A3,A1
-    LEA     DISPTEXT_STR_SINGLE_SPACE_MEASURE,A0
+    LEA     _DISPTEXT_STR_SINGLE_SPACE_MEASURE,A0
     MOVEQ   #1,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
@@ -54,7 +54,7 @@ DISPTEXT_BuildLineWithWidth:
     TST.B   (A0)
     BEQ.S   .append_separator
 
-    PEA     DISPTEXT_STR_SINGLE_SPACE_APPEND
+    PEA     _DISPTEXT_STR_SINGLE_SPACE_APPEND
     MOVE.L  A0,-(A7)
     JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -63,15 +63,15 @@ DISPTEXT_BuildLineWithWidth:
 
 .append_separator:
     MOVE.L  A2,-(A7)
-    JSR     GROUP_AI_JMPTBL_STR_SkipClass3Chars(PC)
+    JSR     _GROUP_AI_JMPTBL_STR_SkipClass3Chars(PC)
 
     MOVEA.L D0,A2
     MOVE.L  A2,-20(A5)
-    PEA     DISPTEXT_STR_SINGLE_SPACE_DELIM
+    PEA     _DISPTEXT_STR_SINGLE_SPACE_DELIM
     PEA     50.W
     PEA     -73(A5)
     MOVE.L  A2,-(A7)
-    JSR     GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN(PC)
+    JSR     _GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN(PC)
 
     LEA     20(A7),A7
     MOVEA.L D0,A2

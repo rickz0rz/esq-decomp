@@ -1,5 +1,5 @@
 /* RESTORES: CLEANUP_DrawDateBannerSegment
- * MODULE:   modules/groups/a/c/cleanup2_p1_p0.s
+ * MODULE:   modules/groups/a/c/cleanup2_p1_p0_p0.s
  * STATUS:   behavioural
  *
  * Draws the date half of the banner into the off-screen bitmap: a pen-7 fill,

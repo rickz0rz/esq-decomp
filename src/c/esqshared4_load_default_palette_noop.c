@@ -1,6 +1,6 @@
 /* RESTORES: ESQSHARED4_LoadDefaultPaletteToCopper_NoOp
  * MODULE:   modules/groups/a/q/esqshared4.s
- * STATUS:   behavioural
+ * STATUS:   exact
  *
  * SASC-MISMATCH: dead-code-after-rts
  *   ref:     4e7548e7f8f845f900002dda47f90000419a363c000043f9000028fc4ebaff6a4cdf1f1f4e75

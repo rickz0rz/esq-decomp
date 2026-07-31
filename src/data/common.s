@@ -1,7 +1,7 @@
-    XDEF    Global_STR_PLEASE_STANDBY_1
-    XDEF    Global_STR_ATTENTION_SYSTEM_ENGINEER_1
-    XDEF    Global_STR_REPORT_CODE_ER003
-    XDEF    Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE
+    XDEF    _Global_STR_PLEASE_STANDBY_1
+    XDEF    _Global_STR_ATTENTION_SYSTEM_ENGINEER_1
+    XDEF    _Global_STR_REPORT_CODE_ER003
+    XDEF    _Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE
     XDEF    _COMMON_QueryDiskSoftErrorCountScratch
     XDEF    _Global_STR_DISK_ERRORS_FORMATTED
     XDEF    _COMMON_QueryDiskUsagePercentScratch
@@ -58,14 +58,14 @@
     XDEF    _BRUSH_LoadInProgressFlag
     XDEF    _BRUSH_PendingAlertCode
 
-Global_STR_PLEASE_STANDBY_1:
+_Global_STR_PLEASE_STANDBY_1:
     NStr    "Please Standby..."
-    assert Global_STR_PLEASE_STANDBY_1_Length==Global_STR_ATTENTION_SYSTEM_ENGINEER_1-Global_STR_PLEASE_STANDBY_1,"Global_STR_PLEASE_STANDBY_1_Length in data-lengths.s is out of sync with the data layout"
-Global_STR_ATTENTION_SYSTEM_ENGINEER_1:
+    assert Global_STR_PLEASE_STANDBY_1_Length==_Global_STR_ATTENTION_SYSTEM_ENGINEER_1-_Global_STR_PLEASE_STANDBY_1,"Global_STR_PLEASE_STANDBY_1_Length in data-lengths.s is out of sync with the data layout"
+_Global_STR_ATTENTION_SYSTEM_ENGINEER_1:
     NStr    "ATTENTION! SYSTEM ENGINEER"
-Global_STR_REPORT_CODE_ER003:
+_Global_STR_REPORT_CODE_ER003:
     NStr    "Report Code ER003 to TV Guide Technical Services."
-Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE:
+_Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE:
     NStr2   "YOU CANNOT RE-RUN THE SOFTWARE IN THIS MANNER.  PLEASE RE-BOOT!!",TextLineFeed
 _COMMON_QueryDiskSoftErrorCountScratch:
     DC.W    0

@@ -2,19 +2,19 @@
     XDEF    _Global_STR_LADFUNC_C_2
     XDEF    _Global_STR_LADFUNC_C_3
     XDEF    _Global_STR_LADFUNC_C_4
-    XDEF    LADFUNC_TAG_RS_ResetTriggerSet
-    XDEF    LADFUNC_TAG_RS_ParseAllowedSet
-    XDEF    Global_STR_LADFUNC_C_5
-    XDEF    Global_STR_LADFUNC_C_6
-    XDEF    Global_STR_LADFUNC_C_7
-    XDEF    Global_STR_LADFUNC_C_8
-    XDEF    LADFUNC_FMT_AttrEscapePrefixCharHex
-    XDEF    LADFUNC_TextAdLineBreakBuffer
-    XDEF    Global_STR_LADFUNC_C_9
-    XDEF    Global_STR_LADFUNC_C_10
-    XDEF    Global_STR_LADFUNC_C_11
-    XDEF    Global_STR_LADFUNC_C_12
-    XDEF    Global_STR_LADFUNC_C_13
+    XDEF    _LADFUNC_TAG_RS_ResetTriggerSet
+    XDEF    _LADFUNC_TAG_RS_ParseAllowedSet
+    XDEF    _Global_STR_LADFUNC_C_5
+    XDEF    _Global_STR_LADFUNC_C_6
+    XDEF    _Global_STR_LADFUNC_C_7
+    XDEF    _Global_STR_LADFUNC_C_8
+    XDEF    _LADFUNC_FMT_AttrEscapePrefixCharHex
+    XDEF    _LADFUNC_TextAdLineBreakBuffer
+    XDEF    _Global_STR_LADFUNC_C_9
+    XDEF    _Global_STR_LADFUNC_C_10
+    XDEF    _Global_STR_LADFUNC_C_11
+    XDEF    _Global_STR_LADFUNC_C_12
+    XDEF    _Global_STR_LADFUNC_C_13
     XDEF    _Global_STR_SINGLE_SPACE_1
     XDEF    _Global_STR_LADFUNC_C_14
     XDEF    _Global_STR_LADFUNC_C_15
@@ -31,9 +31,9 @@
     XDEF    _Global_STR_LADFUNC_C_25
     XDEF    _Global_STR_LADFUNC_C_26
     XDEF    _Global_STR_LADFUNC_C_27
-    XDEF    Global_STR_LADFUNC_C_28
-    XDEF    Global_STR_LADFUNC_C_29
-    XDEF    Global_STR_LADFUNC_C_30
+    XDEF    _Global_STR_LADFUNC_C_28
+    XDEF    _Global_STR_LADFUNC_C_29
+    XDEF    _Global_STR_LADFUNC_C_30
     XDEF    LADFUNC_STR_QuoteAndNewline
     XDEF    LADFUNC_STR_Quote
     XDEF    _LADFUNC_FMT_ControlCharCaretEscape
@@ -56,31 +56,31 @@ _Global_STR_LADFUNC_C_3:
     NStr    "LADFUNC.c"
 _Global_STR_LADFUNC_C_4:
     NStr    "LADFUNC.c"
-LADFUNC_TAG_RS_ResetTriggerSet:
+_LADFUNC_TAG_RS_ResetTriggerSet:
     NStr    "RS"
-LADFUNC_TAG_RS_ParseAllowedSet:
+_LADFUNC_TAG_RS_ParseAllowedSet:
     NStr    "RS"
-Global_STR_LADFUNC_C_5:
+_Global_STR_LADFUNC_C_5:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_6:
+_Global_STR_LADFUNC_C_6:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_7:
+_Global_STR_LADFUNC_C_7:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_8:
+_Global_STR_LADFUNC_C_8:
     NStr    "LADFUNC.c"
-LADFUNC_FMT_AttrEscapePrefixCharHex:
+_LADFUNC_FMT_AttrEscapePrefixCharHex:
     NStr    "%c%02X"
-LADFUNC_TextAdLineBreakBuffer:
+_LADFUNC_TextAdLineBreakBuffer:
     DS.W    1
-Global_STR_LADFUNC_C_9:
+_Global_STR_LADFUNC_C_9:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_10:
+_Global_STR_LADFUNC_C_10:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_11:
+_Global_STR_LADFUNC_C_11:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_12:
+_Global_STR_LADFUNC_C_12:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_13:
+_Global_STR_LADFUNC_C_13:
     NStr    "LADFUNC.c"
 _Global_STR_SINGLE_SPACE_1:
     NStr    " "
@@ -114,11 +114,11 @@ _Global_STR_LADFUNC_C_26:
     NStr    "LADFUNC.c"
 _Global_STR_LADFUNC_C_27:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_28:
+_Global_STR_LADFUNC_C_28:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_29:
+_Global_STR_LADFUNC_C_29:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_30:
+_Global_STR_LADFUNC_C_30:
     NStr    "LADFUNC.c"
 LADFUNC_STR_QuoteAndNewline:
     NStr2   """",TextLineFeed

@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode, _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex, SCRIPT3_JMPTBL_MATH_DivS32
+;   _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode, _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex, _SCRIPT3_JMPTBL_MATH_DivS32
 ; READS:
 ;   _TEXTDISP_PrimaryGroupEntryCount, _CLOCK_DaySlotIndex, _GCOMMAND_PpvSelectionWindowMinutes
 ; WRITES:
@@ -121,7 +121,7 @@ _NEWGRID_InitSelectionWindow:
     MOVEQ   #29,D0
     ADD.L   _GCOMMAND_PpvSelectionWindowMinutes,D0
     MOVEQ   #30,D1
-    JSR     SCRIPT3_JMPTBL_MATH_DivS32(PC)
+    JSR     _SCRIPT3_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  20(A3),D1
     EXT.L   D1

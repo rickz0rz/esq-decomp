@@ -1,5 +1,5 @@
 /* RESTORES: _TEXTDISP_FindEntryMatchIndex
- * MODULE:   modules/groups/b/a/textdisp3_p1_p1_textdisp_findentrymatchindex.s
+ * MODULE:   modules/groups/b/a/textdisp3_p1_p1_textdisp_findentrymatchindex_textdisp_findentrymatchindex.s
  * STATUS:   behavioural
  *
  * Search the active group's 49 entries for the first one whose text matches the

@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   ESQ_ColdReboot
+;   _ESQ_ColdReboot
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -20,7 +20,7 @@
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AZ_JMPTBL_ESQ_ColdReboot:
-    JMP     ESQ_ColdReboot
+    JMP     _ESQ_ColdReboot
 
 ;!======
 

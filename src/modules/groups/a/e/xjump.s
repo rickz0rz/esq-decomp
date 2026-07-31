@@ -40,7 +40,7 @@ _GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_BuildTokenIndexMap
+;   _SCRIPT_BuildTokenIndexMap
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -51,7 +51,7 @@ _GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap:
-    JMP     SCRIPT_BuildTokenIndexMap
+    JMP     _SCRIPT_BuildTokenIndexMap
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode   (Routine at _GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode)

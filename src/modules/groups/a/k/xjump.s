@@ -110,14 +110,14 @@ _GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQPARS_ApplyRtcBytesAndPersist
+;   _ESQPARS_ApplyRtcBytesAndPersist
 ; DESC:
-;   Jump stub to ESQPARS_ApplyRtcBytesAndPersist.
+;   Jump stub to _ESQPARS_ApplyRtcBytesAndPersist.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist:
-    BRA.W   ESQPARS_ApplyRtcBytesAndPersist
+    BRA.W   _ESQPARS_ApplyRtcBytesAndPersist
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry   (JumpStub_PARSEINI_WriteErrorLogEntry)

@@ -154,7 +154,7 @@ _DISKIO_BufferControl:
 ; SYM: _CONFIG_RefreshIntervalMinutes/.../_CONFIG_ModeCycleEnabledFlag/_CONFIG_NewgridPlaceholderBevelFlag   (config byte cluster)
 ; TYPE: u8 flags/counters
 ; PURPOSE: Persisted configuration defaults parsed/saved by DISKIO config flows.
-; USED BY: _DISKIO_ParseConfigBuffer, DISKIO_SaveConfigToFileHandle
+; USED BY: _DISKIO_ParseConfigBuffer, _DISKIO_SaveConfigToFileHandle
 ; NOTES:
 ;   Field-to-tag mapping remains partially unresolved.
 ;   `_CONFIG_ModeCycleEnabledFlag` toggles mode-cycle gating in NEWGRID mode selection.
@@ -242,7 +242,7 @@ _CONFIG_ParseiniLogoScanEnabledFlag:
 ; SYM: _CONFIG_BannerCopperHeadByte   (banner copper head byte config)
 ; TYPE: u16 (packed storage, low byte consumed)
 ; PURPOSE: Config-backed default byte written into banner copper list head words.
-; USED BY: _DISKIO_ParseConfigBuffer, DISKIO_SaveConfigToFileHandle,
+; USED BY: _DISKIO_ParseConfigBuffer, _DISKIO_SaveConfigToFileHandle,
 ;   _ESQSHARED4_InitializeBannerCopperSystem, _GCOMMAND_SeedBannerFromPrefs,
 ;   SCRIPT banner-transition target selection.
 ; NOTES:

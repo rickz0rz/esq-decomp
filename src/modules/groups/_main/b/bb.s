@@ -1,8 +1,8 @@
-    XDEF    ESQ_CheckTopazFontGuard
+    XDEF    _ESQ_CheckTopazFontGuard
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_CheckTopazFontGuard   (CheckTopazFontGuarduncertain)
+; FUNC: _ESQ_CheckTopazFontGuard   (CheckTopazFontGuarduncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -10,14 +10,14 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A6
 ; CALLS:
-;   GROUP_MAIN_B_JMPTBL_DOS_Delay, _LVOSetAPen, _LVORectFill, _LVOMove, _LVOText,
+;   _GROUP_MAIN_B_JMPTBL_DOS_Delay, _LVOSetAPen, _LVORectFill, _LVOMove, _LVOText,
 ;   _LVOSizeWindow, _LVORemakeDisplay, _LVOFreeMem,
-;   GROUP_MAIN_B_JMPTBL_MATH_Mulu32, GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString, GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode
+;   _GROUP_MAIN_B_JMPTBL_MATH_Mulu32, _GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString, _GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode
 ; READS:
 ;   _Global_REF_INTUITION_LIBRARY, Global_REF_GRAPHICS_LIBRARY, Global_STR_TOPAZ_FONT,
 ;   ESQIFF_SecondaryLineHeadPtr_HiWord, ESQ_TopazGuardRastPortAnchor,
-;   Global_STR_PLEASE_STANDBY_1, Global_STR_ATTENTION_SYSTEM_ENGINEER_1,
-;   Global_STR_REPORT_CODE_ER003
+;   _Global_STR_PLEASE_STANDBY_1, _Global_STR_ATTENTION_SYSTEM_ENGINEER_1,
+;   _Global_STR_REPORT_CODE_ER003
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -25,7 +25,7 @@
 ; NOTES:
 ;   - Soft-locks in a loop for the engineer warning path.
 ;------------------------------------------------------------------------------
-ESQ_CheckTopazFontGuard:
+_ESQ_CheckTopazFontGuard:
     LINK.W  A5,#-32
     MOVEM.L D2-D7,-(A7)
 
@@ -56,7 +56,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Delay 250 ticks or 5 seconds
     PEA     250.W
-    JSR     GROUP_MAIN_B_JMPTBL_DOS_Delay(PC)
+    JSR     _GROUP_MAIN_B_JMPTBL_DOS_Delay(PC)
 
     ADDQ.W  #4,A7
 
@@ -108,7 +108,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Draw "Please Standby..." text
     MOVEA.L A0,A1
-    LEA     Global_STR_PLEASE_STANDBY_1,A0
+    LEA     _Global_STR_PLEASE_STANDBY_1,A0
     MOVEQ   #(Global_STR_PLEASE_STANDBY_1_Length)-1,D0
     ; -1 to remove null padding
     JSR     _LVOText(A6)
@@ -129,7 +129,7 @@ ESQ_CheckTopazFontGuard:
 
     ; Draw "ATTENTION! SYSTEM ENGINEER" text
     MOVEA.L A0,A1
-    LEA     Global_STR_ATTENTION_SYSTEM_ENGINEER_1,A0
+    LEA     _Global_STR_ATTENTION_SYSTEM_ENGINEER_1,A0
     MOVEQ   #26,D0
     JSR     _LVOText(A6)
 
@@ -149,7 +149,7 @@ ESQ_CheckTopazFontGuard:
     ; Draw "Report Code ER003 to TV Guide Technical Services." text
     ; Fun fact: that string is 49 characters so it gets truncated...
     MOVEA.L A0,A1
-    LEA     Global_STR_REPORT_CODE_ER003,A0
+    LEA     _Global_STR_REPORT_CODE_ER003,A0
     MOVEQ   #47,D0
     JSR     _LVOText(A6)
 
@@ -171,7 +171,7 @@ ESQ_CheckTopazFontGuard:
     JSR     _LVOSizeWindow(A6)
 
     PEA     100.W
-    JSR     GROUP_MAIN_B_JMPTBL_DOS_Delay(PC)
+    JSR     _GROUP_MAIN_B_JMPTBL_DOS_Delay(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #50,D0
@@ -187,7 +187,7 @@ ESQ_CheckTopazFontGuard:
     ADDI.L  #4000,D4
     MOVE.L  D7,D0
     MOVE.L  #640,D1
-    JSR     GROUP_MAIN_B_JMPTBL_MATH_Mulu32(PC)
+    JSR     _GROUP_MAIN_B_JMPTBL_MATH_Mulu32(PC)
 
     LSR.L   #3,D0
     MOVE.L  D5,D1
@@ -208,11 +208,11 @@ ESQ_CheckTopazFontGuard:
     BRA.S   .done
 
 .show_rerun_error:
-    PEA     Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE
-    JSR     GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString(PC)
+    PEA     _Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE
+    JSR     _GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString(PC)
 
     CLR.L   (A7)
-    JSR     GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode(PC)
+    JSR     _GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode(PC)
 
     ADDQ.W  #4,A7
 

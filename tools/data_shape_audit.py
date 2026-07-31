@@ -60,6 +60,30 @@ BENIGN = {
     ('esqshared_match_selection_code_with_optional_suffix.c', 'ESQ_STR_A'),
     ('esqfunc_draw_diagnostics_screen.c', 'ESQFUNC_VideoInsertionStateStrings'),
     ('newgrid_select_next_mode.c', 'NEWGRID_ModeSelectionTable'),
+
+    # Whole-struct assignment `*(T *)dst = X;` or `&X` address arithmetic.
+    # Each was read and confirmed on 2026-07-31: the C never dereferences a
+    # pointer the symbol does not hold, it copies or addresses the bytes AT the
+    # symbol, which is exactly what the original's LEA does.
+    ('cleanup_format_entry_string_tokens.c', 'CLOCK_STR_TOKEN_PAIR_DEFAULTS'),
+    ('diskio2_receive_transfer_blocks_to_file.c', 'DISKIO2_TransferCrc32Table'),
+    ('diskio2_run_disk_sync_workflow.c', 'DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT'),
+    ('diskio2_run_disk_sync_workflow.c', 'DISKIO2_STR_SAVING_TEXT_ADS_DOT'),
+    ('diskio2_run_disk_sync_workflow.c', 'DISKIO2_STR_SAVING_CONFIGURATION_FILE_DOT'),
+    ('diskio2_run_disk_sync_workflow.c', 'DISKIO2_STR_SAVING_LOCAL_AVAIL_CFG_DOT'),
+    ('diskio2_run_disk_sync_workflow.c', 'DISKIO2_STR_SAVING_QTABLE_DOT'),
+    ('diskio2_run_disk_sync_workflow.c', 'DISKIO2_STR_SAVING_ERROR_LOG_DOT'),
+    ('diskio2_run_disk_sync_workflow.c', 'DISKIO2_STR_SAVING_DST_DATA_DOT'),
+    ('diskio2_run_disk_sync_workflow.c', 'DISKIO2_STR_SAVING_PROMO_TYPES'),
+    ('diskio2_run_disk_sync_workflow.c', 'DISKIO2_STR_SAVING_DATA_VIEW_CONFIG'),
+    ('esqdisp_draw_status_banner_impl.c', 'WDISP_StatusDayEntry0'),
+    ('esqdisp_draw_status_banner_impl.c', 'WDISP_StatusDayEntry1'),
+    ('esqdisp_draw_status_banner_impl.c', 'WDISP_StatusDayEntry2'),
+    ('esqdisp_draw_status_banner_impl.c', 'WDISP_StatusDayEntry3'),
+    ('locavail_save_availability_data_file.c', 'LOCAVAIL_TAG_UVGTI'),
+    ('locavail_save_availability_data_file.c', 'LOCAVAIL_STR_LA_VER_1_COLON_CURDAY'),
+    ('locavail_save_availability_data_file.c', 'LOCAVAIL_STR_LA_VER_1_COLON_NXTDAY'),
+    ('tliba2_compute_broadcast_time_window.c', 'TLIBA2_BroadcastWindowClockSnapshotA'),
 }
 
 

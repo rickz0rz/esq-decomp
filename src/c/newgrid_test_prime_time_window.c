@@ -1,5 +1,5 @@
 /* RESTORES: NEWGRID_TestPrimeTimeWindow
- * MODULE:   modules/groups/b/a/newgrid1bb_p1.s
+ * MODULE:   modules/groups/b/a/newgrid1bb_p1_newgrid_testprimetimewindow.s
  * STATUS:   behavioural
  *
  * Classifies an entry by the second character of the string at +48 and, for

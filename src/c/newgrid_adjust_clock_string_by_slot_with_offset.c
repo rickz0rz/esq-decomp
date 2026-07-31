@@ -1,5 +1,5 @@
 /* RESTORES: NEWGRID_AdjustClockStringBySlotWithOffset
- * MODULE:   modules/groups/b/a/newgrid_p2.s
+ * MODULE:   modules/groups/b/a/newgrid_p2_p0.s
  * STATUS:   behavioural
  *
  * Byte-for-byte the same routine as newgrid_adjust_clock_string_by_slot.c

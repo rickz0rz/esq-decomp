@@ -87,7 +87,8 @@ extern void  PARSEINI_ScanLogoDirectory(void);
 extern void  PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable(void);
 extern short PARSEINI_TestMemoryAndOpenTopazFont(struct TextFont **handle,
                                                  struct TextAttr *attr);
-extern long  SCRIPT3_JMPTBL_MATH_Mulu32(long a, long b);
+extern long __asm SCRIPT3_JMPTBL_MATH_Mulu32(register __d0 long a,
+                        register __d1 long b);
 extern void  TLIBA3_SetFontForAllViewModes(struct TextFont *font);
 extern void  PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk(void);
 extern void  PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(long key);

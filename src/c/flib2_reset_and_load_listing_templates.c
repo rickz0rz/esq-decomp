@@ -1,6 +1,6 @@
 /* RESTORES: FLIB2_ResetAndLoadListingTemplates
  * MODULE:   modules/groups/a/s/flib2.s
- * STATUS:   behavioural
+ * STATUS:   exact
  *
  * CORRECTED 2026-07-27. This restoration was wrong, and the whole-program link
  * is what found it -- it called FLIB2_LoadListingTemplates(), a function that

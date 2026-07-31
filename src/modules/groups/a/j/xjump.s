@@ -61,12 +61,12 @@ GROUP_AJ_JMPTBL_MATH_DivU32:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   PARSEINI_WriteRtcFromGlobals
+;   _PARSEINI_WriteRtcFromGlobals
 ; DESC:
-;   Jump stub to PARSEINI_WriteRtcFromGlobals.
+;   Jump stub to _PARSEINI_WriteRtcFromGlobals.
 ;------------------------------------------------------------------------------
 _GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals:
-    JMP     PARSEINI_WriteRtcFromGlobals
+    JMP     _PARSEINI_WriteRtcFromGlobals
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AJ_JMPTBL_MATH_Mulu32   (Jump stub)

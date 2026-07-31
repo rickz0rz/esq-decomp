@@ -1,5 +1,5 @@
 /* RESTORES: NEWGRID_TestEntryState
- * MODULE:   modules/groups/b/a/newgrid1b_p1_2_p0.s
+ * MODULE:   modules/groups/b/a/newgrid1b_p1_2_p0_p0.s
  * STATUS:   behavioural
  *
  * Asks whether an entry is in one of four states, choosing the group and

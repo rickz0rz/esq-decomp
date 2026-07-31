@@ -162,7 +162,8 @@ extern void *GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(char *who, long line,
                                                   long width, long height);
 extern void  GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(char *who, long line, void *p,
                                                  long width, long height);
-extern long  GROUP_AG_JMPTBL_MATH_DivS32(long a, long b);
+extern long __asm GROUP_AG_JMPTBL_MATH_DivS32(register __d0 long a,
+                        register __d1 long b);
 extern void *ESQ_PackBitsDecode(void *src, void *dst, long words);
 
 extern long BRUSH_PendingAlertCode;

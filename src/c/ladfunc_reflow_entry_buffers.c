@@ -66,7 +66,8 @@ extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
 extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
                                                     void *p, long size);
-extern long  NEWGRID_JMPTBL_MATH_DivS32(long a, long b);
+extern long __asm NEWGRID_JMPTBL_MATH_DivS32(register __d0 long a,
+                        register __d1 long b);
 
 extern long ED_TextLimit;
 extern char Global_STR_LADFUNC_C_20[];

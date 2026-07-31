@@ -39,7 +39,7 @@ _GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DISPLIB_ApplyInlineAlignmentPadding
+;   _DISPLIB_ApplyInlineAlignmentPadding
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -50,7 +50,7 @@ _GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding:
-    JMP     DISPLIB_ApplyInlineAlignmentPadding
+    JMP     _DISPLIB_ApplyInlineAlignmentPadding
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition   (Routine at _GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition)

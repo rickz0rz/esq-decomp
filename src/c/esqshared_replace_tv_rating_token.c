@@ -1,5 +1,5 @@
 /* RESTORES: ESQSHARED_ReplaceTvRatingToken
- * MODULE:   modules/groups/a/p/esqshared.s
+ * MODULE:   modules/groups/a/p/esqshared_esqshared_replacetvratingtoken_esqshared_replacetvratingtoken.s
  * STATUS:   behavioural
  *
  * Scans the string for each of the seven TV-rating words in turn, and on the

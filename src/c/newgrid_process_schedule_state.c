@@ -1,5 +1,5 @@
 /* RESTORES: _NEWGRID_ProcessScheduleState
- * MODULE:   modules/groups/b/a/newgrid1b_p2_newgrid_processschedulestate.s
+ * MODULE:   modules/groups/b/a/newgrid1b_p2_newgrid_processschedulestate_newgrid_processschedulestate.s
  * STATUS:   behavioural
  *
  * The grid schedule state machine: one step per call, returning the new state.

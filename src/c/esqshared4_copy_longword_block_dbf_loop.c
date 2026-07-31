@@ -1,5 +1,5 @@
 /* RESTORES: ESQSHARED4_CopyLongwordBlockDbfLoop
- * MODULE:   modules/groups/a/q/esqshared4.s
+ * MODULE:   modules/groups/a/q/esqshared4_esqshared4_copylongwordblockdbfloop_esqshared4_copylongwordblockdbfloop.s
  * STATUS:   behavioural
  *
  * SASC-MISMATCH: not-a-callable-function

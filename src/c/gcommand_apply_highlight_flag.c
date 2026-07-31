@@ -1,5 +1,5 @@
 /* RESTORES: _GCOMMAND_ApplyHighlightFlag
- * MODULE:   modules/groups/a/u/gcommand3_p1.s
+ * MODULE:   modules/groups/a/u/gcommand3_p1_gcommand_applyhighlightflag.s
  * STATUS:   behavioural
  *
  * Writes the highlight bit into every copper instruction that carries it. That

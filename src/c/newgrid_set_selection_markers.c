@@ -1,5 +1,5 @@
 /* RESTORES: NEWGRID_SetSelectionMarkers
- * MODULE:   modules/groups/b/a/newgrid1b_p1_2_p0.s
+ * MODULE:   modules/groups/b/a/newgrid1b_p1_2_p0_p0.s
  * STATUS:   behavioural
  *
  * Writes four marker characters from two independent 3-way selectors. The

@@ -29,7 +29,12 @@
  * CMP.L #16 / BGT), so out-of-range means below zero or above 16, and both
  * store the literal 7.
  *
- * OPTIONS: SHORTINT (per-file, and load-bearing -- see below).
+ * ABI WARNING: this file must NOT be compiled with SHORTINT. Its callers are
+ * assembly and push 4-byte parameter slots. SHORTINT makes int 16-bit, which
+ * shrinks the slot for a short parameter, so every parameter AFTER it is read
+ * from the wrong offset. Measured on 2026-07-31: with SHORTINT this function
+ * read its arguments 2 bytes early; the reference uses 4-byte slots throughout.
+ * SHORTINT here painted every red pen blue and cost a bisect to find.
  *
  * 92 ref vs 92 got, and this one is worth reading rather than trusting the
  * equal size, because equal size is not evidence (AGENTS.md rule 1). The

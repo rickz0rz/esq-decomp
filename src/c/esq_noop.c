@@ -1,6 +1,6 @@
 /* RESTORES: ESQ_NoOp
  * MODULE:   modules/groups/a/a/app2.s
- * STATUS:   behavioural
+ * STATUS:   exact
  *
  * SASC-MISMATCH: dead-code-after-rts
  *   ref:     4e75103c000013c000002da813c0000041684e75

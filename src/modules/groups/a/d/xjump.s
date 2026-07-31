@@ -206,16 +206,16 @@ _GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   TLIBA1_BuildClockFormatEntryIfVisible
+;   _TLIBA1_BuildClockFormatEntryIfVisible
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to TLIBA1_BuildClockFormatEntryIfVisible.
+;   Jump stub to _TLIBA1_BuildClockFormatEntryIfVisible.
 ;------------------------------------------------------------------------------
 _GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible:
-    JMP     TLIBA1_BuildClockFormatEntryIfVisible
+    JMP     _TLIBA1_BuildClockFormatEntryIfVisible
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel   (JumpStub_TEXTDISP_BuildChannelLabel)
@@ -306,16 +306,16 @@ _GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ESQFUNC_SelectAndApplyBrushForCurrentEntry
+;   _ESQFUNC_SelectAndApplyBrushForCurrentEntry
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to ESQFUNC_SelectAndApplyBrushForCurrentEntry.
+;   Jump stub to _ESQFUNC_SelectAndApplyBrushForCurrentEntry.
 ;------------------------------------------------------------------------------
 _GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry:
-    JMP     ESQFUNC_SelectAndApplyBrushForCurrentEntry
+    JMP     _ESQFUNC_SelectAndApplyBrushForCurrentEntry
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex   (JumpStub_DATETIME_AdjustMonthIndex)

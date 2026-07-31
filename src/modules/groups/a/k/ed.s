@@ -1,9 +1,9 @@
-    XDEF    ED_DispatchEscMenuState
+    XDEF    _ED_DispatchEscMenuState
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_DispatchEscMenuState   (Dispatch ESC menu stateuncertain)
+; FUNC: _ED_DispatchEscMenuState   (Dispatch ESC menu stateuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   A0/A1/A6/D0/D1
 ; CALLS:
-;   _ED2_HandleMenuActions, ED1_HandleEscMenuInput, _ED1_UpdateEscMenuSelection,
+;   _ED2_HandleMenuActions, _ED1_HandleEscMenuInput, _ED1_UpdateEscMenuSelection,
 ;   _ED2_HandleScrollSpeedSelection, _ED2_HandleDiagnosticsMenuActions,
 ;   _ED_EnterTextEditMode, _ED_CaptureKeySequence, _ED_HandleDiagnosticNibbleEdit,
 ;   _ED_HandleSpecialFunctionsMenu, _ED_SaveEverythingToDisk, _ED_SavePrevueDataToDisk,
@@ -19,24 +19,24 @@
 ;   _ED_HandleEditAttributesInput, _ED_HandleEditorInput,
 ;   _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
-;   _ED_StateRingIndex, _ED_StateRingWriteIndex, ED_MenuDispatchReentryGuard, _ED_MenuStateId, _Global_UIBusyFlag
+;   _ED_StateRingIndex, _ED_StateRingWriteIndex, _ED_MenuDispatchReentryGuard, _ED_MenuStateId, _Global_UIBusyFlag
 ; WRITES:
-;   ED_MenuDispatchReentryGuard, _ED_LastKeyCode, _ED_StateRingIndex
+;   _ED_MenuDispatchReentryGuard, _ED_LastKeyCode, _ED_StateRingIndex
 ; DESC:
 ;   Dispatches ESC-menu state handlers based on _ED_MenuStateId using a jumptable.
 ; NOTES:
 ;   Increments _ED_StateRingIndex modulo $14 after each dispatch.
 ;------------------------------------------------------------------------------
-ED_DispatchEscMenuState:
+_ED_DispatchEscMenuState:
     MOVE.L  _ED_StateRingIndex,D0
     MOVE.L  _ED_StateRingWriteIndex,D1
     CMP.L   D0,D1
     BEQ.W   .lab_0677
 
-    TST.L   ED_MenuDispatchReentryGuard
+    TST.L   _ED_MenuDispatchReentryGuard
     BEQ.W   .lab_0677
 
-    CLR.L   ED_MenuDispatchReentryGuard
+    CLR.L   _ED_MenuDispatchReentryGuard
     LSL.L   #2,D0
     ADD.L   _ED_StateRingIndex,D0
     LEA     _ED_StateRingTable,A0
@@ -107,7 +107,7 @@ ED_DispatchEscMenuState:
     BRA.S   .advance_index
 
 .case_handle_esc_menu_input:
-    BSR.W   ED1_HandleEscMenuInput
+    BSR.W   _ED1_HandleEscMenuInput
 
     BRA.S   .advance_index
 
@@ -184,7 +184,7 @@ ED_DispatchEscMenuState:
 
 .after_wrap_index:
     MOVEQ   #1,D0
-    MOVE.L  D0,ED_MenuDispatchReentryGuard
+    MOVE.L  D0,_ED_MenuDispatchReentryGuard
 
 .lab_0677:
     RTS

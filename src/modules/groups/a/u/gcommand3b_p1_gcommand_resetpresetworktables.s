@@ -13,7 +13,7 @@
 ; READS:
 ;   (none)
 ; WRITES:
-;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3, _GCOMMAND_PresetWorkResetPendingFlag
+;   _GCOMMAND_PresetWorkEntryTable.._GCOMMAND_PresetWorkEntry3, _GCOMMAND_PresetWorkResetPendingFlag
 ; DESC:
 ;   Clears the preset work tables and resets the pending flag.
 ; NOTES:

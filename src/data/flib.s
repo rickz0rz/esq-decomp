@@ -1,5 +1,5 @@
-    XDEF    Global_STR_FLIB_C_1
-    XDEF    Global_STR_FLIB_C_2
+    XDEF    _Global_STR_FLIB_C_1
+    XDEF    _Global_STR_FLIB_C_2
     XDEF    FLIB_EmptyLogReplacementString
     XDEF    FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02
     XDEF    _FLIB_STR_DIGITAL_NICHE_LISTINGS
@@ -9,9 +9,9 @@
     XDEF    _Global_STR_DIGITAL_PPV_PERIOD
 ; ========== FLIB.c ==========
 
-Global_STR_FLIB_C_1:
+_Global_STR_FLIB_C_1:
     NStr    "FLIB.c"
-Global_STR_FLIB_C_2:
+_Global_STR_FLIB_C_2:
     NStr    "FLIB.c"
 ;------------------------------------------------------------------------------
 ; SYM: FLIB_EmptyLogReplacementString   (FLIB empty-log replacement string)

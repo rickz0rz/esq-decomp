@@ -1,5 +1,5 @@
 /* RESTORES: CLEANUP_DrawBannerSpacerSegment
- * MODULE:   modules/groups/a/c/cleanup2_p1_p0.s
+ * MODULE:   modules/groups/a/c/cleanup2_p1_p0_p0.s
  * STATUS:   behavioural
  *
  * Fills the spacer between the date and time banner segments and puts a

@@ -19,7 +19,7 @@
 ; DESC:
 ;   Adds a signed byte delta to the first byte of a banner table.
 ; NOTES:
-;   Used by GCOMMAND_AdjustBannerCopperOffset to bias banner data in-place.
+;   Used by _GCOMMAND_AdjustBannerCopperOffset to bias banner data in-place.
 ;------------------------------------------------------------------------------
 _GCOMMAND_AddBannerTableByteDelta:
     MOVEM.L D7/A3,-(A7)

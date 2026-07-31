@@ -1,5 +1,5 @@
 /* RESTORES: NEWGRID_DrawEntryRowOrPlaceholder
- * MODULE:   modules/groups/b/a/newgrid1b_p1_2_p0.s
+ * MODULE:   modules/groups/b/a/newgrid1b_p1_2_p0_p0.s
  * STATUS:   behavioural
  *
  * Draws a grid row, or one of two placeholder strings when there is nothing to

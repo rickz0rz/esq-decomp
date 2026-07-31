@@ -159,7 +159,7 @@ _ESQFUNC_DrawDiagnosticsScreen:
 
     MOVEQ   #0,D0
     ; Deferred action countdown/armed are populated in SCRIPT3/ED2 and then
-    ; decremented in TEXTDISP_TickDisplayState while armed.
+    ; decremented in _TEXTDISP_TickDisplayState while armed.
     MOVE.W  _TEXTDISP_DeferredActionCountdown,D0
     MOVEQ   #0,D1
     MOVE.W  _TEXTDISP_DeferredActionArmed,D1

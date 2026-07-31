@@ -1,5 +1,5 @@
 /* RESTORES: _ESQIFF_SetApenToBrightestPaletteIndex
- * MODULE:   modules/groups/a/n/esqiffbb_p0_esqiff_setapentobrightestpaletteindex.s
+ * MODULE:   modules/groups/a/n/esqiffbb_p0_esqiff_setapentobrightestpaletteindex_esqiff_setapentobrightestpaletteindex.s
  * STATUS:   behavioural
  *
  * Scan the palette for the entry with the largest R+G+B sum and set the status

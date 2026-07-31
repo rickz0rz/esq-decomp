@@ -75,7 +75,8 @@ struct EsqDispEntry {
     short         w46;                  /* +46, low byte carries five flags */
 };
 
-extern long ESQIFF_JMPTBL_MATH_Mulu32(long a, long b);
+extern long __asm ESQIFF_JMPTBL_MATH_Mulu32(register __d0 long a,
+                        register __d1 long b);
 extern long ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(long ch);
 extern void ESQFUNC_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
 extern void ESQDISP_FillProgramInfoHeaderFields(struct EsqDispEntry *e,

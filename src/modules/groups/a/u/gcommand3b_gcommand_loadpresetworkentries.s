@@ -13,7 +13,7 @@
 ; READS:
 ;   32(A3), 36(A3), 55(A3)
 ; WRITES:
-;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3
+;   _GCOMMAND_PresetWorkEntryTable.._GCOMMAND_PresetWorkEntry3
 ; DESC:
 ;   Seeds the preset work tables using the current preset record fields.
 ; NOTES:

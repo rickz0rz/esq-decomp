@@ -13,9 +13,9 @@
 ; CALLS:
 ;   _GROUP_AR_JMPTBL_STRING_AppendAtNull, _GROUP_AW_JMPTBL_WDISP_SPrintf, _ESQPARS_ReplaceOwnedString, _NEWGRID_JMPTBL_MATH_DivS32, _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   _Global_REF_CLOCKDATA_STRUCT, Global_STR_FLIB_C_1, Global_STR_FLIB_C_2, FLIB_AppendClockStampedLogEntry_Return, ESQPARS2_LogAppendSpinlock, ESQPARS2_LogTimestampFmt, ESQPARS2_LogTagPm, ESQPARS2_LogTagAm, ESQPARS2_LogFieldTab, ESQPARS2_LogLineTerminator, _NEWGRID2_ErrorLogEntryPtr, _CLOCK_CacheHour, _CLOCK_CacheMinuteOrSecond, _CLOCK_CacheAmPmFlag, _FLIB_LogEntryByteCount, MEMF_PUBLIC
+;   _Global_REF_CLOCKDATA_STRUCT, _Global_STR_FLIB_C_1, _Global_STR_FLIB_C_2, FLIB_AppendClockStampedLogEntry_Return, _ESQPARS2_LogAppendSpinlock, _ESQPARS2_LogTimestampFmt, _ESQPARS2_LogTagPm, _ESQPARS2_LogTagAm, _ESQPARS2_LogFieldTab, _ESQPARS2_LogLineTerminator, _NEWGRID2_ErrorLogEntryPtr, _CLOCK_CacheHour, _CLOCK_CacheMinuteOrSecond, _CLOCK_CacheAmPmFlag, _FLIB_LogEntryByteCount, MEMF_PUBLIC
 ; WRITES:
-;   ESQPARS2_LogAppendSpinlock, _NEWGRID2_ErrorLogEntryPtr, _FLIB_LogEntryByteCount
+;   _ESQPARS2_LogAppendSpinlock, _NEWGRID2_ErrorLogEntryPtr, _FLIB_LogEntryByteCount
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -27,16 +27,16 @@ FLIB_AppendClockStampedLogEntry:
     MOVEA.L 8(A5),A3
 
 .lab_0CB6:
-    TST.L   ESQPARS2_LogAppendSpinlock
+    TST.L   _ESQPARS2_LogAppendSpinlock
     BNE.S   .lab_0CB6
 
     MOVEQ   #1,D0
-    MOVE.L  D0,ESQPARS2_LogAppendSpinlock
+    MOVE.L  D0,_ESQPARS2_LogAppendSpinlock
     MOVE.W  _FLIB_LogEntryByteCount,D0
     CMPI.W  #$2710,D0
     BLE.S   .lab_0CB7
 
-    CLR.L   ESQPARS2_LogAppendSpinlock
+    CLR.L   _ESQPARS2_LogAppendSpinlock
     MOVEQ   #0,D0
     BRA.W   FLIB_AppendClockStampedLogEntry_Return
 
@@ -78,24 +78,24 @@ FLIB_AppendClockStampedLogEntry:
     TST.W   _CLOCK_CacheAmPmFlag
     BEQ.S   .branch_2
 
-    LEA     ESQPARS2_LogTagPm,A0
+    LEA     _ESQPARS2_LogTagPm,A0
     BRA.S   .branch_3
 
 .branch_2:
-    LEA     ESQPARS2_LogTagAm,A0
+    LEA     _ESQPARS2_LogTagAm,A0
 
 .branch_3:
     MOVE.L  A0,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  20(A7),-(A7)
     MOVE.L  20(A7),-(A7)
-    PEA     ESQPARS2_LogTimestampFmt
+    PEA     _ESQPARS2_LogTimestampFmt
     PEA     -119(A5)
     JSR     _GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     24(A7),A7
     ADDI.W  #14,D7
-    PEA     ESQPARS2_LogFieldTab
+    PEA     _ESQPARS2_LogFieldTab
     PEA     -119(A5)
     JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -103,7 +103,7 @@ FLIB_AppendClockStampedLogEntry:
     PEA     -119(A5)
     JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
-    PEA     ESQPARS2_LogLineTerminator
+    PEA     _ESQPARS2_LogLineTerminator
     PEA     -119(A5)
     JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -117,7 +117,7 @@ FLIB_AppendClockStampedLogEntry:
     PEA     (MEMF_PUBLIC).W
     MOVE.L  D1,-(A7)
     PEA     173.W
-    PEA     Global_STR_FLIB_C_1
+    PEA     _Global_STR_FLIB_C_1
     JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -155,10 +155,10 @@ FLIB_AppendClockStampedLogEntry:
     MOVE.L  D0,(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     198.W
-    PEA     Global_STR_FLIB_C_2
+    PEA     _Global_STR_FLIB_C_2
     JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
-    CLR.L   ESQPARS2_LogAppendSpinlock
+    CLR.L   _ESQPARS2_LogAppendSpinlock
 
 ;------------------------------------------------------------------------------
 ; FUNC: FLIB_AppendClockStampedLogEntry_Return   (Routine at FLIB_AppendClockStampedLogEntry_Return)

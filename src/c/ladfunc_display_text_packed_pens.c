@@ -1,5 +1,5 @@
 /* RESTORES: LADFUNC_DisplayTextPackedPens
- * MODULE:   modules/groups/a/w/ladfunc_p1.s
+ * MODULE:   modules/groups/a/w/ladfunc_p1_p0.s
  * STATUS:   behavioural
  *
  * Unpacks a byte holding two pen numbers, sets them as the A and B pens, and

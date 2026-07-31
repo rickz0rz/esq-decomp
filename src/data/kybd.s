@@ -1,5 +1,5 @@
     XDEF    _Global_STR_KYBD_C
-    XDEF    KYBD_PATH_DF0_LOCAL_ADS
+    XDEF    _KYBD_PATH_DF0_LOCAL_ADS
     XDEF    _KYBD_CustomPaletteCaptureScratchBase
     XDEF    _KYBD_CustomPaletteTriplesRBase
     XDEF    _KYBD_CustomPaletteTriplesGBase
@@ -9,7 +9,7 @@
 _Global_STR_KYBD_C:
     NStr    "KYBD.c"
     DS.W    1
-KYBD_PATH_DF0_LOCAL_ADS:
+_KYBD_PATH_DF0_LOCAL_ADS:
     DC.B    "df0:local.ads"
 ;------------------------------------------------------------------------------
 ; SYM: _KYBD_CustomPaletteCaptureScratchBase   (ED palette-capture scratch base)

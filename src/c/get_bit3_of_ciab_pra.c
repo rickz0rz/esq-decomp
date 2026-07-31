@@ -1,5 +1,5 @@
 /* RESTORES: GET_BIT_3_OF_CIAB_PRA_INTO_D1
- * MODULE:   modules/groups/a/a/app.s
+ * MODULE:   modules/groups/a/a/app_get_bit_3_of_ciab_pra_into_d1.s
  * STATUS:   behavioural
  *
  * SASC-MISMATCH: result-returned-in-d1

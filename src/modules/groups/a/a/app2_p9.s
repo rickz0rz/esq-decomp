@@ -1,9 +1,9 @@
-    XDEF    ESQ_ColdReboot
+    XDEF    _ESQ_ColdReboot
     XDEF    ESQ_ColdRebootViaSupervisor
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_ColdReboot   (ColdRebootOrSupervisoruncertain)
+; FUNC: _ESQ_ColdReboot   (ColdRebootOrSupervisoruncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Branches to a Supervisor-mode reset path on older Exec versions (< $24).
 ;------------------------------------------------------------------------------
-ESQ_ColdReboot:
+_ESQ_ColdReboot:
     MOVEA.L AbsExecBase,A6
     CMPI.W  #$24,20(A6)
     BLT.S   ESQ_ColdRebootViaSupervisor

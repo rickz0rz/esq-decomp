@@ -130,8 +130,8 @@ Both were discovered the hard way; both are enforced by `build-split.sh`.
 **1. Objects are longword-sized.** Hunk objects store section sizes in
 longwords, so an object whose content is 2 (mod 4) bytes gets padded, shifting
 everything after it. `gen_units.py` therefore coalesces consecutive modules
-until each unit lands on a 4-byte boundary — which is why 788 source modules
-become 401 link units. Source files stay fine-grained; only the assembly grouping
+until each unit lands on a 4-byte boundary — which is why 981 source modules
+become 494 link units. Source files stay fine-grained; only the assembly grouping
 is coarser. **You can still edit any module in isolation.**
 
 **2. vasm rewrites branches based on what is visible.** A bare
@@ -277,8 +277,16 @@ check the name first.
 
 ## Never include `<proto/*.h>`
 
-Use `src/c/esq-dos.h`, `esq-exec.h`, `esq-graphics.h` instead. They are the stock
-headers with the library base declared **`volatile`**.
+Use `src/c/esq-dos.h`, `esq-exec.h`, `esq-graphics.h`, `esq-diskfont.h` and
+`esq-intuition.h` instead. They are the stock headers with the library base
+declared **`volatile`**.
+
+`esq-intuition.h` arrived on 2026-07-31 with `esq_check_topaz_font_guard.c`,
+which calls `SizeWindow` and `RemakeDisplay`. It needed a C-visible name for the
+base, so `src/data/esq.s` gained an `_IntuitionBase` label beside
+`_Global_REF_INTUITION_LIBRARY` -- the same arrangement `_GfxBase`, `_DOSBase`
+and `_DiskfontBase` already use. A label emits no bytes, so both gates stayed
+green across the change.
 
 SAS/C assumes A6 survives a call, so having loaded a library base for one call it
 reuses the register for the next. ESQ's assembly does not honour that —
@@ -512,20 +520,39 @@ Known divergences so far are written up in `docs/compiler-version.md`.
 
 ## Progress is measured in BYTES, not function count
 
-**The 2026-07-31 tranche is DONE: coverage is 75.3% by byte, 591 restorations.**
-It was reached by working the LARGE end rather than the small one -- the 600 to
-1,600 byte band -- because byte-per-function is roughly four times better there
-and the per-function overhead is the same. `docs/tranche-target.md` still
-describes the old under-400 plan; the bands below are the live picture. Run
-`python3 tools/worklist.py` for what is left, smallest first. It regenerates
-from `coverage.survey()`, so it cannot go stale. `--bands` shows what the next
-size band would add. **97.7% is the ceiling**; only 4,368 bytes are truly
-blocked, and `docs/blocked-shapes.md` says what each class would take.
+**Coverage is 97.2% by byte, 689 restorations, both gates green. The
+push-to-the-ceiling run of 2026-07-31 is DONE.** It took coverage from 75.3% by
+working the worklist straight down, largest first, and by LABELLING four blocks
+the disassembly had documented but left unnamed -- `ESQIFF_NoOpFrame`,
+`GCOMMAND_ShiftBannerCopperRowsDead`, `TLIBA1_DumpFormatStruct` and the stub
+after `ESQIFF_QueueIffBrushLoad`. Each label is byte-neutral and each corrected a
+worklist entry that was reporting two functions as one.
+
+The last item was `_ESQPARS_ConsumeRbfByteAndDispatchCommand`, 5,956 bytes, the
+RBF serial command interpreter and the largest function in the program. It alone
+moved coverage 3.1 points. It has NO jump table -- the dispatch is a chain of
+`SUBQ.W`/`SUBI.W` on the command byte, which a C `switch` reproduces -- and 30
+command arms, most of them the same read-record-then-verify-checksum shape.
+Read the arms by ADDRESS ARITHMETIC on the `BEQ.W` displacements rather than by
+the label names: several labels in that module name the wrong command, and
+`.processCommand_D_Diagnostics` is in fact the 'K' clock handler.
+
+**Three unblocked functions remain, 398 bytes, and all three were read and
+confirmed NOT restorable as C**: `ESQ_ShutdownAndReturn` (76 bytes, restores A7
+from a global), `ESQSHARED4_LoadCopperColorWordsFromNibbleTable` (92, D3/A2/A3
+live on entry) and `ESQSHARED4_ApplyBannerColorStep` (230, several entry points
+branching back into its own head). `coverage.py` does not screen these because
+each blocker is a shape its rules do not cover. **So 97.2% is the practical
+ceiling, not a waypoint.** Everything else that is left carries a blocker:
+1,148 bytes of interior labels and the rest register-argument or falls-through
+shapes. Run `python3 tools/worklist.py 99999` to confirm before assuming there
+is work; it regenerates from `coverage.survey()`, so it cannot go stale.
 
 
 Function count flatters: the easy targets are small, so a high count can sit on a
 tiny fraction of the program. 202 restorations once read as 28% of the program
-and was 5.2% of it by byte.
+and was 5.2% of it by byte. At 689 restorations the two readings have converged
+-- 95% by count against 97.2% by byte -- because the large end has been worked.
 
 ```sh
 python3 tools/coverage.py             # progress by byte and by count
@@ -552,11 +579,11 @@ The restoration record says so unambiguously:
 
 | bucket | exact | behavioural | exact rate |
 |---|---:|---:|---:|
-| intra-unit (`6100`) | **11** | 217 | 5% |
-| no-calls | **13** | 122 | 10% |
-| cross-unit (`4EBA`) | **0** | 219 | **0%** |
+| intra-unit (`6100`) | **11** | 276 | 4% |
+| no-calls | **14** | 127 | 10% |
+| cross-unit (`4EBA`) | **0** | 252 | **0%** |
 
-Zero of 219. Every function whose original calls are `4EBA` is capped at
+Zero of 252. Every function whose original calls are `4EBA` is capped at
 `behavioural` under 6.51, and the cap is the call opcode alone — same size, same
 displacement, same semantics, different byte. `src/c/script_read_next_rbf_byte.c`
 is the whole class in six bytes.
@@ -839,11 +866,15 @@ far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
 BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
 278-entry parent, also clean and additionally proven on all six ESC-menu items.
 
-`src/c/replacements-all.txt` is the one to grow. At **440 entries** on
-2026-07-31 it is clean on every check there is: `check_pcrel_range` 0 truncated
-of 202 calls, `a6_audit` 0 of 440, `soak_esq.sh` 10 of 10 distinct frames,
-`menusweep_esq.sh` clean on all six ESC-menu items with no guru, and
-`framecolor.py` shows every colour bin overlapping the known-good build.
+`src/c/replacements-all.txt` is the one to grow. It stands at **614 entries**
+after the push-to-the-ceiling run, with 28 restorations held out as unsafe to
+link. It went 440 -> 464 from new restorations and 464 -> 614 from SPLITTING
+modules, which is the cheaper lever of the two and was sitting unused. **That size is NOT yet proven.** The last size proven end to end is
+**440 entries**, which was clean on every check there is: `check_pcrel_range`
+0 truncated of 202 calls, `a6_audit` 0 of 440, `soak_esq.sh` 10 of 10 distinct
+frames, `menusweep_esq.sh` clean on all six ESC-menu items with no guru, and
+`framecolor.py` every colour bin overlapping the known-good build. Re-run that
+whole sequence on the 614-entry manifest before you call it good.
 
 **Growing the manifest past a proven point is safe for the byte gates, which do
 not read it. A manifest that has only been LINKED is not a manifest that has
@@ -1188,6 +1219,27 @@ handlers needed `SHORTINT`. It is a tool to try, not a universal rule --
 `ed_get_esc_menu_action_code.c` has the same dispatch shape and `SHORTINT` does
 not help there.
 
+**`SHORTINT` CHANGES THE CALLING CONVENTION, and measuring it by SIZE hides that.**
+It makes `int` 16 bits, so a `short` PARAMETER occupies a 2-byte stack slot. ESQ's
+callers are assembly and push 4-byte slots, so **every parameter after a `short` one
+is read from the wrong offset**. `newgrid_set_row_color.c` measured well on size and
+read its colour `value` two bytes early: every red pen came out blue and the logo
+vanished into its background. It took a colour-oracle bisect to find, because no byte
+check can see it -- `cmatch` compares a function's own bytes, not the offsets its
+arguments arrive at.
+
+Safe only when no parameter FOLLOWS the `short`/`int` one. Verify against the
+reference's SLOT LAYOUT, not its size:
+
+```sh
+python3 tools/refbytes.py <Label> | grep -E 'MOVE.*\(A7\)'   # 4-byte slots?
+```
+
+`NEWGRID_SetRowColor` reads `MOVEA.L 20(A7)` / `MOVE.W 26(A7)` / `MOVE.L 28(A7)` --
+arg2 is a 4-byte slot read as its low word. Three of ten `SHORTINT` entries had the
+broken shape and were corrected; the option lives in `src/c/scopts.txt`, not in the
+`OPTIONS:` header line, which is documentation only.
+
 **`SHORTINT` is per-file and often load-bearing.** Three restorations need it
 (`ed_is_confirm_key.c`, `ed_handle_special_functions_menu.c`,
 `ed_handle_edit_attributes_menu.c`); one breaks under it
@@ -1312,6 +1364,16 @@ positive (a labelled function whose comment block repeats), and the rest are in
 `submodules/`, which `coverage.py` does not survey. **Adding the label is
 byte-neutral** — both gates stay green — and it costs nothing else, because the
 new labels need no `XDEF`: nothing outside the module refers to them.
+
+**The grep above is not the only tell, and it missed two.** A block with no
+`; FUNC:` comment at all still absorbs its predecessor. Two turned up on
+2026-07-31, both found because a worklist size did not match its disassembly: an
+eight-byte `LINK/UNLK/RTS` stub after `ESQIFF_QueueIffBrushLoad`, which read as
+298 bytes and is 290, and a 354-byte dead copper-shift block after
+`_GCOMMAND_ClearBannerQueue`, which read as 390 bytes and is 36. The second one
+is the sharper lesson: `_GCOMMAND_ClearBannerQueue` became byte-EXACT the moment
+it stopped carrying somebody else's body. **A worklist entry whose size does not
+match what the disassembly shows is a labelling bug, not a hard function.**
 
 Fixing the six moved four new candidates into the `no-calls` bucket and shrank
 two worklist entries from 58 bytes to 2. Both directions are the point: the

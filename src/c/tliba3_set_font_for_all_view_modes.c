@@ -1,5 +1,5 @@
 /* RESTORES: TLIBA3_SetFontForAllViewModes
- * MODULE:   modules/groups/b/a/tliba3_p5.s
+ * MODULE:   modules/groups/b/a/tliba3_p5_p0.s
  * STATUS:   behavioural
  *
  * Sets one TextFont on the RastPort of each of the first nine view-mode

@@ -19,8 +19,8 @@
     XDEF    _ESQ_TAG_36
     XDEF    _ED_DiagScrollSpeedChar
     XDEF    _ESQ_DefaultNoFlagChar
-    XDEF    CLOCK_MinuteEventBaseMinute
-    XDEF    CLOCK_MinuteEventBaseOffset
+    XDEF    _CLOCK_MinuteEventBaseMinute
+    XDEF    _CLOCK_MinuteEventBaseOffset
     XDEF    _ESQ_STR_6
     XDEF    _ESQ_SecondarySlotModeFlagChar
     XDEF    _ESQ_STR_Y
@@ -39,7 +39,7 @@
     XDEF    _GCOMMAND_PresetFallbackValue0
     XDEF    _GCOMMAND_PresetFallbackValue1
     XDEF    _GCOMMAND_PresetFallbackValue2
-    XDEF    GCOMMAND_PresetFallbackValue3
+    XDEF    _GCOMMAND_PresetFallbackValue3
     XDEF    _ESQ_ShutdownRequestedFlag
     XDEF    _ESQ_MainLoopUiTickEnabledFlag
     XDEF    _Global_HANDLE_PREVUEC_FONT
@@ -58,7 +58,7 @@
     XDEF    _SCRIPT_StatusRefreshHoldFlag
     XDEF    _TEXTDISP_TickSuspendFlag
     XDEF    _Global_WORD_SELECT_CODE_IS_RAVESC
-    XDEF    ESQPARS_PersistOnNextBoxOffFlag
+    XDEF    _ESQPARS_PersistOnNextBoxOffFlag
     XDEF    _HAS_REQUESTED_FAST_MEMORY
     XDEF    _IS_COMPATIBLE_VIDEO_CHIP
     XDEF    _Global_STR_RAVESC
@@ -195,11 +195,16 @@
     XDEF    ESQ_CopperBannerRasterPointerListB
     XDEF    _Global_PTR_AUD1_DMA
     XDEF    _GfxBase
+    XDEF    _IntuitionBase
 ; ========== ESQ.c ==========
 
 _GfxBase:
 Global_REF_GRAPHICS_LIBRARY:
     DC.L    0
+; `_IntuitionBase` is the name the SAS/C intuition pragma qualifies its calls
+; with, the same arrangement _GfxBase, _DOSBase and _DiskfontBase already use.
+; A label emits no bytes, so both gates stay green.
+_IntuitionBase:
 _Global_REF_INTUITION_LIBRARY:
     DC.L    0
 _Global_REF_UTILITY_LIBRARY:
@@ -301,15 +306,15 @@ _ED_DiagScrollSpeedChar:
 _ESQ_DefaultNoFlagChar:
     DC.B    "N"
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_MinuteEventBaseMinute/CLOCK_MinuteEventBaseOffset   (minute trigger seeds)
+; SYM: _CLOCK_MinuteEventBaseMinute/_CLOCK_MinuteEventBaseOffset   (minute trigger seeds)
 ; TYPE: u8/u8
 ; PURPOSE: Base values passed into _ESQ_SeedMinuteEventThresholds.
-; USED BY: ESQIFF2_ApplyIncomingStatusPacket
+; USED BY: _ESQIFF2_ApplyIncomingStatusPacket
 ; NOTES: Clamped to the 1..9 range before use.
 ;------------------------------------------------------------------------------
-CLOCK_MinuteEventBaseMinute:
+_CLOCK_MinuteEventBaseMinute:
     DC.B    1
-CLOCK_MinuteEventBaseOffset:
+_CLOCK_MinuteEventBaseOffset:
     DC.B    1
 _ESQ_STR_6:
     DC.B    "6"
@@ -394,7 +399,7 @@ _Global_REF_STR_CLOCK_FORMAT:
 ; SYM: _TEXTDISP_DeferredActionCountdown   (deferred action countdown)
 ; TYPE: u16
 ; PURPOSE: Tick countdown before committing a deferred text/display action.
-; USED BY: TEXTDISP_TickDisplayState, SCRIPT3_*, ED2_*, ESQFUNC_*
+; USED BY: _TEXTDISP_TickDisplayState, SCRIPT3_*, ED2_*, ESQFUNC_*
 ; NOTES: Decremented each tick while _TEXTDISP_DeferredActionArmed is set.
 ;------------------------------------------------------------------------------
 _TEXTDISP_DeferredActionCountdown:
@@ -403,13 +408,13 @@ _TEXTDISP_DeferredActionCountdown:
 ; SYM: _TEXTDISP_DeferredActionArmed   (deferred action armed flag)
 ; TYPE: u16
 ; PURPOSE: Indicates a deferred action countdown is active.
-; USED BY: TEXTDISP_TickDisplayState, SCRIPT3_*, APP2_*
+; USED BY: _TEXTDISP_TickDisplayState, SCRIPT3_*, APP2_*
 ; NOTES: Treated as boolean/non-zero guard for countdown handling.
 ;------------------------------------------------------------------------------
 _TEXTDISP_DeferredActionArmed:
     DC.W    0
 ;------------------------------------------------------------------------------
-; SYM: _GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3   (banner preset fallback nibble values)
+; SYM: _GCOMMAND_PresetFallbackValue0.._GCOMMAND_PresetFallbackValue3   (banner preset fallback nibble values)
 ; TYPE: u8/u8/u8/u8
 ; PURPOSE: Per-lane fallback values used when preset work entries are negative.
 ; USED BY: _GCOMMAND_RebuildBannerTablesFromBounds, ED diagnostic nibble editor/drawer
@@ -421,7 +426,7 @@ _GCOMMAND_PresetFallbackValue1:
     DC.B    0
 _GCOMMAND_PresetFallbackValue2:
     DC.B    $03
-GCOMMAND_PresetFallbackValue3:
+_GCOMMAND_PresetFallbackValue3:
     ; First byte doubles as fallback value #3 for banner rebuild.
     DC.B    $0c
 GCOMMAND_PresetFallbackTemplateTable:
@@ -517,11 +522,11 @@ _ED_DiagAvailMemMask:
 ED_DiagAvailMemPresetBits:
     DC.B    0
 ;------------------------------------------------------------------------------
-; SYM: _ESQDISP_GridMessagePumpBlockFlag/_SCRIPT_StatusRefreshHoldFlag/_TEXTDISP_TickSuspendFlag/ESQPARS_PersistOnNextBoxOffFlag
+; SYM: _ESQDISP_GridMessagePumpBlockFlag/_SCRIPT_StatusRefreshHoldFlag/_TEXTDISP_TickSuspendFlag/_ESQPARS_PersistOnNextBoxOffFlag
 ; TYPE: u16/u16/u16/u16
 ; PURPOSE: Misc runtime gates for grid message pump, script refresh hold, text tick suspend, and deferred boxoff persist.
-; USED BY: _ESQDISP_ProcessGridMessagesIfIdle, SCRIPT_UpdateCtrlStateMachine, TEXTDISP_TickDisplayState, ESQPARS command parser
-; NOTES: `ESQPARS_PersistOnNextBoxOffFlag` is set by `%` command and consumed by boxoff path.
+; USED BY: _ESQDISP_ProcessGridMessagesIfIdle, _SCRIPT_UpdateCtrlStateMachine, _TEXTDISP_TickDisplayState, ESQPARS command parser
+; NOTES: `_ESQPARS_PersistOnNextBoxOffFlag` is set by `%` command and consumed by boxoff path.
 ;------------------------------------------------------------------------------
 _ESQDISP_GridMessagePumpBlockFlag:
     DC.W    0
@@ -531,7 +536,7 @@ _TEXTDISP_TickSuspendFlag:
     DC.W    0
 _Global_WORD_SELECT_CODE_IS_RAVESC:
     DC.W    0
-ESQPARS_PersistOnNextBoxOffFlag:
+_ESQPARS_PersistOnNextBoxOffFlag:
     DC.W    0
 _HAS_REQUESTED_FAST_MEMORY:
     DC.W    0
@@ -623,7 +628,7 @@ _Global_PTR_STR_BUILD_ID:
 ; SYM: _ESQ_CopperEffectListA/_ESQ_CopperEffectListB   (paired copper effect lists)
 ; TYPE: u32[]/u32[]
 ; PURPOSE: Paired copperlists used for effect/status-band rendering and selected by VPOSR field state.
-; USED BY: _ESQ_UpdateCopperListsFromParams, ESQSHARED4_ProgramDisplayWindowAndCopper, ESQSHARED4_TickCopperAndBannerTransitions
+; USED BY: _ESQ_UpdateCopperListsFromParams, _ESQSHARED4_ProgramDisplayWindowAndCopper, _ESQSHARED4_TickCopperAndBannerTransitions
 ; NOTES:
 ;   _ESQ_UpdateCopperListsFromParams writes synchronized effect words into both lists.
 ;   Selector polarity differs across some call paths; keep neutral A/B naming.

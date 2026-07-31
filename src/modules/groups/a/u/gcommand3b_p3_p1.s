@@ -18,7 +18,7 @@
 ;   _GCOMMAND_ComputePresetIncrement, _GCOMMAND_InitPresetWorkEntry,
 ;   _GCOMMAND_TickPresetWorkEntries
 ; READS:
-;   _Global_UIBusyFlag, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, _GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3
+;   _Global_UIBusyFlag, _GCOMMAND_PresetValueTable.._GCOMMAND_PresetWorkEntry3_ValueIndex, _GCOMMAND_PresetFallbackValue0.._GCOMMAND_PresetFallbackValue3
 ; WRITES:
 ;   [outPtr] (writes 32-byte entries)
 ; DESC:
@@ -77,7 +77,7 @@ _GCOMMAND_BuildBannerBlock:
     MOVE.L  D0,(A7)
     MOVE.L  -12(A5),-(A7)
     PEA     5.W
-    PEA     GCOMMAND_PresetWorkEntry1
+    PEA     _GCOMMAND_PresetWorkEntry1
     BSR.W   _GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  -12(A5),(A7)
@@ -87,7 +87,7 @@ _GCOMMAND_BuildBannerBlock:
     MOVE.L  D0,(A7)
     MOVE.L  -12(A5),-(A7)
     PEA     6.W
-    PEA     GCOMMAND_PresetWorkEntry2
+    PEA     _GCOMMAND_PresetWorkEntry2
     BSR.W   _GCOMMAND_InitPresetWorkEntry
 
     MOVE.L  -12(A5),(A7)
@@ -97,7 +97,7 @@ _GCOMMAND_BuildBannerBlock:
     MOVE.L  D0,(A7)
     MOVE.L  -12(A5),-(A7)
     PEA     7.W
-    PEA     GCOMMAND_PresetWorkEntry3
+    PEA     _GCOMMAND_PresetWorkEntry3
     BSR.W   _GCOMMAND_InitPresetWorkEntry
 
     LEA     68(A7),A7
@@ -115,7 +115,7 @@ _GCOMMAND_BuildBannerBlock:
     MOVE.B  D6,1(A0)
     MOVE.W  D5,2(A0)
     MOVE.W  #$188,4(A0)
-    MOVE.L  GCOMMAND_PresetWorkEntry0_ValueIndex,D0
+    MOVE.L  _GCOMMAND_PresetWorkEntry0_ValueIndex,D0
     TST.L   D0
     BPL.S   .use_preset0
 
@@ -126,7 +126,7 @@ _GCOMMAND_BuildBannerBlock:
 .use_preset0:
     MOVE.L  _GCOMMAND_PresetWorkEntryTable,D1
     ASL.L   #7,D1
-    LEA     GCOMMAND_PresetValueTable,A1
+    LEA     _GCOMMAND_PresetValueTable,A1
     MOVEA.L A1,A6
     ADDA.L  D1,A6
     ADD.L   D0,D0
@@ -138,7 +138,7 @@ _GCOMMAND_BuildBannerBlock:
 .store_preset0:
     MOVE.W  D1,6(A0)
     MOVE.W  #$18a,8(A0)
-    MOVE.L  GCOMMAND_PresetWorkEntry1_ValueIndex,D0
+    MOVE.L  _GCOMMAND_PresetWorkEntry1_ValueIndex,D0
     TST.L   D0
     BPL.S   .use_preset1
 
@@ -147,9 +147,9 @@ _GCOMMAND_BuildBannerBlock:
     BRA.S   .store_preset1
 
 .use_preset1:
-    MOVE.L  GCOMMAND_PresetWorkEntry1,D1
+    MOVE.L  _GCOMMAND_PresetWorkEntry1,D1
     ASL.L   #7,D1
-    LEA     GCOMMAND_PresetValueTable,A1
+    LEA     _GCOMMAND_PresetValueTable,A1
     MOVEA.L A1,A6
     ADDA.L  D1,A6
     ADD.L   D0,D0
@@ -161,7 +161,7 @@ _GCOMMAND_BuildBannerBlock:
 .store_preset1:
     MOVE.W  D1,10(A0)
     MOVE.W  #$18c,12(A0)
-    MOVE.L  GCOMMAND_PresetWorkEntry2_ValueIndex,D0
+    MOVE.L  _GCOMMAND_PresetWorkEntry2_ValueIndex,D0
     TST.L   D0
     BPL.S   .use_preset2
 
@@ -170,9 +170,9 @@ _GCOMMAND_BuildBannerBlock:
     BRA.S   .store_preset2
 
 .use_preset2:
-    MOVE.L  GCOMMAND_PresetWorkEntry2,D1
+    MOVE.L  _GCOMMAND_PresetWorkEntry2,D1
     ASL.L   #7,D1
-    LEA     GCOMMAND_PresetValueTable,A1
+    LEA     _GCOMMAND_PresetValueTable,A1
     MOVEA.L A1,A6
     ADDA.L  D1,A6
     ADD.L   D0,D0
@@ -184,18 +184,18 @@ _GCOMMAND_BuildBannerBlock:
 .store_preset2:
     MOVE.W  D1,14(A0)
     MOVE.W  #$18e,16(A0)
-    MOVE.L  GCOMMAND_PresetWorkEntry3_ValueIndex,D0
+    MOVE.L  _GCOMMAND_PresetWorkEntry3_ValueIndex,D0
     TST.L   D0
     BPL.S   .use_preset3
 
     MOVEQ   #0,D1
-    MOVE.B  GCOMMAND_PresetFallbackValue3,D1
+    MOVE.B  _GCOMMAND_PresetFallbackValue3,D1
     BRA.S   .store_preset3
 
 .use_preset3:
-    MOVE.L  GCOMMAND_PresetWorkEntry3,D1
+    MOVE.L  _GCOMMAND_PresetWorkEntry3,D1
     ASL.L   #7,D1
-    LEA     GCOMMAND_PresetValueTable,A1
+    LEA     _GCOMMAND_PresetValueTable,A1
     ADDA.L  D1,A1
     ADD.L   D0,D0
     ADDA.L  D0,A1

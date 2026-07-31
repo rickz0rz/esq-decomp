@@ -1,5 +1,5 @@
 /* RESTORES: LOCAVAIL2_DisplayAlertDelayAndReboot
- * MODULE:   modules/groups/a/z/locavail2.s
+ * MODULE:   modules/groups/a/z/locavail2_locavail2_displayalertdelayandreboot.s
  * STATUS:   behavioural
  *
  * SASC-MISMATCH: loop-shape

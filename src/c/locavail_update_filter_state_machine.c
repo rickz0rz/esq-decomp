@@ -94,7 +94,8 @@ struct LocavailCtx {
     short w24;                          /* +24 */
 };
 
-extern long NEWGRID_JMPTBL_MATH_Mulu32(long a, long b);
+extern long __asm NEWGRID_JMPTBL_MATH_Mulu32(register __d0 long a,
+                        register __d1 long b);
 extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *s, long ch);
 extern char GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void);
 extern void LOCAVAIL_ResetFilterCursorState(struct LocavailState *st);

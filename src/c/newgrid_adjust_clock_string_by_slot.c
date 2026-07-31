@@ -1,5 +1,5 @@
 /* RESTORES: NEWGRID_AdjustClockStringBySlot
- * MODULE:   modules/groups/b/a/newgrid_p2.s
+ * MODULE:   modules/groups/b/a/newgrid_p2_p0.s
  * STATUS:   behavioural
  *
  * Takes a copy of a 22-byte clock record, winds it back to the start of its

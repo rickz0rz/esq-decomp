@@ -1,5 +1,5 @@
 /* RESTORES: _SCRIPT_SetupHighlightEffect
- * MODULE:   modules/groups/b/a/script4b_p0_p0.s
+ * MODULE:   modules/groups/b/a/script4b_p0_p0_script_setuphighlighteffect.s
  * STATUS:   behavioural
  * OPTIONS:  SHORTINT (see src/c/scopts.txt)
  *
@@ -92,7 +92,8 @@ extern struct ShCtx *TLIBA3_BuildDisplayContextForViewMode(long mode,
 extern void  WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern void  WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
 extern void  WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
-extern long  MATH_DivS32(long a, long b);
+extern long __asm MATH_DivS32(register __d0 long a,
+                        register __d1 long b);
 extern void  SCRIPT_BeginBannerCharTransition(long steps, long delay);
 extern void  STRING_CopyPadNul(char *dst, char *src, long n);
 extern void  SCRIPT_DrawInsetTextWithFrame(struct RastPort *rp, long low,

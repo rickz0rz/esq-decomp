@@ -3,16 +3,16 @@
     XDEF    _Global_STR_P_TYPE_C_3
     XDEF    _Global_STR_P_TYPE_C_4
     XDEF    _Global_STR_P_TYPE_C_5
-    XDEF    P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Write
-    XDEF    P_TYPE_STR_CURDAY_COLON_WriteSection
-    XDEF    P_TYPE_FMT_PCT_03D_PCT_02D
-    XDEF    P_TYPE_STR_NO_DATA
-    XDEF    P_TYPE_STR_NXTDAY_COLON_WriteSection
-    XDEF    P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load
-    XDEF    P_TYPE_STR_CURDAY_COLON_LoadSection
-    XDEF    P_TYPE_STR_TYPES_COLON
-    XDEF    P_TYPE_STR_NXTDAY_COLON_LoadSection
-    XDEF    Global_STR_P_TYPE_C_6
+    XDEF    _P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Write
+    XDEF    _P_TYPE_STR_CURDAY_COLON_WriteSection
+    XDEF    _P_TYPE_FMT_PCT_03D_PCT_02D
+    XDEF    _P_TYPE_STR_NO_DATA
+    XDEF    _P_TYPE_STR_NXTDAY_COLON_WriteSection
+    XDEF    _P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load
+    XDEF    _P_TYPE_STR_CURDAY_COLON_LoadSection
+    XDEF    _P_TYPE_STR_TYPES_COLON
+    XDEF    _P_TYPE_STR_NXTDAY_COLON_LoadSection
+    XDEF    _Global_STR_P_TYPE_C_6
     XDEF    _P_TYPE_WeatherBrushRefreshPendingFlag
     XDEF    _P_TYPE_WeatherCurrentMsgPtr
     XDEF    _P_TYPE_WeatherForecastMsgPtr
@@ -38,27 +38,27 @@ _Global_STR_P_TYPE_C_4:
     NStr    "P_TYPE.c"
 _Global_STR_P_TYPE_C_5:
     NStr    "P_TYPE.c"
-P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Write:
+_P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Write:
     NStr    "df0:PromoId.Dat"
-P_TYPE_STR_CURDAY_COLON_WriteSection:
+_P_TYPE_STR_CURDAY_COLON_WriteSection:
     NStr    "CURDAY:"
-P_TYPE_FMT_PCT_03D_PCT_02D:
+_P_TYPE_FMT_PCT_03D_PCT_02D:
     DC.B    " %03d %02d",TextLineFeed
     NStr    "TYPES: "
-P_TYPE_STR_NO_DATA:
+_P_TYPE_STR_NO_DATA:
     NStr3   "No Data",TextLineFeed,TextLineFeed
-P_TYPE_STR_NXTDAY_COLON_WriteSection:
+_P_TYPE_STR_NXTDAY_COLON_WriteSection:
     NStr    "NXTDAY:"
-P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load:
+_P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load:
     NStr    "df0:PromoId.Dat"
-P_TYPE_STR_CURDAY_COLON_LoadSection:
+_P_TYPE_STR_CURDAY_COLON_LoadSection:
     NStr    "CURDAY:"
-P_TYPE_STR_TYPES_COLON:
+_P_TYPE_STR_TYPES_COLON:
     NStr    "TYPES: "
     NStr    "TYPES: "
-P_TYPE_STR_NXTDAY_COLON_LoadSection:
+_P_TYPE_STR_NXTDAY_COLON_LoadSection:
     NStr    "NXTDAY:"
-Global_STR_P_TYPE_C_6:
+_Global_STR_P_TYPE_C_6:
     NStr    "P_TYPE.c"
     DS.W    1
 _P_TYPE_WeatherBrushRefreshPendingFlag:

@@ -81,16 +81,16 @@ _GROUP_AM_JMPTBL_LADFUNC_ClearBannerRectEntries:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   PARSEINI_UpdateClockFromRtc
+;   _PARSEINI_UpdateClockFromRtc
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to PARSEINI_UpdateClockFromRtc.
+;   Jump stub to _PARSEINI_UpdateClockFromRtc.
 ;------------------------------------------------------------------------------
 _GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc:
-    JMP     PARSEINI_UpdateClockFromRtc
+    JMP     _PARSEINI_UpdateClockFromRtc
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AM_JMPTBL_SCRIPT_InitCtrlContext   (JumpStub_SCRIPT_InitCtrlContext)
@@ -141,16 +141,16 @@ _GROUP_AM_JMPTBL_DISKIO2_ParseIniFileFromDisk:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ESQ_CheckTopazFontGuard
+;   _ESQ_CheckTopazFontGuard
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to ESQ_CheckTopazFontGuard.
+;   Jump stub to _ESQ_CheckTopazFontGuard.
 ;------------------------------------------------------------------------------
 _GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard:
-    JMP     ESQ_CheckTopazFontGuard
+    JMP     _ESQ_CheckTopazFontGuard
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds   (JumpStub_P_TYPE_ResetListsAndLoadPromoIds)
@@ -181,16 +181,16 @@ _GROUP_AM_JMPTBL_P_TYPE_ResetListsAndLoadPromoIds:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LADFUNC_LoadTextAdsFromFile
+;   _LADFUNC_LoadTextAdsFromFile
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LADFUNC_LoadTextAdsFromFile.
+;   Jump stub to _LADFUNC_LoadTextAdsFromFile.
 ;------------------------------------------------------------------------------
 _GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile:
-    JMP     LADFUNC_LoadTextAdsFromFile
+    JMP     _LADFUNC_LoadTextAdsFromFile
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk   (JumpStub)
@@ -201,16 +201,16 @@ _GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   DISKIO_LoadConfigFromDisk
+;   _DISKIO_LoadConfigFromDisk
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to DISKIO_LoadConfigFromDisk.
+;   Jump stub to _DISKIO_LoadConfigFromDisk.
 ;------------------------------------------------------------------------------
 _GROUP_AM_JMPTBL_DISKIO_LoadConfigFromDisk:
-    JMP     DISKIO_LoadConfigFromDisk
+    JMP     _DISKIO_LoadConfigFromDisk
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AM_JMPTBL_TEXTDISP_LoadSourceConfig   (JumpStub)
@@ -489,16 +489,16 @@ _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LOCAVAIL_LoadAvailabilityDataFile
+;   _LOCAVAIL_LoadAvailabilityDataFile
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LOCAVAIL_LoadAvailabilityDataFile.
+;   Jump stub to _LOCAVAIL_LoadAvailabilityDataFile.
 ;------------------------------------------------------------------------------
 _GROUP_AM_JMPTBL_LOCAVAIL_LoadAvailabilityDataFile:
-    JMP     LOCAVAIL_LoadAvailabilityDataFile
+    JMP     _LOCAVAIL_LoadAvailabilityDataFile
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults   (JumpStub)
@@ -637,16 +637,16 @@ _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   CLEANUP_ShutdownSystem
+;   _CLEANUP_ShutdownSystem
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to CLEANUP_ShutdownSystem.
+;   Jump stub to _CLEANUP_ShutdownSystem.
 ;------------------------------------------------------------------------------
 _GROUP_AM_JMPTBL_CLEANUP_ShutdownSystem:
-    JMP     CLEANUP_ShutdownSystem
+    JMP     _CLEANUP_ShutdownSystem
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AM_JMPTBL_LADFUNC_AllocBannerRectEntries   (JumpStub_LADFUNC_AllocBannerRectEntries)

@@ -15,7 +15,7 @@
 ; CALLS:
 ;   _GROUP_AI_JMPTBL_STR_FindCharPtr, _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   CLOCK_STR_TOKEN_PAIR_DEFAULTS, CLEANUP_TokenPairScratch, CLOCK_STR_TOKEN_OUTPUT_TEMPLATE, _WDISP_CharClassTable
+;   _CLOCK_STR_TOKEN_PAIR_DEFAULTS, _CLEANUP_TokenPairScratch, _CLOCK_STR_TOKEN_OUTPUT_TEMPLATE, _WDISP_CharClassTable
 ; WRITES:
 ;   outPtr1/outPtr2 contents
 ; DESC:
@@ -45,13 +45,13 @@ _CLEANUP_FormatEntryStringTokens:
     TST.L   D0
     BEQ.W   .empty_input
 
-    LEA     CLOCK_STR_TOKEN_PAIR_DEFAULTS,A0
+    LEA     _CLOCK_STR_TOKEN_PAIR_DEFAULTS,A0
     LEA     -22(A5),A1
     MOVE.L  (A0)+,(A1)+
     MOVE.L  (A0)+,(A1)+
     MOVE.W  (A0),(A1)+
     CLR.B   (A1)
-    LEA     CLEANUP_TokenPairScratch,A0
+    LEA     _CLEANUP_TokenPairScratch,A0
     LEA     -11(A5),A1
 
 .copy_prefix_loop:
@@ -82,7 +82,7 @@ _CLEANUP_FormatEntryStringTokens:
 
     ADDQ.W  #8,A7
     MOVE.L  D0,(A3)
-    LEA     CLOCK_STR_TOKEN_OUTPUT_TEMPLATE,A0
+    LEA     _CLOCK_STR_TOKEN_OUTPUT_TEMPLATE,A0
     LEA     -11(A5),A1
 
 .copy_suffix_loop:
@@ -127,7 +127,7 @@ _CLEANUP_FormatEntryStringTokens:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     CLOCK_STR_BOOL_CHARS_YyNn
+    PEA     _CLOCK_STR_BOOL_CHARS_YyNn
     JSR     _GROUP_AI_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
@@ -280,7 +280,7 @@ _CLEANUP_FormatEntryStringTokens:
 
     MOVE.L  D0,(A3)
     MOVE.L  (A2),(A7)
-    PEA     CLOCK_STR_EMPTY_TOKEN_TEMPLATE
+    PEA     _CLOCK_STR_EMPTY_TOKEN_TEMPLATE
     JSR     _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(PC)
 
     LEA     12(A7),A7

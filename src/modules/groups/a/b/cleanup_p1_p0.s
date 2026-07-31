@@ -1,8 +1,8 @@
-    XDEF    CLEANUP_ShutdownSystem
+    XDEF    _CLEANUP_ShutdownSystem
 
 
 ;------------------------------------------------------------------------------
-; FUNC: CLEANUP_ShutdownSystem
+; FUNC: _CLEANUP_ShutdownSystem
 ; ARGS:
 ;   (none)
 ; RET:
@@ -13,16 +13,16 @@
 ;   _LVOForbid, _LOCAVAIL_FreeResourceChain, _BRUSH_FreeBrushList,
 ;   _CLEANUP_ClearVertbInterruptServer, _CLEANUP_ClearAud1InterruptVector,
 ;   _CLEANUP_ClearRbfInterruptAndSerial, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory,
-;   _CLEANUP_ShutdownInputDevices, _CLEANUP_ReleaseDisplayResources, GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries, _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers,
-;   GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode, GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData, GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings, GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers,
-;   _LVOSetFunction, _LVOVBeamPos, GROUP_AB_JMPTBL_UNKNOWN2A_Stub0, _LVOPermit
+;   _CLEANUP_ShutdownInputDevices, _CLEANUP_ReleaseDisplayResources, _GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries, _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers,
+;   _GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode, _GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData, _GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings, _GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers,
+;   _LVOSetFunction, _LVOVBeamPos, _GROUP_AB_JMPTBL_UNKNOWN2A_Stub0, _LVOPermit
 ; READS:
 ;   _LOCAVAIL_PrimaryFilterState, _LOCAVAIL_SecondaryFilterState, _ESQIFF_BrushIniListHead, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _ESQFUNC_PwBrushListHead, _ESQIFF_RecordBufferPtr,
 ;   _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort, _ESQDISP_HighlightBitmapTable, _WDISP_HighlightRasterHeightPx, _WDISP_WeatherStatusTextPtr, _WDISP_WeatherStatusOverlayTextPtr, _ESQ_ProcessWindowPtrBackup,
 ;   _WDISP_ExecBaseHookPtr, Global_REF_GRAPHICS_LIBRARY, _Global_REF_INTUITION_LIBRARY,
 ;   _Global_REF_BACKED_UP_INTUITION_AUTOREQUEST, _Global_REF_BACKED_UP_INTUITION_DISPLAYALERT,
-;   AbsExecBase, Global_STR_CLEANUP_C_13, Global_STR_CLEANUP_C_14, Global_STR_CLEANUP_C_15,
-;   Global_STR_CLEANUP_C_16
+;   AbsExecBase, _Global_STR_CLEANUP_C_13, _Global_STR_CLEANUP_C_14, _Global_STR_CLEANUP_C_15,
+;   _Global_STR_CLEANUP_C_16
 ; WRITES:
 ;   _WDISP_WeatherStatusTextPtr, _WDISP_WeatherStatusOverlayTextPtr
 ; DESC:
@@ -32,17 +32,17 @@
 ;   - Frees raster tables via nested loops over _ESQDISP_HighlightBitmapTable entries.
 ;------------------------------------------------------------------------------
 ; Global shutdown sequence: stop interrupts, free rsrcs, reset display.
-CLEANUP_ShutdownSystem:
+_CLEANUP_ShutdownSystem:
     MOVEM.L D6-D7,-(A7)
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOForbid(A6)
 
     PEA     _LOCAVAIL_PrimaryFilterState
-    JSR     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(PC)
+    JSR     _GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(PC)
 
     PEA     _LOCAVAIL_SecondaryFilterState
-    JSR     GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(PC)
+    JSR     _GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(PC)
 
     CLR.L   (A7)
     PEA     _ESQIFF_BrushIniListHead
@@ -69,41 +69,41 @@ CLEANUP_ShutdownSystem:
     PEA     9000.W
     MOVE.L  _ESQIFF_RecordBufferPtr,-(A7)
     PEA     260.W
-    PEA     Global_STR_CLEANUP_C_13
+    PEA     _Global_STR_CLEANUP_C_13
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     BSR.W   _CLEANUP_ShutdownInputDevices
 
     BSR.W   _CLEANUP_ReleaseDisplayResources
 
-    JSR     GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries(PC)
+    JSR     _GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries(PC)
 
     JSR     _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers(PC)
 
     PEA     1.W
-    JSR     GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(PC)
+    JSR     _GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(PC)
 
     PEA     2.W
-    JSR     GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(PC)
+    JSR     _GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(PC)
 
-    JSR     GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData(PC)
+    JSR     _GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData(PC)
 
     PEA     2.W
-    JSR     GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(PC)
+    JSR     _GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(PC)
 
     PEA     1.W
-    JSR     GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(PC)
+    JSR     _GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(PC)
 
-    JSR     GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers(PC)
+    JSR     _GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers(PC)
 
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A0
     MOVE.L  38(A0),COP1LCH
-    JSR     GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources(PC)
+    JSR     _GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources(PC)
 
     PEA     34.W
     MOVE.L  _ESQ_HighlightMsgPort,-(A7)
     PEA     318.W
-    PEA     Global_STR_CLEANUP_C_14
+    PEA     _Global_STR_CLEANUP_C_14
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     72(A7),A7
@@ -111,7 +111,7 @@ CLEANUP_ShutdownSystem:
     PEA     34.W
     MOVE.L  _ESQ_HighlightReplyPort,-(A7)
     PEA     319.W
-    PEA     Global_STR_CLEANUP_C_15
+    PEA     _Global_STR_CLEANUP_C_15
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -145,7 +145,7 @@ CLEANUP_ShutdownSystem:
     PEA     696.W
     MOVE.L  8(A0),-(A7)
     PEA     329.W
-    PEA     Global_STR_CLEANUP_C_16
+    PEA     _Global_STR_CLEANUP_C_16
     JSR     _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
@@ -199,7 +199,7 @@ CLEANUP_ShutdownSystem:
     MOVE.L  _ESQ_ProcessWindowPtrBackup,184(A0)
 
 .after_optional_restore:
-    JSR     GROUP_AB_JMPTBL_UNKNOWN2A_Stub0(PC)
+    JSR     _GROUP_AB_JMPTBL_UNKNOWN2A_Stub0(PC)
 
     MOVEA.L AbsExecBase,A6
     JSR     _LVOPermit(A6)

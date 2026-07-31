@@ -1,9 +1,9 @@
-    XDEF    ESQIFF2_ClearPrimaryEntryFlags34To39
+    XDEF    _ESQIFF2_ClearPrimaryEntryFlags34To39
     XDEF    ESQIFF2_ClearPrimaryEntryFlags34To39_Return
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF2_ClearPrimaryEntryFlags34To39   (Clear primary entry flag bytes 34..39)
+; FUNC: _ESQIFF2_ClearPrimaryEntryFlags34To39   (Clear primary entry flag bytes 34..39)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Inner loop runs 6 iterations per primary entry.
 ;------------------------------------------------------------------------------
-ESQIFF2_ClearPrimaryEntryFlags34To39:
+_ESQIFF2_ClearPrimaryEntryFlags34To39:
     LINK.W  A5,#-8
     MOVEM.L D6-D7,-(A7)
     MOVEQ   #0,D7

@@ -1,5 +1,5 @@
 /* RESTORES: ESQDISP_TestEntryBits0And2_Core
- * MODULE:   modules/groups/a/n/esqdisp.s
+ * MODULE:   modules/groups/a/n/esqdispb_p0_esqdisp_testentrybits0and2_core.s
  * STATUS:   behavioural
  *
  * SASC-MISMATCH: register-allocation-order

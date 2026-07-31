@@ -1,9 +1,9 @@
-    XDEF    NEWGRID_DrawEmptyGridMessage
+    XDEF    _NEWGRID_DrawEmptyGridMessage
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_DrawEmptyGridMessage   (Draw empty grid message)
+; FUNC: _NEWGRID_DrawEmptyGridMessage   (Draw empty grid message)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +14: arg_2 (via 18(A5))
@@ -19,11 +19,11 @@
 ;   _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength, _LVOMove, _LVOText,
 ;   _NEWGRID_ValidateSelectionCode
 ; READS:
-;   SCRIPT_PtrMovieSummaryForPrefix, _NEWGRID_RowHeightPx, _NEWGRID_ColumnStartXPx, _NEWGRID_ColumnWidthPx
+;   _SCRIPT_PtrMovieSummaryForPrefix, _NEWGRID_RowHeightPx, _NEWGRID_ColumnStartXPx, _NEWGRID_ColumnWidthPx
 ; DESC:
 ;   Builds and draws the "no data" banner centered in the grid area.
 ;------------------------------------------------------------------------------
-NEWGRID_DrawEmptyGridMessage:
+_NEWGRID_DrawEmptyGridMessage:
     LINK.W  A5,#-172
     MOVEM.L D2/D7/A2-A3/A6,-(A7)
     MOVEA.L 8(A5),A3
@@ -36,7 +36,7 @@ NEWGRID_DrawEmptyGridMessage:
     MOVE.L  A3,-(A7)
     JSR     _NEWGRID_DrawGridFrame(PC)
 
-    MOVEA.L SCRIPT_PtrMovieSummaryForPrefix,A0
+    MOVEA.L _SCRIPT_PtrMovieSummaryForPrefix,A0
     LEA     -128(A5),A1
 
 .copy_prefix_loop:

@@ -18,9 +18,9 @@
 ; CALLS:
 ;   _GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi, _GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte, _DISKIO_WriteBytesToOutputHandleGuarded, _GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay, _DISKIO_DrawTransferErrorMessageIfDiagnostics, _LVODeleteFile
 ; READS:
-;   DISKIO2_TransferBlockLength.._DISKIO2_TransferCrcErrorCount, _ESQIFF_ParseAttemptCount, _DISKIO2_TransferXorChecksumByte
+;   _DISKIO2_TransferBlockLength.._DISKIO2_TransferCrcErrorCount, _ESQIFF_ParseAttemptCount, _DISKIO2_TransferXorChecksumByte
 ; WRITES:
-;   DISKIO2_TransferBlockLength.._DISKIO2_TransferCrcErrorCount, _ESQIFF_ParseAttemptCount
+;   _DISKIO2_TransferBlockLength.._DISKIO2_TransferCrcErrorCount, _ESQIFF_ParseAttemptCount
 ; DESC:
 ;   Reads a variable-length data stream with checksum tracking and writes it out.
 ; NOTES:
@@ -35,7 +35,7 @@ _DISKIO2_ReceiveTransferBlocksToFile:
     MOVE.L  D0,-10(A5)
     CLR.L   -14(A5)
     CLR.B   -16(A5)
-    LEA     DISKIO2_TransferCrc32Table,A0
+    LEA     _DISKIO2_TransferCrc32Table,A0
     LEA     -1040(A5),A1
     MOVE.W  #$ff,D0
 
@@ -62,7 +62,7 @@ _DISKIO2_ReceiveTransferBlocksToFile:
 
     JSR     _GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(PC)
 
-    MOVE.B  D0,DISKIO2_TransferBlockLength
+    MOVE.B  D0,_DISKIO2_TransferBlockLength
     TST.B   D0
     BEQ.W   .blockrx_handle_zero_length_block
 
@@ -77,7 +77,7 @@ _DISKIO2_ReceiveTransferBlocksToFile:
     MOVE.L  D6,D0
     EXT.L   D0
     MOVEQ   #0,D1
-    MOVE.B  DISKIO2_TransferBlockLength,D1
+    MOVE.B  _DISKIO2_TransferBlockLength,D1
     CMP.L   D1,D0
     BEQ.S   .blockrx_after_payload
 

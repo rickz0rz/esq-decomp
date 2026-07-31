@@ -1,11 +1,11 @@
-    XDEF    ESQIFF2_ReadRbfBytesToBuffer
-    XDEF    ESQIFF2_ReadRbfBytesWithXor
+    XDEF    _ESQIFF2_ReadRbfBytesToBuffer
+    XDEF    _ESQIFF2_ReadRbfBytesWithXor
     XDEF    ESQIFF2_ReadSerialBytesToBuffer_Return
     XDEF    ESQIFF2_ReadSerialBytesWithXor_Return
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF2_ReadRbfBytesToBuffer   (Read N serial bytes into buffer)
+; FUNC: _ESQIFF2_ReadRbfBytesToBuffer   (Read N serial bytes into buffer)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -24,7 +24,7 @@
 ; NOTES:
 ;   Returns end pointer (one past last written byte) in D0.
 ;------------------------------------------------------------------------------
-ESQIFF2_ReadRbfBytesToBuffer:
+_ESQIFF2_ReadRbfBytesToBuffer:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 24(A7),A3
@@ -75,7 +75,7 @@ ESQIFF2_ReadSerialBytesToBuffer_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF2_ReadRbfBytesWithXor   (Read serial bytes and fold XOR checksum)
+; FUNC: _ESQIFF2_ReadRbfBytesWithXor   (Read serial bytes and fold XOR checksum)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -94,7 +94,7 @@ ESQIFF2_ReadSerialBytesToBuffer_Return:
 ; NOTES:
 ;   Waits for clock/UI service between each byte read.
 ;------------------------------------------------------------------------------
-ESQIFF2_ReadRbfBytesWithXor:
+_ESQIFF2_ReadRbfBytesWithXor:
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.W  26(A7),D7

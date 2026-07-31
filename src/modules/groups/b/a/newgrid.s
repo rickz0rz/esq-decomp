@@ -11,11 +11,11 @@
 ; CLOBBERS:
 ;   D0-D3/A0-A1/A6
 ; CALLS:
-;   _NEWGRID2_EnsureBuffersAllocated, NEWGRID_JMPTBL_DISPTEXT_InitBuffers, _NEWGRID_InitShowtimeBuckets, _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _LVOInitRastPort,
+;   _NEWGRID2_EnsureBuffersAllocated, _NEWGRID_JMPTBL_DISPTEXT_InitBuffers, _NEWGRID_InitShowtimeBuckets, _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _LVOInitRastPort,
 ;   _LVOSetDrMd, _LVOSetFont, _NEWGRID_DrawTopBorderLine,
 ;   _LVOTextLength, _NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
-;   _NEWGRID_GridResourcesInitializedFlag, _Global_HANDLE_PREVUEC_FONT, Global_STR_44_44_44
+;   _NEWGRID_GridResourcesInitializedFlag, _Global_HANDLE_PREVUEC_FONT, _Global_STR_44_44_44
 ; WRITES:
 ;   _NEWGRID_GridResourcesInitializedFlag, _NEWGRID_MainRastPortPtr/2, _NEWGRID_RowHeightPx-232B
 ; DESC:
@@ -31,14 +31,14 @@ _NEWGRID_InitGridResources:
     MOVE.W  #1,_NEWGRID_GridResourcesInitializedFlag
     JSR     _NEWGRID2_EnsureBuffersAllocated(PC)
 
-    JSR     NEWGRID_JMPTBL_DISPTEXT_InitBuffers(PC)
+    JSR     _NEWGRID_JMPTBL_DISPTEXT_InitBuffers(PC)
 
     JSR     _NEWGRID_InitShowtimeBuckets(PC)
 
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     100.W
     PEA     99.W
-    PEA     Global_STR_NEWGRID_C_1
+    PEA     _Global_STR_NEWGRID_C_1
     JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -64,7 +64,7 @@ _NEWGRID_InitGridResources:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     100.W
     PEA     112.W
-    PEA     Global_STR_NEWGRID_C_2
+    PEA     _Global_STR_NEWGRID_C_2
     JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -91,11 +91,11 @@ _NEWGRID_InitGridResources:
 
     MOVEQ   #8,D0
     MOVEA.L _NEWGRID_MainRastPortPtr,A1
-    LEA     Global_STR_44_44_44,A0
+    LEA     _Global_STR_44_44_44,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
-    MOVE.W  D0,NEWGRID_SampleTimeTextWidthPx
+    MOVE.W  D0,_NEWGRID_SampleTimeTextWidthPx
     ADDI.W  #12,D0
     MOVE.W  D0,_NEWGRID_ColumnStartXPx
     MOVEQ   #0,D1

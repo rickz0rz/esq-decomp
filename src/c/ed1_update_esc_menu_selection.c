@@ -1,5 +1,5 @@
 /* RESTORES: ED1_UpdateEscMenuSelection
- * MODULE:   modules/groups/a/k/ed1.s
+ * MODULE:   modules/groups/a/k/ed1_p0.s
  * STATUS:   behavioural
  *
  * SASC-MISMATCH: branch-shape

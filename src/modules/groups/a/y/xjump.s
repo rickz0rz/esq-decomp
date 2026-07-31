@@ -4,7 +4,7 @@
     XDEF    _GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer
     XDEF    _GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer
     XDEF    _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes
-    XDEF    GROUP_AY_JMPTBL_DISKIO_WriteDecimalField
+    XDEF    _GROUP_AY_JMPTBL_DISKIO_WriteDecimalField
     XDEF    GROUP_AY_JMPTBL_MATH_Mulu32
     XDEF    _GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask
     XDEF    _GROUP_AY_JMPTBL_STRING_CompareNoCaseN
@@ -54,7 +54,7 @@ _GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer:
     JMP     _DISKIO_ParseLongFromWorkBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AY_JMPTBL_DISKIO_WriteDecimalField   (Routine at GROUP_AY_JMPTBL_DISKIO_WriteDecimalField)
+; FUNC: _GROUP_AY_JMPTBL_DISKIO_WriteDecimalField   (Routine at _GROUP_AY_JMPTBL_DISKIO_WriteDecimalField)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -72,7 +72,7 @@ _GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AY_JMPTBL_DISKIO_WriteDecimalField:
+_GROUP_AY_JMPTBL_DISKIO_WriteDecimalField:
     JMP     _DISKIO_WriteDecimalField
 
 ;------------------------------------------------------------------------------

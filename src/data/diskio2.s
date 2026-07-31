@@ -3,15 +3,15 @@
     XDEF    _Global_STR_DREV_5_1
     XDEF    _Global_STR_DISKIO2_C_3
     XDEF    _Global_STR_38_SPACES
-    XDEF    DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT
-    XDEF    DISKIO2_STR_SAVING_TEXT_ADS_DOT
-    XDEF    DISKIO2_STR_SAVING_CONFIGURATION_FILE_DOT
-    XDEF    DISKIO2_STR_SAVING_LOCAL_AVAIL_CFG_DOT
-    XDEF    DISKIO2_STR_SAVING_QTABLE_DOT
-    XDEF    DISKIO2_STR_SAVING_ERROR_LOG_DOT
-    XDEF    DISKIO2_STR_SAVING_DST_DATA_DOT
-    XDEF    DISKIO2_STR_SAVING_PROMO_TYPES
-    XDEF    DISKIO2_STR_SAVING_DATA_VIEW_CONFIG
+    XDEF    _DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT
+    XDEF    _DISKIO2_STR_SAVING_TEXT_ADS_DOT
+    XDEF    _DISKIO2_STR_SAVING_CONFIGURATION_FILE_DOT
+    XDEF    _DISKIO2_STR_SAVING_LOCAL_AVAIL_CFG_DOT
+    XDEF    _DISKIO2_STR_SAVING_QTABLE_DOT
+    XDEF    _DISKIO2_STR_SAVING_ERROR_LOG_DOT
+    XDEF    _DISKIO2_STR_SAVING_DST_DATA_DOT
+    XDEF    _DISKIO2_STR_SAVING_PROMO_TYPES
+    XDEF    _DISKIO2_STR_SAVING_DATA_VIEW_CONFIG
     XDEF    _Global_STR_DISKIO2_C_4
     XDEF    _DISKIO2_STR_DREV_1
     XDEF    _DISKIO2_STR_DREV_2
@@ -58,12 +58,12 @@
     XDEF    _Global_STR_DISK_0_IS_FULL_WITH_ERRORS_FORMATTED
     XDEF    _DISKIO2_DiagnosticsDiskUsagePercentBuffer
     XDEF    _DISKIO2_DiagnosticsSoftErrorCountBuffer
-    XDEF    DISKIO2_TransferCrc32Table
+    XDEF    _DISKIO2_TransferCrc32Table
     XDEF    _DISKIO2_FlushDataFilesGuardFlag
     XDEF    _Global_JMPTBL_HALF_HOURS_12_HR_FMT
     XDEF    _Global_JMPTBL_HALF_HOURS_24_HR_FMT
-    XDEF    DISPLIB_STR_InlineAlignPadCharCenter
-    XDEF    DISPLIB_STR_InlineAlignPadCharRight
+    XDEF    _DISPLIB_STR_InlineAlignPadCharCenter
+    XDEF    _DISPLIB_STR_InlineAlignPadCharRight
 ; ========== DISKIO2.c ==========
 
 _Global_STR_DISKIO2_C_1:
@@ -76,23 +76,23 @@ _Global_STR_DISKIO2_C_3:
     NStr    "DISKIO2.c"
 _Global_STR_38_SPACES:
     NStr    "                                      "
-DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT:
+_DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT:
     NStr    "Saving programming data.           "
-DISKIO2_STR_SAVING_TEXT_ADS_DOT:
+_DISKIO2_STR_SAVING_TEXT_ADS_DOT:
     NStr    "Saving Text Ads.                   "
-DISKIO2_STR_SAVING_CONFIGURATION_FILE_DOT:
+_DISKIO2_STR_SAVING_CONFIGURATION_FILE_DOT:
     NStr    "Saving configuration file.         "
-DISKIO2_STR_SAVING_LOCAL_AVAIL_CFG_DOT:
+_DISKIO2_STR_SAVING_LOCAL_AVAIL_CFG_DOT:
     NStr    "Saving Local Avail Cfg.            "
-DISKIO2_STR_SAVING_QTABLE_DOT:
+_DISKIO2_STR_SAVING_QTABLE_DOT:
     NStr    "Saving QTABLE.                     "
-DISKIO2_STR_SAVING_ERROR_LOG_DOT:
+_DISKIO2_STR_SAVING_ERROR_LOG_DOT:
     NStr    "Saving Error Log.                  "
-DISKIO2_STR_SAVING_DST_DATA_DOT:
+_DISKIO2_STR_SAVING_DST_DATA_DOT:
     NStr    "Saving DST data.                   "
-DISKIO2_STR_SAVING_PROMO_TYPES:
+_DISKIO2_STR_SAVING_PROMO_TYPES:
     NStr    "Saving Promo Types                 "
-DISKIO2_STR_SAVING_DATA_VIEW_CONFIG:
+_DISKIO2_STR_SAVING_DATA_VIEW_CONFIG:
     NStr    "Saving Data View config            "
 _Global_STR_DISKIO2_C_4:
     NStr    "DISKIO2.c"
@@ -187,7 +187,7 @@ _DISKIO2_DiagnosticsDiskUsagePercentBuffer:
 _DISKIO2_DiagnosticsSoftErrorCountBuffer:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: DISKIO2_TransferCrc32Table   (serial transfer CRC32 lookup table)
+; SYM: _DISKIO2_TransferCrc32Table   (serial transfer CRC32 lookup table)
 ; TYPE: u32[256]
 ; PURPOSE: Lookup table for per-byte CRC update in transfer block receiver.
 ; USED BY: _DISKIO2_ReceiveTransferBlocksToFile
@@ -195,7 +195,7 @@ _DISKIO2_DiagnosticsSoftErrorCountBuffer:
 ;   First entry is zero (stored via DS.L 1), followed by reflected CRC-32
 ;   polynomial table constants (`0x77073096` ...).
 ;------------------------------------------------------------------------------
-DISKIO2_TransferCrc32Table:
+_DISKIO2_TransferCrc32Table:
     DC.L    $00000000,$77073096,$ee0e612c,$990951ba,$076dc419,$706af48f,$e963a535,$9e6495a3
     DC.L    $0edb8832,$79dcb8a4,$e0d5e91e,$97d2d988,$09b64c2b,$7eb17cbd,$e7b82d07,$90bf1d91
     DC.L    $1db71064,$6ab020f2,$f3b97148,$84be41de,$1adad47d,$6ddde4eb,$f4d4b551,$83d385c7
@@ -540,7 +540,7 @@ _Global_JMPTBL_HALF_HOURS_24_HR_FMT:
     DC.L    DISKIO2_STR_3_COLON_30
     DC.L    DISKIO2_STR_4_COLON_00
     DC.L    DISKIO2_STR_4_COLON_30
-DISPLIB_STR_InlineAlignPadCharCenter:
+_DISPLIB_STR_InlineAlignPadCharCenter:
     NStr    " "
-DISPLIB_STR_InlineAlignPadCharRight:
+_DISPLIB_STR_InlineAlignPadCharRight:
     NStr    " "

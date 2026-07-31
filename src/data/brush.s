@@ -15,8 +15,8 @@
     XDEF    _Global_STR_BRUSH_C_14
     XDEF    _Global_STR_BRUSH_C_15
     XDEF    _Global_STR_BRUSH_C_16
-    XDEF    Global_STR_BRUSH_C_17
-    XDEF    Global_STR_BRUSH_C_18
+    XDEF    _Global_STR_BRUSH_C_17
+    XDEF    _Global_STR_BRUSH_C_18
     XDEF    _Global_STR_BRUSH_C_19
     XDEF    _BRUSH_STR_ALIAS_CODE_00
     XDEF    _BRUSH_STR_ALIAS_CODE_11
@@ -65,9 +65,9 @@ _Global_STR_BRUSH_C_15:
     NStr    "BRUSH.c"
 _Global_STR_BRUSH_C_16:
     NStr    "BRUSH.c"
-Global_STR_BRUSH_C_17:
+_Global_STR_BRUSH_C_17:
     NStr    "BRUSH.c"
-Global_STR_BRUSH_C_18:
+_Global_STR_BRUSH_C_18:
     NStr    "BRUSH.c"
 _Global_STR_BRUSH_C_19:
     NStr    "BRUSH.c"

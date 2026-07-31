@@ -1,5 +1,5 @@
 /* RESTORES: ED1_EnterEscMenu
- * MODULE:   modules/groups/a/k/ed1.s
+ * MODULE:   modules/groups/a/k/ed1_p0.s
  * STATUS:   behavioural
  *
  * 456 bytes in the original, 460 emitted, only 14 differing regions -- one of

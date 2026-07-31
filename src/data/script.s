@@ -23,11 +23,11 @@
     XDEF    _Global_STR_ALIGNED_ON
     XDEF    _Global_STR_ALIGNED_CHANNEL_1
     XDEF    _SCRIPT_PtrSportsOnPrefix
-    XDEF    SCRIPT_PtrMovieSummaryForPrefix
+    XDEF    _SCRIPT_PtrMovieSummaryForPrefix
     XDEF    _SCRIPT_PtrSummaryOfPrefix
     XDEF    _SCRIPT_PtrChannelSuffix
     XDEF    _SCRIPT_PtrNoDataPlaceholder
-    XDEF    Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
+    XDEF    _Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
     XDEF    _SCRIPT_PtrOffAirPlaceholder
     XDEF    _Global_STR_GRID_DATE_FORMAT_STRING
     XDEF    _Global_STR_WEATHER_UPDATE_FOR
@@ -65,9 +65,9 @@
     XDEF    _SCRIPT_SpacerTripleB
     XDEF    _SCRIPT_AlignedCharFormat
     XDEF    _SCRIPT_AlignedPrefixEmptyC
-    XDEF    SCRIPT_AlignedPrefixEmptyD
-    XDEF    SCRIPT_SpacerTripleC
-    XDEF    SCRIPT_AlignedPrefixEmptyE
+    XDEF    _SCRIPT_AlignedPrefixEmptyD
+    XDEF    _SCRIPT_SpacerTripleC
+    XDEF    _SCRIPT_AlignedPrefixEmptyE
     XDEF    _SCRIPT_AlignedPrefixEmptyF
     XDEF    _SCRIPT_AlignedStringFormat
     XDEF    _SCRIPT_StrAtSeparator
@@ -79,10 +79,10 @@
     XDEF    _SCRIPT_FilterTag_PPV
     XDEF    _SCRIPT_FilterTag_SBE
     XDEF    _SCRIPT_FilterTag_SPORTS
-    XDEF    TEXTDISP_LastDispatchMatchIndex
-    XDEF    TEXTDISP_LastDispatchGroupId
-    XDEF    TEXTDISP_CommandBufferPtr
-    XDEF    TEXTDISP_CommandPrefixFormat
+    XDEF    _TEXTDISP_LastDispatchMatchIndex
+    XDEF    _TEXTDISP_LastDispatchGroupId
+    XDEF    _TEXTDISP_CommandBufferPtr
+    XDEF    _TEXTDISP_CommandPrefixFormat
 ; ========== SCRIPT.c ==========
 
 _Global_STR_SCRIPT_C_1:
@@ -397,7 +397,7 @@ _SCRIPT_PtrSportsOnPrefix:
     DC.L    SCRIPT_StrSportsOnPrefix
 SCRIPT_StrMovieSummaryForPrefix:
     NStr    "Movie Summary for "
-SCRIPT_PtrMovieSummaryForPrefix:
+_SCRIPT_PtrMovieSummaryForPrefix:
     DC.L    SCRIPT_StrMovieSummaryForPrefix
 SCRIPT_StrSummaryOfPrefix:
     NStr    "Summary of "
@@ -413,7 +413,7 @@ _SCRIPT_PtrNoDataPlaceholder:
     DC.L    SCRIPT_StrNoDataPlaceholder
 Global_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
     NStr    "Please Stand By for your Local Listings.  ER007"
-Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
+_Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
     DC.L    Global_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
 Global_STR_OFF_AIR_1:
     NStr    "Off Air."
@@ -427,7 +427,7 @@ _Global_STR_WEATHER_UPDATE_FOR:
 ; SYM: _SCRIPT_CtrlHandshakeStage/_SCRIPT_CtrlHandshakeRetryCount/_SCRIPT_RuntimeModeDispatchLatch/_SCRIPT_CtrlCmdDeferCounter/_SCRIPT_PlaybackFallbackCounter/_SCRIPT_Type20SubtypeCache   (script ctrl/runtime state cluster)
 ; TYPE: u16/u16/u16/u16/u16/u16
 ; PURPOSE: Tracks CTRL handshake/retry/dispatch state and cached subtype in runtime command processing.
-; USED BY: SCRIPT_UpdateCtrlStateMachine, _SCRIPT_HandleBrushCommand, _SCRIPT_ProcessCtrlContextPlaybackTick, _ESQFUNC_DrawDiagnosticsScreen
+; USED BY: _SCRIPT_UpdateCtrlStateMachine, _SCRIPT_HandleBrushCommand, _SCRIPT_ProcessCtrlContextPlaybackTick, _ESQFUNC_DrawDiagnosticsScreen
 ; NOTES:
 ;   `_SCRIPT_Type20SubtypeCache` semantics are still partially inferred from P_TYPE type-20 helper flows.
 ;------------------------------------------------------------------------------
@@ -469,7 +469,7 @@ _BRUSH_ScriptSecondarySelection:
 ; SYM: _SCRIPT_RuntimeModeDeferredFlag/_SCRIPT_PendingWeatherCommandChar/_SCRIPT_PendingTextdispCmdChar/_SCRIPT_PendingTextdispCmdArg   (deferred command payload cluster)
 ; TYPE: u32/u8/u8/u16
 ; PURPOSE: Holds deferred runtime-mode and pending command bytes consumed by weather/TEXTDISP dispatch paths.
-; USED BY: _SCRIPT_HandleBrushCommand, _SCRIPT_ProcessCtrlContextPlaybackTick, _SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, ESQIFF2_ApplyIncomingStatusPacket
+; USED BY: _SCRIPT_HandleBrushCommand, _SCRIPT_ProcessCtrlContextPlaybackTick, _SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, _ESQIFF2_ApplyIncomingStatusPacket
 ; NOTES: Command chars/arg are serialized into CTRL context at offsets +437..+439.
 ;------------------------------------------------------------------------------
 _SCRIPT_RuntimeModeDeferredFlag:
@@ -532,11 +532,11 @@ _SCRIPT_AlignedCharFormat:
     NStr2   TextAlignCenter,"%c"
 _SCRIPT_AlignedPrefixEmptyC:
     NStr    TextAlignCenter
-SCRIPT_AlignedPrefixEmptyD:
+_SCRIPT_AlignedPrefixEmptyD:
     NStr    TextAlignCenter
-SCRIPT_SpacerTripleC:
+_SCRIPT_SpacerTripleC:
     NStr    "   "
-SCRIPT_AlignedPrefixEmptyE:
+_SCRIPT_AlignedPrefixEmptyE:
     NStr    TextAlignCenter
 _SCRIPT_AlignedPrefixEmptyF:
     NStr    TextAlignCenter
@@ -556,7 +556,7 @@ _Global_STR_ALIGNED_CHANNEL_2:
 ; SYM: _TEXTDISP_FilterModeId   (text-display filter mode id)
 ; TYPE: u8 (stored in word slot)
 ; PURPOSE: Active mode selector for TEXTDISP filter/search passes.
-; USED BY: TEXTDISP_FilterAndSelectEntry
+; USED BY: _TEXTDISP_FilterAndSelectEntry
 ; NOTES: Observed values cycle through 1..3.
 ;------------------------------------------------------------------------------
 _TEXTDISP_FilterModeId:
@@ -568,17 +568,17 @@ _SCRIPT_FilterTag_SBE:
 _SCRIPT_FilterTag_SPORTS:
     NStr    "SPORTS"
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_LastDispatchMatchIndex/TEXTDISP_LastDispatchGroupId/TEXTDISP_CommandBufferPtr/TEXTDISP_CommandPrefixFormat   (textdisp dispatch scratch cluster)
+; SYM: _TEXTDISP_LastDispatchMatchIndex/_TEXTDISP_LastDispatchGroupId/_TEXTDISP_CommandBufferPtr/_TEXTDISP_CommandPrefixFormat   (textdisp dispatch scratch cluster)
 ; TYPE: s16/u8/pointer/cstring
 ; PURPOSE: Stores last dispatch selection/group and temporary command-buffer state for TEXTDISP command handling.
 ; USED BY: _TEXTDISP_HandleScriptCommand
 ; NOTES: Command prefix format currently emits `xx%s` into local scratch before lookup/dispatch.
 ;------------------------------------------------------------------------------
-TEXTDISP_LastDispatchMatchIndex:
+_TEXTDISP_LastDispatchMatchIndex:
     DC.W    $ffff
-TEXTDISP_LastDispatchGroupId:
+_TEXTDISP_LastDispatchGroupId:
     DC.B    0,"1"
-TEXTDISP_CommandBufferPtr:
+_TEXTDISP_CommandBufferPtr:
     DS.L    1
-TEXTDISP_CommandPrefixFormat:
+_TEXTDISP_CommandPrefixFormat:
     NStr3   "xx%s",18,"TEMPO"

@@ -1,5 +1,5 @@
 /* RESTORES: LOCAVAIL_ParseFilterStateFromBuffer
- * MODULE:   modules/groups/a/y/locavail_p2.s
+ * MODULE:   modules/groups/a/y/locavail_p2_locavail_parsefilterstatefrombuffer.s
  * STATUS:   behavioural
  * OPTIONS:  SHORTINT (see src/c/scopts.txt)
  *
@@ -92,7 +92,8 @@ extern void  LOCAVAIL_ResetFilterStateStruct(struct LfState *st);
 extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *s, long ch);
 extern long  NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern long  LOCAVAIL_AllocNodeArraysForState(struct LfState *st);
-extern long  NEWGRID_JMPTBL_MATH_Mulu32(long a, long b);
+extern long __asm NEWGRID_JMPTBL_MATH_Mulu32(register __d0 long a,
+                        register __d1 long b);
 extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
 extern void  LOCAVAIL_FreeResourceChain(struct LfState *st);

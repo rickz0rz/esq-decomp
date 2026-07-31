@@ -7,13 +7,13 @@
     XDEF    _GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults
     XDEF    _GROUP_AH_JMPTBL_ESQ_TestBit1Based
     XDEF    _GROUP_AH_JMPTBL_ESQ_WildcardMatch
-    XDEF    GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile
-    XDEF    GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile
-    XDEF    GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate
-    XDEF    GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile
+    XDEF    _GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile
+    XDEF    _GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile
+    XDEF    _GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate
+    XDEF    _GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile
     XDEF    _GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache
     XDEF    _GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3
-    XDEF    GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile
+    XDEF    _GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile
     XDEF    _GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte
     XDEF    _GROUP_AH_JMPTBL_STR_FindAnyCharPtr
 
@@ -26,7 +26,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQIFF2_ApplyIncomingStatusPacket
+;   _ESQIFF2_ApplyIncomingStatusPacket
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -37,7 +37,7 @@
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AH_JMPTBL_ESQIFF2_ApplyIncomingStatusPacket:
-    JMP     ESQIFF2_ApplyIncomingStatusPacket
+    JMP     _ESQIFF2_ApplyIncomingStatusPacket
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache   (Routine at _GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache)
@@ -128,7 +128,7 @@ _GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults:
     JMP     _ESQSHARED_InitEntryDefaults
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate   (Routine at GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate)
+; FUNC: _GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate   (Routine at _GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -146,11 +146,11 @@ _GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate:
+_GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate:
     JMP     _GCOMMAND_LoadPPVTemplate
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile   (Routine at GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile)
+; FUNC: _GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile   (Routine at _GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -168,11 +168,11 @@ GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
+_GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
     JMP     _LOCAVAIL_SaveAvailabilityDataFile
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile   (Routine at GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile)
+; FUNC: _GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile   (Routine at _GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -180,7 +180,7 @@ GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   GCOMMAND_LoadCommandFile
+;   _GCOMMAND_LoadCommandFile
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -190,8 +190,8 @@ GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile:
-    JMP     GCOMMAND_LoadCommandFile
+_GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile:
+    JMP     _GCOMMAND_LoadCommandFile
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AH_JMPTBL_ESQ_WildcardMatch   (Routine at _GROUP_AH_JMPTBL_ESQ_WildcardMatch)
@@ -216,7 +216,7 @@ _GROUP_AH_JMPTBL_ESQ_WildcardMatch:
     JMP     _ESQ_WildcardMatch
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile   (Routine at GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile)
+; FUNC: _GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile   (Routine at _GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -224,7 +224,7 @@ _GROUP_AH_JMPTBL_ESQ_WildcardMatch:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   P_TYPE_WritePromoIdDataFile
+;   _P_TYPE_WritePromoIdDataFile
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -234,8 +234,8 @@ _GROUP_AH_JMPTBL_ESQ_WildcardMatch:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile:
-    JMP     P_TYPE_WritePromoIdDataFile
+_GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile:
+    JMP     _P_TYPE_WritePromoIdDataFile
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi   (Routine at _GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi)
@@ -326,7 +326,7 @@ _GROUP_AH_JMPTBL_STR_FindAnyCharPtr:
     JMP     STR_FindAnyCharPtr
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile   (Routine at GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile)
+; FUNC: _GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile   (Routine at _GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -344,7 +344,7 @@ _GROUP_AH_JMPTBL_STR_FindAnyCharPtr:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile:
+_GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile:
     JMP     _GCOMMAND_LoadMplexFile
 
 ;------------------------------------------------------------------------------
@@ -378,7 +378,7 @@ _GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQPARS_ClearAliasStringPointers
+;   _ESQPARS_ClearAliasStringPointers
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -389,7 +389,7 @@ _GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers:
-    JMP     ESQPARS_ClearAliasStringPointers
+    JMP     _ESQPARS_ClearAliasStringPointers
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3   (Routine at _GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3)

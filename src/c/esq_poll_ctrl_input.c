@@ -1,5 +1,5 @@
 /* RESTORES: ESQ_PollCtrlInput
- * MODULE:   modules/groups/a/a/app.s
+ * MODULE:   modules/groups/a/a/app_esq_pollctrlinput.s
  * STATUS:   behavioural
  *
  * SASC-MISMATCH: register-save-shape

@@ -1,5 +1,5 @@
 /* RESTORES: NEWGRID_ComputeDaySlotFromClock
- * MODULE:   modules/groups/b/a/newgrid_p2.s
+ * MODULE:   modules/groups/b/a/newgrid_p2_p0.s
  * STATUS:   behavioural
  *
  * Takes a copy of the caller's clock record, asks for its half-hour slot index,

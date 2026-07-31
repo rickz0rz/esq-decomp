@@ -12,11 +12,11 @@
 ; CLOBBERS:
 ;   D0-D7/A2-A3
 ; CALLS:
-;   _TEXTDISP_BuildMatchIndexList, TEXTDISP_SelectBestMatchFromList
+;   _TEXTDISP_BuildMatchIndexList, _TEXTDISP_SelectBestMatchFromList
 ; READS:
 ;   _TEXTDISP_SecondaryGroupRecordLength, _TEXTDISP_CandidateIndexList/2376/2377/2372
 ; WRITES:
-;   TEXTDISP_PrimaryFirstMatchIndex, TEXTDISP_SecondaryFirstMatchIndex, _TEXTDISP_CurrentMatchIndex, _TEXTDISP_SbeFilterActiveFlag, _TEXTDISP_ActiveGroupId
+;   _TEXTDISP_PrimaryFirstMatchIndex, _TEXTDISP_SecondaryFirstMatchIndex, _TEXTDISP_CurrentMatchIndex, _TEXTDISP_SbeFilterActiveFlag, _TEXTDISP_ActiveGroupId
 ; DESC:
 ;   Attempts to resolve a filter across groups and updates selection globals.
 ; NOTES:
@@ -28,8 +28,8 @@ _TEXTDISP_SelectGroupAndEntry:
     MOVEA.L 28(A7),A2
     MOVE.W  34(A7),D7
     MOVEQ   #-1,D0
-    MOVE.W  D0,TEXTDISP_PrimaryFirstMatchIndex
-    MOVE.W  D0,TEXTDISP_SecondaryFirstMatchIndex
+    MOVE.W  D0,_TEXTDISP_PrimaryFirstMatchIndex
+    MOVE.W  D0,_TEXTDISP_SecondaryFirstMatchIndex
     CLR.W   _TEXTDISP_SbeFilterActiveFlag
     MOVE.W  #1,_TEXTDISP_ActiveGroupId
     MOVE.L  D7,D0
@@ -51,13 +51,13 @@ _TEXTDISP_SelectGroupAndEntry:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A2,-(A7)
-    BSR.W   TEXTDISP_SelectBestMatchFromList
+    BSR.W   _TEXTDISP_SelectBestMatchFromList
 
     LEA     16(A7),A7
     MOVE.L  D0,D5
     MOVEQ   #0,D0
     MOVE.B  _TEXTDISP_CandidateIndexList,D0
-    MOVE.W  D0,TEXTDISP_PrimaryFirstMatchIndex
+    MOVE.W  D0,_TEXTDISP_PrimaryFirstMatchIndex
 
 .check_group1_result:
     TST.W   D6
@@ -92,13 +92,13 @@ _TEXTDISP_SelectGroupAndEntry:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A2,-(A7)
-    BSR.W   TEXTDISP_SelectBestMatchFromList
+    BSR.W   _TEXTDISP_SelectBestMatchFromList
 
     LEA     16(A7),A7
     MOVE.L  D0,D5
     MOVEQ   #0,D0
     MOVE.B  _TEXTDISP_CandidateIndexList,D0
-    MOVE.W  D0,TEXTDISP_SecondaryFirstMatchIndex
+    MOVE.W  D0,_TEXTDISP_SecondaryFirstMatchIndex
 
 .after_group2:
     TST.W   D6

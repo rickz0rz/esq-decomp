@@ -8,20 +8,20 @@
 ;   stack +12: D7 = entry index
 ;   stack +18: D6 = selector
 ; RET:
-;   D0: state (NEWGRID_DetailGridStateLatch)
+;   D0: state (_NEWGRID_DetailGridStateLatch)
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   _NEWGRID_UpdatePresetEntry, _NEWGRID_DrawGridEntry,
-;   _NEWGRID_DrawGridFrameVariant2, _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams, NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer, _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
+;   _NEWGRID_DrawGridFrameVariant2, _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams, _NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer, _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
 ; READS:
 ;   _GCOMMAND_MplexDetailLayoutPen, _GCOMMAND_MplexDetailLayoutFlag, _GCOMMAND_MplexDetailInitialLineIndex
 ; WRITES:
-;   NEWGRID_DetailGridStateLatch, 32(A3)
+;   _NEWGRID_DetailGridStateLatch, 32(A3)
 ; DESC:
 ;   State machine that formats entry text and redraws the detailed grid view.
 ; NOTES:
-;   Uses NEWGRID_DetailGridStateLatch values 4/5.
+;   Uses _NEWGRID_DetailGridStateLatch values 4/5.
 ;------------------------------------------------------------------------------
 _NEWGRID_HandleDetailGridState:
     LINK.W  A5,#-60
@@ -36,11 +36,11 @@ _NEWGRID_HandleDetailGridState:
     BNE.S   .state_dispatch_check
 
     MOVEQ   #4,D0
-    MOVE.L  D0,NEWGRID_DetailGridStateLatch
+    MOVE.L  D0,_NEWGRID_DetailGridStateLatch
     BRA.W   .return_state
 
 .state_dispatch_check:
-    MOVE.L  NEWGRID_DetailGridStateLatch,D0
+    MOVE.L  _NEWGRID_DetailGridStateLatch,D0
     SUBQ.L  #4,D0
     BEQ.S   .state4_begin
 
@@ -109,7 +109,7 @@ _NEWGRID_HandleDetailGridState:
 
 .after_draw:
     MOVE.L  _GCOMMAND_MplexDetailInitialLineIndex,-(A7)
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(PC)
 
     MOVEA.L -4(A5),A0
     MOVEA.L A0,A1
@@ -117,7 +117,7 @@ _NEWGRID_HandleDetailGridState:
     LEA     1(A0),A2
     MOVE.L  A2,(A7)
     MOVE.L  A1,-(A7)
-    PEA     NEWGRID_ChannelRowFmt
+    PEA     _NEWGRID_ChannelRowFmt
     PEA     -58(A5)
     JSR     _PARSEINI_JMPTBL_WDISP_SPrintf(PC)
 
@@ -141,7 +141,7 @@ _NEWGRID_HandleDetailGridState:
 
 .store_state_and_linecount:
     PEA     2.W
-    MOVE.L  D0,NEWGRID_DetailGridStateLatch
+    MOVE.L  D0,_NEWGRID_DetailGridStateLatch
     JSR     _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(PC)
 
     ADDQ.W  #4,A7
@@ -165,15 +165,15 @@ _NEWGRID_HandleDetailGridState:
 .state5_store_state_and_reset_linecount:
     MOVEQ   #-1,D1
     MOVE.L  D1,32(A3)
-    MOVE.L  D0,NEWGRID_DetailGridStateLatch
+    MOVE.L  D0,_NEWGRID_DetailGridStateLatch
     BRA.S   .return_state
 
 .force_state4:
     MOVEQ   #4,D0
-    MOVE.L  D0,NEWGRID_DetailGridStateLatch
+    MOVE.L  D0,_NEWGRID_DetailGridStateLatch
 
 .return_state:
-    MOVE.L  NEWGRID_DetailGridStateLatch,D0
+    MOVE.L  _NEWGRID_DetailGridStateLatch,D0
     MOVEM.L (A7)+,D6-D7/A2-A3
     UNLK    A5
     RTS

@@ -1,5 +1,5 @@
 /* RESTORES: NEWGRID_ComputeDaySlotFromClockWithOffset
- * MODULE:   modules/groups/b/a/newgrid_p2.s
+ * MODULE:   modules/groups/b/a/newgrid_p2_p0.s
  * STATUS:   behavioural
  *
  * The offset-aware twin of newgrid_compute_day_slot_from_clock.c. Same 22-byte

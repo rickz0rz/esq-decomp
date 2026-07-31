@@ -13,9 +13,9 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3
+;   _GCOMMAND_PresetWorkEntryTable.._GCOMMAND_PresetWorkEntry3
 ; WRITES:
-;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3
+;   _GCOMMAND_PresetWorkEntryTable.._GCOMMAND_PresetWorkEntry3
 ; DESC:
 ;   Advances preset work entry accumulators and clamps them to bounds.
 ; NOTES:

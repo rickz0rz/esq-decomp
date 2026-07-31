@@ -91,8 +91,10 @@ extern void  ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(struct WsOverlay *b, long z0,
                                                  long z1, long w, long h,
                                                  struct RastPort *rp,
                                                  long z2);
-extern long  ESQIFF_JMPTBL_MATH_Mulu32(long a, long b);
-extern long  ESQIFF_JMPTBL_MATH_DivS32(long a, long b);
+extern long __asm ESQIFF_JMPTBL_MATH_Mulu32(register __d0 long a,
+                        register __d1 long b);
+extern long __asm ESQIFF_JMPTBL_MATH_DivS32(register __d0 long a,
+                        register __d1 long b);
 extern long  ESQFUNC_TrimTextToPixelWidthWordBoundary(struct RastPort *rp,
                                                       long width, char *text);
 extern void  ESQIFF_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,

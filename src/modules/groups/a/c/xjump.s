@@ -21,14 +21,14 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   PARSEINI_UpdateClockFromRtc
+;   _PARSEINI_UpdateClockFromRtc
 ; DESC:
-;   Jump stub to PARSEINI_UpdateClockFromRtc.
+;   Jump stub to _PARSEINI_UpdateClockFromRtc.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AC_JMPTBL_PARSEINI_UpdateClockFromRtc:
-    JMP     PARSEINI_UpdateClockFromRtc
+    JMP     _PARSEINI_UpdateClockFromRtc
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AC_JMPTBL_ESQFUNC_DrawDiagnosticsScreen   (JumpStub_ESQFUNC_DrawDiagnosticsScreen)
@@ -75,14 +75,14 @@ _GROUP_AC_JMPTBL_ESQFUNC_DrawMemoryStatusScreen:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_UpdateCtrlStateMachine
+;   _SCRIPT_UpdateCtrlStateMachine
 ; DESC:
-;   Jump stub to SCRIPT_UpdateCtrlStateMachine.
+;   Jump stub to _SCRIPT_UpdateCtrlStateMachine.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlStateMachine:
-    JMP     SCRIPT_UpdateCtrlStateMachine
+    JMP     _SCRIPT_UpdateCtrlStateMachine
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds   (JumpStub_GCOMMAND_UpdateBannerBounds)
@@ -93,14 +93,14 @@ _GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlStateMachine:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   GCOMMAND_UpdateBannerBounds
+;   _GCOMMAND_UpdateBannerBounds
 ; DESC:
-;   Jump stub to GCOMMAND_UpdateBannerBounds.
+;   Jump stub to _GCOMMAND_UpdateBannerBounds.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds:
-    JMP     GCOMMAND_UpdateBannerBounds
+    JMP     _GCOMMAND_UpdateBannerBounds
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AC_JMPTBL_SCRIPT_UpdateCtrlLineTimeout   (JumpStub_SCRIPT_UpdateCtrlLineTimeout)
@@ -165,14 +165,14 @@ _GROUP_AC_JMPTBL_ESQFUNC_FreeExtraTitleTextPointers:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQDISP_DrawStatusBanner
+;   _ESQDISP_DrawStatusBanner
 ; DESC:
-;   Jump stub to ESQDISP_DrawStatusBanner.
+;   Jump stub to _ESQDISP_DrawStatusBanner.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner:
-    JMP     ESQDISP_DrawStatusBanner
+    JMP     _ESQDISP_DrawStatusBanner
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AC_JMPTBL_DST_UpdateBannerQueue   (JumpStub_DST_UpdateBannerQueue)

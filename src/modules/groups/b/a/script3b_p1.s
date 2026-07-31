@@ -9,7 +9,7 @@
     XDEF    _SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry
     XDEF    _SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState
     XDEF    _SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
-    XDEF    SCRIPT3_JMPTBL_MATH_DivS32
+    XDEF    _SCRIPT3_JMPTBL_MATH_DivS32
     XDEF    _SCRIPT3_JMPTBL_MATH_Mulu32
     XDEF    _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
     XDEF    _SCRIPT3_JMPTBL_STRING_CompareN
@@ -39,7 +39,7 @@ _SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine:
     JMP     _LOCAVAIL_UpdateFilterStateMachine
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT3_JMPTBL_MATH_DivS32   (Routine at SCRIPT3_JMPTBL_MATH_DivS32)
+; FUNC: _SCRIPT3_JMPTBL_MATH_DivS32   (Routine at _SCRIPT3_JMPTBL_MATH_DivS32)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -57,7 +57,7 @@ _SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-SCRIPT3_JMPTBL_MATH_DivS32:
+_SCRIPT3_JMPTBL_MATH_DivS32:
     BRA.W   _MATH_DivS32
 
 ;------------------------------------------------------------------------------
@@ -175,18 +175,18 @@ _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   ESQPARS_ApplyRtcBytesAndPersist
+;   _ESQPARS_ApplyRtcBytesAndPersist
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to ESQPARS_ApplyRtcBytesAndPersist.
+;   Jump stub to _ESQPARS_ApplyRtcBytesAndPersist.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 _SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist:
-    JMP     ESQPARS_ApplyRtcBytesAndPersist
+    JMP     _ESQPARS_ApplyRtcBytesAndPersist
 
 ;------------------------------------------------------------------------------
 ; FUNC: _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (JumpStub_PARSE_ReadSignedLongSkipClass3_Alt)
@@ -217,16 +217,16 @@ _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   GCOMMAND_AdjustBannerCopperOffset
+;   _GCOMMAND_AdjustBannerCopperOffset
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to GCOMMAND_AdjustBannerCopperOffset.
+;   Jump stub to _GCOMMAND_AdjustBannerCopperOffset.
 ;------------------------------------------------------------------------------
 _SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset:
-    JMP     GCOMMAND_AdjustBannerCopperOffset
+    JMP     _GCOMMAND_AdjustBannerCopperOffset
 
 ;------------------------------------------------------------------------------
 ; FUNC: _SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom   (JumpStub_ESQ_SetCopperEffect_Custom)
@@ -277,18 +277,18 @@ _SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LOCAVAIL_ComputeFilterOffsetForEntry
+;   _LOCAVAIL_ComputeFilterOffsetForEntry
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LOCAVAIL_ComputeFilterOffsetForEntry.
+;   Jump stub to _LOCAVAIL_ComputeFilterOffsetForEntry.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 _SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry:
-    JMP     LOCAVAIL_ComputeFilterOffsetForEntry
+    JMP     _LOCAVAIL_ComputeFilterOffsetForEntry
 
 ;------------------------------------------------------------------------------
 ; FUNC: _SCRIPT3_JMPTBL_MATH_Mulu32   (Routine at _SCRIPT3_JMPTBL_MATH_Mulu32)

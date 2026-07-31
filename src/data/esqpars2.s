@@ -28,7 +28,7 @@
     XDEF    ESQPARS2_BannerRowOffsetResetPtrPlane1
     XDEF    ESQPARS2_BannerRowOffsetResetPtrPlane2Table
     XDEF    ESQPARS2_CopperProgramPendingFlag
-    XDEF    ESQPARS2_EdDiagResetScratchFlag
+    XDEF    _ESQPARS2_EdDiagResetScratchFlag
     XDEF    _ESQPARS2_BannerSweepEntryGuardCounter
     XDEF    ESQPARS2_BannerSweepDelayCounter
     XDEF    ESQPARS2_HighlightTickCountdown
@@ -55,12 +55,12 @@
     XDEF    _ESQPARS2_BannerCopyBlockSpanBytes
     XDEF    _ESQPARS2_BannerCopyBlockWordLimit
     XDEF    _ESQPARS2_BannerQueueAttentionDelayTicks
-    XDEF    ESQPARS2_LogAppendSpinlock
-    XDEF    ESQPARS2_LogTimestampFmt
-    XDEF    ESQPARS2_LogTagPm
-    XDEF    ESQPARS2_LogTagAm
-    XDEF    ESQPARS2_LogFieldTab
-    XDEF    ESQPARS2_LogLineTerminator
+    XDEF    _ESQPARS2_LogAppendSpinlock
+    XDEF    _ESQPARS2_LogTimestampFmt
+    XDEF    _ESQPARS2_LogTagPm
+    XDEF    _ESQPARS2_LogTagAm
+    XDEF    _ESQPARS2_LogFieldTab
+    XDEF    _ESQPARS2_LogLineTerminator
 ; ========== ESQPARS2.c ==========
 
 _Global_ESQPARS2_C_1:
@@ -165,7 +165,7 @@ _Global_LONG_PATCH_VERSION_NUMBER:
 ; SYM: _ESQPARS2_BannerSnapshotPlane0DstPtr..ESQPARS2_BannerSnapshotPlane2DstPtrLo
 ; TYPE: pointer array storage (3 x u32 split into hi/lo words)
 ; PURPOSE: Destination pointers for banner-plane snapshot copy routines.
-; USED BY: ESQSHARED4_SetupBannerPlanePointerWords, _ESQSHARED4_CopyPlanesFromContextToSnapshot, ESQSHARED4_CopyLivePlanesToSnapshot, GCOMMAND_RefreshBannerTables
+; USED BY: ESQSHARED4_SetupBannerPlanePointerWords, _ESQSHARED4_CopyPlanesFromContextToSnapshot, _ESQSHARED4_CopyLivePlanesToSnapshot, _GCOMMAND_RefreshBannerTables
 ; NOTES:
 ;   Layout is contiguous longwords:
 ;     plane0 ptr = _ESQPARS2_BannerSnapshotPlane0DstPtr/ESQPARS2_BannerSnapshotPlane0DstPtrLo
@@ -199,7 +199,7 @@ ESQPARS2_BannerRowOffsetResetPtrPlane2Table:
     DS.L    9
 ESQPARS2_CopperProgramPendingFlag:
     DS.W    1
-ESQPARS2_EdDiagResetScratchFlag:
+_ESQPARS2_EdDiagResetScratchFlag:
     DS.W    1
 _ESQPARS2_BannerSweepEntryGuardCounter:
     DS.W    1
@@ -275,15 +275,15 @@ _ESQPARS2_BannerCopyBlockWordLimit:
 _ESQPARS2_BannerQueueAttentionDelayTicks:
     DC.L    $00110000
     DS.L    1
-ESQPARS2_LogAppendSpinlock:
+_ESQPARS2_LogAppendSpinlock:
     DS.L    1
-ESQPARS2_LogTimestampFmt:
+_ESQPARS2_LogTimestampFmt:
     NStr    "%02ld:%02ld:%02ld %2.2s"
-ESQPARS2_LogTagPm:
+_ESQPARS2_LogTagPm:
     NStr    "PM"
-ESQPARS2_LogTagAm:
+_ESQPARS2_LogTagAm:
     NStr    "AM"
-ESQPARS2_LogFieldTab:
+_ESQPARS2_LogFieldTab:
     DC.W    $0900
-ESQPARS2_LogLineTerminator:
+_ESQPARS2_LogLineTerminator:
     DC.L    $0d0a0000

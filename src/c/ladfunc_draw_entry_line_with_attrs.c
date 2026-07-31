@@ -1,5 +1,5 @@
 /* RESTORES: LADFUNC_DrawEntryLineWithAttrs
- * MODULE:   modules/groups/a/w/ladfunc_p1.s
+ * MODULE:   modules/groups/a/w/ladfunc_p1_p0.s
  * STATUS:   behavioural
  *
  * Draws one line of an entry, splitting it into RUNS OF CONSTANT ATTRIBUTE and
@@ -77,8 +77,10 @@
 #define MEMF_PUBLIC 1L
 #define MEMF_CLEAR  0x10000L
 
-extern long  NEWGRID_JMPTBL_MATH_DivS32(long a, long b);
-extern long  NEWGRID_JMPTBL_MATH_Mulu32(long a, long b);
+extern long __asm NEWGRID_JMPTBL_MATH_DivS32(register __d0 long a,
+                        register __d1 long b);
+extern long __asm NEWGRID_JMPTBL_MATH_Mulu32(register __d0 long a,
+                        register __d1 long b);
 extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
 extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,

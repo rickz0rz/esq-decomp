@@ -1,5 +1,5 @@
 /* RESTORES: NEWGRID_GetEntryStateCode
- * MODULE:   modules/groups/b/a/newgrid1b_p1_2_p0.s
+ * MODULE:   modules/groups/b/a/newgrid1b_p1_2_p0_p0.s
  * STATUS:   behavioural
  *
  * Returns a small state code for a grid entry at a 1-based slot: 0 when the

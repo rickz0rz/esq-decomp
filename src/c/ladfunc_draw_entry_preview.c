@@ -80,7 +80,8 @@ struct LadCtx {
 
 extern struct LadCtx *GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(
                           long mode, long zero, long arg);
-extern long  NEWGRID_JMPTBL_MATH_DivS32(long a, long b);
+extern long __asm NEWGRID_JMPTBL_MATH_DivS32(register __d0 long a,
+                        register __d1 long b);
 extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
 extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,

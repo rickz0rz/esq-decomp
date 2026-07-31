@@ -105,7 +105,8 @@ struct IffCtx {
 
 extern void  ESQIFF_RunCopperDropTransition(void);
 extern void  ESQIFF_RunCopperRiseTransition(void);
-extern long  ESQIFF_JMPTBL_MATH_DivS32(long a, long b);
+extern long __asm ESQIFF_JMPTBL_MATH_DivS32(register __d0 long a,
+                        register __d1 long b);
 extern void  ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition(long steps,
                                                             long delay);
 extern struct IffCtx *ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(

@@ -1,7 +1,7 @@
     XDEF    _GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable
     XDEF    _Global_STR_GCOMMAND_C_1
     XDEF    _GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile
-    XDEF    GCOMMAND_NicheParseScratchSeedWord
+    XDEF    _GCOMMAND_NicheParseScratchSeedWord
     XDEF    _GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateLoad
     XDEF    _Global_STR_GCOMMAND_C_2
     XDEF    _GCOMMAND_FMT_PCT_T_MplexTemplateLoad
@@ -48,16 +48,16 @@ _Global_STR_GCOMMAND_C_1:
 _GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile:
     NStr    "DF0:Digital_Niche.dat"
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_NicheParseScratchSeedWord   (niche option-parse scratch seed word)
+; SYM: _GCOMMAND_NicheParseScratchSeedWord   (niche option-parse scratch seed word)
 ; TYPE: u16 (used as first half of a 4-byte seed copy)
 ; PURPOSE: Seed word copied into local parse scratch before reading niche option flags.
-; USED BY: GCOMMAND_ParseCommandOptions
+; USED BY: _GCOMMAND_ParseCommandOptions
 ; NOTES:
 ;   Callsite copies 4 bytes starting at this symbol into `-12(A5)..-9(A5)` before
 ;   parsing (`MOVE.B (A0)+` x4). Bytes 2..3 are layout-coupled with immediately
 ;   following data and should be treated as legacy parse seeding behavior.
 ;------------------------------------------------------------------------------
-GCOMMAND_NicheParseScratchSeedWord:
+_GCOMMAND_NicheParseScratchSeedWord:
     DS.W    1
 _GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateLoad:
     NStr    "DF0:Digital_Mplex.dat"
@@ -82,7 +82,7 @@ _GCOMMAND_MplexTemplateFieldSeparatorByteStorage:
 ; SYM: _GCOMMAND_MplexParseScratchSeedWord   (mplex option-parse scratch seed word)
 ; TYPE: u16 (used as first half of a 4-byte seed copy)
 ; PURPOSE: Seed word copied into local parse scratch before reading mplex option flags.
-; USED BY: GCOMMAND_ParseCommandString
+; USED BY: _GCOMMAND_ParseCommandString
 ; NOTES:
 ;   Callsite copies 4 bytes starting at this symbol into `-12(A5)..-9(A5)` before
 ;   parsing (`MOVE.B (A0)+` x4). Bytes 2..3 are layout-coupled with immediately
@@ -329,7 +329,7 @@ _GCOMMAND_PresetSeedPackedWordTable:
 ; SYM: _GCOMMAND_PresetWorkResetPendingFlag   (preset-work reset pending flag)
 ; TYPE: u16 flag
 ; PURPOSE: Requests one-time reset of preset work entries before active highlight message tick.
-; USED BY: GCOMMAND_ValidatePresetTable, _GCOMMAND_ResetPresetWorkTables, _GCOMMAND_ServiceHighlightMessages
+; USED BY: _GCOMMAND_ValidatePresetTable, _GCOMMAND_ResetPresetWorkTables, _GCOMMAND_ServiceHighlightMessages
 ; NOTES:
 ;   Set when preset defaults are copied/validated and cleared by _GCOMMAND_ResetPresetWorkTables.
 ;------------------------------------------------------------------------------
@@ -339,7 +339,7 @@ _GCOMMAND_PresetWorkResetPendingFlag:
 ; SYM: _GCOMMAND_BannerRebuildPendingFlag   (banner rebuild pending flag)
 ; TYPE: u16 flag
 ; PURPOSE: Defers banner-table rebuild until the next highlight tick.
-; USED BY: GCOMMAND_UpdateBannerBounds, _GCOMMAND_RebuildBannerTablesFromBounds, GCOMMAND_TickHighlightState
+; USED BY: _GCOMMAND_UpdateBannerBounds, _GCOMMAND_RebuildBannerTablesFromBounds, _GCOMMAND_TickHighlightState
 ; NOTES:
 ;   Set after bounds/step updates, consumed then cleared by rebuild path.
 ;------------------------------------------------------------------------------
@@ -369,7 +369,7 @@ _GCOMMAND_ActiveHighlightMsgPtr:
 ; SYM: _GCOMMAND_BannerRowByteOffsetResetValue   (banner row-byte offset reset seed)
 ; TYPE: u32 scalar
 ; PURPOSE: Initial/reset byte offset for banner row fetches.
-; USED BY: _GCOMMAND_BuildBannerTables, GCOMMAND_TickHighlightState
+; USED BY: _GCOMMAND_BuildBannerTables, _GCOMMAND_TickHighlightState
 ; NOTES:
 ;   Value is $00001760 (5984 decimal), loaded whenever the 98-step banner ring wraps.
 ;   Not a table; this is a single longword constant.
@@ -381,7 +381,7 @@ _GCOMMAND_BannerRowByteOffsetResetValue:
 ; SYM: _GCOMMAND_BannerPhaseIndexCurrent   (banner phase/ring index)
 ; TYPE: u32 scalar
 ; PURPOSE: Tracks the current phase index for banner row generation.
-; USED BY: _GCOMMAND_BuildBannerTables, GCOMMAND_TickHighlightState, GCOMMAND_RefreshBannerTables, _GCOMMAND_BuildBannerRow
+; USED BY: _GCOMMAND_BuildBannerTables, _GCOMMAND_TickHighlightState, _GCOMMAND_RefreshBannerTables, _GCOMMAND_BuildBannerRow
 ; NOTES:
 ;   Increments once per highlight tick and wraps at 98 (`0..97`).
 ;   Passed as the `baseRowIndex` argument into _GCOMMAND_BuildBannerRow.
@@ -392,7 +392,7 @@ _GCOMMAND_BannerPhaseIndexCurrent:
 ; SYM: _GCOMMAND_HighlightHoldoffTickCount   (highlight holdoff countdown)
 ; TYPE: u16 scalar (byte access in hot paths)
 ; PURPOSE: Short countdown that delays status/read-mode transitions during highlight updates.
-; USED BY: _GCOMMAND_ConsumeBannerQueueEntry, ESQSHARED4_TickCopperAndBannerTransitions, _ESQFUNC_ProcessUiFrameTick
+; USED BY: _GCOMMAND_ConsumeBannerQueueEntry, _ESQSHARED4_TickCopperAndBannerTransitions, _ESQFUNC_ProcessUiFrameTick
 ; NOTES:
 ;   Seeded to 2 when a banner queue control step is consumed, then decremented once per frame.
 ;   Non-zero blocks ESQDISP status-indicator refresh and keeps the banner blit path in holdoff mode.

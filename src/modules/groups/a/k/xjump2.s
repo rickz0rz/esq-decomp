@@ -56,7 +56,7 @@ _GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   TLIBA3_DrawViewModeGuides
+;   _TLIBA3_DrawViewModeGuides
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -67,7 +67,7 @@ _GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides:
-    JMP     TLIBA3_DrawViewModeGuides
+    JMP     _TLIBA3_DrawViewModeGuides
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable   (Routine at _GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable)

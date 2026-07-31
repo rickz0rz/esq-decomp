@@ -1,10 +1,10 @@
     XDEF    _Global_STR_ESQIFF_C_1
-    XDEF    ESQIFF_BannerBrushResourceCursor
-    XDEF    ESQIFF_STR_WEATHER
-    XDEF    Global_STR_ESQIFF_C_2
-    XDEF    ESQIFF_WeatherSliceRemainingWidth
-    XDEF    ESQIFF_WeatherSliceSourceOffset
-    XDEF    ESQIFF_WeatherSliceValidateGateFlag
+    XDEF    _ESQIFF_BannerBrushResourceCursor
+    XDEF    _ESQIFF_STR_WEATHER
+    XDEF    _Global_STR_ESQIFF_C_2
+    XDEF    _ESQIFF_WeatherSliceRemainingWidth
+    XDEF    _ESQIFF_WeatherSliceSourceOffset
+    XDEF    _ESQIFF_WeatherSliceValidateGateFlag
     XDEF    _Global_STR_ESQIFF_C_3
     XDEF    _Global_STR_ESQIFF_C_4
     XDEF    _Global_STR_ESQIFF_C_5
@@ -16,13 +16,13 @@
     XDEF    _Global_STR_DF0_BRUSH_INI_2
     XDEF    _ESQIFF_TAG_DT
     XDEF    _ESQIFF_TAG_DITHER
-    XDEF    ESQIFF_FMT_PCT_S_DOT_PCT_LD
-    XDEF    Global_STR_MAJOR_MINOR_VERSION_1
-    XDEF    ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA
-    XDEF    ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD
-    XDEF    Global_STR_MAJOR_MINOR_VERSION_2
-    XDEF    ESQIFF_STR_CORRECT_VERSION_IS
-    XDEF    Global_STR_APOSTROPHE
+    XDEF    _ESQIFF_FMT_PCT_S_DOT_PCT_LD
+    XDEF    _Global_STR_MAJOR_MINOR_VERSION_1
+    XDEF    _ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA
+    XDEF    _ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD
+    XDEF    _Global_STR_MAJOR_MINOR_VERSION_2
+    XDEF    _ESQIFF_STR_CORRECT_VERSION_IS
+    XDEF    _Global_STR_APOSTROPHE
     XDEF    _Global_STR_PLEASE_STANDBY_2
     XDEF    _Global_STR_ATTENTION_SYSTEM_ENGINEER_2
     XDEF    _Global_STR_REPORT_ERROR_CODE_FORMATTED
@@ -34,49 +34,49 @@
 _Global_STR_ESQIFF_C_1:
     NStr    "ESQIFF.c"
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_BannerBrushResourceCursor   (banner brush resource cursor)
+; SYM: _ESQIFF_BannerBrushResourceCursor   (banner brush resource cursor)
 ; TYPE: pointer (brush resource node)
 ; PURPOSE: Tracks current node while queuing/weather-rendering banner brush work.
-; USED BY: ESQIFF_QueueIffBrushLoad
+; USED BY: _ESQIFF_QueueIffBrushLoad
 ; NOTES:
 ;   Seeded from _PARSEINI_BannerBrushResourceHead and advanced via node +234
 ;   next-link field when mode does not request cursor hold.
 ;------------------------------------------------------------------------------
-ESQIFF_BannerBrushResourceCursor:
+_ESQIFF_BannerBrushResourceCursor:
     DS.L    1
-ESQIFF_STR_WEATHER:
+_ESQIFF_STR_WEATHER:
     NStr    "weather"
-Global_STR_ESQIFF_C_2:
+_Global_STR_ESQIFF_C_2:
     NStr    "ESQIFF.c"
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_WeatherSliceRemainingWidth   (weather slice remaining width)
+; SYM: _ESQIFF_WeatherSliceRemainingWidth   (weather slice remaining width)
 ; TYPE: u16
 ; PURPOSE: Remaining pixel width left to blit for current weather brush slice.
-; USED BY: ESQIFF_RenderWeatherStatusBrushSlice
+; USED BY: _ESQIFF_RenderWeatherStatusBrushSlice
 ; NOTES:
 ;   Initialized from brush width (A2+178), decremented by per-tick slice width.
 ;------------------------------------------------------------------------------
-ESQIFF_WeatherSliceRemainingWidth:
+_ESQIFF_WeatherSliceRemainingWidth:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_WeatherSliceSourceOffset   (weather slice source offset)
+; SYM: _ESQIFF_WeatherSliceSourceOffset   (weather slice source offset)
 ; TYPE: u16
 ; PURPOSE: Running source-X offset into the weather brush for incremental blits.
-; USED BY: ESQIFF_RenderWeatherStatusBrushSlice
+; USED BY: _ESQIFF_RenderWeatherStatusBrushSlice
 ; NOTES:
 ;   Reset to 0 on slice init; increased by emitted slice width each update.
 ;------------------------------------------------------------------------------
-ESQIFF_WeatherSliceSourceOffset:
+_ESQIFF_WeatherSliceSourceOffset:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQIFF_WeatherSliceValidateGateFlag   (weather-slice one-shot validation gate)
+; SYM: _ESQIFF_WeatherSliceValidateGateFlag   (weather-slice one-shot validation gate)
 ; TYPE: u8 flag in word storage
 ; PURPOSE: One-shot guard for _NEWGRID_ValidateSelectionCode trigger in mode 11.
-; USED BY: ESQIFF_RenderWeatherStatusBrushSlice
+; USED BY: _ESQIFF_RenderWeatherStatusBrushSlice
 ; NOTES:
 ;   Accessed with byte operations (set to 1, tested, then cleared once fired).
 ;------------------------------------------------------------------------------
-ESQIFF_WeatherSliceValidateGateFlag:
+_ESQIFF_WeatherSliceValidateGateFlag:
     DC.W    $0100
 _Global_STR_ESQIFF_C_3:
     NStr    "ESQIFF.c"
@@ -102,19 +102,19 @@ _ESQIFF_TAG_DT:
     NStr    "DT"
 _ESQIFF_TAG_DITHER:
     NStr    "DITHER"
-ESQIFF_FMT_PCT_S_DOT_PCT_LD:
+_ESQIFF_FMT_PCT_S_DOT_PCT_LD:
     NStr    "%s.%ld"
-Global_STR_MAJOR_MINOR_VERSION_1:
+_Global_STR_MAJOR_MINOR_VERSION_1:
     NStr    "9.0"   ; major/minor version
-ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA:
+_ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA:
     NStr    "Incorrect Version! Please correct ASAP!"
-ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD:
+_ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD:
     NStr    "Your version is    '%s.%ld'"
-Global_STR_MAJOR_MINOR_VERSION_2:
+_Global_STR_MAJOR_MINOR_VERSION_2:
     NStr    "9.0"   ; major/minor version
-ESQIFF_STR_CORRECT_VERSION_IS:
+_ESQIFF_STR_CORRECT_VERSION_IS:
     NStr    "Correct version is '"
-Global_STR_APOSTROPHE:
+_Global_STR_APOSTROPHE:
     NStr    "'"
 _Global_STR_PLEASE_STANDBY_2:
     NStr    "Please Standby..."

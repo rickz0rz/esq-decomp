@@ -112,7 +112,7 @@ def extract(label):
         lineno = 0
         code = text.split(';')[0]
         at_label = re.match(r'^([A-Za-z_][A-Za-z0-9_]*):', code)
-        if at_label and at_label.group(1) == label:
+        if at_label and at_label.group(1) in (label, '_' + label):
             grabbing, srcfile = True, cur
             rows.append((addr, enc, lineno, text)); continue
         if grabbing:
@@ -120,7 +120,7 @@ def extract(label):
                 break
             rows.append((addr, enc, lineno, text))
     if not grabbing:
-        sys.exit(f'refbytes: label not found: {label}')
+        sys.exit(f'refbytes: label not found: {label} (also tried _{label})')
     while rows and not rows[-1][1]:
         rows.pop()
     check_contiguous(rows, label)

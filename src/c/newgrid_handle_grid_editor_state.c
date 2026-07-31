@@ -1,5 +1,5 @@
 /* RESTORES: NEWGRID_HandleGridEditorState
- * MODULE:   modules/groups/b/a/newgrid1b_p2.s
+ * MODULE:   modules/groups/b/a/newgrid1b_p2_p0.s
  * STATUS:   behavioural
  *
  * Runs one step of the grid editor workflow and returns the new state.

@@ -1,9 +1,9 @@
-    XDEF    ESQIFF2_ShowVersionMismatchOverlay
+    XDEF    _ESQIFF2_ShowVersionMismatchOverlay
     XDEF    ESQIFF2_ShowVersionMismatchOverlay_Return
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF2_ShowVersionMismatchOverlay   (Validate version and draw mismatch overlay)
+; FUNC: _ESQIFF2_ShowVersionMismatchOverlay   (Validate version and draw mismatch overlay)
 ; ARGS:
 ;   stack +36: arg_1 (via 40(A5))
 ; RET:
@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, _ESQSHARED_JMPTBL_ESQ_WildcardMatch, _GCOMMAND_SeedBannerFromPrefs, _GROUP_AM_JMPTBL_WDISP_SPrintf, _GROUP_AR_JMPTBL_STRING_AppendAtNull, _LVODisable, _LVOEnable, _LVORectFill, _LVOSetAPen
 ; READS:
-;   AbsExecBase, _Global_LONG_PATCH_VERSION_NUMBER, _Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, Global_STR_APOSTROPHE, Global_STR_MAJOR_MINOR_VERSION_1, Global_STR_MAJOR_MINOR_VERSION_2, ESQIFF2_ShowVersionMismatchOverlay_Return, ESQIFF_FMT_PCT_S_DOT_PCT_LD, ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA, ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD, ESQIFF_STR_CORRECT_VERSION_IS, _ED_DiagnosticsScreenActive, _Global_UIBusyFlag, _ESQIFF_RecordBufferPtr, lab_0B24
+;   AbsExecBase, _Global_LONG_PATCH_VERSION_NUMBER, _Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _Global_STR_APOSTROPHE, _Global_STR_MAJOR_MINOR_VERSION_1, _Global_STR_MAJOR_MINOR_VERSION_2, ESQIFF2_ShowVersionMismatchOverlay_Return, _ESQIFF_FMT_PCT_S_DOT_PCT_LD, _ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA, _ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD, _ESQIFF_STR_CORRECT_VERSION_IS, _ED_DiagnosticsScreenActive, _Global_UIBusyFlag, _ESQIFF_RecordBufferPtr, lab_0B24
 ; WRITES:
 ;   _ESQPARS2_ReadModeFlags, _ED_DiagnosticsScreenActive
 ; DESC:
@@ -22,15 +22,15 @@
 ; NOTES:
 ;   Skips drawing when UI is busy and diagnostics screen is inactive.
 ;------------------------------------------------------------------------------
-ESQIFF2_ShowVersionMismatchOverlay:
+_ESQIFF2_ShowVersionMismatchOverlay:
     LINK.W  A5,#-40
     MOVEM.L D2-D3,-(A7)
 
     MOVEA.L _ESQIFF_RecordBufferPtr,A0
     CLR.B   20(A0)
     MOVE.L  _Global_LONG_PATCH_VERSION_NUMBER,-(A7)
-    PEA     Global_STR_MAJOR_MINOR_VERSION_1
-    PEA     ESQIFF_FMT_PCT_S_DOT_PCT_LD
+    PEA     _Global_STR_MAJOR_MINOR_VERSION_1
+    PEA     _ESQIFF_FMT_PCT_S_DOT_PCT_LD
     PEA     -40(A5)
     JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -80,15 +80,15 @@ ESQIFF2_ShowVersionMismatchOverlay:
     MOVEQ   #3,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA
+    PEA     _ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA
     PEA     90.W
     PEA     30.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     MOVE.L  _Global_LONG_PATCH_VERSION_NUMBER,(A7)
-    PEA     Global_STR_MAJOR_MINOR_VERSION_2
-    PEA     ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD
+    PEA     _Global_STR_MAJOR_MINOR_VERSION_2
+    PEA     _ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD
     PEA     -40(A5)
     JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -98,7 +98,7 @@ ESQIFF2_ShowVersionMismatchOverlay:
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
-    LEA     ESQIFF_STR_CORRECT_VERSION_IS,A0
+    LEA     _ESQIFF_STR_CORRECT_VERSION_IS,A0
     LEA     -40(A5),A1
     MOVEQ   #4,D0
 
@@ -115,7 +115,7 @@ ESQIFF2_ShowVersionMismatchOverlay:
     PEA     -40(A5)
     JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
-    PEA     Global_STR_APOSTROPHE
+    PEA     _Global_STR_APOSTROPHE
     PEA     -40(A5)
     JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -142,7 +142,7 @@ ESQIFF2_ShowVersionMismatchOverlay:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Shared return tail for ESQIFF2_ShowVersionMismatchOverlay.
+;   Shared return tail for _ESQIFF2_ShowVersionMismatchOverlay.
 ; NOTES:
 ;   Restores D2-D3 and frame state before returning.
 ;------------------------------------------------------------------------------

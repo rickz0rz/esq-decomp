@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, _ESQDISP_ProcessGridMessagesIfIdle, _ESQFUNC_ProcessUiFrameTick
+;   _ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts, _ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState, _ESQDISP_ProcessGridMessagesIfIdle, _ESQFUNC_ProcessUiFrameTick
 ; READS:
 ;   _ESQ_MainLoopUiTickEnabledFlag, _CLEANUP_PendingAlertFlag
 ; WRITES:

@@ -10,10 +10,10 @@
     XDEF    _Global_STR_CLEANUP_C_10
     XDEF    _Global_STR_CLEANUP_C_11
     XDEF    _Global_STR_CLEANUP_C_12
-    XDEF    Global_STR_CLEANUP_C_13
-    XDEF    Global_STR_CLEANUP_C_14
-    XDEF    Global_STR_CLEANUP_C_15
-    XDEF    Global_STR_CLEANUP_C_16
+    XDEF    _Global_STR_CLEANUP_C_13
+    XDEF    _Global_STR_CLEANUP_C_14
+    XDEF    _Global_STR_CLEANUP_C_15
+    XDEF    _Global_STR_CLEANUP_C_16
     XDEF    _CLEANUP_AlertCooldownTicks
     XDEF    _CLEANUP_AlertProcessingFlag
     XDEF    _CLEANUP_BannerTickCounter
@@ -43,13 +43,13 @@ _Global_STR_CLEANUP_C_11:
     NStr    "CLEANUP.c"
 _Global_STR_CLEANUP_C_12:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_13:
+_Global_STR_CLEANUP_C_13:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_14:
+_Global_STR_CLEANUP_C_14:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_15:
+_Global_STR_CLEANUP_C_15:
     NStr    "CLEANUP.c"
-Global_STR_CLEANUP_C_16:
+_Global_STR_CLEANUP_C_16:
     NStr    "CLEANUP.c"
 ; Frame countdown for alert retry attempts.
 _CLEANUP_AlertCooldownTicks:

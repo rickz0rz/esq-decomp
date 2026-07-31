@@ -18,3 +18,4 @@
     assert  VPOSR==$DFF004,"VPOSR moved; update the -D flags in build-split.sh"
     assert  CIAB_PRA==$BFD000,"CIAB_PRA moved; update mkabsdefs args in build-split.sh"
     assert  SERDAT==$DFF030,"SERDAT moved; update mkabsdefs args in build-split.sh"
+    assert  COP1LCH==$DFF080,"COP1LCH moved; update mkabsdefs args in build-split.sh"

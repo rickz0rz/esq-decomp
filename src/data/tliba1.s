@@ -1,26 +1,26 @@
-    XDEF    Global_STR_TLIBA1_C_1
-    XDEF    Global_STR_TLIBA1_C_2
+    XDEF    _Global_STR_TLIBA1_C_1
+    XDEF    _Global_STR_TLIBA1_C_2
     XDEF    _Global_STR_TLIBA1_C_3
     XDEF    _TLIBA1_STR_TLIBA1_DOT_C
-    XDEF    TLIBA1_FormatFallbackBuffer
-    XDEF    TLIBA1_FormatFallbackFieldPtr0
-    XDEF    TLIBA1_FormatFallbackFieldPtr1
-    XDEF    TLIBA1_FormatFallbackFieldPtr2
-    XDEF    TLIBA1_FormatFallbackFieldPtr3
-    XDEF    TLIBA1_FMT_PCT_C_PCT_S
-    XDEF    TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X
-    XDEF    TLIBA1_STR_TLFormatStructOpenBraceLine
-    XDEF    TLIBA1_FMT_TLF_COLOR_PCT_D
-    XDEF    TLIBA1_FMT_TLF_OFFSET_PCT_D
-    XDEF    TLIBA1_FMT_TLF_FONTSEL_PCT_D
-    XDEF    TLIBA1_FMT_TLF_ALIGN_PCT_D
-    XDEF    TLIBA1_FMT_TLF_PREGAP_PCT_D
-    XDEF    TLIBA1_STR_TLFormatStructCloseBraceLine
+    XDEF    _TLIBA1_FormatFallbackBuffer
+    XDEF    _TLIBA1_FormatFallbackFieldPtr0
+    XDEF    _TLIBA1_FormatFallbackFieldPtr1
+    XDEF    _TLIBA1_FormatFallbackFieldPtr2
+    XDEF    _TLIBA1_FormatFallbackFieldPtr3
+    XDEF    _TLIBA1_FMT_PCT_C_PCT_S
+    XDEF    _TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X
+    XDEF    _TLIBA1_STR_TLFormatStructOpenBraceLine
+    XDEF    _TLIBA1_FMT_TLF_COLOR_PCT_D
+    XDEF    _TLIBA1_FMT_TLF_OFFSET_PCT_D
+    XDEF    _TLIBA1_FMT_TLF_FONTSEL_PCT_D
+    XDEF    _TLIBA1_FMT_TLF_ALIGN_PCT_D
+    XDEF    _TLIBA1_FMT_TLF_PREGAP_PCT_D
+    XDEF    _TLIBA1_STR_TLFormatStructCloseBraceLine
     XDEF    _TLIBA1_PatternTableInitGuard
     XDEF    _TEXTDISP_LrbnEntryWidthPx
     XDEF    _TLIBA1_FMT_PCT_03LD_VerticalScaleTick
-    XDEF    TLIBA1_FMT_PCT_03LD_HorizontalScaleTick
-    XDEF    TLIBA1_FMT_VIEWMODE_PCT_LD
+    XDEF    _TLIBA1_FMT_PCT_03LD_HorizontalScaleTick
+    XDEF    _TLIBA1_FMT_VIEWMODE_PCT_LD
     XDEF    _TLIBA1_CurrentViewModeIndex
     XDEF    _TLIBA1_DiagDiwOffset
     XDEF    _TLIBA1_DiagDdfOffset
@@ -49,52 +49,52 @@
     XDEF    Global_STR_VM_ARRAY_1
     XDEF    Global_STR_VM_ARRAY_2
     XDEF    TLIBA1_STR_PatternDumpLoopNewline
-    XDEF    TLIBA1_PreviewSlotRefreshState
-    XDEF    TLIBA1_PreviewSlotRenderResult
+    XDEF    _TLIBA1_PreviewSlotRefreshState
+    XDEF    _TLIBA1_PreviewSlotRenderResult
     XDEF    _TLIBA1_DayEntryModeCounter
     XDEF    _WDISP_StatusDayEntry0
-    XDEF    WDISP_StatusDayEntry1
-    XDEF    WDISP_StatusDayEntry2
-    XDEF    WDISP_StatusDayEntry3
-    XDEF    TLIBA1_StatusBannerPropagateGuard
+    XDEF    _WDISP_StatusDayEntry1
+    XDEF    _WDISP_StatusDayEntry2
+    XDEF    _WDISP_StatusDayEntry3
+    XDEF    _TLIBA1_StatusBannerPropagateGuard
 ; ========== TLIBA1.c ==========
 
-Global_STR_TLIBA1_C_1:
+_Global_STR_TLIBA1_C_1:
     NStr    "TLIBA1.c"
-Global_STR_TLIBA1_C_2:
+_Global_STR_TLIBA1_C_2:
     NStr    "TLIBA1.c"
 _Global_STR_TLIBA1_C_3:
     NStr    "TLIBA1.c"
 _TLIBA1_STR_TLIBA1_DOT_C:
     DC.B    "TLIBA1.c",0
-TLIBA1_FormatFallbackBuffer:
+_TLIBA1_FormatFallbackBuffer:
     DS.B    1
     DS.W    1
-TLIBA1_FormatFallbackFieldPtr0:
+_TLIBA1_FormatFallbackFieldPtr0:
     DS.W    1
-TLIBA1_FormatFallbackFieldPtr1:
+_TLIBA1_FormatFallbackFieldPtr1:
     DS.W    1
-TLIBA1_FormatFallbackFieldPtr2:
+_TLIBA1_FormatFallbackFieldPtr2:
     DS.W    1
-TLIBA1_FormatFallbackFieldPtr3:
+_TLIBA1_FormatFallbackFieldPtr3:
     DS.W    1
-TLIBA1_FMT_PCT_C_PCT_S:
+_TLIBA1_FMT_PCT_C_PCT_S:
     NStr    "%c%s"
-TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X:
+_TLIBA1_FMT_STRUCT_TLFORMAT_0X_PCT_X:
     NStr2   "struct TLFormat @ 0x%x =",TextLineFeed
-TLIBA1_STR_TLFormatStructOpenBraceLine:
+_TLIBA1_STR_TLFormatStructOpenBraceLine:
     NStr2   "{",TextLineFeed
-TLIBA1_FMT_TLF_COLOR_PCT_D:
+_TLIBA1_FMT_TLF_COLOR_PCT_D:
     NStr3   TextHorizontalTab,"tlf_Color =   %d",TextLineFeed
-TLIBA1_FMT_TLF_OFFSET_PCT_D:
+_TLIBA1_FMT_TLF_OFFSET_PCT_D:
     NStr3   TextHorizontalTab,"tlf_Offset =  %d",TextLineFeed
-TLIBA1_FMT_TLF_FONTSEL_PCT_D:
+_TLIBA1_FMT_TLF_FONTSEL_PCT_D:
     NStr3   TextHorizontalTab,"tlf_FontSel = %d",TextLineFeed
-TLIBA1_FMT_TLF_ALIGN_PCT_D:
+_TLIBA1_FMT_TLF_ALIGN_PCT_D:
     NStr3   TextHorizontalTab,"tlf_Align =   %d",TextLineFeed
-TLIBA1_FMT_TLF_PREGAP_PCT_D:
+_TLIBA1_FMT_TLF_PREGAP_PCT_D:
     NStr3   TextHorizontalTab,"tlf_Pregap =  %d",TextLineFeed
-TLIBA1_STR_TLFormatStructCloseBraceLine:
+_TLIBA1_STR_TLFormatStructCloseBraceLine:
     NStr2   "}",TextLineFeed
 _TLIBA1_PatternTableInitGuard:
     DS.W    1
@@ -102,9 +102,9 @@ _TEXTDISP_LrbnEntryWidthPx:
     DC.B    1,"("
 _TLIBA1_FMT_PCT_03LD_VerticalScaleTick:
     NStr    "%03ld"
-TLIBA1_FMT_PCT_03LD_HorizontalScaleTick:
+_TLIBA1_FMT_PCT_03LD_HorizontalScaleTick:
     NStr    "%03ld"
-TLIBA1_FMT_VIEWMODE_PCT_LD:
+_TLIBA1_FMT_VIEWMODE_PCT_LD:
     NStr    "ViewMode = %ld"
 _TLIBA1_CurrentViewModeIndex:
     DS.L    1
@@ -170,26 +170,26 @@ Global_STR_VM_ARRAY_2:
 TLIBA1_STR_PatternDumpLoopNewline:
     NStr    10
     DS.W    1
-TLIBA1_PreviewSlotRefreshState:
+_TLIBA1_PreviewSlotRefreshState:
     DS.L    1
-TLIBA1_PreviewSlotRenderResult:
+_TLIBA1_PreviewSlotRenderResult:
     DS.L    1
 _TLIBA1_DayEntryModeCounter:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: _WDISP_StatusDayEntry0..WDISP_StatusDayEntry3   (status-day entry ring)
+; SYM: _WDISP_StatusDayEntry0.._WDISP_StatusDayEntry3   (status-day entry ring)
 ; TYPE: struct[4]
 ; PURPOSE: Four consecutive day-entry structs consumed by banner/status rendering and shifted each update tick.
-; USED BY: UNKNOWN_ParseListAndUpdateEntries, ESQDISP_DrawStatusBanner, WDISP_DrawStatusBannerSlots
+; USED BY: UNKNOWN_ParseListAndUpdateEntries, _ESQDISP_DrawStatusBanner, WDISP_DrawStatusBannerSlots
 ; NOTES: Per-entry layout is likely: +0 day code, +4/+8/+12 numeric fields, +16 active/pending flag.
 ;------------------------------------------------------------------------------
 _WDISP_StatusDayEntry0:
     DC.L    0,1,0,0,1
-WDISP_StatusDayEntry1:
+_WDISP_StatusDayEntry1:
     DC.L    0,1,0,0,1
-WDISP_StatusDayEntry2:
+_WDISP_StatusDayEntry2:
     DC.L    0,1,0,0,1
-WDISP_StatusDayEntry3:
+_WDISP_StatusDayEntry3:
     DC.L    0,1,0,0
-TLIBA1_StatusBannerPropagateGuard:
+_TLIBA1_StatusBannerPropagateGuard:
     DC.L    1

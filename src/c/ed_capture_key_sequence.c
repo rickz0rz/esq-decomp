@@ -36,7 +36,8 @@
 #include <string.h>
 
 extern long ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(long ch);
-extern long GROUP_AG_JMPTBL_MATH_DivS32(long a, long b);
+extern long __asm GROUP_AG_JMPTBL_MATH_DivS32(register __d0 long a,
+                        register __d1 long b);
 
 extern unsigned char ED_CustomPaletteTriplesDefaultTemplate24B[];
 extern long  ED_StateRingIndex;

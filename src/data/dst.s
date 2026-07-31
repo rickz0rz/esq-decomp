@@ -27,7 +27,7 @@
     XDEF    _DST_STR_LEAP_YEAR
     XDEF    _DST_STR_NORM_YEAR
     XDEF    _ED_MenuStateId
-    XDEF    ED_MenuDispatchReentryGuard
+    XDEF    _ED_MenuDispatchReentryGuard
     XDEF    _ED_TextModeReinitPendingFlag
 ; ========== DST.c ==========
 DST_PATH_DF0_COLON_DST_DOT_DAT:
@@ -99,13 +99,13 @@ _DST_STR_NORM_YEAR:
 _ED_MenuStateId:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ED_MenuDispatchReentryGuard   (ED dispatch reentry gate)
+; SYM: _ED_MenuDispatchReentryGuard   (ED dispatch reentry gate)
 ; TYPE: u32 flag
-; PURPOSE: Prevents nested/reentrant ED_DispatchEscMenuState execution.
-; USED BY: ED_DispatchEscMenuState
+; PURPOSE: Prevents nested/reentrant _ED_DispatchEscMenuState execution.
+; USED BY: _ED_DispatchEscMenuState
 ; NOTES: Cleared while dispatch is active and restored to 1 on exit.
 ;------------------------------------------------------------------------------
-ED_MenuDispatchReentryGuard:
+_ED_MenuDispatchReentryGuard:
     DC.L    1
 ;------------------------------------------------------------------------------
 ; SYM: _ED_TextModeReinitPendingFlag   (text-mode reinit pending)

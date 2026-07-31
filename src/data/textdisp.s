@@ -1,11 +1,11 @@
-    XDEF    Global_STR_TEXTDISP_C_1
-    XDEF    TEXTDISP_DefaultSpacePad
-    XDEF    Global_STR_TEXTDISP_C_2
+    XDEF    _Global_STR_TEXTDISP_C_1
+    XDEF    _TEXTDISP_DefaultSpacePad
+    XDEF    _Global_STR_TEXTDISP_C_2
     XDEF    _Global_STR_DF0_SOURCECFG_INI_2
     XDEF    _Global_STR_TEXTDISP_C_3
     XDEF    _Global_STR_TEXTDISP_C_4
     XDEF    _TEXTDISP_ActiveGroupId
-    XDEF    TEXTDISP_FormatEntryFallbackTable
+    XDEF    _TEXTDISP_FormatEntryFallbackTable
     XDEF    _TEXTDISP_CenterAlignToken
     XDEF    _TEXTDISP_LeftAlignToken
     XDEF    _TEXTDISP_Tag_PPV
@@ -18,18 +18,18 @@
     XDEF    _TEXTDISP_Tag_SPT_Select
 ; ========== TEXTDISP.c ==========
 
-Global_STR_TEXTDISP_C_1:
+_Global_STR_TEXTDISP_C_1:
     NStr    "TEXTDISP.c"
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_DefaultSpacePad   (default source-config pad)
+; SYM: _TEXTDISP_DefaultSpacePad   (default source-config pad)
 ; TYPE: char[2]
 ; PURPOSE: Default single-space string copied into source-config buffer fields.
 ; USED BY: _TEXTDISP_HandleScriptCommand
 ; NOTES: NUL-terminated.
 ;------------------------------------------------------------------------------
-TEXTDISP_DefaultSpacePad:
+_TEXTDISP_DefaultSpacePad:
     NStr    " "
-Global_STR_TEXTDISP_C_2:
+_Global_STR_TEXTDISP_C_2:
     NStr    "TEXTDISP.c"
 _Global_STR_DF0_SOURCECFG_INI_2:
     NStr    "df0:SourceCfg.ini"
@@ -51,7 +51,7 @@ _TEXTDISP_ActiveGroupId:
 ; SYM: TEXTDISP_FormatEntryFallbackWord0   (fallback table word 0??)
 ; TYPE: u32
 ; PURPOSE: First literal word consumed by TEXTDISP fallback format-entry table.
-; USED BY: TEXTDISP_FormatEntryFallbackTable
+; USED BY: _TEXTDISP_FormatEntryFallbackTable
 ; NOTES: Field-level semantics are still unresolved; kept as table-member alias.
 ;------------------------------------------------------------------------------
 TEXTDISP_FormatEntryFallbackWord0:
@@ -60,19 +60,19 @@ TEXTDISP_FormatEntryFallbackWord0:
 ; SYM: TEXTDISP_FormatEntryFallbackWord1   (fallback table word 1??)
 ; TYPE: u32
 ; PURPOSE: Second literal word consumed by TEXTDISP fallback format-entry table.
-; USED BY: TEXTDISP_FormatEntryFallbackTable
+; USED BY: _TEXTDISP_FormatEntryFallbackTable
 ; NOTES: Field-level semantics are still unresolved; kept as table-member alias.
 ;------------------------------------------------------------------------------
 TEXTDISP_FormatEntryFallbackWord1:
     DC.B    TextAlignCenter,TextAlignLeft,TextAlignLeft,TextAlignLeft,0,0
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_FormatEntryFallbackTable   (format entry fallback table)
+; SYM: _TEXTDISP_FormatEntryFallbackTable   (format entry fallback table)
 ; TYPE: struct/table ??
 ; PURPOSE: Read-only fallback template data used while building formatted entry text.
-; USED BY: TLIBA1_FormatClockFormatEntry
+; USED BY: _TLIBA1_FormatClockFormatEntry
 ; NOTES: Includes pointers to Word0/Word1 followed by packed literal rows.
 ;------------------------------------------------------------------------------
-TEXTDISP_FormatEntryFallbackTable:
+_TEXTDISP_FormatEntryFallbackTable:
     DC.L    TEXTDISP_FormatEntryFallbackWord0
     DC.L    TEXTDISP_FormatEntryFallbackWord1
     DC.L    $7f020408,$10204001,$3e3e0000,$00000024
@@ -100,7 +100,7 @@ _TEXTDISP_LeftAlignToken:
 ; SYM: _TEXTDISP_Tag_PPV/_TEXTDISP_Tag_SBE/_TEXTDISP_Tag_SPORTS/_TEXTDISP_Tag_SPT_Filter/_TEXTDISP_Tag_FIND1/_TEXTDISP_Tag_SPT_Select   (filter tags)
 ; TYPE: char[] strings
 ; PURPOSE: Pattern tokens used by TEXTDISP wildcard/filter and selection logic.
-; USED BY: _TEXTDISP_BuildMatchIndexList, TEXTDISP_SelectBestMatchFromList
+; USED BY: _TEXTDISP_BuildMatchIndexList, _TEXTDISP_SelectBestMatchFromList
 ; NOTES: Two distinct SPT tokens are retained because they are used in different phases.
 ;------------------------------------------------------------------------------
 _TEXTDISP_Tag_PPV:

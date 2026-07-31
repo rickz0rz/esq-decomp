@@ -1,5 +1,5 @@
 /* RESTORES: CLEANUP_DrawTimeBannerSegment
- * MODULE:   modules/groups/a/c/cleanup2_p1_p0.s
+ * MODULE:   modules/groups/a/c/cleanup2_p1_p0_p0.s
  * STATUS:   behavioural
  *
  * The third of the three banner segment drawers, and the one whose fill and

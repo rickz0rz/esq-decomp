@@ -41,7 +41,7 @@ _ED_DrawScrollSpeedMenuText:
     MOVEQ   #0,D0
     MOVE.B  _ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED,D0         ; '3'
     MOVE.L  D0,-(A7)
-    PEA     ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C
+    PEA     _ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C
     PEA     .statusLine(A5)
     JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -51,19 +51,19 @@ _ED_DrawScrollSpeedMenuText:
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_SPEED_ZERO_NOT_AVAILABLE
+    PEA     _Global_STR_SPEED_ZERO_NOT_AVAILABLE
     PEA     120.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_SPEED_ONE_NOT_AVAILABLE
+    PEA     _Global_STR_SPEED_ONE_NOT_AVAILABLE
     PEA     150.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_SCROLL_SPEED_2
+    PEA     _Global_STR_SCROLL_SPEED_2
     PEA     180.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
@@ -71,31 +71,31 @@ _ED_DrawScrollSpeedMenuText:
 
     LEA     76(A7),A7
 
-    PEA     Global_STR_SCROLL_SPEED_3
+    PEA     _Global_STR_SCROLL_SPEED_3
     PEA     210.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_SCROLL_SPEED_4
+    PEA     _Global_STR_SCROLL_SPEED_4
     PEA     240.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_SCROLL_SPEED_5
+    PEA     _Global_STR_SCROLL_SPEED_5
     PEA     270.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_SCROLL_SPEED_6
+    PEA     _Global_STR_SCROLL_SPEED_6
     PEA     300.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_SCROLL_SPEED_7
+    PEA     _Global_STR_SCROLL_SPEED_7
     PEA     330.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)

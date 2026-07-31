@@ -25,7 +25,7 @@
 ; CALLS:
 ;   _DATETIME_IsLeapYear, _DATETIME_BuildFromBaseDay, _DATETIME_ClassifyValueInRange, _DATETIME_SecondsToStruct, _GROUP_AG_JMPTBL_MATH_Mulu32/1A07
 ; READS:
-;   _CLOCK_DaySlotIndex, WDISP_BannerSlotCursor, _CLOCK_CacheYear, _ESQ_SecondarySlotModeFlagChar, _ESQ_STR_6, _CLOCK_FormatVariantCode, _DST_BannerWindowSecondary, _DST_BannerWindowPrimary
+;   _CLOCK_DaySlotIndex, _WDISP_BannerSlotCursor, _CLOCK_CacheYear, _ESQ_SecondarySlotModeFlagChar, _ESQ_STR_6, _CLOCK_FormatVariantCode, _DST_BannerWindowSecondary, _DST_BannerWindowPrimary
 ; WRITES:
 ;   (A3), 14(A2)
 ; DESC:
@@ -51,7 +51,7 @@ _DST_BuildBannerTimeEntry:
     MOVE.W  (A0),(A1)
     MOVEQ   #0,D0
     MOVE.B  D6,D0
-    MOVE.W  WDISP_BannerSlotCursor,D1
+    MOVE.W  _WDISP_BannerSlotCursor,D1
     MOVE.W  D0,-30(A5)
     CMPI.W  #$ff,D1
     BLT.S   .after_wrap_flag
@@ -82,7 +82,7 @@ _DST_BuildBannerTimeEntry:
     CMP.W   D1,D0
     BNE.S   .maybe_increment_year
 
-    MOVE.W  WDISP_BannerSlotCursor,D2
+    MOVE.W  _WDISP_BannerSlotCursor,D2
     SUBQ.W  #1,D2
     BEQ.S   .maybe_increment_year
 

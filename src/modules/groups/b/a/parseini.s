@@ -123,7 +123,7 @@ _PARSEINI_ParseIniBufferAndDispatch:
 
     MOVEQ   #3,D7
     ; [gradient] seeds/edits the dedicated gradient staging table.
-    ; This path does not directly target GCOMMAND_PresetValueTable.
+    ; This path does not directly target _GCOMMAND_PresetValueTable.
     PEA     _GCOMMAND_GradientPresetTable
     JSR     _PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(PC)
 

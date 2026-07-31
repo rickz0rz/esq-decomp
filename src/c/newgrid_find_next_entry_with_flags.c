@@ -1,5 +1,5 @@
 /* RESTORES: NEWGRID_FindNextEntryWithFlags
- * MODULE:   modules/groups/b/a/newgrid1b_p2.s
+ * MODULE:   modules/groups/b/a/newgrid1b_p2_p0.s
  * STATUS:   behavioural
  *
  * The near-twin of newgrid_find_next_flagged_entry.c. Same scan, same result

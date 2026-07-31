@@ -71,7 +71,7 @@
     XDEF    _Global_REF_LONG_DF0_LOGO_LST_FILESIZE
     XDEF    _Global_REF_LONG_DF0_LOGO_LST_DATA
     XDEF    _ESQFUNC_MissingAssetRetryMask
-    XDEF    ESQFUNC_IffTaskGateFlags
+    XDEF    _ESQFUNC_IffTaskGateFlags
     XDEF    _ESQFUNC_TAG_00
     XDEF    _ESQFUNC_TAG_11
 ; ========== ESQFUNC.c ==========
@@ -259,7 +259,7 @@ _ESQFUNC_STR_I5:
 ; SYM: ESQFUNC_PwBrushNamePtrTable   (weather-status brush-name pointer table)
 ; TYPE: array<u32 ptr>
 ; PURPOSE: Maps normalized brush index to brush-name strings used by brush lookup.
-; USED BY: ESQIFF_DrawWeatherStatusOverlayIntoBrush, _WDISP_DrawWeatherStatusOverlay
+; USED BY: _ESQIFF_DrawWeatherStatusOverlayIntoBrush, _WDISP_DrawWeatherStatusOverlay
 ; NOTES: Callers normalize index with -1 before scaling by 4.
 ;------------------------------------------------------------------------------
 ESQFUNC_PwBrushNamePtrTable:
@@ -282,7 +282,7 @@ _Global_REF_LONG_DF0_LOGO_LST_DATA:
 _ESQFUNC_MissingAssetRetryMask:
     DS.W    1
     DS.B    1
-ESQFUNC_IffTaskGateFlags:
+_ESQFUNC_IffTaskGateFlags:
     DS.B    1
 _ESQFUNC_TAG_00:
     NStr    "00"

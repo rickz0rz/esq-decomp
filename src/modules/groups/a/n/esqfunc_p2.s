@@ -4,10 +4,10 @@
     TST.W   _CLEANUP_PendingAlertFlag
     BEQ.S   .lab_0980
 
-    JSR     ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts(PC)
+    JSR     _ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts(PC)
 
 .lab_0980:
-    JSR     ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState(PC)
+    JSR     _ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState(PC)
 
     RTS
 
