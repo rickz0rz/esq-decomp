@@ -38,6 +38,21 @@ echo "==> reference (monolithic)"
 "$VASM_BIN" -I src -Fhunkexe -nosym -o "$BUILD/ESQ_reference" src/Prevue.asm >/dev/null
 shasum -a 256 "$BUILD/ESQ_reference"
 
+# A C extern must dereference a global as many times as the original does. Get
+# it wrong and the code reads a different address while every byte check stays
+# green: DATA=FAR makes each access an absolute long carrying a relocation, and
+# cdiff.sh masks relocated fields by definition. The emitted size does not move
+# either. That is how a clock-format table read one level too shallow removed
+# every time-slot label from the grid banner and passed the soak, menusweep and
+# framecolor. Only the addressing mode the original uses can settle it.
+if [ -n "${C_REPLACEMENTS:-}" ]; then
+    echo "==> checking C extern shapes against the original's addressing"
+    if ! python3 tools/data_shape_audit.py; then
+        echo "*** ABORT: a C extern disagrees with the data it names. ***"
+        exit 1
+    fi
+fi
+
 echo "==> generating link units"
 python3 tools/gen_units.py
 

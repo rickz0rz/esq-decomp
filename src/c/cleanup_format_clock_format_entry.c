@@ -29,6 +29,25 @@
  *
  * The string copy is MOVE.B (A1)+,(A2)+ / BNE -- what strcpy inlines to.
  *
+ * THE FORMAT TABLE IS REACHED THROUGH TWO DEREFERENCES, and the first version
+ * of this file used one. The symbol is a single DC.L in src/data/esq.s that
+ * HOLDS the table base, so `char *X[]` made the symbol itself the table. Slot 0
+ * then copied from the table base, whose first byte is the high byte of a
+ * pointer, so every label came out EMPTY and Text() drew nothing. The result
+ * was a grid banner with its bevels, separators and running clock intact and
+ * all three time-slot labels missing.
+ *
+ * NO BYTE CHECK COULD SEE IT. The emitted size is 124 either way, DATA=FAR
+ * turns the access into an absolute long carrying a relocation, and cdiff.sh
+ * masks relocated fields by definition. The soak passed, menusweep passed on
+ * all six items, and framecolor called every bin overlapping -- the yellow bin
+ * ran at half the reference median but still overlapped, because both dip to
+ * zero between screens. A user watching the program found it.
+ *
+ * tools/data_shape_audit.py now compares every C extern against the addressing
+ * mode the original uses at that symbol, and build-split.sh runs it on any C
+ * build. It reports this file when the declaration is reverted.
+ *
  * 120 ref vs 124 got. The slot wrap loop is VERBATIM (7030 be80 6f04 9e80 60f6),
  * and so are the MOVEQ #30 divisor, the remainder move to D6, the ASL.L #2
  * table index, the inline strcpy (244b 14d9 66fc), the TST.L / BLE guard, the
@@ -63,7 +82,21 @@
 #include <string.h>
 
 extern unsigned char CLOCK_FormatVariantCode;
-extern char *Global_REF_STR_CLOCK_FORMAT[];
+
+/* TWO dereferences, not one. The symbol is a single DC.L in src/data/esq.s
+ * that HOLDS the table base, so the original reads the pointer, indexes it,
+ * and then reads the string:
+ *
+ *   MOVEA.L _Global_REF_STR_CLOCK_FORMAT,A0 / ADDA.L D0,A0 / MOVEA.L (A0),A1
+ *
+ * Declaring it `char *X[]` makes the symbol ITSELF the table and drops a level.
+ * Slot 0 then copies from the table base, whose first byte is the high byte of
+ * a pointer, so the label comes out EMPTY and every clock-format label stops
+ * being drawn. DATA=FAR turns each access into an absolute long carrying a
+ * relocation, and cdiff.sh masks relocated fields, so the byte comparison
+ * cannot see this at all.
+ */
+extern char **Global_REF_STR_CLOCK_FORMAT;
 
 void CLEANUP_FormatClockFormatEntry(long slot, char *out)
 {

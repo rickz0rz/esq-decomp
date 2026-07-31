@@ -1118,6 +1118,49 @@ output. Offsets are only tested if the file is promoted to `exact` and linked.
 Re-derive them from the listing before promoting anything that uses a struct.
 `diskio_write_buffered_bytes.c`
 
+**...and it does not validate the DEREFERENCE COUNT either.** The same masking
+hides a worse error than a wrong offset: an `extern` that reads a global one
+level too shallow. `_Global_REF_STR_CLOCK_FORMAT` is a single `DC.L` that HOLDS
+a table base, so the original reads the pointer, indexes it, then reads the
+string:
+
+```
+MOVEA.L _Global_REF_STR_CLOCK_FORMAT,A0 / ADDA.L D0,A0 / MOVEA.L (A0),A1
+```
+
+Declared `char *X[]`, the symbol becomes the table and one load disappears.
+Slot 0 then copies from the table base, whose first byte is the high byte of a
+pointer, so the string is EMPTY and `Text()` draws nothing. Every time-slot
+label vanished from the grid banner while the bevels, the separators and the
+running clock stayed. **The emitted size is 124 bytes either way**, both byte
+gates ignore a C build, `a6_audit` and `check_pcrel_range` passed,
+`soak_esq.sh` passed, `menusweep_esq.sh` passed all six items, and
+`framecolor.py` reported every bin overlapping -- the yellow bin sat at half
+the reference median and still "overlapped", because both runs dip to zero
+between screens. **A user watching the program found it.**
+
+```sh
+python3 tools/data_shape_audit.py          # the manifest
+python3 tools/data_shape_audit.py --all    # every restoration
+```
+
+It compares each C extern against the addressing mode the original uses at that
+symbol -- `LEA`/`PEA`/`#sym`/`sym(An,Dn)` means the symbol IS the data, a bare
+operand means the symbol is READ -- and reports every disagreement.
+`build-split.sh` runs it on any build that sets `C_REPLACEMENTS` and aborts on
+a hit. Across all 593 restorations it finds exactly six other disagreements,
+all confirmed benign and listed in the tool's `BENIGN` set: four are `char X[]`
+with `X[0]` on a one-byte datum, which loads the same address, and two are
+whole-struct assignments, which read the bytes at the symbol as `LEA` plus a
+copy loop does.
+
+**Read framecolor's MEDIANS, not only its overlap verdict.** The tool exits
+nonzero only on disjoint ranges, and that test was too weak here. Compare a
+candidate against the PURE assembly build under the same flags rather than
+against the known-good alone: yellow ran 0.0163/0.0162/0.0162 on the pure far
+build and 0.0082/0.0082/0.0054 on the broken one, which is unambiguous where
+the min/median/max table was not.
+
 **A provably-dead test means the source used a pointer.** If the original
 null-checks something that can never be null -- the address of a static array, say
 -- write the source through a pointer local (`p = arr; if (p && *p)`) rather than
