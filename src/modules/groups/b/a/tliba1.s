@@ -1,10 +1,10 @@
-    XDEF    TLIBA1_DrawTextWithInsetSegments
+    XDEF    _TLIBA1_DrawTextWithInsetSegments
 
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA1_DrawTextWithInsetSegments   (Draw text with inline $13/$14 inset segments)
+; FUNC: _TLIBA1_DrawTextWithInsetSegments   (Draw text with inline $13/$14 inset segments)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -29,7 +29,7 @@
 ; NOTES:
 ;   Gracefully returns when input text is null/empty or allocation fails.
 ;------------------------------------------------------------------------------
-TLIBA1_DrawTextWithInsetSegments:
+_TLIBA1_DrawTextWithInsetSegments:
     LINK.W  A5,#-20
     MOVEM.L D5-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3

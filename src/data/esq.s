@@ -56,7 +56,7 @@
     XDEF    ED_DiagAvailMemPresetBits
     XDEF    _ESQDISP_GridMessagePumpBlockFlag
     XDEF    _SCRIPT_StatusRefreshHoldFlag
-    XDEF    TEXTDISP_TickSuspendFlag
+    XDEF    _TEXTDISP_TickSuspendFlag
     XDEF    _Global_WORD_SELECT_CODE_IS_RAVESC
     XDEF    ESQPARS_PersistOnNextBoxOffFlag
     XDEF    _HAS_REQUESTED_FAST_MEMORY
@@ -101,9 +101,9 @@
     XDEF    _ESQ_TAG_GRANADA
     XDEF    _Global_LONG_BUILD_NUMBER
     XDEF    _Global_PTR_STR_BUILD_ID
-    XDEF    ESQ_CopperEffectListA
-    XDEF    ESQ_CopperEffectListB_PtrHiWord
-    XDEF    ESQ_CopperEffectListB_PtrLoWord
+    XDEF    _ESQ_CopperEffectListA
+    XDEF    _ESQ_CopperEffectListB_PtrHiWord
+    XDEF    _ESQ_CopperEffectListB_PtrLoWord
     XDEF    _ESQ_CopperEffectTemplateRowsSet0
     XDEF    _ESQ_CopperStatusDigitsA
     XDEF    _ESQ_CopperStatusDigitsA_ColorRegistersA
@@ -132,8 +132,8 @@
     XDEF    ESQ_BannerSnapshotPlane1DstPtrLoWord
     XDEF    ESQ_BannerSnapshotPlane2DstPtrHiWord
     XDEF    ESQ_BannerSnapshotPlane2DstPtrLoWord
-    XDEF    ESQ_CopperEffectJumpTargetA_HiWord
-    XDEF    ESQ_CopperEffectJumpTargetA_LoWord
+    XDEF    _ESQ_CopperEffectJumpTargetA_HiWord
+    XDEF    _ESQ_CopperEffectJumpTargetA_LoWord
     XDEF    ESQ_BannerColorSweepProgramA_AnchorColorWord
     XDEF    ESQ_BannerColorSweepProgramA_TailColorWord
     XDEF    _ESQ_BannerColorClampValueA
@@ -144,13 +144,13 @@
     XDEF    ESQ_BannerPlane1DstPtrReset_LoWord
     XDEF    ESQ_BannerPlane2DstPtrReset_HiWord
     XDEF    ESQ_BannerPlane2DstPtrReset_LoWord
-    XDEF    ESQ_CopperEffectSwitchWaitWordA
+    XDEF    _ESQ_CopperEffectSwitchWaitWordA
     XDEF    _ESQ_CopperBannerTailListA
     XDEF    ESQ_BannerWorkRasterPtrTailA_HiWord
     XDEF    ESQ_CopperBannerRasterPointerListA
-    XDEF    ESQ_CopperEffectListB
-    XDEF    ESQ_CopperEffectListA_PtrHiWord
-    XDEF    ESQ_CopperEffectListA_PtrLoWord
+    XDEF    _ESQ_CopperEffectListB
+    XDEF    _ESQ_CopperEffectListA_PtrHiWord
+    XDEF    _ESQ_CopperEffectListA_PtrLoWord
     XDEF    _ESQ_CopperEffectTemplateRowsSet1
     XDEF    _ESQ_CopperStatusDigitsB
     XDEF    _ESQ_CopperStatusDigitsB_ColorRegistersA
@@ -177,8 +177,8 @@
     XDEF    ESQ_BannerSweepSrcPlane1Ptr_LoWord
     XDEF    ESQ_BannerSweepSrcPlane2Ptr_HiWord
     XDEF    ESQ_BannerSweepSrcPlane2Ptr_LoWord
-    XDEF    ESQ_CopperEffectJumpTargetB_HiWord
-    XDEF    ESQ_CopperEffectJumpTargetB_LoWord
+    XDEF    _ESQ_CopperEffectJumpTargetB_HiWord
+    XDEF    _ESQ_CopperEffectJumpTargetB_LoWord
     XDEF    ESQ_BannerColorSweepProgramB_AnchorColorWord
     XDEF    ESQ_BannerColorSweepProgramB_TailColorWord
     XDEF    _ESQ_BannerColorClampValueB
@@ -189,7 +189,7 @@
     XDEF    ESQ_BannerSweepSrcPlane1PtrReset_LoWord
     XDEF    ESQ_BannerSweepSrcPlane2PtrReset_HiWord
     XDEF    ESQ_BannerSweepSrcPlane2PtrReset_LoWord
-    XDEF    ESQ_CopperEffectSwitchWaitWordB
+    XDEF    _ESQ_CopperEffectSwitchWaitWordB
     XDEF    _ESQ_CopperBannerTailListB
     XDEF    ESQ_BannerWorkRasterPtrTailB_HiWord
     XDEF    ESQ_CopperBannerRasterPointerListB
@@ -412,7 +412,7 @@ _TEXTDISP_DeferredActionArmed:
 ; SYM: _GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3   (banner preset fallback nibble values)
 ; TYPE: u8/u8/u8/u8
 ; PURPOSE: Per-lane fallback values used when preset work entries are negative.
-; USED BY: GCOMMAND_RebuildBannerTablesFromBounds, ED diagnostic nibble editor/drawer
+; USED BY: _GCOMMAND_RebuildBannerTablesFromBounds, ED diagnostic nibble editor/drawer
 ; NOTES: Followed by packed template bytes consumed by nearby table-style logic.
 ;------------------------------------------------------------------------------
 _GCOMMAND_PresetFallbackValue0:
@@ -517,7 +517,7 @@ _ED_DiagAvailMemMask:
 ED_DiagAvailMemPresetBits:
     DC.B    0
 ;------------------------------------------------------------------------------
-; SYM: _ESQDISP_GridMessagePumpBlockFlag/_SCRIPT_StatusRefreshHoldFlag/TEXTDISP_TickSuspendFlag/ESQPARS_PersistOnNextBoxOffFlag
+; SYM: _ESQDISP_GridMessagePumpBlockFlag/_SCRIPT_StatusRefreshHoldFlag/_TEXTDISP_TickSuspendFlag/ESQPARS_PersistOnNextBoxOffFlag
 ; TYPE: u16/u16/u16/u16
 ; PURPOSE: Misc runtime gates for grid message pump, script refresh hold, text tick suspend, and deferred boxoff persist.
 ; USED BY: _ESQDISP_ProcessGridMessagesIfIdle, SCRIPT_UpdateCtrlStateMachine, TEXTDISP_TickDisplayState, ESQPARS command parser
@@ -527,7 +527,7 @@ _ESQDISP_GridMessagePumpBlockFlag:
     DC.W    0
 _SCRIPT_StatusRefreshHoldFlag:
     DC.W    0
-TEXTDISP_TickSuspendFlag:
+_TEXTDISP_TickSuspendFlag:
     DC.W    0
 _Global_WORD_SELECT_CODE_IS_RAVESC:
     DC.W    0
@@ -620,7 +620,7 @@ Global_STR_BUILD_ID:
 _Global_PTR_STR_BUILD_ID:
     DC.L    Global_STR_BUILD_ID
 ;------------------------------------------------------------------------------
-; SYM: ESQ_CopperEffectListA/ESQ_CopperEffectListB   (paired copper effect lists)
+; SYM: _ESQ_CopperEffectListA/_ESQ_CopperEffectListB   (paired copper effect lists)
 ; TYPE: u32[]/u32[]
 ; PURPOSE: Paired copperlists used for effect/status-band rendering and selected by VPOSR field state.
 ; USED BY: _ESQ_UpdateCopperListsFromParams, ESQSHARED4_ProgramDisplayWindowAndCopper, ESQSHARED4_TickCopperAndBannerTransitions
@@ -628,7 +628,7 @@ _Global_PTR_STR_BUILD_ID:
 ;   _ESQ_UpdateCopperListsFromParams writes synchronized effect words into both lists.
 ;   Selector polarity differs across some call paths; keep neutral A/B naming.
 ;------------------------------------------------------------------------------
-ESQ_CopperEffectListA:
+_ESQ_CopperEffectListA:
     DC.L    $055bfffe,$0100c306,$0100c306,$0100c306
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
@@ -648,9 +648,9 @@ ESQ_CopperEffectListA:
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
     DC.L    $03d9fffe
     DC.W    $0080
-ESQ_CopperEffectListB_PtrHiWord:
+_ESQ_CopperEffectListB_PtrHiWord:
     DC.L    $00000082
-ESQ_CopperEffectListB_PtrLoWord:
+_ESQ_CopperEffectListB_PtrLoWord:
     DC.W    0
 ;------------------------------------------------------------------------------
 ; SYM: _ESQ_CopperEffectTemplateRowsSet0   (copper effect list B body template ??)
@@ -722,7 +722,7 @@ ESQ_BannerPlane2SnapshotScratchPtrHiWord:
 ESQ_BannerPlane2SnapshotScratchPtrLoWord:
     DC.L    $00000182
 ;------------------------------------------------------------------------------
-; SYM: ESQ_BannerColorSweepProgramA..ESQ_CopperEffectSwitchWaitWordA   (banner copper color-sweep cluster A ??)
+; SYM: ESQ_BannerColorSweepProgramA.._ESQ_CopperEffectSwitchWaitWordA   (banner copper color-sweep cluster A ??)
 ; TYPE: u32/u16 mixed command templates
 ; PURPOSE: Runtime-patched copper command words used by banner color sweep (A path).
 ; USED BY: _ESQSHARED4_InitializeBannerCopperSystem, ESQSHARED4_ApplyBannerColorStep
@@ -776,9 +776,9 @@ ESQ_BannerSnapshotPlane2DstPtrHiWord:
     DC.L    $000000ea
 ESQ_BannerSnapshotPlane2DstPtrLoWord:
     DC.L    $00000100,$b3060084
-ESQ_CopperEffectJumpTargetA_HiWord:
+_ESQ_CopperEffectJumpTargetA_HiWord:
     DC.L    $00000086
-ESQ_CopperEffectJumpTargetA_LoWord:
+_ESQ_CopperEffectJumpTargetA_LoWord:
     DC.L    $00000182
 ESQ_BannerColorSweepProgramA_AnchorColorWord:
     DC.L    $0aaa018e
@@ -801,7 +801,7 @@ ESQ_BannerPlane2DstPtrReset_HiWord:
     DC.L    $000000ea
 ESQ_BannerPlane2DstPtrReset_LoWord:
     DC.W    0
-ESQ_CopperEffectSwitchWaitWordA:
+_ESQ_CopperEffectSwitchWaitWordA:
     DC.L    $009c8010
 ;------------------------------------------------------------------------------
 ; SYM: _ESQ_CopperBannerTailListA/_ESQ_CopperBannerTailListB   (banner copper tail lists)
@@ -1085,7 +1085,7 @@ ESQ_CopperBannerRasterPointerListA:
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff
     DC.W    $fffe
-ESQ_CopperEffectListB:
+_ESQ_CopperEffectListB:
     DC.L    $055bfffe,$0100c306,$0100c306,$0100c306
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
@@ -1105,9 +1105,9 @@ ESQ_CopperEffectListB:
     DC.L    $0100c306,$0100c306,$0100c306,$0100c306
     DC.L    $03d9fffe
     DC.W    $0080
-ESQ_CopperEffectListA_PtrHiWord:
+_ESQ_CopperEffectListA_PtrHiWord:
     DC.L    $00000082
-ESQ_CopperEffectListA_PtrLoWord:
+_ESQ_CopperEffectListA_PtrLoWord:
     DC.W    0
 ;------------------------------------------------------------------------------
 ; SYM: _ESQ_CopperEffectTemplateRowsSet1   (copper effect list A body template ??)
@@ -1223,9 +1223,9 @@ ESQ_BannerSweepSrcPlane2Ptr_HiWord:
     DC.L    $000000ea
 ESQ_BannerSweepSrcPlane2Ptr_LoWord:
     DC.L    $00000100,$b3060084
-ESQ_CopperEffectJumpTargetB_HiWord:
+_ESQ_CopperEffectJumpTargetB_HiWord:
     DC.L    $00000086
-ESQ_CopperEffectJumpTargetB_LoWord:
+_ESQ_CopperEffectJumpTargetB_LoWord:
     DC.L    $00000182
 ESQ_BannerColorSweepProgramB_AnchorColorWord:
     DC.L    $0aaa018e
@@ -1248,7 +1248,7 @@ ESQ_BannerSweepSrcPlane2PtrReset_HiWord:
     DC.L    $000000ea
 ESQ_BannerSweepSrcPlane2PtrReset_LoWord:
     DC.W    0
-ESQ_CopperEffectSwitchWaitWordB:
+_ESQ_CopperEffectSwitchWaitWordB:
     DC.L    $009c8010
 _ESQ_CopperBannerTailListB:
     DC.L    $00d9fffe,$0180016a,$01009306,$01820003

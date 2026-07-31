@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString, _PARSEINI_JMPTBL_STRING_CompareNoCase
 ; READS:
-;   _P_TYPE_WeatherCurrentMsgPtr, _P_TYPE_WeatherForecastMsgPtr, _P_TYPE_WeatherBottomLineMsgPtr, PARSEINI_STR_WEATHERCURRENT, PARSEINI_STR_WEATHERFORECAST, PARSEINI_STR_BOTTOMLINETAG
+;   _P_TYPE_WeatherCurrentMsgPtr, _P_TYPE_WeatherForecastMsgPtr, _P_TYPE_WeatherBottomLineMsgPtr, _PARSEINI_STR_WEATHERCURRENT, _PARSEINI_STR_WEATHERFORECAST, _PARSEINI_STR_BOTTOMLINETAG
 ; WRITES:
 ;   _P_TYPE_WeatherCurrentMsgPtr, _P_TYPE_WeatherForecastMsgPtr, _P_TYPE_WeatherBottomLineMsgPtr
 ; DESC:
@@ -24,7 +24,7 @@ _PARSEINI_LoadWeatherMessageStrings:
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEA.L 16(A7),A2
-    PEA     PARSEINI_STR_WEATHERCURRENT
+    PEA     _PARSEINI_STR_WEATHERCURRENT
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -41,7 +41,7 @@ _PARSEINI_LoadWeatherMessageStrings:
     BRA.S   .return_1407
 
 .if_ne_1405:
-    PEA     PARSEINI_STR_WEATHERFORECAST
+    PEA     _PARSEINI_STR_WEATHERFORECAST
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -58,7 +58,7 @@ _PARSEINI_LoadWeatherMessageStrings:
     BRA.S   .return_1407
 
 .if_ne_1406:
-    PEA     PARSEINI_STR_BOTTOMLINETAG
+    PEA     _PARSEINI_STR_BOTTOMLINETAG
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 

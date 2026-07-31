@@ -24,19 +24,19 @@
 ;   stack +38: arg_11 (via 42(A5))
 ;   stack +42: arg_12 (via 46(A5))
 ; RET:
-;   D0: state (NEWGRID_GridEntriesWorkflowState)
+;   D0: state (_NEWGRID_GridEntriesWorkflowState)
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   _NEWGRID_DrawGridHeaderRows, _NEWGRID_DrawSelectionMarkers,
-;   NEWGRID_DrawEntryRowOrPlaceholder, NEWGRID_GetEntryStateCode,
-;   NEWGRID_TestEntryState, _NEWGRID_SelectEntryPen, _NEWGRID_DrawGridCell,
-;   _NEWGRID_DrawGridFrame, _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex, _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode, _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths,
+;   _NEWGRID_DrawEntryRowOrPlaceholder, _NEWGRID_GetEntryStateCode,
+;   _NEWGRID_TestEntryState, _NEWGRID_SelectEntryPen, _NEWGRID_DrawGridCell,
+;   _NEWGRID_DrawGridFrame, _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex, _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode, _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, _NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths,
 ;   _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
 ; READS:
-;   _NEWGRID_GridOperationId, NEWGRID_GridEntriesWorkflowState, _TEXTDISP_PrimaryEntryPtrTable/2236, _CLOCK_DaySlotIndex, _NEWGRID_RowHeightPx/232B/232C/232D/232E
+;   _NEWGRID_GridOperationId, _NEWGRID_GridEntriesWorkflowState, _TEXTDISP_PrimaryEntryPtrTable/2236, _CLOCK_DaySlotIndex, _NEWGRID_RowHeightPx/232B/232C/232D/232E
 ; WRITES:
-;   NEWGRID_GridEntriesWorkflowState, NEWGRID_RowLayoutCommitPenId, NEWGRID_SelectionMarkerPenState, NEWGRID_HeaderFramePenId, NEWGRID_SelectedGridEntryPtr
+;   _NEWGRID_GridEntriesWorkflowState, _NEWGRID_RowLayoutCommitPenId, _NEWGRID_SelectionMarkerPenState, _NEWGRID_HeaderFramePenId, _NEWGRID_SelectedGridEntryPtr
 ; DESC:
 ;   Main grid loop that builds row state, selects pens, and draws rows/markers.
 ; NOTES:
@@ -55,11 +55,11 @@ _NEWGRID_ProcessGridEntries:
     BNE.S   .state_dispatch_check
 
     MOVEQ   #4,D0
-    MOVE.L  D0,NEWGRID_GridEntriesWorkflowState
+    MOVE.L  D0,_NEWGRID_GridEntriesWorkflowState
     BRA.W   .return_state
 
 .state_dispatch_check:
-    MOVE.L  NEWGRID_GridEntriesWorkflowState,D0
+    MOVE.L  _NEWGRID_GridEntriesWorkflowState,D0
     SUBQ.L  #4,D0
     BEQ.S   .state4_begin
 
@@ -67,8 +67,8 @@ _NEWGRID_ProcessGridEntries:
     BNE.W   .force_state_4
 
 .state5_redraw:
-    MOVE.L  NEWGRID_SelectionMarkerPenState,-(A7)
-    MOVE.L  NEWGRID_HeaderFramePenId,-(A7)
+    MOVE.L  _NEWGRID_SelectionMarkerPenState,-(A7)
+    MOVE.L  _NEWGRID_HeaderFramePenId,-(A7)
     MOVE.L  A3,-(A7)
     BSR.W   _NEWGRID_DrawGridHeaderRows
 
@@ -81,7 +81,7 @@ _NEWGRID_ProcessGridEntries:
     BEQ.W   .return_state
 
     MOVEQ   #4,D0
-    MOVE.L  D0,NEWGRID_GridEntriesWorkflowState
+    MOVE.L  D0,_NEWGRID_GridEntriesWorkflowState
     BRA.W   .return_state
 
 .state4_begin:
@@ -125,25 +125,25 @@ _NEWGRID_ProcessGridEntries:
     BSR.W   _NEWGRID_SelectEntryPen
 
     ADDQ.W  #4,A7
-    MOVE.L  D0,NEWGRID_SelectedGridEntryPtr
+    MOVE.L  D0,_NEWGRID_SelectedGridEntryPtr
     MOVEQ   #5,D0
     CMP.L   _NEWGRID_GridOperationId,D0
     BNE.S   .set_header_pen
 
-    MOVE.L  _GCOMMAND_NicheFramePen,NEWGRID_HeaderFramePenId
+    MOVE.L  _GCOMMAND_NicheFramePen,_NEWGRID_HeaderFramePenId
     BRA.S   .draw_header_frame
 
 .set_header_pen:
     MOVEQ   #7,D0
-    MOVE.L  D0,NEWGRID_HeaderFramePenId
+    MOVE.L  D0,_NEWGRID_HeaderFramePenId
 
 .draw_header_frame:
     MOVEQ   #0,D0
     MOVE.W  _NEWGRID_RowHeightPx,D0
     ADDQ.L  #3,D0
     MOVE.L  D0,-(A7)
-    MOVE.L  NEWGRID_SelectedGridEntryPtr,-(A7)
-    MOVE.L  NEWGRID_HeaderFramePenId,-(A7)
+    MOVE.L  _NEWGRID_SelectedGridEntryPtr,-(A7)
+    MOVE.L  _NEWGRID_HeaderFramePenId,-(A7)
     PEA     7.W
     MOVE.L  A3,-(A7)
     JSR     _NEWGRID_DrawGridFrame(PC)
@@ -168,8 +168,8 @@ _NEWGRID_ProcessGridEntries:
     ADD.L   D0,D3
     MOVE.L  D1,-34(A5)
     MOVE.L  D1,-38(A5)
-    MOVE.L  D2,NEWGRID_SelectionMarkerPenState
-    MOVE.L  D2,NEWGRID_RowLayoutCommitPenId
+    MOVE.L  D2,_NEWGRID_SelectionMarkerPenState
+    MOVE.L  D2,_NEWGRID_RowLayoutCommitPenId
     MOVE.L  A0,-12(A5)
     MOVE.L  A0,-4(A5)
     MOVEQ   #48,D0
@@ -269,7 +269,7 @@ _NEWGRID_ProcessGridEntries:
     MOVE.L  D0,-(A7)
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   NEWGRID_GetEntryStateCode
+    BSR.W   _NEWGRID_GetEntryStateCode
 
     LEA     12(A7),A7
     MOVE.W  #1,-22(A5)
@@ -292,7 +292,7 @@ _NEWGRID_ProcessGridEntries:
     MOVE.L  D5,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  -30(A5),-(A7)
-    BSR.W   NEWGRID_TestEntryState
+    BSR.W   _NEWGRID_TestEntryState
 
     LEA     16(A7),A7
     TST.L   D0
@@ -311,7 +311,7 @@ _NEWGRID_ProcessGridEntries:
     MOVE.L  D0,-(A7)
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(PC)
 
     LEA     12(A7),A7
     MOVE.W  D0,-20(A5)
@@ -375,7 +375,7 @@ _NEWGRID_ProcessGridEntries:
     PEA     48.W
     MOVE.L  (A2),-(A7)
     MOVE.L  (A1),-(A7)
-    BSR.W   NEWGRID_GetEntryStateCode
+    BSR.W   _NEWGRID_GetEntryStateCode
 
     LEA     12(A7),A7
     SUBQ.L  #2,D0
@@ -426,7 +426,7 @@ _NEWGRID_ProcessGridEntries:
     MOVE.L  D5,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  -30(A5),-(A7)
-    BSR.W   NEWGRID_TestEntryState
+    BSR.W   _NEWGRID_TestEntryState
 
     LEA     16(A7),A7
     TST.L   D0
@@ -440,7 +440,7 @@ _NEWGRID_ProcessGridEntries:
     MOVE.L  D5,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  -30(A5),-(A7)
-    BSR.W   NEWGRID_TestEntryState
+    BSR.W   _NEWGRID_TestEntryState
 
     LEA     16(A7),A7
     TST.L   D0
@@ -456,18 +456,18 @@ _NEWGRID_ProcessGridEntries:
 
 .update_colors:
     MOVE.L  _NEWGRID_OverridePenIndex,D0
-    MOVE.L  D0,NEWGRID_RowLayoutCommitPenId
+    MOVE.L  D0,_NEWGRID_RowLayoutCommitPenId
     MOVEA.L -12(A5),A0
     MOVE.W  -20(A5),D0
     BTST    #2,7(A0,D0.W)
     BEQ.S   .set_default_color
 
     MOVEQ   #5,D0
-    MOVE.L  D0,NEWGRID_SelectionMarkerPenState
+    MOVE.L  D0,_NEWGRID_SelectionMarkerPenState
     BRA.S   .compute_cell_height
 
 .set_default_color:
-    MOVE.L  #$ff,NEWGRID_SelectionMarkerPenState
+    MOVE.L  #$ff,_NEWGRID_SelectionMarkerPenState
 
 .compute_cell_height:
     MOVE.W  -22(A5),D0
@@ -491,7 +491,7 @@ _NEWGRID_ProcessGridEntries:
     MULU    D0,D2
     MOVEQ   #12,D0
     SUB.L   D0,D2
-    MOVE.L  NEWGRID_RowLayoutCommitPenId,-(A7)
+    MOVE.L  _NEWGRID_RowLayoutCommitPenId,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-42(A5)
@@ -501,7 +501,7 @@ _NEWGRID_ProcessGridEntries:
     MOVE.L  -38(A5),(A7)
     MOVE.L  -34(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths(PC)
 
     LEA     60(A3),A0
     MOVE.W  -20(A5),D0
@@ -514,7 +514,7 @@ _NEWGRID_ProcessGridEntries:
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   NEWGRID_DrawEntryRowOrPlaceholder
+    BSR.W   _NEWGRID_DrawEntryRowOrPlaceholder
 
     LEA     40(A7),A7
     BRA.W   .maybe_draw_markers
@@ -526,7 +526,7 @@ _NEWGRID_ProcessGridEntries:
     BGE.S   .clear_row_flag
 
     MOVEQ   #1,D1
-    MOVE.L  #$ff,NEWGRID_SelectionMarkerPenState
+    MOVE.L  #$ff,_NEWGRID_SelectionMarkerPenState
     MOVE.W  _NEWGRID_ColumnWidthPx,D2
     MULU    D0,D2
     MOVEQ   #12,D0
@@ -534,7 +534,7 @@ _NEWGRID_ProcessGridEntries:
     MOVE.L  D1,-(A7)
     PEA     2.W
     MOVE.L  D2,-(A7)
-    MOVE.L  D1,NEWGRID_RowLayoutCommitPenId
+    MOVE.L  D1,_NEWGRID_RowLayoutCommitPenId
     JSR     _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
     LEA     60(A3),A0
@@ -548,7 +548,7 @@ _NEWGRID_ProcessGridEntries:
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   NEWGRID_DrawEntryRowOrPlaceholder
+    BSR.W   _NEWGRID_DrawEntryRowOrPlaceholder
 
     LEA     32(A7),A7
     BRA.S   .maybe_draw_markers
@@ -566,7 +566,7 @@ _NEWGRID_ProcessGridEntries:
     BGE.S   .row_missing_done
 
     MOVEQ   #1,D0
-    MOVE.L  #$ff,NEWGRID_SelectionMarkerPenState
+    MOVE.L  #$ff,_NEWGRID_SelectionMarkerPenState
     MOVE.W  _NEWGRID_ColumnWidthPx,D2
     MULU    D1,D2
     MOVEQ   #12,D1
@@ -574,7 +574,7 @@ _NEWGRID_ProcessGridEntries:
     MOVE.L  D0,-(A7)
     PEA     2.W
     MOVE.L  D2,-(A7)
-    MOVE.L  D0,NEWGRID_RowLayoutCommitPenId
+    MOVE.L  D0,_NEWGRID_RowLayoutCommitPenId
     MOVE.L  D0,-30(A5)
     JSR     _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(PC)
 
@@ -589,7 +589,7 @@ _NEWGRID_ProcessGridEntries:
     MOVE.L  -12(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   NEWGRID_DrawEntryRowOrPlaceholder
+    BSR.W   _NEWGRID_DrawEntryRowOrPlaceholder
 
     LEA     32(A7),A7
     BRA.S   .maybe_draw_markers
@@ -608,7 +608,7 @@ _NEWGRID_ProcessGridEntries:
     EXT.L   D1
     MOVE.L  -38(A5),-(A7)
     MOVE.L  -34(A5),-(A7)
-    MOVE.L  NEWGRID_SelectionMarkerPenState,-(A7)
+    MOVE.L  _NEWGRID_SelectionMarkerPenState,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
@@ -647,13 +647,13 @@ _NEWGRID_ProcessGridEntries:
 
     LEA     12(A7),A7
     MOVEQ   #5,D0
-    MOVE.L  D0,NEWGRID_GridEntriesWorkflowState
+    MOVE.L  D0,_NEWGRID_GridEntriesWorkflowState
     MOVEQ   #0,D0
     NOT.B   D0
-    CMP.L   NEWGRID_SelectionMarkerPenState,D0
+    CMP.L   _NEWGRID_SelectionMarkerPenState,D0
     BNE.S   .store_frame_state
 
-    MOVE.L  NEWGRID_SelectedGridEntryPtr,NEWGRID_SelectionMarkerPenState
+    MOVE.L  _NEWGRID_SelectedGridEntryPtr,_NEWGRID_SelectionMarkerPenState
     BRA.S   .store_frame_state
 
 .draw_empty_cell:
@@ -665,7 +665,7 @@ _NEWGRID_ProcessGridEntries:
 
     LEA     12(A7),A7
     MOVEQ   #4,D0
-    MOVE.L  D0,NEWGRID_GridEntriesWorkflowState
+    MOVE.L  D0,_NEWGRID_GridEntriesWorkflowState
 
 .store_frame_state:
     MOVE.W  _NEWGRID_RowHeightPx,D0
@@ -681,15 +681,15 @@ _NEWGRID_ProcessGridEntries:
 .no_rows:
     CLR.W   52(A3)
     MOVEQ   #4,D0
-    MOVE.L  D0,NEWGRID_GridEntriesWorkflowState
+    MOVE.L  D0,_NEWGRID_GridEntriesWorkflowState
     BRA.S   .return_state
 
 .force_state_4:
     MOVEQ   #4,D0
-    MOVE.L  D0,NEWGRID_GridEntriesWorkflowState
+    MOVE.L  D0,_NEWGRID_GridEntriesWorkflowState
 
 .return_state:
-    MOVE.L  NEWGRID_GridEntriesWorkflowState,D0
+    MOVE.L  _NEWGRID_GridEntriesWorkflowState,D0
     MOVEM.L (A7)+,D2-D3/D5-D7/A2-A3
     UNLK    A5
     RTS
@@ -999,15 +999,15 @@ NEWGRID_HandleGridSelection:
 ;   stack +12: D6 = row pen/config value
 ;   stack +16: A2 = source text/template pointer
 ; RET:
-;   D0: state (NEWGRID_GridEditorWorkflowState)
+;   D0: state (_NEWGRID_GridEditorWorkflowState)
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   _NEWGRID_DrawGridFrameAndRows, _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer, _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount, _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams
 ; READS:
-;   NEWGRID_GridEditorWorkflowState
+;   _NEWGRID_GridEditorWorkflowState
 ; WRITES:
-;   NEWGRID_GridEditorWorkflowState, 32(A3)
+;   _NEWGRID_GridEditorWorkflowState, 32(A3)
 ; DESC:
 ;   Drives a small state machine for editor-related redraw paths.
 ; NOTES:
@@ -1024,11 +1024,11 @@ _NEWGRID_HandleGridEditorState:
     BNE.S   .state_dispatch_check
 
     MOVEQ   #4,D0
-    MOVE.L  D0,NEWGRID_GridEditorWorkflowState
+    MOVE.L  D0,_NEWGRID_GridEditorWorkflowState
     BRA.S   .return_state
 
 .state_dispatch_check:
-    MOVE.L  NEWGRID_GridEditorWorkflowState,D0
+    MOVE.L  _NEWGRID_GridEditorWorkflowState,D0
     SUBQ.L  #4,D0
     BEQ.S   .state4_draw
 
@@ -1068,7 +1068,7 @@ _NEWGRID_HandleGridEditorState:
     MOVEQ   #5,D0
 
 .state4_store_state:
-    MOVE.L  D0,NEWGRID_GridEditorWorkflowState
+    MOVE.L  D0,_NEWGRID_GridEditorWorkflowState
     BRA.S   .return_state
 
 .state5_frame_only:
@@ -1089,15 +1089,15 @@ _NEWGRID_HandleGridEditorState:
     MOVEQ   #5,D0
 
 .state5_store_state:
-    MOVE.L  D0,NEWGRID_GridEditorWorkflowState
+    MOVE.L  D0,_NEWGRID_GridEditorWorkflowState
     BRA.S   .return_state
 
 .force_state4:
     MOVEQ   #4,D0
-    MOVE.L  D0,NEWGRID_GridEditorWorkflowState
+    MOVE.L  D0,_NEWGRID_GridEditorWorkflowState
 
 .return_state:
-    MOVE.L  NEWGRID_GridEditorWorkflowState,D0
+    MOVE.L  _NEWGRID_GridEditorWorkflowState,D0
     MOVEM.L (A7)+,D6-D7/A2-A3
     RTS
 

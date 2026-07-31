@@ -1,8 +1,8 @@
-    XDEF    LOCAVAIL_AllocNodeArraysForState
+    XDEF    _LOCAVAIL_AllocNodeArraysForState
 
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_AllocNodeArraysForState   (Allocate shared header and node array for filter state)
+; FUNC: _LOCAVAIL_AllocNodeArraysForState   (Allocate shared header and node array for filter state)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -12,7 +12,7 @@
 ; CALLS:
 ;   GROUP_AY_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   Global_STR_LOCAVAIL_C_4, Global_STR_LOCAVAIL_C_5, MEMF_CLEAR, MEMF_PUBLIC
+;   _Global_STR_LOCAVAIL_C_4, _Global_STR_LOCAVAIL_C_5, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
 ;   A3+16 shared header ptr, A3+20 node array ptr
 ; DESC:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Initializes shared header refcount to zero before array allocation.
 ;------------------------------------------------------------------------------
-LOCAVAIL_AllocNodeArraysForState:
+_LOCAVAIL_AllocNodeArraysForState:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
@@ -36,7 +36,7 @@ LOCAVAIL_AllocNodeArraysForState:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     4.W
     PEA     218.W
-    PEA     Global_STR_LOCAVAIL_C_4
+    PEA     _Global_STR_LOCAVAIL_C_4
     JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -53,7 +53,7 @@ LOCAVAIL_AllocNodeArraysForState:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     229.W
-    PEA     Global_STR_LOCAVAIL_C_5
+    PEA     _Global_STR_LOCAVAIL_C_5
     JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7

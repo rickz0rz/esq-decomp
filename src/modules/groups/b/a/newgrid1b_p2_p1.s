@@ -1,10 +1,10 @@
-    XDEF    NEWGRID_DrawGridMessageAlt
-    XDEF    NEWGRID_UpdateSelectionFromInput
+    XDEF    _NEWGRID_DrawGridMessageAlt
+    XDEF    _NEWGRID_UpdateSelectionFromInput
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_UpdateSelectionFromInput   (Advance primary selection scan and resolve next match)
+; FUNC: _NEWGRID_UpdateSelectionFromInput   (Advance primary selection scan and resolve next match)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -13,8 +13,8 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _NEWGRID_ClearEntryMarkerBits, _NEWGRID_InitSelectionWindow, NEWGRID_UpdatePresetEntry,
-;   NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, _NEWGRID_ShouldOpenEditor, NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState
+;   _NEWGRID_ClearEntryMarkerBits, _NEWGRID_InitSelectionWindow, _NEWGRID_UpdatePresetEntry,
+;   _NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, _NEWGRID2_JMPTBL_ESQ_TestBit1Based, _NEWGRID_ShouldOpenEditor, _NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState
 ; READS:
 ;   NEWGRID_SelectionScanEntryIndex/2031, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryGroupPresentFlag, _GCOMMAND_PpvSelectionWindowMinutes
 ; WRITES:
@@ -24,7 +24,7 @@
 ; NOTES:
 ;   Uses D6 as a found/stop flag during the scan.
 ;------------------------------------------------------------------------------
-NEWGRID_UpdateSelectionFromInput:
+_NEWGRID_UpdateSelectionFromInput:
     LINK.W  A5,#-16
     MOVEM.L D5-D7/A3,-(A7)
     MOVE.L  8(A5),D7
@@ -118,7 +118,7 @@ NEWGRID_UpdateSelectionFromInput:
     MOVE.L  D1,-(A7)
     PEA     -8(A5)
     PEA     -4(A5)
-    BSR.W   NEWGRID_UpdatePresetEntry
+    BSR.W   _NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
     MOVE.L  D0,D5
@@ -146,7 +146,7 @@ NEWGRID_UpdateSelectionFromInput:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
@@ -161,7 +161,7 @@ NEWGRID_UpdateSelectionFromInput:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -225,7 +225,7 @@ NEWGRID_UpdateSelectionFromInput:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -301,7 +301,7 @@ NEWGRID_UpdateSelectionFromInput:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_DrawGridMessageAlt   (Draw alternate grid message)
+; FUNC: _NEWGRID_DrawGridMessageAlt   (Draw alternate grid message)
 ; ARGS:
 ;   stack +8: A3 = rastport
 ; RET:
@@ -319,7 +319,7 @@ NEWGRID_UpdateSelectionFromInput:
 ;   Reads message text directly from _GCOMMAND_PPVPeriodTemplatePtr.
 ;   This routine currently assumes that pointer is non-NULL.
 ;------------------------------------------------------------------------------
-NEWGRID_DrawGridMessageAlt:
+_NEWGRID_DrawGridMessageAlt:
     LINK.W  A5,#-12
     MOVEM.L D2/D7/A3,-(A7)
     MOVEA.L 32(A7),A3

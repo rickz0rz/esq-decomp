@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVORead
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, _Global_REF_LONG_FILE_SCRATCH, Global_STR_DISKIO_C_3, Global_STR_DISKIO_C_4, _Global_PTR_WORK_BUFFER, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE, return
+;   Global_REF_DOS_LIBRARY_2, _Global_REF_LONG_FILE_SCRATCH, _Global_STR_DISKIO_C_3, _Global_STR_DISKIO_C_4, _Global_PTR_WORK_BUFFER, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE, return
 ; WRITES:
 ;   _Global_REF_LONG_FILE_SCRATCH, _Global_PTR_WORK_BUFFER
 ; DESC:
@@ -63,7 +63,7 @@ _DISKIO_LoadFileToWorkBuffer:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     472.W
-    PEA     Global_STR_DISKIO_C_3
+    PEA     _Global_STR_DISKIO_C_3
     JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -93,7 +93,7 @@ _DISKIO_LoadFileToWorkBuffer:
     MOVE.L  D1,-(A7)
     MOVE.L  _Global_PTR_WORK_BUFFER,-(A7)
     PEA     492.W
-    PEA     Global_STR_DISKIO_C_4
+    PEA     _Global_STR_DISKIO_C_4
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7

@@ -1,9 +1,9 @@
     XDEF    ESQDISP_DrawStatusBanner
-    XDEF    ESQDISP_DrawStatusBanner_Impl
-    XDEF    ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty
-    XDEF    ESQDISP_NormalizeClockAndRedrawBanner
+    XDEF    _ESQDISP_DrawStatusBanner_Impl
+    XDEF    _ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty
+    XDEF    _ESQDISP_NormalizeClockAndRedrawBanner
     XDEF    ESQDISP_PollInputModeAndRefreshSelection
-    XDEF    ESQDISP_PropagatePrimaryTitleMetadataToSecondary
+    XDEF    _ESQDISP_PropagatePrimaryTitleMetadataToSecondary
     XDEF    ESQDISP_DrawStatusBanner_Impl_Return
     XDEF    ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return
     XDEF    ESQDISP_PropagatePrimaryTitleMetadataToSecondary_Return
@@ -158,7 +158,7 @@ ESQDISP_PollInputModeAndRefreshSelection:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_NormalizeClockAndRedrawBanner   (Normalize clock and redraw banner/status)
+; FUNC: _ESQDISP_NormalizeClockAndRedrawBanner   (Normalize clock and redraw banner/status)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ; RET:
@@ -166,7 +166,7 @@ ESQDISP_PollInputModeAndRefreshSelection:
 ; CLOBBERS:
 ;   A0/A3/A5/A7
 ; CALLS:
-;   _DST_RefreshBannerBuffer, DST_UpdateBannerQueue, ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner, ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData, ESQDISP_DrawStatusBanner_Impl
+;   _DST_RefreshBannerBuffer, _DST_UpdateBannerQueue, _ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner, _ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData, _ESQDISP_DrawStatusBanner_Impl
 ; READS:
 ;   _Global_REF_696_400_BITMAP, _Global_REF_RASTPORT_1, _DST_BannerWindowPrimary, _CLOCK_DaySlotIndex
 ; WRITES:
@@ -177,16 +177,16 @@ ESQDISP_PollInputModeAndRefreshSelection:
 ; NOTES:
 ;   Temporarily swaps rastport bitmap pointer during clock banner draw.
 ;------------------------------------------------------------------------------
-ESQDISP_NormalizeClockAndRedrawBanner:
+_ESQDISP_NormalizeClockAndRedrawBanner:
     LINK.W  A5,#-4
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVE.L  A3,-(A7)
     PEA     _CLOCK_DaySlotIndex
-    JSR     ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData(PC)
+    JSR     _ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData(PC)
 
     PEA     _DST_BannerWindowPrimary
-    JSR     DST_UpdateBannerQueue(PC)
+    JSR     _DST_UpdateBannerQueue(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -198,12 +198,12 @@ ESQDISP_NormalizeClockAndRedrawBanner:
     MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.L  4(A0),-4(A5)
     MOVE.L  #_Global_REF_696_400_BITMAP,4(A0)
-    JSR     ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner(PC)
+    JSR     _ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner(PC)
 
     MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)
     PEA     1.W
-    BSR.W   ESQDISP_DrawStatusBanner_Impl
+    BSR.W   _ESQDISP_DrawStatusBanner_Impl
 
     MOVEA.L -8(A5),A3
     UNLK    A5
@@ -214,7 +214,7 @@ ESQDISP_NormalizeClockAndRedrawBanner:
 ; Draw the status banner into rastport 1 (with optional highlight).
 ESQDISP_DrawStatusBanner:
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_DrawStatusBanner_Impl   (Render status banner rows and sync slot state)
+; FUNC: _ESQDISP_DrawStatusBanner_Impl   (Render status banner rows and sync slot state)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -222,7 +222,7 @@ ESQDISP_DrawStatusBanner:
 ; CLOBBERS:
 ;   A0/A1/A2/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange, ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex, ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList, _ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _LVOSetAPen
+;   ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange, ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex, ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList, _ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, _ESQIFF_JMPTBL_MATH_Mulu32, _ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _LVOSetAPen
 ; READS:
 ;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _ESQ_STR_B, _ESQ_STR_E, _ESQDISP_StatusBannerClampGateFlag, ESQDISP_LastPrimaryCountdownValue, ESQDISP_SecondaryPersistArmGateFlag, ESQDISP_SecondaryPropagationDoneFlag, _WDISP_StatusDayEntry0, WDISP_StatusDayEntry1, WDISP_StatusDayEntry2, WDISP_StatusDayEntry3, _CLOCK_DaySlotIndex, _CLOCK_CacheMonthIndex0, _CLOCK_CacheDayIndex0, _CLOCK_CacheYear, _DST_PrimaryCountdown, WDISP_BannerSlotCursor, _CLOCK_HalfHourSlotIndex, _CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
 ; WRITES:
@@ -234,7 +234,7 @@ ESQDISP_DrawStatusBanner:
 ;   May trigger one-time secondary metadata/list propagation when threshold
 ;   conditions are met near function tail.
 ;------------------------------------------------------------------------------
-ESQDISP_DrawStatusBanner_Impl:
+_ESQDISP_DrawStatusBanner_Impl:
     LINK.W  A5,#-4
     MOVEM.L D2-D3/D5-D7/A2,-(A7)
     MOVE.W  38(A7),D7
@@ -382,7 +382,7 @@ ESQDISP_DrawStatusBanner_Impl:
 
     MOVE.L  D6,D0
     MOVEQ   #20,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _WDISP_StatusDayEntry0,A0
     MOVEA.L A0,A1
@@ -405,7 +405,7 @@ ESQDISP_DrawStatusBanner_Impl:
     MOVE.L  D0,24(A7)
     MOVE.L  D6,D0
     MOVEQ   #20,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     ADDA.L  D0,A0
     MOVE.L  24(A7),D0
@@ -491,7 +491,7 @@ ESQDISP_DrawStatusBanner_Impl:
     TST.W   ESQDISP_SecondaryPropagationDoneFlag
     BNE.S   ESQDISP_DrawStatusBanner_Impl_Return
 
-    BSR.W   ESQDISP_PropagatePrimaryTitleMetadataToSecondary
+    BSR.W   _ESQDISP_PropagatePrimaryTitleMetadataToSecondary
 
     JSR     ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup(PC)
 
@@ -526,7 +526,7 @@ ESQDISP_DrawStatusBanner_Impl_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty   (Mirror primary entries into secondary group when empty)
+; FUNC: _ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty   (Mirror primary entries into secondary group when empty)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -534,7 +534,7 @@ ESQDISP_DrawStatusBanner_Impl_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D7
 ; CALLS:
-;   ESQDISP_FillProgramInfoHeaderFields, ESQSHARED_CreateGroupEntryAndTitle
+;   _ESQDISP_FillProgramInfoHeaderFields, _ESQSHARED_CreateGroupEntryAndTitle
 ; READS:
 ;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTablePreSlot, ff7f
 ; WRITES:
@@ -546,7 +546,7 @@ ESQDISP_DrawStatusBanner_Impl_Return:
 ; NOTES:
 ;   Loop walks primary indices from 0 to (PrimaryGroupEntryCount-1).
 ;------------------------------------------------------------------------------
-ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty:
+_ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty:
     LINK.W  A5,#-12
     MOVEM.L D2-D3/D7/A2-A3/A6,-(A7)
     MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
@@ -580,7 +580,7 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty:
     MOVE.L  A1,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQSHARED_CreateGroupEntryAndTitle(PC)
+    JSR     _ESQSHARED_CreateGroupEntryAndTitle(PC)
 
     MOVE.W  _TEXTDISP_SecondaryGroupEntryCount,D0
     MOVEQ   #0,D1
@@ -609,7 +609,7 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty:
     MOVE.L  D1,-(A7)
     MOVE.L  A1,-(A7)
     MOVE.L  A1,-8(A5)
-    BSR.W   ESQDISP_FillProgramInfoHeaderFields
+    BSR.W   _ESQDISP_FillProgramInfoHeaderFields
 
     LEA     44(A7),A7
     ADDQ.L  #1,D7
@@ -649,7 +649,7 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_PropagatePrimaryTitleMetadataToSecondary   (Propagate primary title metadata to matching secondary entries)
+; FUNC: _ESQDISP_PropagatePrimaryTitleMetadataToSecondary   (Propagate primary title metadata to matching secondary entries)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -657,7 +657,7 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   ESQSHARED_JMPTBL_ESQ_TestBit1Based, _ESQSHARED_JMPTBL_ESQ_WildcardMatch, _ESQPARS_ReplaceOwnedString
+;   _ESQSHARED_JMPTBL_ESQ_TestBit1Based, _ESQSHARED_JMPTBL_ESQ_WildcardMatch, _ESQPARS_ReplaceOwnedString
 ; READS:
 ;   _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryTitlePtrTable
 ; WRITES:
@@ -669,7 +669,7 @@ ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty_Return:
 ; NOTES:
 ;   Slot scan is descending and bounded by entry class (0..47 or 44..47 window).
 ;------------------------------------------------------------------------------
-ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
+_ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     LINK.W  A5,#-40
     MOVEM.L D2-D7/A2-A3/A6,-(A7)
     MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
@@ -703,7 +703,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     LEA     28(A1),A0
     PEA     1.W
     MOVE.L  A0,-(A7)
-    JSR     ESQSHARED_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _ESQSHARED_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -772,7 +772,7 @@ ESQDISP_PropagatePrimaryTitleMetadataToSecondary:
     LEA     Struct_PrimaryEntry__SelectionBitsetBase(A1),A0
     MOVE.L  D5,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     ESQSHARED_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _ESQSHARED_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0

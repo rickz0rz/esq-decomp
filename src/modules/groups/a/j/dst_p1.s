@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _DST_FreeBannerStruct, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   Global_STR_DST_C_4, Global_STR_DST_C_5, Global_STR_DST_C_6, MEMF_CLEAR, MEMF_PUBLIC
+;   _Global_STR_DST_C_4, _Global_STR_DST_C_5, _Global_STR_DST_C_6, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
 ;   A3+0/4/16 (buffer pointers, state)
 ; DESC:
@@ -31,7 +31,7 @@ _DST_AllocateBannerStruct:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     18.W                            ; What's 18 bytes big?
     PEA     798.W
-    PEA     Global_STR_DST_C_4
+    PEA     _Global_STR_DST_C_4
     JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -42,7 +42,7 @@ _DST_AllocateBannerStruct:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     22.W                            ; What's 22 bytes big?
     PEA     803.W
-    PEA     Global_STR_DST_C_5
+    PEA     _Global_STR_DST_C_5
     JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -53,7 +53,7 @@ _DST_AllocateBannerStruct:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     22.W                            ; What's 22 bytes big?
     PEA     807.W
-    PEA     Global_STR_DST_C_6
+    PEA     _Global_STR_DST_C_6
     JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7

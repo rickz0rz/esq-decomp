@@ -1,5 +1,5 @@
     XDEF    _GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2
-    XDEF    GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers
+    XDEF    _GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers
     XDEF    _GROUP_AI_JMPTBL_STRING_AppendAtNull
     XDEF    GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments
     XDEF    GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN
@@ -8,7 +8,7 @@
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers   (JumpStub)
+; FUNC: _GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers   (JumpStub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -26,7 +26,7 @@
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers:
+_GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers:
     JMP     _NEWGRID_SetSelectionMarkers
 
 ;------------------------------------------------------------------------------
@@ -60,18 +60,18 @@ _GROUP_AI_JMPTBL_STR_FindCharPtr:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   TLIBA1_DrawTextWithInsetSegments
+;   _TLIBA1_DrawTextWithInsetSegments
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to TLIBA1_DrawTextWithInsetSegments.
+;   Jump stub to _TLIBA1_DrawTextWithInsetSegments.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments:
-    JMP     TLIBA1_DrawTextWithInsetSegments
+    JMP     _TLIBA1_DrawTextWithInsetSegments
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2   (JumpStub_FORMAT_FormatToBuffer2)

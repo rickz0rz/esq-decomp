@@ -12,14 +12,14 @@
 ; CALLS:
 ;   _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
 ; READS:
-;   _CTRL_H, _CTRL_HPreviousSample, _PARSEINI_CtrlHChangeGateFlag, _PARSEINI_CtrlHClockSnapshot-20A8, PARSEINI_ClockChangeActiveFlag
+;   _CTRL_H, _CTRL_HPreviousSample, _PARSEINI_CtrlHChangeGateFlag, _PARSEINI_CtrlHClockSnapshot-20A8, _PARSEINI_ClockChangeActiveFlag
 ; WRITES:
 ;   _PARSEINI_CtrlHClockSnapshot-20A8
 ; DESC:
 ;   Compares current _CTRL_H to previous value, optionally triggers _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh when
 ;   changes are detected and control flags permit.
 ; NOTES:
-;   Uses _PARSEINI_CtrlHChangeGateFlag as gate; resets PARSEINI_ClockChangeActiveFlag when no change.
+;   Uses _PARSEINI_CtrlHChangeGateFlag as gate; resets _PARSEINI_ClockChangeActiveFlag when no change.
 ;------------------------------------------------------------------------------
 _PARSEINI_CheckCtrlHChange:
     MOVEM.L D2/D7,-(A7)

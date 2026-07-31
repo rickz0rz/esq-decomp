@@ -1,4 +1,4 @@
-    XDEF    Global_STR_ESQPARS_C_1
+    XDEF    _Global_STR_ESQPARS_C_1
     XDEF    Global_STR_ESQPARS_C_2
     XDEF    Global_STR_ESQPARS_C_3
     XDEF    Global_STR_ESQPARS_C_4
@@ -9,7 +9,7 @@
     XDEF    _ESQPARS_DefaultEntryCodeString
 ; ========== ESQPARS.c ==========
 
-Global_STR_ESQPARS_C_1:
+_Global_STR_ESQPARS_C_1:
     NStr    "ESQPARS.c"
 Global_STR_ESQPARS_C_2:
     NStr    "ESQPARS.c"

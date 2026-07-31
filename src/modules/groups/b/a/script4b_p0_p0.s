@@ -78,7 +78,7 @@ _SCRIPT_SetupHighlightEffect:
     EXT.L   D0
     PEA     500.W
     MOVE.L  D0,-(A7)
-    JSR     SCRIPT_BeginBannerCharTransition(PC)
+    JSR     _SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  A3,D0
@@ -146,11 +146,11 @@ _SCRIPT_SetupHighlightEffect:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
-    TST.B   CLOCK_AlignedInsetRenderGateFlag
+    TST.B   _CLOCK_AlignedInsetRenderGateFlag
     BEQ.S   .no_extra_pad
 
     MOVEQ   #0,D1
-    MOVE.B  CLEANUP_AlignedInsetNibblePrimary,D1
+    MOVE.B  _CLEANUP_AlignedInsetNibblePrimary,D1
     MOVEQ   #0,D2
     NOT.B   D2
     CMP.L   D2,D1
@@ -298,9 +298,9 @@ _SCRIPT_SetupHighlightEffect:
     ADDA.L  -28(A5),A1
     CLR.B   (A1)
     MOVEQ   #0,D0
-    MOVE.B  CLEANUP_AlignedInsetNibbleSecondary,D0
+    MOVE.B  _CLEANUP_AlignedInsetNibbleSecondary,D0
     MOVEQ   #0,D1
-    MOVE.B  CLEANUP_AlignedInsetNibblePrimary,D1
+    MOVE.B  _CLEANUP_AlignedInsetNibblePrimary,D1
     MOVE.L  A0,(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
@@ -311,7 +311,7 @@ _SCRIPT_SetupHighlightEffect:
     MOVEA.L -166(A5),A0
     ADDQ.L  #1,A0
     CLR.L   -28(A5)
-    CLR.B   CLOCK_AlignedInsetRenderGateFlag
+    CLR.B   _CLOCK_AlignedInsetRenderGateFlag
     MOVE.L  A0,-170(A5)
     BRA.S   .advance_parse_ptr
 

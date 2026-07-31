@@ -1,7 +1,7 @@
-    XDEF    GCOMMAND_ParsePPVCommand
+    XDEF    _GCOMMAND_ParsePPVCommand
 
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ParsePPVCommand   (Parse a PPV command string into tokens/indices for execution.)
+; FUNC: _GCOMMAND_ParsePPVCommand   (Parse a PPV command string into tokens/indices for execution.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +5: arg_2 (via 9(A5))
@@ -15,9 +15,9 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _GCOMMAND_LoadPPVTemplate, _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_STRING_CopyPadNul, _ESQPARS_ReplaceOwnedString, _FLIB2_LoadDigitalPpvDefaults, _LADFUNC_ParseHexDigit
+;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _GCOMMAND_LoadPPVTemplate, _GROUP_AS_JMPTBL_STR_FindCharPtr, _GROUP_AW_JMPTBL_STRING_CopyPadNul, _ESQPARS_ReplaceOwnedString, _FLIB2_LoadDigitalPpvDefaults, _LADFUNC_ParseHexDigit
 ; READS:
-;   GCOMMAND_PpvParseScratchSeedLong, _WDISP_CharClassTable, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PPVPeriodTemplatePtr, return
+;   _GCOMMAND_PpvParseScratchSeedLong, _WDISP_CharClassTable, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PPVPeriodTemplatePtr, return
 ; WRITES:
 ;   _GCOMMAND_DigitalPpvEnabledFlag, _GCOMMAND_PpvModeCycleCount, _GCOMMAND_PpvSelectionWindowMinutes, _GCOMMAND_PpvSelectionToleranceMinutes, _GCOMMAND_PpvMessageTextPen, _GCOMMAND_PpvMessageFramePen, _GCOMMAND_PpvEditorLayoutPen, _GCOMMAND_PpvEditorRowPen, _GCOMMAND_PpvShowtimesLayoutPen, _GCOMMAND_PpvShowtimesInitialLineIndex, _GCOMMAND_PpvShowtimesRowPen, _GCOMMAND_PpvShowtimesWorkflowMode, _GCOMMAND_PpvDetailLayoutFlag, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PPVPeriodTemplatePtr, _GCOMMAND_PpvShowtimesRowSpan
 ; DESC:
@@ -26,12 +26,12 @@
 ;   Uses byte $12 as a split marker and clamps appended tail text to 127 bytes
 ;   before replacing/appending owned PPV template pointers.
 ;------------------------------------------------------------------------------
-GCOMMAND_ParsePPVCommand:
+_GCOMMAND_ParsePPVCommand:
     LINK.W  A5,#-24
     MOVEM.L D2/D4-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D6
-    LEA     GCOMMAND_PpvParseScratchSeedLong,A0
+    LEA     _GCOMMAND_PpvParseScratchSeedLong,A0
     LEA     -12(A5),A1
     MOVE.B  (A0)+,(A1)+
     MOVE.B  (A0)+,(A1)+
@@ -52,7 +52,7 @@ GCOMMAND_ParsePPVCommand:
     PEA     2.W
     MOVE.L  A3,-(A7)
     PEA     -12(A5)
-    JSR     GROUP_AW_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _GROUP_AW_JMPTBL_STRING_CopyPadNul(PC)
 
     CLR.B   -10(A5)
     PEA     -12(A5)
@@ -507,7 +507,7 @@ GCOMMAND_ParsePPVCommand:
     PEA     2.W
     MOVE.L  A0,-(A7)
     PEA     -12(A5)
-    JSR     GROUP_AW_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _GROUP_AW_JMPTBL_STRING_CopyPadNul(PC)
 
     CLR.B   -10(A5)
     PEA     -12(A5)

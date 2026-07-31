@@ -290,6 +290,25 @@ anyway (three separate `MOVEA.L Global_REF_DOS_LIBRARY_2,A6` in one function).
 The `reload-vs-cache` divergence recorded in several files was never cosmetic; it
 was this bug. Full write-up and the exec-specific wrinkle: `src/c/esq-libbase.md`.
 
+### A MISSING header compiles clean and emits the wrong call
+
+`esq-dos.h`/`esq-exec.h`/`esq-graphics.h` are not only about the volatile base.
+They are also what makes an OS call BE an OS call. A function with no prototype
+in scope gets an implicit declaration, and SAS/C then emits an ordinary external
+call with the arguments on the STACK:
+
+```
+missing esq-dos.h:  4879<path> 61000000 584f      push path / BSR _DeleteFile / pop
+with esq-dos.h:     41f9<path> 2208 2c79<base> 4eaeffb8
+                                                  LEA / MOVE.L A0,D1 / base / JSR _LVODeleteFile
+```
+
+It compiles without an error. `gcommand_load_ppv3_template.c` was written with
+only `esq-exec.h` and called `DeleteFile`; the restoration looked finished and
+compared sanely. **Check that every OS function a file calls has its header, not
+only the ones you reached for the volatile base.** A cheap check is to grep the
+emitted bytes for the LVO offset you expect.
+
 ### The one exception: `esq-graphics-leaf.h`, for functions that call nothing else
 
 The hazard above is an intervening call to **ESQ assembly**. AmigaOS library
@@ -493,8 +512,11 @@ Known divergences so far are written up in `docs/compiler-version.md`.
 
 ## Progress is measured in BYTES, not function count
 
-**The current tranche target is in `docs/tranche-target.md`: every unblocked
-function under 400 bytes, which takes coverage from 48.8% to 69.0%.** Run
+**The 2026-07-31 tranche is DONE: coverage is 75.3% by byte, 591 restorations.**
+It was reached by working the LARGE end rather than the small one -- the 600 to
+1,600 byte band -- because byte-per-function is roughly four times better there
+and the per-function overhead is the same. `docs/tranche-target.md` still
+describes the old under-400 plan; the bands below are the live picture. Run
 `python3 tools/worklist.py` for what is left, smallest first. It regenerates
 from `coverage.survey()`, so it cannot go stale. `--bands` shows what the next
 size band would add. **97.7% is the ceiling**; only 4,368 bytes are truly
@@ -530,11 +552,11 @@ The restoration record says so unambiguously:
 
 | bucket | exact | behavioural | exact rate |
 |---|---:|---:|---:|
-| intra-unit (`6100`) | **11** | 101 | 10% |
-| no-calls | **13** | 117 | 10% |
-| cross-unit (`4EBA`) | **0** | 174 | **0%** |
+| intra-unit (`6100`) | **11** | 217 | 5% |
+| no-calls | **13** | 122 | 10% |
+| cross-unit (`4EBA`) | **0** | 219 | **0%** |
 
-Zero of 174. Every function whose original calls are `4EBA` is capped at
+Zero of 219. Every function whose original calls are `4EBA` is capped at
 `behavioural` under 6.51, and the cap is the call opcode alone — same size, same
 displacement, same semantics, different byte. `src/c/script_read_next_rbf_byte.c`
 is the whole class in six bytes.
@@ -817,11 +839,22 @@ far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
 BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
 278-entry parent, also clean and additionally proven on all six ESC-menu items.
 
-`src/c/replacements-all.txt` is the one to grow. At **391 entries** on
-2026-07-30 it is clean on every check there is: `check_pcrel_range` 0 truncated
-of 204 calls, `a6_audit` 0 of 391, `soak_esq.sh` 10 of 10 distinct frames,
+`src/c/replacements-all.txt` is the one to grow. At **440 entries** on
+2026-07-31 it is clean on every check there is: `check_pcrel_range` 0 truncated
+of 202 calls, `a6_audit` 0 of 440, `soak_esq.sh` 10 of 10 distinct frames,
 `menusweep_esq.sh` clean on all six ESC-menu items with no guru, and
 `framecolor.py` shows every colour bin overlapping the known-good build.
+
+**Growing the manifest past a proven point is safe for the byte gates, which do
+not read it. A manifest that has only been LINKED is not a manifest that has
+been RUN.** Soak before treating a new size as good.
+
+**A green manifest does not mean a green BUILD.** The 440-entry manifest passed
+every check above while ESC failed to close the menu, because the defect was in
+the far-call rewrite and no harness pressed that key. The user found it by
+hand. `tools/keyprobe_esq.sh <binary> <label> 53:6 53:6 53:6` now covers it:
+enter the menu, leave it, enter it again. Frame 2 must differ from frames 1
+and 3.
 
 **`ESQ_FARCALLS=1` removes this whole constraint, and `replacements-all.txt` now
 links and runs under it.** Read the next section before you grow a manifest by
@@ -937,7 +970,7 @@ Do NOT set it for `src/c/replacements.txt`. `verify_restorations.py` proves the
 image grew by exactly the sum of per-object rounding, and widened branches add
 bytes that this accounting does not know about.
 
-Two traps, both of which cost a build to find:
+Three traps, each of which cost a build to find:
 
 1. **Widening a module can break its own short branches.** A module gains 2
    bytes per site, so an 8-bit branch inside it can go out of reach. The tool
@@ -947,6 +980,32 @@ Two traps, both of which cost a build to find:
    promoted local labels alone, and vlink answered `does not fit into 8 bits`.
    Short branches to a global are now widened everywhere, not only in rewritten
    modules.
+3. **A HAND-COMPUTED branch target silently moves.** Fixed 2026-07-31, and it
+   broke the ESC menu in every far build ever run. One site in the program wrote
+   its target as arithmetic on two labels rather than as a symbol:
+
+   ```
+   .case_show_version:
+       BSR.W   *+(_ED1_EnterEscMenu_AfterVersionText-.dispatch_table+2)
+   ```
+
+   That resolves to `_ED1_EnterEscMenu_AfterVersionText + 20`, which is
+   `ED1_ExitEscMenu` only while the 20 bytes between them keep their size. The
+   span holds one `JSR sym(PC)`, which the rewrite widens to 6 bytes, so the
+   branch landed on the `RTS` two bytes above the target. Pressing ESC in the
+   menu called a bare return, and the menu never closed.
+
+   **Nothing could see it.** Both byte gates ignore the flag. `check_pcrel_range`
+   reads the encoded displacement, and this displacement was correct -- the
+   MEANING of the arithmetic changed, not the encoding. `a6_audit` and the soak
+   passed. `menusweep_esq.sh` passed all six items, because it selects items with
+   number keys and Return and never tests ESC-to-resume.
+
+   The site now reads `BSR.W ED1_ExitEscMenu`, which assembles to the same bytes
+   and cannot drift. Both gates stayed green across the change. A grep for
+   `*+(`, `*-(`, `*+$` and `*-$` over `src/modules` and `src/data` finds no other
+   site, so the class is closed. **Write a branch target as a symbol.** If a
+   future disassembly pass reintroduces the arithmetic form, this returns.
 
 The remaining 220 PC-relative calls are same-unit branches that vasm chose to
 keep short. `check_pcrel_range` still runs on every build and still aborts on a
@@ -987,6 +1046,57 @@ and mismatched regions.
 | `unsigned short` counters | `short` | when the original's loop bounds use `BCC`/`BCS`/`BHI` rather than `BGE`/`BLT`, the counters are unsigned. `esqiff2_read_serial_record_into_buffer.c` |
 | `((struct T *)p)->field = x;` | `*(long *)((char *)p + 10) = x;` | struct member access folds the offset into a `(d16,An)` displacement (`MOVE.L A0,10(A1)`, 4 bytes); the cast-and-add form makes SAS/C materialise the address into a register per store (`MOVEA.L`/`ADDA.W`/`MOVE.L (A1)`, 10 bytes). `ctasks_start_close_task_process.c`, 148 -> 136 |
 | `(x << 3)` | `(x * 8)` | where the original has `ASL.L #3`, write the shift. `* 8` makes SAS/C widen the whole computation: it zero-extends via `SWAP`/`CLR.W`/`SWAP` (8 bytes where the original's `MOVEQ #0` / `MOVE.W` is 4) **and** spills an argument to a stack slot it has to allocate, giving the function a frame the original has none of. Worth **28 bytes** on one 94-byte function. `tliba3_draw_inner_frame_border.c`, 144 -> 116 |
+
+**`register` on a loop counter is a real lever, not a no-op.** SAS/C 6.51 honours
+the keyword, and it matters exactly where the frame is crowded: in a loop whose
+body makes a wide call, 6.51 spills the counter and increments it in MEMORY
+(`42af001c` / `52af001c`) where the original keeps it in a data register
+(`7800` / `5284`). Measured twice -- `wdisp_draw_weather_status_summary.c`
+240 -> 236, and `newgrid_find_next_entry_with_alt_markers.c` 252 -> 244, the
+latter even though two frame slots were already pinned by out-parameter
+addresses. Try it on any counter whose loop body calls something with four or
+more arguments.
+
+**The zero-local trick generalises to ANY constant, and to array strides.**
+AGENTS.md already records that `if (0)` is folded away while a local holding 0
+is not. The same mechanism covers three more cases, all measured on 2026-07-31:
+
+- **A nonzero bound.** `gcommand_parse_ppv_command.c` has a dead `> 96` test the
+  original still emits. Written against the literal, 6.51 folds it and emits no
+  `MOVEQ #96`; written against a local holding 96, it emits the original's
+  instruction. Costs 4 bytes and is the right trade under rule 1.
+- **An array stride.** `tliba1_draw_formatted_text_block.c` indexes a 10-byte
+  record. As `table[i].field`, 6.51 strength-reduces every one of TWELVE sites
+  into shift-and-add and emits no `MULS`; holding the stride in a local and
+  writing `(char *)table + i * ten` gives EIGHT `MULS`, matching the original,
+  and saves 36 bytes.
+- **...but only when the index is a running variable.**
+  `esqiff2_parse_group_record_and_refresh.c` indexes the same way with a field
+  number 6.51 can enumerate as one of {0, 1, 3}. There the stride local produces
+  ZERO `MULS` either way and COSTS 12 bytes. Measure both; do not carry the
+  result between functions.
+
+**A restoration far UNDER its reference is a signal to check the REFERENCE.**
+`diskio1_dump_program_source_record_verbose.c` first measured 416 against 754 --
+45% short, which no codegen divergence explains. The cause was the
+already-documented "not every function has a label" case: a second, unlabelled
+function followed it and `refbytes.py`, which extracts label-to-label, had
+concatenated the two. Labelling it is byte-neutral, corrects the worklist entry
+from 754 to its true 416, and promotes the 338-byte function beneath it to its
+own entry. **A large negative delta with no structural disagreement means the
+reference is wrong, not the C.** A large POSITIVE delta is the ordinary case and
+means the opposite.
+
+**SHORTINT has to be measured per file, every time.** Seven files in the
+2026-07-31 tranche were compiled both ways. Two adopted it
+(`script_setup_highlight_effect.c`, exactly matching the reference at 748;
+`locavail_parse_filter_state_from_buffer.c`, 12 under instead of 20), one was a
+tie, and FOUR were made worse -- `textdisp_filter_and_select_entry.c`,
+`script_handle_serial_ctrl_cmd.c`, `ladfunc_repack_entry_text_and_attr_buffers.c`
+and `parseini_handle_font_command.c`. Every one of those four has the
+chained-subtract dispatch the rule points at, so **the dispatch shape does not
+predict the answer.** Compile it both ways and compare against the reference
+size; that is the only signal.
 
 **Split an accumulate from the call that feeds it.** Where the original updates
 a variable *before* calling (`ASL.L #4,D7` then `JSR`), write two statements --
@@ -1103,7 +1213,7 @@ c = [f for f in coverage.survey()
 Without the `status` filter that returns 137, not 9 — it counts everything
 already done.
 
-As of 2026-07-30 that leaves **9 unblocked `no-calls` candidates, 2,036 bytes** —
+As of 2026-07-31 that leaves **4 unblocked `no-calls` candidates, 1,378 bytes** —
 an earlier version of this file claimed the bucket was empty, which was wrong.
 The count goes UP as well as down: four of these appeared on 2026-07-30 when
 blocks that carried no label were given one, which stopped their neighbours

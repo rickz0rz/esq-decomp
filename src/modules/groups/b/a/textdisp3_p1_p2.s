@@ -1,8 +1,8 @@
-    XDEF    TEXTDISP_DrawChannelBanner
+    XDEF    _TEXTDISP_DrawChannelBanner
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_DrawChannelBanner   (Draw banner with channel label)
+; FUNC: _TEXTDISP_DrawChannelBanner   (Draw banner with channel label)
 ; ARGS:
 ;   stack +10: mode (word)
 ;   stack +14: drawMode (word)
@@ -11,8 +11,8 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TEXTDISP_BuildEntryShortName,
-;   _TEXTDISP_BuildChannelLabel, _LVOSetDrMd, TLIBA1_DrawFormattedTextBlock, TEXTDISP_DrawInsetRectFrame
+;   _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, _TEXTDISP_BuildEntryShortName,
+;   _TEXTDISP_BuildChannelLabel, _LVOSetDrMd, _TLIBA1_DrawFormattedTextBlock, _TEXTDISP_DrawInsetRectFrame
 ; READS:
 ;   _TEXTDISP_CurrentMatchIndex, _TEXTDISP_ActiveGroupId, _WDISP_DisplayContextBase
 ; WRITES:
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Uses _TEXTDISP_ActiveGroupId to switch between group 1/2 layouts.
 ;------------------------------------------------------------------------------
-TEXTDISP_DrawChannelBanner:
+_TEXTDISP_DrawChannelBanner:
     LINK.W  A5,#-8
     MOVEM.L D5-D7,-(A7)
     MOVE.W  10(A5),D7
@@ -46,7 +46,7 @@ TEXTDISP_DrawChannelBanner:
     PEA     _TEXTDISP_EntryShortNameScratch
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-4(A5)
-    BSR.W   TEXTDISP_BuildEntryShortName
+    BSR.W   _TEXTDISP_BuildEntryShortName
 
     LEA     _TEXTDISP_EntryShortNameScratch,A0
     LEA     _TEXTDISP_ChannelLabelBuffer,A1
@@ -105,7 +105,7 @@ TEXTDISP_DrawChannelBanner:
     EXT.L   D0
     MOVE.L  D0,(A7)
     PEA     _TEXTDISP_ChannelLabelBuffer
-    BSR.W   TEXTDISP_DrawInsetRectFrame
+    BSR.W   _TEXTDISP_DrawInsetRectFrame
 
     LEA     12(A7),A7
     MOVEQ   #3,D0

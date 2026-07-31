@@ -4,9 +4,9 @@
     XDEF    NEWGRID2_DispatchStateIndex
     XDEF    NEWGRID2_PendingOperationId
     XDEF    NEWGRID2_LastDispatchResult
-    XDEF    NEWGRID2_BufferAllocationFlag
-    XDEF    Global_STR_NEWGRID2_C_3
-    XDEF    Global_STR_NEWGRID2_C_4
+    XDEF    _NEWGRID2_BufferAllocationFlag
+    XDEF    _Global_STR_NEWGRID2_C_3
+    XDEF    _Global_STR_NEWGRID2_C_4
     XDEF    _Global_STR_NEWGRID2_C_5
     XDEF    _Global_STR_NEWGRID2_C_6
     XDEF    _NEWGRID2_ErrorLogEntryPtr
@@ -48,17 +48,17 @@ NEWGRID2_PendingOperationId:
 NEWGRID2_LastDispatchResult:
     DC.L    0
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID2_BufferAllocationFlag   (buffer allocation gate)
+; SYM: _NEWGRID2_BufferAllocationFlag   (buffer allocation gate)
 ; TYPE: s32 flag
 ; PURPOSE: Prevents repeat allocations once NEWGRID2 buffers are initialized.
-; USED BY: NEWGRID2_EnsureBuffersAllocated
+; USED BY: _NEWGRID2_EnsureBuffersAllocated
 ; NOTES: Cleared when buffers are released/deinitialized.
 ;------------------------------------------------------------------------------
-NEWGRID2_BufferAllocationFlag:
+_NEWGRID2_BufferAllocationFlag:
     DC.L    1
-Global_STR_NEWGRID2_C_3:
+_Global_STR_NEWGRID2_C_3:
     NStr    "NEWGRID2.c"
-Global_STR_NEWGRID2_C_4:
+_Global_STR_NEWGRID2_C_4:
     NStr    "NEWGRID2.c"
 _Global_STR_NEWGRID2_C_5:
     NStr    "NEWGRID2.c"

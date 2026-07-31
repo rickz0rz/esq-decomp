@@ -200,7 +200,7 @@ TEXTDISP_BuildEntryPairStatusLine:
 ; CLOBBERS:
 ;   D0/D7/A3
 ; CALLS:
-;   TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor (_NEWGRID_ShouldOpenEditor)
+;   _TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor (_NEWGRID_ShouldOpenEditor)
 ; READS:
 ;   entry+27, entry+40
 ; DESC:
@@ -222,7 +222,7 @@ _TEXTDISP_ShouldOpenEditorForEntry:
     BEQ.S   .not_selectable
 
     MOVE.L  A3,-(A7)
-    JSR     TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor(PC)
+    JSR     _TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0

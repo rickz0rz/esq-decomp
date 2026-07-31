@@ -1,9 +1,9 @@
     XDEF    _GCOMMAND_BuildBannerRow
-    XDEF    GCOMMAND_ClearBannerQueue
-    XDEF    GCOMMAND_UpdateBannerRowPointers
+    XDEF    _GCOMMAND_ClearBannerQueue
+    XDEF    _GCOMMAND_UpdateBannerRowPointers
 
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_UpdateBannerRowPointers   (Refresh per-row linked pointer words in banner copper table)
+; FUNC: _GCOMMAND_UpdateBannerRowPointers   (Refresh per-row linked pointer words in banner copper table)
 ; ARGS:
 ;   stack +4: tablePtr (banner table base)
 ; RET:
@@ -13,20 +13,20 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   GCOMMAND_BannerRowIndexPrevious, GCOMMAND_BannerRowIndexCurrent
+;   _GCOMMAND_BannerRowIndexPrevious, _GCOMMAND_BannerRowIndexCurrent
 ; WRITES:
 ;   [tablePtr + index*32 + $2FA], [tablePtr + index*32 + $2FE]
 ; DESC:
 ;   Updates pointer words in the banner table based on current/previous indices.
 ; NOTES:
-;   Special-cases GCOMMAND_BannerRowIndexPrevious == 97 to use the tail entry at offset 3876.
+;   Special-cases _GCOMMAND_BannerRowIndexPrevious == 97 to use the tail entry at offset 3876.
 ;   Row stride is 32 bytes (`ASL.L #5`); writes pointer words at `+$2FA`/`+$2FE`.
 ;------------------------------------------------------------------------------
-GCOMMAND_UpdateBannerRowPointers:
+_GCOMMAND_UpdateBannerRowPointers:
     MOVEM.L D2-D3/D6-D7/A3,-(A7)
     MOVEA.L 24(A7),A3
-    MOVE.L  GCOMMAND_BannerRowIndexPrevious,D0
-    MOVE.L  GCOMMAND_BannerRowIndexCurrent,D1
+    MOVE.L  _GCOMMAND_BannerRowIndexPrevious,D0
+    MOVE.L  _GCOMMAND_BannerRowIndexCurrent,D1
     CMP.L   D0,D1
     BEQ.W   .return
 
@@ -59,7 +59,7 @@ GCOMMAND_UpdateBannerRowPointers:
     MOVE.L  D1,D3
     ADDI.L  #$2fe,D3
     MOVE.W  D0,0(A3,D3.L)
-    MOVE.L  GCOMMAND_BannerRowIndexPrevious,D0
+    MOVE.L  _GCOMMAND_BannerRowIndexPrevious,D0
     MOVEQ   #97,D1
     CMP.L   D1,D0
     BNE.S   .store_prev_ptr
@@ -107,7 +107,7 @@ GCOMMAND_UpdateBannerRowPointers:
 ; CLOBBERS:
 ;   D0-D7, A0-A6
 ; CALLS:
-;   GCOMMAND_UpdateBannerRowPointers
+;   _GCOMMAND_UpdateBannerRowPointers
 ; READS:
 ;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3_ValueIndex, _GCOMMAND_BannerRowFallbackOnFirstRowFlag
 ; WRITES:
@@ -260,7 +260,7 @@ _GCOMMAND_BuildBannerRow:
 
 .update_row_ptrs:
     MOVE.L  -4(A5),-(A7)
-    BSR.W   GCOMMAND_UpdateBannerRowPointers
+    BSR.W   _GCOMMAND_UpdateBannerRowPointers
 
     MOVEM.L -44(A5),D2/D4-D7/A2-A3/A6
     UNLK    A5
@@ -268,7 +268,7 @@ _GCOMMAND_BuildBannerRow:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ClearBannerQueue   (Clear queued banner control bytes)
+; FUNC: _GCOMMAND_ClearBannerQueue   (Clear queued banner control bytes)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -286,7 +286,7 @@ _GCOMMAND_BuildBannerRow:
 ; NOTES:
 ;   Zeros 98 bytes in _ESQPARS2_BannerQueueBuffer and sets _ESQPARS2_BannerQueueAttentionCountdown to -1.
 ;------------------------------------------------------------------------------
-GCOMMAND_ClearBannerQueue:
+_GCOMMAND_ClearBannerQueue:
     MOVE.L  D7,-(A7)
     MOVE.W  #(-1),_ESQPARS2_BannerQueueAttentionCountdown
     MOVEQ   #0,D7
@@ -362,7 +362,7 @@ GCOMMAND_ClearBannerQueue:
     BRA.W   .lab_0DBF
 
 .lab_0DC0:
-    MOVE.L  GCOMMAND_BannerPhaseIndexCurrent,D6
+    MOVE.L  _GCOMMAND_BannerPhaseIndexCurrent,D6
     MOVE.L  D7,D0
     ASL.L   #5,D0
     MOVE.L  D6,D1

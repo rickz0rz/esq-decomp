@@ -1,9 +1,9 @@
-    XDEF    NEWGRID_InitGridResources
+    XDEF    _NEWGRID_InitGridResources
 
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_InitGridResources   (Initialize grid rastports and layout)
+; FUNC: _NEWGRID_InitGridResources   (Initialize grid rastports and layout)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -11,9 +11,9 @@
 ; CLOBBERS:
 ;   D0-D3/A0-A1/A6
 ; CALLS:
-;   NEWGRID2_EnsureBuffersAllocated, NEWGRID_JMPTBL_DISPTEXT_InitBuffers, _NEWGRID_InitShowtimeBuckets, _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _LVOInitRastPort,
+;   _NEWGRID2_EnsureBuffersAllocated, NEWGRID_JMPTBL_DISPTEXT_InitBuffers, _NEWGRID_InitShowtimeBuckets, _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _LVOInitRastPort,
 ;   _LVOSetDrMd, _LVOSetFont, _NEWGRID_DrawTopBorderLine,
-;   _LVOTextLength, NEWGRID_JMPTBL_MATH_DivS32
+;   _LVOTextLength, _NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
 ;   _NEWGRID_GridResourcesInitializedFlag, _Global_HANDLE_PREVUEC_FONT, Global_STR_44_44_44
 ; WRITES:
@@ -24,12 +24,12 @@
 ; NOTES:
 ;   Early-outs if already initialized (_NEWGRID_GridResourcesInitializedFlag != 0) or allocation fails.
 ;------------------------------------------------------------------------------
-NEWGRID_InitGridResources:
+_NEWGRID_InitGridResources:
     TST.W   _NEWGRID_GridResourcesInitializedFlag
     BNE.W   .return_init_status
 
     MOVE.W  #1,_NEWGRID_GridResourcesInitializedFlag
-    JSR     NEWGRID2_EnsureBuffersAllocated(PC)
+    JSR     _NEWGRID2_EnsureBuffersAllocated(PC)
 
     JSR     NEWGRID_JMPTBL_DISPTEXT_InitBuffers(PC)
 
@@ -103,7 +103,7 @@ NEWGRID_InitGridResources:
     MOVE.L  #624,D0
     SUB.L   D1,D0
     MOVEQ   #3,D1
-    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D0,_NEWGRID_ColumnWidthPx
     MOVEA.L _NEWGRID_MainRastPortPtr,A1
@@ -118,7 +118,7 @@ NEWGRID_InitGridResources:
     MOVE.W  D0,D1
     MOVE.L  D1,D0
     MOVEQ   #2,D1
-    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     TST.L   D1
     BEQ.S   .align_even

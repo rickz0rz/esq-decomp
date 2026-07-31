@@ -1,9 +1,9 @@
-    XDEF    ESQSHARED_CreateGroupEntryAndTitle
+    XDEF    _ESQSHARED_CreateGroupEntryAndTitle
     XDEF    ESQSHARED_CreateGroupEntryAndTitle_Return
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_CreateGroupEntryAndTitle   (Allocate and register group entry/title pair)
+; FUNC: _ESQSHARED_CreateGroupEntryAndTitle   (Allocate and register group entry/title pair)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +7: arg_2 (via 11(A5))
@@ -18,9 +18,9 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   _ESQIFF_JMPTBL_MEMORY_AllocateMemory, ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated, _ESQSHARED_InitEntryDefaults
+;   _ESQIFF_JMPTBL_MEMORY_AllocateMemory, _ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes, _ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated, _ESQSHARED_InitEntryDefaults
 ; READS:
-;   Global_ESQPARS2_C_1, Global_ESQPARS2_C_2, Global_ESQPARS2_C_3, Global_ESQPARS2_C_4, ESQSHARED_CreateGroupEntryAndTitle_Return, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryTitlePtrTable, _TEXTDISP_GroupMutationState, _TEXTDISP_MaxEntryTitleLength, MEMF_CLEAR, MEMF_PUBLIC, lab_0C1F, lab_0C20, lab_0C21
+;   _Global_ESQPARS2_C_1, _Global_ESQPARS2_C_2, _Global_ESQPARS2_C_3, _Global_ESQPARS2_C_4, ESQSHARED_CreateGroupEntryAndTitle_Return, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryTitlePtrTable, _TEXTDISP_GroupMutationState, _TEXTDISP_MaxEntryTitleLength, MEMF_CLEAR, MEMF_PUBLIC, lab_0C1F, lab_0C20, lab_0C21
 ; WRITES:
 ;   _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryGroupHeaderCode, _TEXTDISP_SecondaryGroupHeaderCode, _TEXTDISP_PrimaryGroupPresentFlag, _TEXTDISP_GroupMutationState, _TEXTDISP_MaxEntryTitleLength
 ; DESC:
@@ -29,7 +29,7 @@
 ; NOTES:
 ;   Initializes all 49 title-slot flags to present and clears slot string pointers.
 ;------------------------------------------------------------------------------
-ESQSHARED_CreateGroupEntryAndTitle:
+_ESQSHARED_CreateGroupEntryAndTitle:
     LINK.W  A5,#-24
     MOVEM.L D5-D7/A2-A3/A6,-(A7)
     MOVE.B  11(A5),D7
@@ -48,7 +48,7 @@ ESQSHARED_CreateGroupEntryAndTitle:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     52.W
     PEA     299.W
-    PEA     Global_ESQPARS2_C_1
+    PEA     _Global_ESQPARS2_C_1
     MOVE.L  A0,40(A7)
     JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
@@ -62,7 +62,7 @@ ESQSHARED_CreateGroupEntryAndTitle:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     500.W
     PEA     301.W
-    PEA     Global_ESQPARS2_C_2
+    PEA     _Global_ESQPARS2_C_2
     MOVE.L  A0,52(A7)
     JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
@@ -95,7 +95,7 @@ ESQSHARED_CreateGroupEntryAndTitle:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     52.W
     PEA     314.W
-    PEA     Global_ESQPARS2_C_3
+    PEA     _Global_ESQPARS2_C_3
     MOVE.L  A0,40(A7)
     JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
@@ -109,7 +109,7 @@ ESQSHARED_CreateGroupEntryAndTitle:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     PEA     500.W
     PEA     315.W
-    PEA     Global_ESQPARS2_C_4
+    PEA     _Global_ESQPARS2_C_4
     MOVE.L  A0,52(A7)
     JSR     _ESQIFF_JMPTBL_MEMORY_AllocateMemory(PC)
 
@@ -139,7 +139,7 @@ ESQSHARED_CreateGroupEntryAndTitle:
     BSR.W   _ESQSHARED_InitEntryDefaults
 
     MOVE.L  -4(A5),(A7)
-    JSR     ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated(PC)
+    JSR     _ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L -4(A5),A0
@@ -220,7 +220,7 @@ ESQSHARED_CreateGroupEntryAndTitle:
     LEA     28(A0),A1
     MOVE.L  24(A5),-(A7)
     MOVE.L  A1,-(A7)
-    JSR     ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes(PC)
+    JSR     _ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D5
@@ -302,7 +302,7 @@ ESQSHARED_CreateGroupEntryAndTitle:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Shared return tail for ESQSHARED_CreateGroupEntryAndTitle.
+;   Shared return tail for _ESQSHARED_CreateGroupEntryAndTitle.
 ; NOTES:
 ;   Restores D5-D7/A2-A3/A6 and frame state.
 ;------------------------------------------------------------------------------

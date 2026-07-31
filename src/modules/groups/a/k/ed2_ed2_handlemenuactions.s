@@ -585,7 +585,7 @@ _ED2_HandleMenuActions:
     EXT.W   D0
     EXT.L   D0
     MOVEQ   #60,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,_CONFIG_RefreshIntervalSeconds
     BRA.W   .restore_display_state

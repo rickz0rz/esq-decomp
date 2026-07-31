@@ -1,8 +1,8 @@
-    XDEF    DST_ComputeBannerIndex
+    XDEF    _DST_ComputeBannerIndex
 
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_ComputeBannerIndex   (Compute banner index from time structuncertain)
+; FUNC: _DST_ComputeBannerIndex   (Compute banner index from time structuncertain)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +10: arg_2 (via 14(A5))
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DST_ComputeBannerIndex:
+_DST_ComputeBannerIndex:
     LINK.W  A5,#-4
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 8(A5),A3

@@ -1,7 +1,7 @@
-    XDEF    DATETIME_SavePairToFile
+    XDEF    _DATETIME_SavePairToFile
 
 ;------------------------------------------------------------------------------
-; FUNC: DATETIME_SavePairToFile   (Save time structs to file)
+; FUNC: _DATETIME_SavePairToFile   (Save time structs to file)
 ; ARGS:
 ;   stack +8: A3 = struct pair
 ; RET:
@@ -11,7 +11,7 @@
 ; CALLS:
 ;   _DISKIO_OpenFileWithBuffer, _DISKIO_WriteBufferedBytes, _DATETIME_FormatPairToStream, _DISKIO_CloseBufferedFileAndFlush
 ; READS:
-;   DST_DefaultDatPathPtr, DST_STR_G2_COLON, DST_STR_G3_COLON
+;   _DST_DefaultDatPathPtr, _DST_STR_G2_COLON, _DST_STR_G3_COLON
 ; WRITES:
 ;   file
 ; DESC:
@@ -19,7 +19,7 @@
 ; NOTES:
 ;   Requires both struct pointers to be non-null.
 ;------------------------------------------------------------------------------
-DATETIME_SavePairToFile:
+_DATETIME_SavePairToFile:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVE.L  A3,D0
@@ -32,7 +32,7 @@ DATETIME_SavePairToFile:
     BEQ.S   .return_false
 
     PEA     MODE_NEWFILE.W
-    MOVE.L  DST_DefaultDatPathPtr,-(A7)
+    MOVE.L  _DST_DefaultDatPathPtr,-(A7)
     JSR     _DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
@@ -41,7 +41,7 @@ DATETIME_SavePairToFile:
     BEQ.S   .return_false
 
     PEA     4.W
-    PEA     DST_STR_G2_COLON
+    PEA     _DST_STR_G2_COLON
     MOVE.L  D7,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 
@@ -50,7 +50,7 @@ DATETIME_SavePairToFile:
     BSR.W   _DATETIME_FormatPairToStream
 
     PEA     4.W
-    PEA     DST_STR_G3_COLON
+    PEA     _DST_STR_G3_COLON
     MOVE.L  D7,-(A7)
     JSR     _DISKIO_WriteBufferedBytes(PC)
 

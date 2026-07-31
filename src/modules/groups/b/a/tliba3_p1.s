@@ -1,9 +1,9 @@
-    XDEF    TLIBA3_DrawHorizontalScaleTicks
+    XDEF    _TLIBA3_DrawHorizontalScaleTicks
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA3_DrawHorizontalScaleTicks   (TLIBA3_DrawHorizontalScaleTicks)
+; FUNC: _TLIBA3_DrawHorizontalScaleTicks   (_TLIBA3_DrawHorizontalScaleTicks)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -23,7 +23,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-TLIBA3_DrawHorizontalScaleTicks:
+_TLIBA3_DrawHorizontalScaleTicks:
     LINK.W  A5,#-92
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 8(A5),A3

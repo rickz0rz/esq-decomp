@@ -57,7 +57,7 @@ _DISKIO_OpenFileWithBuffer:
     PEA     (MEMF_PUBLIC).W
     MOVE.L  _DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize,-(A7)
     PEA     286.W
-    PEA     Global_STR_DISKIO_C_1
+    PEA     _Global_STR_DISKIO_C_1
     JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7

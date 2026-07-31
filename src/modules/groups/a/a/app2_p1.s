@@ -14,7 +14,7 @@
 ; READS:
 ;   _HIGHLIGHT_CopperEffectSeed, _HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, _ESQ_CopperEffectTemplateRowsSet0
 ; WRITES:
-;   ESQ_CopperEffectListA, ESQ_CopperEffectListB
+;   _ESQ_CopperEffectListA, _ESQ_CopperEffectListB
 ; DESC:
 ;   Expands packed effect parameters into copper list words for two tables.
 ; NOTES:
@@ -24,8 +24,8 @@ _ESQ_UpdateCopperListsFromParams:
     LEA     _ESQ_CopperEffectTemplateRowsSet0,A0
     MOVE.W  26(A0),D1
     MOVE.L  _HIGHLIGHT_CopperEffectSeed,D0
-    LEA     ESQ_CopperEffectListA,A0
-    LEA     ESQ_CopperEffectListB,A1
+    LEA     _ESQ_CopperEffectListA,A0
+    LEA     _ESQ_CopperEffectListB,A1
     ADDQ.L  #6,A0
     ADDQ.L  #6,A1
     ADD.B   D0,D0

@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _ESQPARS_ReplaceOwnedString, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   _LADFUNC_EntryPtrTable, Global_STR_LADFUNC_C_4
+;   _LADFUNC_EntryPtrTable, _Global_STR_LADFUNC_C_4
 ; WRITES:
 ;   entry buffers via _LADFUNC_EntryPtrTable
 ; DESC:
@@ -77,7 +77,7 @@ LADFUNC_ResetEntryTextBuffers:
     MOVE.L  D6,-(A7)
     MOVE.L  10(A1),-(A7)
     PEA     212.W
-    PEA     Global_STR_LADFUNC_C_4
+    PEA     _Global_STR_LADFUNC_C_4
     JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -123,15 +123,15 @@ LADFUNC_ResetEntryTextBuffers:
 ; CLOBBERS:
 ;   A0/A1/A7/D0/D1
 ; CALLS:
-;   NEWGRID_JMPTBL_MATH_DivS32, _LADFUNC_BuildHighlightLinesFromText
+;   _NEWGRID_JMPTBL_MATH_DivS32, _LADFUNC_BuildHighlightLinesFromText
 ; READS:
-;   _WDISP_HighlightActive, _LADFUNC_HighlightCycleCountdown, LADFUNC_HighlightCycleCountdownReload, _LADFUNC_EntryCount, _LADFUNC_EntryPtrTable
+;   _WDISP_HighlightActive, _LADFUNC_HighlightCycleCountdown, _LADFUNC_HighlightCycleCountdownReload, _LADFUNC_EntryCount, _LADFUNC_EntryPtrTable
 ; WRITES:
 ;   _LADFUNC_EntryCount, _LADFUNC_HighlightCycleCountdown
 ; DESC:
 ;   Advances the highlighted entry when active and refreshes the display.
 ; NOTES:
-;   Resets _LADFUNC_HighlightCycleCountdown from LADFUNC_HighlightCycleCountdownReload when the countdown underflows.
+;   Resets _LADFUNC_HighlightCycleCountdown from _LADFUNC_HighlightCycleCountdownReload when the countdown underflows.
 ;------------------------------------------------------------------------------
 ;   This block carried no label. The extract for whatever precedes it ran
 ;   on into it and reported that function as larger than it is. The label
@@ -151,7 +151,7 @@ LADFUNC_UpdateHighlightCycle:
     EXT.L   D0
     ADDQ.L  #1,D0
     MOVEQ   #46,D1
-    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVE.W  D1,_LADFUNC_EntryCount
     MOVE.W  _LADFUNC_EntryCount,D0
@@ -189,7 +189,7 @@ LADFUNC_UpdateHighlightCycle:
     CMP.W   D1,D0
     BGE.S   .return
 
-    MOVE.W  LADFUNC_HighlightCycleCountdownReload,_LADFUNC_HighlightCycleCountdown
+    MOVE.W  _LADFUNC_HighlightCycleCountdownReload,_LADFUNC_HighlightCycleCountdown
 
 .return:
     RTS

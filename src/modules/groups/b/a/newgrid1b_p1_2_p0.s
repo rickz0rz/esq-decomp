@@ -1,8 +1,8 @@
-    XDEF    NEWGRID_DrawEntryRowOrPlaceholder
+    XDEF    _NEWGRID_DrawEntryRowOrPlaceholder
     XDEF    _NEWGRID_DrawGridCellBackground
-    XDEF    NEWGRID_GetEntryStateCode
+    XDEF    _NEWGRID_GetEntryStateCode
     XDEF    _NEWGRID_SetSelectionMarkers
-    XDEF    NEWGRID_TestEntryState
+    XDEF    _NEWGRID_TestEntryState
     XDEF    _NEWGRID_UpdateGridState
 
 
@@ -17,12 +17,12 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_UpdatePresetEntry, _NEWGRID_DrawEntryFlagBadge,
-;   _NEWGRID_DrawGridFrameAndRows, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
+;   _NEWGRID_UpdatePresetEntry, _NEWGRID_DrawEntryFlagBadge,
+;   _NEWGRID_DrawGridFrameAndRows, _NEWGRID2_JMPTBL_ESQ_TestBit1Based, _NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
 ; READS:
 ;   NEWGRID_GridStateFrameLatch
 ; WRITES:
-;   NEWGRID_GridStateFrameLatch, NEWGRID_SelectedGridEntryPtr, 32(A3)
+;   NEWGRID_GridStateFrameLatch, _NEWGRID_SelectedGridEntryPtr, 32(A3)
 ; DESC:
 ;   Updates grid state, resolves the selected entry, and redraws frame content.
 ; NOTES:
@@ -61,7 +61,7 @@ _NEWGRID_UpdateGridState:
     MOVE.L  D0,-(A7)
     PEA     -8(A5)
     PEA     -4(A5)
-    BSR.W   NEWGRID_UpdatePresetEntry
+    BSR.W   _NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
     MOVE.L  D0,D6
@@ -77,7 +77,7 @@ _NEWGRID_UpdateGridState:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -88,7 +88,7 @@ _NEWGRID_UpdateGridState:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(PC)
 
     MOVE.L  D0,D6
     MOVE.L  -4(A5),(A7)
@@ -98,12 +98,12 @@ _NEWGRID_UpdateGridState:
     MOVEA.L -8(A5),A0
     MOVEA.L A0,A1
     ADDA.W  D6,A1
-    MOVE.L  D0,NEWGRID_SelectedGridEntryPtr
+    MOVE.L  D0,_NEWGRID_SelectedGridEntryPtr
     BTST    #2,7(A1)
     BEQ.S   .set_entry_mode
 
     MOVEQ   #5,D0
-    MOVE.L  D0,NEWGRID_SelectedGridEntryPtr
+    MOVE.L  D0,_NEWGRID_SelectedGridEntryPtr
 
 .set_entry_mode:
     LEA     60(A3),A1
@@ -132,7 +132,7 @@ _NEWGRID_UpdateGridState:
     MOVE.L  D0,NEWGRID_GridStateFrameLatch
 
 .update_frame_state:
-    MOVE.L  NEWGRID_SelectedGridEntryPtr,-(A7)
+    MOVE.L  _NEWGRID_SelectedGridEntryPtr,-(A7)
     MOVE.L  A3,-(A7)
     BSR.W   _NEWGRID_DrawGridFrameAndRows
 
@@ -252,7 +252,7 @@ _NEWGRID_SetSelectionMarkers:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_GetEntryStateCode   (Compute entry state code)
+; FUNC: _NEWGRID_GetEntryStateCode   (Compute entry state code)
 ; ARGS:
 ;   stack +8: A3 = grid struct
 ;   stack +12: A2 = entry list
@@ -262,7 +262,7 @@ _NEWGRID_SetSelectionMarkers:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID2_JMPTBL_ESQ_TestBit1Based
+;   _NEWGRID2_JMPTBL_ESQ_TestBit1Based
 ; READS:
 ;   7(A2,D7), 56(A2,index)
 ; DESC:
@@ -270,7 +270,7 @@ _NEWGRID_SetSelectionMarkers:
 ; NOTES:
 ;   Returns 1 for invalid/out-of-range.
 ;------------------------------------------------------------------------------
-NEWGRID_GetEntryStateCode:
+_NEWGRID_GetEntryStateCode:
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVEA.L 24(A7),A2
@@ -293,7 +293,7 @@ NEWGRID_GetEntryStateCode:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -331,7 +331,7 @@ NEWGRID_GetEntryStateCode:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_TestEntryState   (Test entry state against mode)
+; FUNC: _NEWGRID_TestEntryState   (Test entry state against mode)
 ; ARGS:
 ;   stack +8: D7 = mode selector
 ;   stack +12: D6 = key
@@ -342,13 +342,13 @@ NEWGRID_GetEntryStateCode:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   NEWGRID_GetEntryStateCode, _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode, _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
+;   _NEWGRID_GetEntryStateCode, _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode, _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
 ; DESC:
 ;   Determines whether an entry matches the requested selector/mode.
 ; NOTES:
 ;   Uses SNE/NEG/EXT to booleanize in mode 0.
 ;------------------------------------------------------------------------------
-NEWGRID_TestEntryState:
+_NEWGRID_TestEntryState:
     LINK.W  A5,#-16
     MOVEM.L D4-D7,-(A7)
     MOVE.L  8(A5),D7
@@ -404,7 +404,7 @@ NEWGRID_TestEntryState:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   NEWGRID_GetEntryStateCode
+    BSR.W   _NEWGRID_GetEntryStateCode
 
     LEA     12(A7),A7
     MOVE.L  D0,-16(A5)
@@ -469,7 +469,7 @@ NEWGRID_TestEntryState:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_DrawEntryRowOrPlaceholder   (Draw entry row or placeholder)
+; FUNC: _NEWGRID_DrawEntryRowOrPlaceholder   (Draw entry row or placeholder)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -484,12 +484,12 @@ NEWGRID_TestEntryState:
 ; CALLS:
 ;   _NEWGRID_DrawGridEntry, _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer
 ; READS:
-;   NEWGRID_EntryPlaceholderModeFlag, _CONFIG_NewgridPlaceholderBevelFlag, _SCRIPT_PtrNoDataPlaceholder, SCRIPT_PtrOffAirPlaceholder
+;   _NEWGRID_EntryPlaceholderModeFlag, _CONFIG_NewgridPlaceholderBevelFlag, _SCRIPT_PtrNoDataPlaceholder, _SCRIPT_PtrOffAirPlaceholder
 ; DESC:
 ;   Draws the grid entry for a row when data is present, otherwise draws a
 ;   placeholder label depending on the flags.
 ;------------------------------------------------------------------------------
-NEWGRID_DrawEntryRowOrPlaceholder:
+_NEWGRID_DrawEntryRowOrPlaceholder:
     LINK.W  A5,#0
     MOVEM.L D2-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -507,7 +507,7 @@ NEWGRID_DrawEntryRowOrPlaceholder:
     SUBQ.L  #1,D0
     BNE.S   .draw_missing_placeholder
 
-    TST.W   NEWGRID_EntryPlaceholderModeFlag
+    TST.W   _NEWGRID_EntryPlaceholderModeFlag
     BEQ.S   .draw_simple_row
 
     MOVE.L  D7,D0
@@ -549,7 +549,7 @@ NEWGRID_DrawEntryRowOrPlaceholder:
     BRA.S   .done
 
 .draw_empty_placeholder:
-    MOVE.L  SCRIPT_PtrOffAirPlaceholder,-(A7)
+    MOVE.L  _SCRIPT_PtrOffAirPlaceholder,-(A7)
     MOVE.L  A3,-(A7)
     JSR     _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(PC)
 

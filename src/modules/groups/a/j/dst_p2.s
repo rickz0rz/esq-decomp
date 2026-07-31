@@ -15,9 +15,9 @@
 ; CLOBBERS:
 ;   A0/A3/A5/A7/D0/D7
 ; CALLS:
-;   _DST_RebuildBannerPair, _DISKIO_LoadFileToWorkBuffer, GROUP_AJ_JMPTBL_STRING_FindSubstring, _DATETIME_ParseString, DATETIME_CopyPairAndRecalc, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, DST_UpdateBannerQueue
+;   _DST_RebuildBannerPair, _DISKIO_LoadFileToWorkBuffer, _GROUP_AJ_JMPTBL_STRING_FindSubstring, _DATETIME_ParseString, _DATETIME_CopyPairAndRecalc, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _DST_UpdateBannerQueue
 ; READS:
-;   DST_DefaultDatPathPtr, Global_STR_G2, Global_STR_G3
+;   _DST_DefaultDatPathPtr, _Global_STR_G2, _Global_STR_G3
 ; WRITES:
 ;   (A3), 4(A3)
 ; DESC:
@@ -33,7 +33,7 @@ _DST_LoadBannerPairFromFiles:
     MOVE.L  A3,-(A7)
     BSR.S   _DST_RebuildBannerPair
 
-    MOVE.L  DST_DefaultDatPathPtr,(A7)
+    MOVE.L  _DST_DefaultDatPathPtr,(A7)
     JSR     _DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -46,10 +46,10 @@ _DST_LoadBannerPairFromFiles:
 .init_ok:
     MOVEA.L _Global_PTR_WORK_BUFFER,A0
     MOVE.L  _Global_REF_LONG_FILE_SCRATCH,D7
-    PEA     Global_STR_G2
+    PEA     _Global_STR_G2
     MOVE.L  A0,-(A7)
     MOVE.L  A0,-48(A5)
-    JSR     GROUP_AJ_JMPTBL_STRING_FindSubstring(PC)
+    JSR     _GROUP_AJ_JMPTBL_STRING_FindSubstring(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-52(A5)
@@ -68,14 +68,14 @@ _DST_LoadBannerPairFromFiles:
     PEA     -44(A5)
     PEA     -22(A5)
     MOVE.L  4(A3),-(A7)
-    BSR.W   DATETIME_CopyPairAndRecalc
+    BSR.W   _DATETIME_CopyPairAndRecalc
 
     LEA     36(A7),A7
 
 .skip_g2:
-    PEA     Global_STR_G3
+    PEA     _Global_STR_G3
     MOVE.L  -48(A5),-(A7)
-    JSR     GROUP_AJ_JMPTBL_STRING_FindSubstring(PC)
+    JSR     _GROUP_AJ_JMPTBL_STRING_FindSubstring(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-52(A5)
@@ -94,7 +94,7 @@ _DST_LoadBannerPairFromFiles:
     PEA     -44(A5)
     PEA     -22(A5)
     MOVE.L  (A3),-(A7)
-    BSR.W   DATETIME_CopyPairAndRecalc
+    BSR.W   _DATETIME_CopyPairAndRecalc
 
     LEA     36(A7),A7
 
@@ -104,11 +104,11 @@ _DST_LoadBannerPairFromFiles:
     MOVE.L  D0,-(A7)
     MOVE.L  -48(A5),-(A7)
     PEA     889.W
-    PEA     Global_STR_DST_C_7
+    PEA     _Global_STR_DST_C_7
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     MOVE.L  A3,(A7)
-    BSR.W   DST_UpdateBannerQueue
+    BSR.W   _DST_UpdateBannerQueue
 
     MOVEQ   #1,D0
 

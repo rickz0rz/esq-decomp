@@ -14,7 +14,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
-;   NEWGRID_UpdatePresetEntry, NEWGRID2_JMPTBL_ESQ_TestBit1Based, _NEWGRID_ShouldOpenEditor
+;   _NEWGRID_UpdatePresetEntry, _NEWGRID2_JMPTBL_ESQ_TestBit1Based, _NEWGRID_ShouldOpenEditor
 ; READS:
 ;   _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryGroupPresentFlag
 ; DESC:
@@ -23,7 +23,7 @@
 ;   marker-bitset test, editor-open veto, selector metadata bits, and payload ptr.
 ; NOTES:
 ;   Uses both entry record and selector metadata table pointers produced by
-;   `NEWGRID_UpdatePresetEntry`.
+;   `_NEWGRID_UpdatePresetEntry`.
 ;   The aux pointer is treated as a selector-indexed record where
 ;   `56 + (selector*4)` stores a text/source pointer used by downstream
 ;   rendering/selection routines.
@@ -79,13 +79,13 @@ NEWGRID_FindNextEntryWithMarkers:
     MOVE.L  D0,-(A7)
     PEA     -8(A5)
     PEA     -4(A5)
-    BSR.W   NEWGRID_UpdatePresetEntry
+    BSR.W   _NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
-    TST.L   -4(A5)                        ; local ptr A: entry record ptr (from NEWGRID_UpdatePresetEntry out0)
+    TST.L   -4(A5)                        ; local ptr A: entry record ptr (from _NEWGRID_UpdatePresetEntry out0)
     BEQ.W   .advance_index
 
-    TST.L   -8(A5)                        ; local ptr B: entry aux/selector-metadata ptr (from NEWGRID_UpdatePresetEntry out1)
+    TST.L   -8(A5)                        ; local ptr B: entry aux/selector-metadata ptr (from _NEWGRID_UpdatePresetEntry out1)
     BEQ.S   .advance_index
 
     MOVEA.L -4(A5),A0
@@ -102,7 +102,7 @@ NEWGRID_FindNextEntryWithMarkers:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A1,-(A7)
-    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -336,7 +336,7 @@ NEWGRID_ProcessAltEntryState:
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
-;   NEWGRID_UpdatePresetEntry, NEWGRID2_JMPTBL_ESQ_TestBit1Based
+;   _NEWGRID_UpdatePresetEntry, _NEWGRID2_JMPTBL_ESQ_TestBit1Based
 ; READS:
 ;   _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryGroupPresentFlag
 ; DESC:
@@ -344,7 +344,7 @@ NEWGRID_ProcessAltEntryState:
 ;   passes a compound eligibility gate: entry flags, marker-bit test result,
 ;   per-selector metadata bit test, and non-null row payload pointer.
 ; NOTES:
-;   `NEWGRID_UpdatePresetEntry` materializes two pointers used for validation:
+;   `_NEWGRID_UpdatePresetEntry` materializes two pointers used for validation:
 ;   one to entry data and one to per-entry selector metadata.
 ;   The aux pointer is treated as a selector-indexed record where
 ;   `56 + (selector*4)` stores a text/source pointer required by consumers.
@@ -402,14 +402,14 @@ _NEWGRID_FindNextEntryWithAltMarkers:
     MOVE.L  D0,-(A7)
     PEA     -14(A5)
     PEA     -10(A5)
-    BSR.W   NEWGRID_UpdatePresetEntry
+    BSR.W   _NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
-    MOVE.W  D0,-6(A5)                     ; local cached entry index from NEWGRID_UpdatePresetEntry
-    TST.L   -10(A5)                       ; local ptr A: entry record ptr (from NEWGRID_UpdatePresetEntry out0)
+    MOVE.W  D0,-6(A5)                     ; local cached entry index from _NEWGRID_UpdatePresetEntry
+    TST.L   -10(A5)                       ; local ptr A: entry record ptr (from _NEWGRID_UpdatePresetEntry out0)
     BEQ.S   .advance_index
 
-    TST.L   -14(A5)                       ; local ptr B: entry aux/selector-metadata ptr (from NEWGRID_UpdatePresetEntry out1)
+    TST.L   -14(A5)                       ; local ptr B: entry aux/selector-metadata ptr (from _NEWGRID_UpdatePresetEntry out1)
     BEQ.S   .advance_index
 
     MOVEA.L -10(A5),A0
@@ -426,7 +426,7 @@ _NEWGRID_FindNextEntryWithAltMarkers:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A1,-(A7)
-    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0

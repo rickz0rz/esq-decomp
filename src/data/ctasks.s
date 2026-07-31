@@ -261,7 +261,7 @@ _Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES:
 ;   `_ED_DiagTextModeChar` stores the diagnostics TXT mode selector.
 ;   `_CONFIG_EnsurePc1GfxAssignedFlag` gates DISKIO's PC1 mount + GFX assign path.
 ;   `_CONFIG_MsnRuntimeModeSelectorChar_LRBN` selects MSN runtime shadow bucket using LRBN letters.
-; USED BY: _ED_DrawDiagnosticModeText, ED2 diagnostic menu action cycling, _DISKIO_ParseConfigBuffer, SCRIPT_UpdateRuntimeModeForPlaybackCursor
+; USED BY: _ED_DrawDiagnosticModeText, ED2 diagnostic menu action cycling, _DISKIO_ParseConfigBuffer, _SCRIPT_UpdateRuntimeModeForPlaybackCursor
 ; NOTES:
 ;   `_ED_DiagTextModeChar` is cycled against the `NRLS` option set.
 ;   `_CONFIG_MsnRuntimeModeSelectorChar_LRBN` is validated against _DISKIO_TAG_LRBN ("LRBN").

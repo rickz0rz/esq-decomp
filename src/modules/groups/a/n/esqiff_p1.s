@@ -1,9 +1,9 @@
-    XDEF    ESQIFF_QueueNextExternalAssetIffJob
-    XDEF    ESQIFF_ReadNextExternalAssetPathEntry
+    XDEF    _ESQIFF_QueueNextExternalAssetIffJob
+    XDEF    _ESQIFF_ReadNextExternalAssetPathEntry
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_QueueNextExternalAssetIffJob   (Queue next external-asset IFF decode job)
+; FUNC: _ESQIFF_QueueNextExternalAssetIffJob   (Queue next external-asset IFF decode job)
 ; ARGS:
 ;   stack +36: arg_1 (via 40(A5))
 ;   stack +37: arg_2 (via 41(A5))
@@ -19,18 +19,18 @@
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D2/D5/D6/D7
 ; CALLS:
-;   _ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, ESQIFF_JMPTBL_STRING_CompareNoCaseN, ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard, _GCOMMAND_FindPathSeparator, _ESQDISP_ProcessGridMessagesIfIdle, ESQIFF_ReadNextExternalAssetPathEntry, _LVOForbid, _LVOPermit
+;   _ESQIFF_JMPTBL_BRUSH_AllocBrushNode, _ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, _ESQIFF_JMPTBL_STRING_CompareNoCaseN, _ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard, _GCOMMAND_FindPathSeparator, _ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_ReadNextExternalAssetPathEntry, _LVOForbid, _LVOPermit
 ; READS:
-;   AbsExecBase, _Global_REF_LONG_DF0_LOGO_LST_DATA, _Global_REF_LONG_GFX_G_ADS_DATA, _CTASKS_IffTaskDoneFlag, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, ESQIFF_PATH_DF0_COLON, ESQIFF_PATH_RAM_COLON_LOGOS_SLASH, _ESQIFF_LogoListLineIndex, _ESQIFF_AssetSourceSelect, ESQIFF_ExternalAssetPathCommaFlag, _TEXTDISP_CurrentMatchIndex, fa00
+;   AbsExecBase, _Global_REF_LONG_DF0_LOGO_LST_DATA, _Global_REF_LONG_GFX_G_ADS_DATA, _CTASKS_IffTaskDoneFlag, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _ESQIFF_PATH_DF0_COLON, _ESQIFF_PATH_RAM_COLON_LOGOS_SLASH, _ESQIFF_LogoListLineIndex, _ESQIFF_AssetSourceSelect, _ESQIFF_ExternalAssetPathCommaFlag, _TEXTDISP_CurrentMatchIndex, fa00
 ; WRITES:
-;   _CTASKS_PendingLogoBrushDescriptor, _CTASKS_PendingGAdsBrushDescriptor, _ESQIFF_GAdsBrushListCount, _ESQIFF_LogoBrushListCount, ESQIFF_PendingExternalBrushNode, ESQIFF_ExternalAssetStateTable, _TEXTDISP_CurrentMatchIndex
+;   _CTASKS_PendingLogoBrushDescriptor, _CTASKS_PendingGAdsBrushDescriptor, _ESQIFF_GAdsBrushListCount, _ESQIFF_LogoBrushListCount, _ESQIFF_PendingExternalBrushNode, _ESQIFF_ExternalAssetStateTable, _TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Chooses the next external asset path from active catalog data, filters/skips
 ;   disallowed entries, allocates a descriptor, and starts IFF decode task when needed.
 ; NOTES:
 ;   Uses `_TEXTDISP_CurrentMatchIndex` snapshot/restore while probing wildcard matches.
 ;------------------------------------------------------------------------------
-ESQIFF_QueueNextExternalAssetIffJob:
+_ESQIFF_QueueNextExternalAssetIffJob:
     LINK.W  A5,#-144
     MOVEM.L D2/D5-D7,-(A7)
     MOVEQ   #0,D0
@@ -97,7 +97,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
 
 .loop_read_candidate_path:
     PEA     -40(A5)
-    BSR.W   ESQIFF_ReadNextExternalAssetPathEntry
+    BSR.W   _ESQIFF_ReadNextExternalAssetPathEntry
 
     ADDQ.W  #4,A7
     LEA     -40(A5),A0
@@ -115,7 +115,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
     MOVE.W  _ESQIFF_AssetSourceSelect,D0
     BEQ.S   .validate_source0_path_prefixes
 
-    TST.W   ESQIFF_ExternalAssetPathCommaFlag
+    TST.W   _ESQIFF_ExternalAssetPathCommaFlag
     BEQ.S   .build_wildcard_probe_path
 
     MOVE.W  #1,-128(A5)
@@ -152,22 +152,22 @@ ESQIFF_QueueNextExternalAssetIffJob:
     JSR     _GCOMMAND_FindPathSeparator(PC)
 
     MOVE.L  D0,(A7)
-    JSR     ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard(PC)
+    JSR     _ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard(PC)
 
     ADDQ.W  #4,A7
     SUBQ.W  #1,D0
     BNE.S   .yield_grid_while_scanning
 
     MOVE.W  #1,-128(A5)
-    MOVE.W  _TEXTDISP_CurrentMatchIndex,ESQIFF_ExternalAssetStateTable
+    MOVE.W  _TEXTDISP_CurrentMatchIndex,_ESQIFF_ExternalAssetStateTable
     BRA.S   .finalize_candidate_filter
 
 .validate_source0_path_prefixes:
     MOVEQ   #4,D0
     MOVE.L  D0,-(A7)
     PEA     -40(A5)
-    PEA     ESQIFF_PATH_DF0_COLON
-    JSR     ESQIFF_JMPTBL_STRING_CompareNoCaseN(PC)
+    PEA     _ESQIFF_PATH_DF0_COLON
+    JSR     _ESQIFF_JMPTBL_STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -176,8 +176,8 @@ ESQIFF_QueueNextExternalAssetIffJob:
     MOVEQ   #11,D0
     MOVE.L  D0,-(A7)
     PEA     -40(A5)
-    PEA     ESQIFF_PATH_RAM_COLON_LOGOS_SLASH
-    JSR     ESQIFF_JMPTBL_STRING_CompareNoCaseN(PC)
+    PEA     _ESQIFF_PATH_RAM_COLON_LOGOS_SLASH
+    JSR     _ESQIFF_JMPTBL_STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -264,7 +264,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
 
     ADDQ.W  #8,A7
     MOVE.W  _ESQIFF_AssetSourceSelect,D1
-    MOVE.L  D0,ESQIFF_PendingExternalBrushNode
+    MOVE.L  D0,_ESQIFF_PendingExternalBrushNode
     TST.W   D1
     BEQ.S   .init_gads_pending_descriptor
 
@@ -279,7 +279,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
     MOVE.L  D0,_CTASKS_PendingGAdsBrushDescriptor
 
 .start_iff_task_for_pending_descriptor:
-    JSR     ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(PC)
+    JSR     _ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(PC)
 
 .poll_until_path_change_or_timeout:
     JSR     _ESQDISP_ProcessGridMessagesIfIdle(PC)
@@ -289,7 +289,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
     BNE.S   .compare_snapshot_with_current_path
 
     PEA     -40(A5)
-    BSR.W   ESQIFF_ReadNextExternalAssetPathEntry
+    BSR.W   _ESQIFF_ReadNextExternalAssetPathEntry
 
     ADDQ.W  #4,A7
 
@@ -330,7 +330,7 @@ ESQIFF_QueueNextExternalAssetIffJob:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_ReadNextExternalAssetPathEntry   (Read next newline-delimited external asset path entry)
+; FUNC: _ESQIFF_ReadNextExternalAssetPathEntry   (Read next newline-delimited external asset path entry)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +10: arg_2 (via 14(A5))
@@ -341,16 +341,16 @@ ESQIFF_QueueNextExternalAssetIffJob:
 ; CALLS:
 ;   _ESQDISP_ProcessGridMessagesIfIdle
 ; READS:
-;   _Global_REF_LONG_DF0_LOGO_LST_DATA, _Global_REF_LONG_DF0_LOGO_LST_FILESIZE, _Global_REF_LONG_GFX_G_ADS_DATA, _Global_REF_LONG_GFX_G_ADS_FILESIZE, _ESQIFF_LogoListLineIndex, _ESQIFF_GAdsListLineIndex, _ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled
+;   _Global_REF_LONG_DF0_LOGO_LST_DATA, _Global_REF_LONG_DF0_LOGO_LST_FILESIZE, _Global_REF_LONG_GFX_G_ADS_DATA, _Global_REF_LONG_GFX_G_ADS_FILESIZE, _ESQIFF_LogoListLineIndex, _ESQIFF_GAdsListLineIndex, _ESQIFF_AssetSourceSelect, _ESQIFF_GAdsSourceEnabled
 ; WRITES:
-;   _ESQIFF_LogoListLineIndex, _ESQIFF_GAdsListLineIndex, ESQIFF_ExternalAssetPathCommaFlag
+;   _ESQIFF_LogoListLineIndex, _ESQIFF_GAdsListLineIndex, _ESQIFF_ExternalAssetPathCommaFlag
 ; DESC:
 ;   Selects active catalog stream, advances to current line index, then copies one
 ;   path entry into output buffer stopping on CR/LF/space or comma delimiters.
 ; NOTES:
-;   Comma delimiter sets ESQIFF_ExternalAssetPathCommaFlag and returns empty string.
+;   Comma delimiter sets _ESQIFF_ExternalAssetPathCommaFlag and returns empty string.
 ;------------------------------------------------------------------------------
-ESQIFF_ReadNextExternalAssetPathEntry:
+_ESQIFF_ReadNextExternalAssetPathEntry:
     LINK.W  A5,#-16
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -363,11 +363,11 @@ ESQIFF_ReadNextExternalAssetPathEntry:
     MOVE.L  _Global_REF_LONG_DF0_LOGO_LST_DATA,-14(A5)
     MOVE.W  _ESQIFF_LogoListLineIndex,D6
     MOVEQ   #0,D0
-    MOVE.W  D0,ESQIFF_ExternalAssetPathCommaFlag
+    MOVE.W  D0,_ESQIFF_ExternalAssetPathCommaFlag
     BRA.S   .begin_line_seek
 
 .select_gads_catalog:
-    MOVE.W  ESQIFF_GAdsSourceEnabled,D0
+    MOVE.W  _ESQIFF_GAdsSourceEnabled,D0
     BEQ.S   .return_no_catalog_enabled
 
     MOVE.L  _Global_REF_LONG_GFX_G_ADS_FILESIZE,D4
@@ -460,7 +460,7 @@ ESQIFF_ReadNextExternalAssetPathEntry:
     BNE.S   .append_entry_char
 
     CLR.B   (A3)
-    MOVE.W  #1,ESQIFF_ExternalAssetPathCommaFlag
+    MOVE.W  #1,_ESQIFF_ExternalAssetPathCommaFlag
     BRA.S   .terminate_and_return_entry
 
 .append_entry_char:

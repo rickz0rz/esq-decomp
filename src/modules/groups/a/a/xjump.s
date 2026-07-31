@@ -1,7 +1,7 @@
     XDEF    _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator
-    XDEF    GROUP_AA_JMPTBL_STRING_CompareN
+    XDEF    _GROUP_AA_JMPTBL_STRING_CompareN
     XDEF    _GROUP_AA_JMPTBL_STRING_CompareNoCase
-    XDEF    GROUP_AA_JMPTBL_GRAPHICS_AllocRaster
+    XDEF    _GROUP_AA_JMPTBL_GRAPHICS_AllocRaster
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AA_JMPTBL_STRING_CompareNoCase   (Routine at _GROUP_AA_JMPTBL_STRING_CompareNoCase)
@@ -26,7 +26,7 @@ _GROUP_AA_JMPTBL_STRING_CompareNoCase:
     JMP     _STRING_CompareNoCase
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AA_JMPTBL_STRING_CompareN   (Routine at GROUP_AA_JMPTBL_STRING_CompareN)
+; FUNC: _GROUP_AA_JMPTBL_STRING_CompareN   (Routine at _GROUP_AA_JMPTBL_STRING_CompareN)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -44,7 +44,7 @@ _GROUP_AA_JMPTBL_STRING_CompareNoCase:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AA_JMPTBL_STRING_CompareN:
+_GROUP_AA_JMPTBL_STRING_CompareN:
     JMP     STRING_CompareN
 
 ;------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator:
     JMP     _GCOMMAND_FindPathSeparator
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AA_JMPTBL_GRAPHICS_AllocRaster   (Routine at GROUP_AA_JMPTBL_GRAPHICS_AllocRaster)
+; FUNC: _GROUP_AA_JMPTBL_GRAPHICS_AllocRaster   (Routine at _GROUP_AA_JMPTBL_GRAPHICS_AllocRaster)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -88,5 +88,5 @@ _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AA_JMPTBL_GRAPHICS_AllocRaster:
+_GROUP_AA_JMPTBL_GRAPHICS_AllocRaster:
     JMP     GRAPHICS_AllocRaster

@@ -6,8 +6,8 @@
     XDEF    ESQIFF_JMPTBL_BRUSH_PopBrushHead
     XDEF    _ESQIFF_JMPTBL_BRUSH_PopulateBrushList
     XDEF    _ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel
-    XDEF    ESQIFF_JMPTBL_BRUSH_SelectBrushSlot
-    XDEF    ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess
+    XDEF    _ESQIFF_JMPTBL_BRUSH_SelectBrushSlot
+    XDEF    _ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess
     XDEF    _ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle
     XDEF    _ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle
     XDEF    _ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle
@@ -18,18 +18,18 @@
     XDEF    ESQIFF_JMPTBL_ESQ_NoOp
     XDEF    _ESQIFF_JMPTBL_ESQ_NoOp_006A
     XDEF    _ESQIFF_JMPTBL_ESQ_NoOp_0074
-    XDEF    ESQIFF_JMPTBL_MATH_DivS32
-    XDEF    ESQIFF_JMPTBL_MATH_Mulu32
+    XDEF    _ESQIFF_JMPTBL_MATH_DivS32
+    XDEF    _ESQIFF_JMPTBL_MATH_Mulu32
     XDEF    _ESQIFF_JMPTBL_MEMORY_AllocateMemory
     XDEF    _ESQIFF_JMPTBL_MEMORY_DeallocateMemory
     XDEF    _ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode
     XDEF    ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled
     XDEF    _ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition
-    XDEF    ESQIFF_JMPTBL_STRING_CompareN
+    XDEF    _ESQIFF_JMPTBL_STRING_CompareN
     XDEF    ESQIFF_JMPTBL_STRING_CompareNoCase
-    XDEF    ESQIFF_JMPTBL_STRING_CompareNoCaseN
+    XDEF    _ESQIFF_JMPTBL_STRING_CompareNoCaseN
     XDEF    ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner
-    XDEF    ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard
+    XDEF    _ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard
     XDEF    _ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode
     XDEF    _ESQIFF_JMPTBL_DOS_OpenFileWithMode
 
@@ -106,7 +106,7 @@ _ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle:
     JMP     _DISKIO_GetFilesizeFromHandle
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_MATH_DivS32   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_MATH_DivS32   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -124,11 +124,11 @@ _ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_MATH_DivS32:
+_ESQIFF_JMPTBL_MATH_DivS32:
     JMP     _MATH_DivS32
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -146,11 +146,11 @@ ESQIFF_JMPTBL_MATH_DivS32:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard:
+_ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard:
     JMP     _TEXTDISP_FindEntryIndexByWildcard
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_STRING_CompareN   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_STRING_CompareN   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -168,7 +168,7 @@ ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_STRING_CompareN:
+_ESQIFF_JMPTBL_STRING_CompareN:
     JMP     STRING_CompareN
 
 ;------------------------------------------------------------------------------
@@ -202,7 +202,7 @@ ESQIFF_JMPTBL_ESQ_NoOp:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   TEXTDISP_DrawChannelBanner
+;   _TEXTDISP_DrawChannelBanner
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -213,7 +213,7 @@ ESQIFF_JMPTBL_ESQ_NoOp:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner:
-    JMP     TEXTDISP_DrawChannelBanner
+    JMP     _TEXTDISP_DrawChannelBanner
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart   (Jump-table forwarder)
@@ -488,7 +488,7 @@ _ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   BRUSH_PopulateBrushList
+;   _BRUSH_PopulateBrushList
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -499,7 +499,7 @@ _ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQIFF_JMPTBL_BRUSH_PopulateBrushList:
-    JMP     BRUSH_PopulateBrushList
+    JMP     _BRUSH_PopulateBrushList
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQIFF_JMPTBL_ESQ_NoOp_0074   (Jump-table forwarder)
@@ -524,7 +524,7 @@ _ESQIFF_JMPTBL_ESQ_NoOp_0074:
     JMP     _ESQ_NoOp_0074
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_STRING_CompareNoCaseN   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_STRING_CompareNoCaseN   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -542,7 +542,7 @@ _ESQIFF_JMPTBL_ESQ_NoOp_0074:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_STRING_CompareNoCaseN:
+_ESQIFF_JMPTBL_STRING_CompareNoCaseN:
     JMP     _STRING_CompareNoCaseN
 
 ;------------------------------------------------------------------------------
@@ -576,7 +576,7 @@ ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_BeginBannerCharTransition
+;   _SCRIPT_BeginBannerCharTransition
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -587,7 +587,7 @@ ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition:
-    JMP     SCRIPT_BeginBannerCharTransition
+    JMP     _SCRIPT_BeginBannerCharTransition
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQIFF_JMPTBL_MEMORY_AllocateMemory   (Jump-table forwarder)
@@ -612,7 +612,7 @@ _ESQIFF_JMPTBL_MEMORY_AllocateMemory:
     JMP     _MEMORY_AllocateMemory
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -630,7 +630,7 @@ _ESQIFF_JMPTBL_MEMORY_AllocateMemory:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess:
+_ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess:
     JMP     _CTASKS_StartIffTaskProcess
 
 ;------------------------------------------------------------------------------
@@ -700,7 +700,7 @@ _ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary:
     JMP     _ESQ_DecCopperListsPrimary
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_BRUSH_SelectBrushSlot   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_BRUSH_SelectBrushSlot   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -718,7 +718,7 @@ _ESQIFF_JMPTBL_ESQ_DecCopperListsPrimary:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_BRUSH_SelectBrushSlot:
+_ESQIFF_JMPTBL_BRUSH_SelectBrushSlot:
     JMP     BRUSH_SelectBrushSlot
 
 ;------------------------------------------------------------------------------
@@ -744,7 +744,7 @@ _ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel:
     JMP     _BRUSH_SelectBrushByLabel
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF_JMPTBL_MATH_Mulu32   (Jump-table forwarder)
+; FUNC: _ESQIFF_JMPTBL_MATH_Mulu32   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -762,7 +762,7 @@ _ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQIFF_JMPTBL_MATH_Mulu32:
+_ESQIFF_JMPTBL_MATH_Mulu32:
     JMP     _MATH_Mulu32
 
 ;------------------------------------------------------------------------------

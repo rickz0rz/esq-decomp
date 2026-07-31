@@ -15,7 +15,7 @@
 ; CALLS:
 ;   (none)
 ; READS:
-;   _ESQSHARED4_InterleaveCopyBaseOffset, ESQSHARED4_InterleaveCopyTailOffsetCurrent
+;   _ESQSHARED4_InterleaveCopyBaseOffset, _ESQSHARED4_InterleaveCopyTailOffsetCurrent
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -109,7 +109,7 @@ ESQSHARED4_CopyInterleavedRowWordsFromOffset:
     MOVE.W  14(A2),14(A1)
     ADDA.L  #$20,A1
     MOVEA.L A0,A2
-    ADDA.L  ESQSHARED4_InterleaveCopyTailOffsetCurrent,A2
+    ADDA.L  _ESQSHARED4_InterleaveCopyTailOffsetCurrent,A2
     MOVE.W  6(A2),6(A1)
     MOVE.W  10(A2),10(A1)
     MOVE.W  14(A2),14(A1)
@@ -129,7 +129,7 @@ ESQSHARED4_CopyInterleavedRowWordsFromOffset:
 ; CALLS:
 ;   (none)
 ; READS:
-;   ESQPARS2_BannerCopySourceOffset, ESQPARS2_BannerCopyTailOffset, _ESQSHARED_BlitAddressOffset, GCOMMAND_BannerRowByteOffsetCurrent, b0
+;   ESQPARS2_BannerCopySourceOffset, ESQPARS2_BannerCopyTailOffset, _ESQSHARED_BlitAddressOffset, _GCOMMAND_BannerRowByteOffsetCurrent, b0
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -463,7 +463,7 @@ ESQSHARED4_CopyBannerRowsWithByteOffset:
     MOVE.L  (A2)+,(A1)+
     MOVE.L  (A2)+,(A1)+
     ADDA.L  _ESQSHARED_BlitAddressOffset,A1
-    MOVE.L  GCOMMAND_BannerRowByteOffsetCurrent,D1
+    MOVE.L  _GCOMMAND_BannerRowByteOffsetCurrent,D1
     ADD.L   ESQPARS2_BannerCopyTailOffset,D1
     MOVEA.L A0,A2
     ADDA.L  D1,A2

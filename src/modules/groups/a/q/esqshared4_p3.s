@@ -13,9 +13,9 @@
 ; CALLS:
 ;   _ESQSHARED4_LoadDefaultPaletteToCopper_NoOp
 ; READS:
-;   BLTDDAT, COPJMP1, DDFSTOP_WIDE, DDFSTRT_WIDE, ESQ_CopperEffectListA, ESQ_CopperEffectSwitchWaitWordA, ESQ_CopperEffectListB, ESQ_CopperEffectSwitchWaitWordB, VPOSR, ffc5
+;   BLTDDAT, COPJMP1, DDFSTOP_WIDE, DDFSTRT_WIDE, _ESQ_CopperEffectListA, _ESQ_CopperEffectSwitchWaitWordA, _ESQ_CopperEffectListB, _ESQ_CopperEffectSwitchWaitWordB, VPOSR, ffc5
 ; WRITES:
-;   BLTDDAT, BPL1MOD, BPL2MOD, COP1LCH, DDFSTOP, DDFSTRT, DIWSTOP, DIWSTRT, DMACON, ESQ_CopperEffectListB_PtrHiWord, ESQ_CopperEffectListB_PtrLoWord, ESQ_CopperEffectJumpTargetA_HiWord, ESQ_CopperEffectJumpTargetA_LoWord, ESQ_CopperEffectListA_PtrHiWord, ESQ_CopperEffectListA_PtrLoWord, ESQ_CopperEffectJumpTargetB_HiWord, ESQ_CopperEffectJumpTargetB_LoWord
+;   BLTDDAT, BPL1MOD, BPL2MOD, COP1LCH, DDFSTOP, DDFSTRT, DIWSTOP, DIWSTRT, DMACON, _ESQ_CopperEffectListB_PtrHiWord, _ESQ_CopperEffectListB_PtrLoWord, _ESQ_CopperEffectJumpTargetA_HiWord, _ESQ_CopperEffectJumpTargetA_LoWord, _ESQ_CopperEffectListA_PtrHiWord, _ESQ_CopperEffectListA_PtrLoWord, _ESQ_CopperEffectJumpTargetB_HiWord, _ESQ_CopperEffectJumpTargetB_LoWord
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -37,31 +37,31 @@ ESQSHARED4_ProgramDisplayWindowAndCopper:
     MOVE.W  #$58,(BPL2MOD-BLTDDAT)(A0)
     BSR.W   _ESQSHARED4_LoadDefaultPaletteToCopper_NoOp
 
-    LEA     ESQ_CopperEffectListB,A2
+    LEA     _ESQ_CopperEffectListB,A2
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_CopperEffectListB_PtrLoWord
+    MOVE.W  D0,_ESQ_CopperEffectListB_PtrLoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_CopperEffectListB_PtrHiWord
-    LEA     ESQ_CopperEffectListA,A2
+    MOVE.W  D0,_ESQ_CopperEffectListB_PtrHiWord
+    LEA     _ESQ_CopperEffectListA,A2
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_CopperEffectListA_PtrLoWord
+    MOVE.W  D0,_ESQ_CopperEffectListA_PtrLoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_CopperEffectListA_PtrHiWord
-    LEA     ESQ_CopperEffectSwitchWaitWordA,A2
+    MOVE.W  D0,_ESQ_CopperEffectListA_PtrHiWord
+    LEA     _ESQ_CopperEffectSwitchWaitWordA,A2
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_CopperEffectJumpTargetA_LoWord
+    MOVE.W  D0,_ESQ_CopperEffectJumpTargetA_LoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_CopperEffectJumpTargetA_HiWord
-    LEA     ESQ_CopperEffectSwitchWaitWordB,A2
+    MOVE.W  D0,_ESQ_CopperEffectJumpTargetA_HiWord
+    LEA     _ESQ_CopperEffectSwitchWaitWordB,A2
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_CopperEffectJumpTargetB_LoWord
+    MOVE.W  D0,_ESQ_CopperEffectJumpTargetB_LoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_CopperEffectJumpTargetB_HiWord
-    LEA     ESQ_CopperEffectListB,A2
+    MOVE.W  D0,_ESQ_CopperEffectJumpTargetB_HiWord
+    LEA     _ESQ_CopperEffectListB,A2
     MOVE.W  (VPOSR-BLTDDAT)(A0),D0
     BPL.S   .lab_0C81
 
-    LEA     ESQ_CopperEffectListA,A2
+    LEA     _ESQ_CopperEffectListA,A2
 
 .lab_0C81:
     MOVE.L  A2,(COP1LCH-BLTDDAT)(A0)
@@ -83,9 +83,9 @@ ESQSHARED4_ProgramDisplayWindowAndCopper:
 ; CALLS:
 ;   GCOMMAND_TickHighlightState, ESQSHARED4_ProgramDisplayWindowAndCopper, ESQSHARED4_BlitBannerRowsForActiveField, _SCRIPT_UpdateBannerCharTransition
 ; READS:
-;   BLTDDAT, LAB_0C85, LAB_0C86, LAB_0C87, LAB_0C89, LAB_0C8A, LAB_0C8B, ED2_HighlightTickEnabledFlag, ESQ_CopperEffectListA, ESQ_BannerSnapshotPlane0DstPtrHiWord, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerSnapshotPlane1DstPtrHiWord, ESQ_BannerSnapshotPlane1DstPtrLoWord, ESQ_BannerSnapshotPlane2DstPtrHiWord, ESQ_BannerSnapshotPlane2DstPtrLoWord, ESQ_CopperEffectListB, ESQPARS2_CopperProgramPendingFlag, _ESQPARS2_StateIndex, _ESQPARS2_ReadModeFlags, _GCOMMAND_HighlightHoldoffTickCount, _SCRIPT_BannerTransitionActive, VPOSR, b0
+;   BLTDDAT, LAB_0C85, LAB_0C86, LAB_0C87, LAB_0C89, LAB_0C8A, LAB_0C8B, _ED2_HighlightTickEnabledFlag, _ESQ_CopperEffectListA, ESQ_BannerSnapshotPlane0DstPtrHiWord, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerSnapshotPlane1DstPtrHiWord, ESQ_BannerSnapshotPlane1DstPtrLoWord, ESQ_BannerSnapshotPlane2DstPtrHiWord, ESQ_BannerSnapshotPlane2DstPtrLoWord, _ESQ_CopperEffectListB, ESQPARS2_CopperProgramPendingFlag, _ESQPARS2_StateIndex, _ESQPARS2_ReadModeFlags, _GCOMMAND_HighlightHoldoffTickCount, _SCRIPT_BannerTransitionActive, VPOSR, b0
 ; WRITES:
-;   BLTDDAT, COP1LCH, ESQ_BannerSnapshotPlane0DstPtrHiWord, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerSnapshotPlane1DstPtrHiWord, ESQ_BannerSnapshotPlane1DstPtrLoWord, ESQ_BannerSnapshotPlane2DstPtrHiWord, ESQ_BannerSnapshotPlane2DstPtrLoWord, ESQ_BannerSweepSrcPlane0Ptr_HiWord, ESQ_BannerSweepSrcPlane0Ptr_LoWord, ESQ_BannerSweepSrcPlane1Ptr_HiWord, ESQ_BannerSweepSrcPlane1Ptr_LoWord, ESQ_BannerSweepSrcPlane2Ptr_HiWord, ESQ_BannerSweepSrcPlane2Ptr_LoWord, _ESQPARS2_BannerSnapshotPlane0DstPtr, ESQPARS2_BannerSnapshotPlane0DstPtrLo, ESQPARS2_BannerSnapshotPlane1DstPtr, ESQPARS2_BannerSnapshotPlane1DstPtrLo, ESQPARS2_BannerSnapshotPlane2DstPtr, ESQPARS2_BannerSnapshotPlane2DstPtrLo, ESQPARS2_CopperProgramPendingFlag, ESQPARS2_HighlightTickCountdown, _ESQPARS2_ReadModeFlags, ESQPARS2_ActiveCopperListSelectFlag, _GCOMMAND_HighlightHoldoffTickCount
+;   BLTDDAT, COP1LCH, ESQ_BannerSnapshotPlane0DstPtrHiWord, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerSnapshotPlane1DstPtrHiWord, ESQ_BannerSnapshotPlane1DstPtrLoWord, ESQ_BannerSnapshotPlane2DstPtrHiWord, ESQ_BannerSnapshotPlane2DstPtrLoWord, ESQ_BannerSweepSrcPlane0Ptr_HiWord, ESQ_BannerSweepSrcPlane0Ptr_LoWord, ESQ_BannerSweepSrcPlane1Ptr_HiWord, ESQ_BannerSweepSrcPlane1Ptr_LoWord, ESQ_BannerSweepSrcPlane2Ptr_HiWord, ESQ_BannerSweepSrcPlane2Ptr_LoWord, _ESQPARS2_BannerSnapshotPlane0DstPtr, ESQPARS2_BannerSnapshotPlane0DstPtrLo, _ESQPARS2_BannerSnapshotPlane1DstPtr, ESQPARS2_BannerSnapshotPlane1DstPtrLo, _ESQPARS2_BannerSnapshotPlane2DstPtr, ESQPARS2_BannerSnapshotPlane2DstPtrLo, ESQPARS2_CopperProgramPendingFlag, ESQPARS2_HighlightTickCountdown, _ESQPARS2_ReadModeFlags, ESQPARS2_ActiveCopperListSelectFlag, _GCOMMAND_HighlightHoldoffTickCount
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -95,12 +95,12 @@ ESQSHARED4_TickCopperAndBannerTransitions:
     MOVEM.L D0-D3/A0-A6,-(A7)
 
     LEA     BLTDDAT,A0
-    LEA     ESQ_CopperEffectListA,A2
+    LEA     _ESQ_CopperEffectListA,A2
     MOVEQ   #1,D1
     MOVE.W  (VPOSR-BLTDDAT)(A0),D0
     BPL.S   .lab_0C83            ; BPL = checks to see if bit 15 is set (LOF), if it is jump to LAB_0C83
 
-    LEA     ESQ_CopperEffectListB,A2
+    LEA     _ESQ_CopperEffectListB,A2
     MOVEQ   #0,D1
 
 .lab_0C83:
@@ -158,7 +158,7 @@ ESQSHARED4_TickCopperAndBannerTransitions:
 
 .lab_0C89:
     MOVE.W  _ESQPARS2_StateIndex,ESQPARS2_HighlightTickCountdown
-    TST.W   ED2_HighlightTickEnabledFlag
+    TST.W   _ED2_HighlightTickEnabledFlag
     BEQ.S   .lab_0C8B
 
     BSR.W   GCOMMAND_TickHighlightState
@@ -179,9 +179,9 @@ ESQSHARED4_TickCopperAndBannerTransitions:
     MOVE.W  ESQ_BannerSnapshotPlane0DstPtrLoWord,ESQPARS2_BannerSnapshotPlane0DstPtrLo
     MOVE.W  ESQ_BannerSnapshotPlane0DstPtrHiWord,_ESQPARS2_BannerSnapshotPlane0DstPtr
     MOVE.W  ESQ_BannerSnapshotPlane1DstPtrLoWord,ESQPARS2_BannerSnapshotPlane1DstPtrLo
-    MOVE.W  ESQ_BannerSnapshotPlane1DstPtrHiWord,ESQPARS2_BannerSnapshotPlane1DstPtr
+    MOVE.W  ESQ_BannerSnapshotPlane1DstPtrHiWord,_ESQPARS2_BannerSnapshotPlane1DstPtr
     MOVE.W  ESQ_BannerSnapshotPlane2DstPtrLoWord,ESQPARS2_BannerSnapshotPlane2DstPtrLo
-    MOVE.W  ESQ_BannerSnapshotPlane2DstPtrHiWord,ESQPARS2_BannerSnapshotPlane2DstPtr
+    MOVE.W  ESQ_BannerSnapshotPlane2DstPtrHiWord,_ESQPARS2_BannerSnapshotPlane2DstPtr
     RTS
 
 ;!======

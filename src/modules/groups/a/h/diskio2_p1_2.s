@@ -34,7 +34,7 @@ DISKIO2_DisplayStatusLine:
     MOVEQ   #1,D0
     JSR     _LVOSetDrMd(A6)
 
-    PEA     Global_STR_38_SPACES
+    PEA     _Global_STR_38_SPACES
     PEA     120.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
@@ -63,8 +63,8 @@ DISKIO2_DisplayStatusLine:
 ; CLOBBERS:
 ;   A0/A1/A7/D0/D7
 ; CALLS:
-;   _GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, DISKIO2_DisplayStatusLine, DISKIO2_FlushDataFilesIfNeeded, ED1_JMPTBL_LADFUNC_SaveTextAdsToFile, DISKIO_SaveConfigToFileHandle, GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile, _DISKIO2_WriteQTableIniFile,
-;   _GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry, DATETIME_SavePairToFile, GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile, GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile, _GCOMMAND_LoadMplexFile,
+;   _GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, DISKIO2_DisplayStatusLine, _DISKIO2_FlushDataFilesIfNeeded, ED1_JMPTBL_LADFUNC_SaveTextAdsToFile, DISKIO_SaveConfigToFileHandle, GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile, _DISKIO2_WriteQTableIniFile,
+;   _GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry, _DATETIME_SavePairToFile, GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile, GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile, _GCOMMAND_LoadMplexFile,
 ;   _GCOMMAND_LoadPPVTemplate
 ; READS:
 ;   DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT..DISKIO2_STR_SAVING_DATA_VIEW_CONFIG text tables
@@ -102,7 +102,7 @@ _DISKIO2_RunDiskSyncWorkflow:
     ADDQ.W  #4,A7
 
 .loc_0486:
-    BSR.W   DISKIO2_FlushDataFilesIfNeeded
+    BSR.W   _DISKIO2_FlushDataFilesIfNeeded
 
     LEA     DISKIO2_STR_SAVING_TEXT_ADS_DOT,A0
     LEA     -100(A5),A1
@@ -214,7 +214,7 @@ _DISKIO2_RunDiskSyncWorkflow:
 
 .loc_0492:
     PEA     _DST_BannerWindowPrimary
-    JSR     DATETIME_SavePairToFile(PC)
+    JSR     _DATETIME_SavePairToFile(PC)
 
     ADDQ.W  #4,A7
     LEA     DISKIO2_STR_SAVING_PROMO_TYPES,A0

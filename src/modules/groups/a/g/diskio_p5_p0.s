@@ -79,7 +79,7 @@ DISKIO_EnsurePc1MountedAndGfxAssigned_Return:
 ; CALLS:
 ;   _DISKIO_OpenFileWithBuffer, _GROUP_AE_JMPTBL_WDISP_SPrintf, _DISKIO_CloseBufferedFileAndFlush, _DISKIO_WriteBufferedBytes
 ; READS:
-;   BRUSH_LabelScratch, _Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES, _Global_REF_STR_USE_24_HR_CLOCK, _CONFIG_BannerCopperHeadByte, Global_STR_DEFAULT_CONFIG_FORMATTED, Global_STR_DF0_CONFIG_DAT_1, DISKIO_SaveConfigToFileHandle_Return, _CONFIG_RefreshIntervalMinutes, _CTASKS_STR_C, _CONFIG_NicheModeCycleBudget_Y, _CONFIG_NicheModeCycleBudget_Static, _CONFIG_SerializedNumericSlot05, _CONFIG_NewgridWindowSpanHalfHoursPrimary, _CTASKS_STR_G, _CONFIG_SerializedFlagSlot08_DefaultN, _CTASKS_STR_A, _CTASKS_STR_E, _CONFIG_SerializedNumericSlot10, _CONFIG_NicheModeCycleBudget_Custom, _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag, _CONFIG_NewgridSelectionCode35EnabledFlag, _CONFIG_SerializedFlagSlot15_DefaultN, _CONFIG_NewgridSelectionCode34AltEnabledFlag, _CONFIG_NewgridSelectionCode32EnabledFlag, _CONFIG_RuntimeMode12BannerJumpEnabledFlag, _CTASKS_STR_L, _CONFIG_SerializedNumericSlot19, _CONFIG_SerializedNumericSlot20, _CONFIG_ModeCycleEnabledFlag, _CONFIG_NewgridPlaceholderBevelFlag, _CONFIG_NewgridSelectionCode48_49EnabledFlag, _CONFIG_SerializedNumericSlot25, _CONFIG_SerializedNumericSlot26, _CONFIG_NewgridWindowSpanHalfHoursAlt, _CONFIG_TimeWindowMinutes, _CONFIG_ModeCycleGateDuration, _CONFIG_NewgridSelectionCode16EnabledFlag, _CONFIG_ParseiniLogoScanEnabledFlag, _ED_DiagTextModeChar, _CONFIG_EnsurePc1GfxAssignedFlag, _CONFIG_MsnRuntimeModeSelectorChar_LRBN, _CONFIG_LRBN_FlagChar, _CONFIG_MSN_FlagChar, _CTASKS_STR_1, MODE_NEWFILE
+;   _BRUSH_LabelScratch, _Global_REF_BYTE_NUMBER_OF_COLOR_PALETTES, _Global_REF_STR_USE_24_HR_CLOCK, _CONFIG_BannerCopperHeadByte, _Global_STR_DEFAULT_CONFIG_FORMATTED, _Global_STR_DF0_CONFIG_DAT_1, DISKIO_SaveConfigToFileHandle_Return, _CONFIG_RefreshIntervalMinutes, _CTASKS_STR_C, _CONFIG_NicheModeCycleBudget_Y, _CONFIG_NicheModeCycleBudget_Static, _CONFIG_SerializedNumericSlot05, _CONFIG_NewgridWindowSpanHalfHoursPrimary, _CTASKS_STR_G, _CONFIG_SerializedFlagSlot08_DefaultN, _CTASKS_STR_A, _CTASKS_STR_E, _CONFIG_SerializedNumericSlot10, _CONFIG_NicheModeCycleBudget_Custom, _CONFIG_NewgridSelectionCode34PrimaryEnabledFlag, _CONFIG_NewgridSelectionCode35EnabledFlag, _CONFIG_SerializedFlagSlot15_DefaultN, _CONFIG_NewgridSelectionCode34AltEnabledFlag, _CONFIG_NewgridSelectionCode32EnabledFlag, _CONFIG_RuntimeMode12BannerJumpEnabledFlag, _CTASKS_STR_L, _CONFIG_SerializedNumericSlot19, _CONFIG_SerializedNumericSlot20, _CONFIG_ModeCycleEnabledFlag, _CONFIG_NewgridPlaceholderBevelFlag, _CONFIG_NewgridSelectionCode48_49EnabledFlag, _CONFIG_SerializedNumericSlot25, _CONFIG_SerializedNumericSlot26, _CONFIG_NewgridWindowSpanHalfHoursAlt, _CONFIG_TimeWindowMinutes, _CONFIG_ModeCycleGateDuration, _CONFIG_NewgridSelectionCode16EnabledFlag, _CONFIG_ParseiniLogoScanEnabledFlag, _ED_DiagTextModeChar, _CONFIG_EnsurePc1GfxAssignedFlag, _CONFIG_MsnRuntimeModeSelectorChar_LRBN, _CONFIG_LRBN_FlagChar, _CONFIG_MSN_FlagChar, _CTASKS_STR_1, MODE_NEWFILE
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -91,7 +91,7 @@ DISKIO_SaveConfigToFileHandle:
     LINK.W  A5,#-212
     MOVEM.L D2-D7,-(A7)
     PEA     MODE_NEWFILE.W
-    PEA     Global_STR_DF0_CONFIG_DAT_1
+    PEA     _Global_STR_DF0_CONFIG_DAT_1
     BSR.W   _DISKIO_OpenFileWithBuffer
 
     ADDQ.W  #8,A7
@@ -273,7 +273,7 @@ DISKIO_SaveConfigToFileHandle:
     MOVE.L  176(A7),-(A7)
     MOVE.L  176(A7),-(A7)
     MOVE.L  176(A7),-(A7)
-    PEA     BRUSH_LabelScratch
+    PEA     _BRUSH_LabelScratch
     MOVE.L  _CONFIG_ModeCycleGateDuration,-(A7)
     MOVE.L  _CONFIG_TimeWindowMinutes,-(A7)
     MOVE.L  188(A7),-(A7)
@@ -303,7 +303,7 @@ DISKIO_SaveConfigToFileHandle:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     Global_STR_DEFAULT_CONFIG_FORMATTED
+    PEA     _Global_STR_DEFAULT_CONFIG_FORMATTED
     PEA     -58(A5)
     JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 
@@ -354,7 +354,7 @@ DISKIO_SaveConfigToFileHandle_Return:
 ; CALLS:
 ;   _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _DISKIO_LoadFileToWorkBuffer, _DISKIO_ParseConfigBuffer
 ; READS:
-;   _Global_REF_LONG_FILE_SCRATCH, Global_STR_DF0_CONFIG_DAT_2, Global_STR_DISKIO_C_9, _Global_PTR_WORK_BUFFER
+;   _Global_REF_LONG_FILE_SCRATCH, _Global_STR_DF0_CONFIG_DAT_2, _Global_STR_DISKIO_C_9, _Global_PTR_WORK_BUFFER
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -366,7 +366,7 @@ DISKIO_LoadConfigFromDisk:
     LINK.W  A5,#-12
     MOVEM.L D6-D7,-(A7)
 
-    PEA     Global_STR_DF0_CONFIG_DAT_2
+    PEA     _Global_STR_DF0_CONFIG_DAT_2
     BSR.W   _DISKIO_LoadFileToWorkBuffer
 
     ADDQ.W  #4,A7
@@ -391,7 +391,7 @@ DISKIO_LoadConfigFromDisk:
     MOVE.L  D0,(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     1344.W
-    PEA     Global_STR_DISKIO_C_9
+    PEA     _Global_STR_DISKIO_C_9
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     20(A7),A7

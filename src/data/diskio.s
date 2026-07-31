@@ -1,12 +1,12 @@
-    XDEF    Global_STR_DISKIO_C_1
+    XDEF    _Global_STR_DISKIO_C_1
     XDEF    _Global_STR_DISKIO_C_2
-    XDEF    Global_STR_PERCENT_LD
-    XDEF    Global_STR_DISKIO_C_3
-    XDEF    Global_STR_DISKIO_C_4
+    XDEF    _Global_STR_PERCENT_LD
+    XDEF    _Global_STR_DISKIO_C_3
+    XDEF    _Global_STR_DISKIO_C_4
     XDEF    _Global_STR_DISKIO_C_5
     XDEF    _Global_STR_DISKIO_C_6
-    XDEF    Global_STR_DISKIO_C_7
-    XDEF    Global_STR_DISKIO_C_8
+    XDEF    _Global_STR_DISKIO_C_7
+    XDEF    _Global_STR_DISKIO_C_8
     XDEF    _DISKIO_Drive0Dh2AssignDoneFlag
     XDEF    _DISKIO_Drive1GfxAssignDoneFlag
     XDEF    _DISKIO_STR_TRACKDISK_DEVICE
@@ -27,10 +27,10 @@
     XDEF    DISKIO_Pc1MountAssignFlag
     XDEF    DISKIO_CMD_MOUNT_PC1
     XDEF    DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT
-    XDEF    Global_STR_DF0_CONFIG_DAT_1
-    XDEF    Global_STR_DEFAULT_CONFIG_FORMATTED
-    XDEF    Global_STR_DF0_CONFIG_DAT_2
-    XDEF    Global_STR_DISKIO_C_9
+    XDEF    _Global_STR_DF0_CONFIG_DAT_1
+    XDEF    _Global_STR_DEFAULT_CONFIG_FORMATTED
+    XDEF    _Global_STR_DF0_CONFIG_DAT_2
+    XDEF    _Global_STR_DISKIO_C_9
     XDEF    DISKIO_FMT_CHANNEL_LINE_UP_PCT_LD
     XDEF    DISKIO_FMT_ETID_PCT_LD_PCT_02LX
     XDEF    DISKIO_FMT_CHAN_NUM_PCT_S
@@ -69,21 +69,21 @@
     XDEF    DISKIO_FMT_DEF_EVENT_PCT_08LX_STAR_DEF_EVENT
     XDEF    DISKIO_FMT_EXCEPTION_COUNT_IS_PCT_LD
     XDEF    DISKIO_FMT_EXCEPTION_BLOCK_PCT_08LX
-    XDEF    DISKIO_FMT_CHANNEL_LINE_UP_PCT_D
-    XDEF    DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT
-    XDEF    DISKIO_STR_ATTR
-    XDEF    DISKIO_STR_NONE_VerboseSourceAttrFlags
-    XDEF    DISKIO_STR_HILITE_SRC_VerboseSourceAttrFlags
-    XDEF    DISKIO_STR_SUM_SRC_VerboseSourceAttrFlags
-    XDEF    DISKIO_STR_VIDEO_TAG_DISABLE_VerboseSourceAttrFlags
-    XDEF    DISKIO_STR_PPV_SRC_VerboseSourceAttrFlags
-    XDEF    DISKIO_STR_DITTO_VerboseSourceAttrFlags
-    XDEF    DISKIO_STR_ALTHILITESRC_VerboseSourceAttrFlags
-    XDEF    DISKIO_STR_STEREO
-    XDEF    DISKIO_STR_ProgramAttrCloseParenNewline
-    XDEF    DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC
-    XDEF    DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_
-    XDEF    DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord
+    XDEF    _DISKIO_FMT_CHANNEL_LINE_UP_PCT_D
+    XDEF    _DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT
+    XDEF    _DISKIO_STR_ATTR
+    XDEF    _DISKIO_STR_NONE_VerboseSourceAttrFlags
+    XDEF    _DISKIO_STR_HILITE_SRC_VerboseSourceAttrFlags
+    XDEF    _DISKIO_STR_SUM_SRC_VerboseSourceAttrFlags
+    XDEF    _DISKIO_STR_VIDEO_TAG_DISABLE_VerboseSourceAttrFlags
+    XDEF    _DISKIO_STR_PPV_SRC_VerboseSourceAttrFlags
+    XDEF    _DISKIO_STR_DITTO_VerboseSourceAttrFlags
+    XDEF    _DISKIO_STR_ALTHILITESRC_VerboseSourceAttrFlags
+    XDEF    _DISKIO_STR_STEREO
+    XDEF    _DISKIO_STR_ProgramAttrCloseParenNewline
+    XDEF    _DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC
+    XDEF    _DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_
+    XDEF    _DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord
     XDEF    DISKIO_FMT_PROGRAM_INFO_PCT_LD
     XDEF    DISKIO_FMT_PROG_SRCE_PCT_S_VerboseProgramInfo
     XDEF    DISKIO_STR_NewlineOnly_A
@@ -118,23 +118,23 @@
     XDEF    _DISKIO_CurrentDriveRevisionIndex
 ; ========== DISKIO.c ==========
 
-Global_STR_DISKIO_C_1:
+_Global_STR_DISKIO_C_1:
     NStr    "DISKIO.c"
 _Global_STR_DISKIO_C_2:
     NStr    "DISKIO.c"
-Global_STR_PERCENT_LD:
+_Global_STR_PERCENT_LD:
     NStr    "%ld"
-Global_STR_DISKIO_C_3:
+_Global_STR_DISKIO_C_3:
     NStr    "DISKIO.c"
-Global_STR_DISKIO_C_4:
+_Global_STR_DISKIO_C_4:
     NStr    "DISKIO.c"
 _Global_STR_DISKIO_C_5:
     NStr    "DISKIO.c"
 _Global_STR_DISKIO_C_6:
     NStr    "DISKIO.c"
-Global_STR_DISKIO_C_7:
+_Global_STR_DISKIO_C_7:
     NStr    "DISKIO.c"
-Global_STR_DISKIO_C_8:
+_Global_STR_DISKIO_C_8:
     NStr    "DISKIO.c"
 _DISKIO_Drive0Dh2AssignDoneFlag:
     DC.L    1
@@ -183,16 +183,16 @@ DISKIO_CMD_MOUNT_PC1:
     NStr    "Mount PC1:"
 DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT:
     NStr    "Assign GFX: PC1:"
-Global_STR_DF0_CONFIG_DAT_1:
+_Global_STR_DF0_CONFIG_DAT_1:
     NStr    "df0:config.dat"
-Global_STR_DEFAULT_CONFIG_FORMATTED:
+_Global_STR_DEFAULT_CONFIG_FORMATTED:
     DC.B    "%01ld%01lc%01ld%01ld%02ld%02ld%01lc%01lc%01lc%01lc%01ld%01ld%"
     DC.B    "01lc%01lc%01lc%01lc%01lc%01lc%01lc%02ld%02ld%01lc%01lc%01lc%0"
     DC.B    "2ld%02ld%02ld%03ld%01ld%2.2s%01lc%01lc%01lc%01c%01c%01d%01c%0"
     NStr2   "1c%01c%01c%01c%01c",TextLineFeed
-Global_STR_DF0_CONFIG_DAT_2:
+_Global_STR_DF0_CONFIG_DAT_2:
     NStr    "df0:config.dat"
-Global_STR_DISKIO_C_9:
+_Global_STR_DISKIO_C_9:
     NStr    "DISKIO.c"
 DISKIO_FMT_CHANNEL_LINE_UP_PCT_LD:
     NStr2   "Channel Line Up # %ld",TextLineFeed
@@ -272,35 +272,35 @@ DISKIO_FMT_EXCEPTION_COUNT_IS_PCT_LD:
     NStr3   TextHorizontalTab,"Exception_count is %ld",TextLineFeed
 DISKIO_FMT_EXCEPTION_BLOCK_PCT_08LX:
     NStr3   TextHorizontalTab,"Exception_Block = $%08lx",TextLineFeed
-DISKIO_FMT_CHANNEL_LINE_UP_PCT_D:
+_DISKIO_FMT_CHANNEL_LINE_UP_PCT_D:
     NStr2   TextLineFeed,"Channel Line Up # %d, "
-DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT:
+_DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT:
     NStr2   "ETID=%d, chan_num='%s', source='%s', call_let='%s'",TextLineFeed
-DISKIO_STR_ATTR:
+_DISKIO_STR_ATTR:
     NStr    "  attr=("
-DISKIO_STR_NONE_VerboseSourceAttrFlags:
+_DISKIO_STR_NONE_VerboseSourceAttrFlags:
     NStr    " NONE"
-DISKIO_STR_HILITE_SRC_VerboseSourceAttrFlags:
+_DISKIO_STR_HILITE_SRC_VerboseSourceAttrFlags:
     NStr    " HILITE_SRC"
-DISKIO_STR_SUM_SRC_VerboseSourceAttrFlags:
+_DISKIO_STR_SUM_SRC_VerboseSourceAttrFlags:
     NStr    " SUM_SRC"
-DISKIO_STR_VIDEO_TAG_DISABLE_VerboseSourceAttrFlags:
+_DISKIO_STR_VIDEO_TAG_DISABLE_VerboseSourceAttrFlags:
     NStr    " VIDEO_TAG_DISABLE"
-DISKIO_STR_PPV_SRC_VerboseSourceAttrFlags:
+_DISKIO_STR_PPV_SRC_VerboseSourceAttrFlags:
     NStr    " PPV_SRC"
-DISKIO_STR_DITTO_VerboseSourceAttrFlags:
+_DISKIO_STR_DITTO_VerboseSourceAttrFlags:
     NStr    " DITTO"
-DISKIO_STR_ALTHILITESRC_VerboseSourceAttrFlags:
+_DISKIO_STR_ALTHILITESRC_VerboseSourceAttrFlags:
     NStr    " ALTHILITESRC"
-DISKIO_STR_STEREO:
+_DISKIO_STR_STEREO:
     NStr    " STEREO"
-DISKIO_STR_ProgramAttrCloseParenNewline:
+_DISKIO_STR_ProgramAttrCloseParenNewline:
     NStr2   " )",TextLineFeed
-DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC:
+_DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC:
     NStr    "  tslt_mask=($%02x $%02x $%02x $%02x $%02x $%02x) "
-DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_:
+_DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_:
     NStr2   "blkout_mask=($%02x $%02x $%02x $%02x $%02x $%02x)",TextLineFeed
-DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord:
+_DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord:
     NStr2   "  flag1 = 0x%02X, flag2 = 0x%04X, BgColor = 0x%02X, FgColor = 0x%02X, BrushId = %s",TextLineFeed
 DISKIO_FMT_PROGRAM_INFO_PCT_LD:
     NStr2   "Program Info # %ld",TextLineFeed

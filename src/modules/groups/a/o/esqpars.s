@@ -17,7 +17,7 @@
 ; CALLS:
 ;   _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, _ESQPARS_ReplaceOwnedString
 ; READS:
-;   _TEXTDISP_AliasCount, _TEXTDISP_AliasPtrTable, Global_STR_ESQPARS_C_1
+;   _TEXTDISP_AliasCount, _TEXTDISP_AliasPtrTable, _Global_STR_ESQPARS_C_1
 ; WRITES:
 ;   _TEXTDISP_AliasPtrTable entries, alias record string-pointer fields
 ; DESC:
@@ -61,7 +61,7 @@ ESQPARS_ClearAliasStringPointers:
     PEA     8.W
     MOVE.L  A0,-(A7)
     PEA     945.W
-    PEA     Global_STR_ESQPARS_C_1
+    PEA     _Global_STR_ESQPARS_C_1
     JSR     _ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     28(A7),A7

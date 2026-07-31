@@ -2,7 +2,7 @@
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: _GCOMMAND_SaveBrushResult   (Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.)
+; FUNC: _GCOMMAND_SaveBrushResult   (Persist the brush list returned from _BRUSH_PopulateBrushList into the active slot.)
 ; ARGS:
 ;   stack +8: workPtr (brush context)
 ; RET:
@@ -17,12 +17,12 @@
 ; WRITES:
 ;   _CTASKS_IffTaskState, _ESQIFF_LogoBrushListHead
 ; DESC:
-;   Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.
+;   Persist the brush list returned from _BRUSH_PopulateBrushList into the active slot.
 ; NOTES:
 ;   Only swaps _ESQIFF_LogoBrushListHead when the current brush mode equals 4 and the new list exists.
 ;------------------------------------------------------------------------------
 
-; Persist the brush list returned from BRUSH_PopulateBrushList into the active slot.
+; Persist the brush list returned from _BRUSH_PopulateBrushList into the active slot.
 _GCOMMAND_SaveBrushResult:
     LINK.W  A5,#-4
     MOVE.L  A3,-(A7)

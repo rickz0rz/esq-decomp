@@ -1,9 +1,9 @@
-    XDEF    DST_HandleBannerCommand32_33
+    XDEF    _DST_HandleBannerCommand32_33
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_HandleBannerCommand32_33   (Handle banner command $32/$33 and enqueue text)
+; FUNC: _DST_HandleBannerCommand32_33   (Handle banner command $32/$33 and enqueue text)
 ; ARGS:
 ;   stack +7: arg_1 (via 11(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -15,7 +15,7 @@
 ; CLOBBERS:
 ;   A3/A7/D0/D7
 ; CALLS:
-;   _DATETIME_ParseString, DATETIME_CopyPairAndRecalc, DST_UpdateBannerQueue
+;   _DATETIME_ParseString, _DATETIME_CopyPairAndRecalc, _DST_UpdateBannerQueue
 ; READS:
 ;   _DST_BannerWindowSecondary, _DST_BannerWindowPrimary
 ; WRITES:
@@ -25,7 +25,7 @@
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-DST_HandleBannerCommand32_33:
+_DST_HandleBannerCommand32_33:
     LINK.W  A5,#-44
     MOVEM.L D7/A3,-(A7)
     MOVE.B  11(A5),D7
@@ -55,7 +55,7 @@ DST_HandleBannerCommand32_33:
     PEA     -44(A5)
     PEA     -22(A5)
     MOVE.L  _DST_BannerWindowSecondary,-(A7)
-    BSR.W   DATETIME_CopyPairAndRecalc
+    BSR.W   _DATETIME_CopyPairAndRecalc
 
     LEA     36(A7),A7
     BRA.S   .return
@@ -75,13 +75,13 @@ DST_HandleBannerCommand32_33:
     PEA     -44(A5)
     PEA     -22(A5)
     MOVE.L  _DST_BannerWindowPrimary,-(A7)
-    BSR.W   DATETIME_CopyPairAndRecalc
+    BSR.W   _DATETIME_CopyPairAndRecalc
 
     LEA     36(A7),A7
 
 .return:
     PEA     _DST_BannerWindowPrimary
-    BSR.W   DST_UpdateBannerQueue
+    BSR.W   _DST_UpdateBannerQueue
 
     MOVEM.L -52(A5),D7/A3
     UNLK    A5

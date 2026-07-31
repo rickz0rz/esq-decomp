@@ -14,24 +14,24 @@
     XDEF    _Global_STR_SINGLE_SPACE
     XDEF    _NEWGRID_WrapWordSpacer
     XDEF    _NEWGRID_WrapReturnSpacer
-    XDEF    NEWGRID_MainModeState
-    XDEF    NEWGRID_SelectedDaySlot
-    XDEF    NEWGRID_RenderDaySlot
-    XDEF    NEWGRID_HeaderRedrawPending
+    XDEF    _NEWGRID_MainModeState
+    XDEF    _NEWGRID_SelectedDaySlot
+    XDEF    _NEWGRID_RenderDaySlot
+    XDEF    _NEWGRID_HeaderRedrawPending
     XDEF    _NEWGRID_SecondaryIndexCachePtr
     XDEF    _NEWGRID_GridOperationId
-    XDEF    NEWGRID_EntryPlaceholderModeFlag
+    XDEF    _NEWGRID_EntryPlaceholderModeFlag
     XDEF    NEWGRID_PrimeTimeLayoutEnable
     XDEF    _NEWGRID_ShowtimeEntryVariantFlag
     XDEF    _NEWGRID_EntrySplitDelimiterMask
     XDEF    _NEWGRID_GridEntryDelimiterBar
     XDEF    _NEWGRID_EntryDetailFmtStr
     XDEF    NEWGRID_GridStateFrameLatch
-    XDEF    NEWGRID_GridEntriesWorkflowState
+    XDEF    _NEWGRID_GridEntriesWorkflowState
     XDEF    NEWGRID_GridSelectionColumnAdjust
     XDEF    NEWGRID_GridSelectionEntryIndex
     XDEF    NEWGRID_GridSelectionWorkflowState
-    XDEF    NEWGRID_GridEditorWorkflowState
+    XDEF    _NEWGRID_GridEditorWorkflowState
     XDEF    _NEWGRID_SecondarySelectedEntryIndex
     XDEF    _NEWGRID_SecondaryWorkflowState
     XDEF    _NEWGRID_SecondarySelectionHintCounter
@@ -49,17 +49,17 @@
     XDEF    _NEWGRID_ScheduleWorkflowState
     XDEF    NEWGRID_SelectionScanEntryIndex
     XDEF    NEWGRID_SelectionScanRow
-    XDEF    NEWGRID_ShowtimeBucketSeparator
-    XDEF    Global_STR_SINGLE_SPACE_3
-    XDEF    Global_STR_COMMA_AND_SINGLE_SPACE_1
-    XDEF    NEWGRID_ShowtimeGenreSpacer
+    XDEF    _NEWGRID_ShowtimeBucketSeparator
+    XDEF    _Global_STR_SINGLE_SPACE_3
+    XDEF    _Global_STR_COMMA_AND_SINGLE_SPACE_1
+    XDEF    _NEWGRID_ShowtimeGenreSpacer
     XDEF    NEWGRID_ShowtimesWorkflowStateLatch
-    XDEF    NEWGRID_ShowtimesWorkflowState
-    XDEF    NEWGRID_ShowtimesColumnAdjust
+    XDEF    _NEWGRID_ShowtimesWorkflowState
+    XDEF    _NEWGRID_ShowtimesColumnAdjust
     XDEF    NEWGRID_AltSelectionRowCursor
     XDEF    NEWGRID_AltSelectionEntryCursor
-    XDEF    NEWGRID_ShowtimeListSeparator
-    XDEF    NEWGRID_ShowtimeRangeDash
+    XDEF    _NEWGRID_ShowtimeListSeparator
+    XDEF    _NEWGRID_ShowtimeRangeDash
     XDEF    NEWGRID_RenderStateLatch
 ; ========== NEWGRID.c ==========
 
@@ -121,40 +121,40 @@ _NEWGRID_WrapWordSpacer:
 _NEWGRID_WrapReturnSpacer:
     NStr    " "
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_MainModeState   (main NEWGRID mode/state id)
+; SYM: _NEWGRID_MainModeState   (main NEWGRID mode/state id)
 ; TYPE: s32
 ; PURPOSE: Current state id for NEWGRID_ProcessGridMessages mode dispatch.
-; USED BY: NEWGRID_ProcessGridMessages, NEWGRID_MapSelectionToMode
+; USED BY: NEWGRID_ProcessGridMessages, _NEWGRID_MapSelectionToMode
 ; NOTES: Indexed through a switch/jumptable (0..11 observed).
 ;------------------------------------------------------------------------------
-NEWGRID_MainModeState:
+_NEWGRID_MainModeState:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_SelectedDaySlot   (selected day/clock slot)
+; SYM: _NEWGRID_SelectedDaySlot   (selected day/clock slot)
 ; TYPE: u16
 ; PURPOSE: Active day slot index selected from clock/date controls.
 ; USED BY: NEWGRID_ProcessGridMessages and clock-slot redraw paths
-; NOTES: Updated by NEWGRID_ComputeDaySlotFromClock* helpers.
+; NOTES: Updated by _NEWGRID_ComputeDaySlotFromClock* helpers.
 ;------------------------------------------------------------------------------
-NEWGRID_SelectedDaySlot:
+_NEWGRID_SelectedDaySlot:
     DC.W    $0001
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_RenderDaySlot   (render day/clock slot)
+; SYM: _NEWGRID_RenderDaySlot   (render day/clock slot)
 ; TYPE: u16
 ; PURPOSE: Cached day slot used by header/list rendering calls.
 ; USED BY: _NEWGRID_DrawClockFormatHeader, dispatch cases in NEWGRID_ProcessGridMessages
-; NOTES: Usually derived from NEWGRID_SelectedDaySlot adjustments.
+; NOTES: Usually derived from _NEWGRID_SelectedDaySlot adjustments.
 ;------------------------------------------------------------------------------
-NEWGRID_RenderDaySlot:
+_NEWGRID_RenderDaySlot:
     DC.W    $0001
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_HeaderRedrawPending   (header redraw pending flag)
+; SYM: _NEWGRID_HeaderRedrawPending   (header redraw pending flag)
 ; TYPE: s32
 ; PURPOSE: Signals deferred redraw of the clock-format header.
 ; USED BY: NEWGRID_ProcessGridMessages case_mode_11
 ; NOTES: Treated as boolean/non-zero pending state.
 ;------------------------------------------------------------------------------
-NEWGRID_HeaderRedrawPending:
+_NEWGRID_HeaderRedrawPending:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: _NEWGRID_SecondaryIndexCachePtr   (secondary index cache pointer)
@@ -175,13 +175,13 @@ _NEWGRID_SecondaryIndexCachePtr:
 _NEWGRID_GridOperationId:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_EntryPlaceholderModeFlag/NEWGRID_PrimeTimeLayoutEnable/_NEWGRID_ShowtimeEntryVariantFlag   (entry layout gate flags)
+; SYM: _NEWGRID_EntryPlaceholderModeFlag/NEWGRID_PrimeTimeLayoutEnable/_NEWGRID_ShowtimeEntryVariantFlag   (entry layout gate flags)
 ; TYPE: u16/u16/u16
 ; PURPOSE: Gate placeholder/layout variants across NEWGRID1/NEWGRID2 entry draw flows.
 ; USED BY: NEWGRID1_*, NEWGRID2_ProcessGridState
 ; NOTES: Flag semantics are inferred from branch gates and may be refined later.
 ;------------------------------------------------------------------------------
-NEWGRID_EntryPlaceholderModeFlag:
+_NEWGRID_EntryPlaceholderModeFlag:
     DC.W    $0001
 NEWGRID_PrimeTimeLayoutEnable:
     DC.W    $0001
@@ -219,13 +219,13 @@ _NEWGRID_EntryDetailFmtStr:
 NEWGRID_GridStateFrameLatch:
     DC.L    $00000004
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_GridEntriesWorkflowState   (grid entries workflow state id)
+; SYM: _NEWGRID_GridEntriesWorkflowState   (grid entries workflow state id)
 ; TYPE: s32
 ; PURPOSE: State variable for _NEWGRID_ProcessGridEntries.
 ; USED BY: _NEWGRID_ProcessGridEntries
 ; NOTES: Initialized to 4 and updated by a switch/jumptable flow.
 ;------------------------------------------------------------------------------
-NEWGRID_GridEntriesWorkflowState:
+_NEWGRID_GridEntriesWorkflowState:
     DC.L    $00000004
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_GridSelectionColumnAdjust/NEWGRID_GridSelectionEntryIndex   (grid selection scratch state)
@@ -248,13 +248,13 @@ NEWGRID_GridSelectionEntryIndex:
 NEWGRID_GridSelectionWorkflowState:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_GridEditorWorkflowState   (grid editor workflow state id)
+; SYM: _NEWGRID_GridEditorWorkflowState   (grid editor workflow state id)
 ; TYPE: s32
 ; PURPOSE: State variable for _NEWGRID_HandleGridEditorState.
 ; USED BY: _NEWGRID_HandleGridEditorState
 ; NOTES: Uses a two-state redraw loop keyed by values 4 and 5.
 ;------------------------------------------------------------------------------
-NEWGRID_GridEditorWorkflowState:
+_NEWGRID_GridEditorWorkflowState:
     DC.L    $00000004
 ;------------------------------------------------------------------------------
 ; SYM: _NEWGRID_SecondarySelectedEntryIndex   (secondary workflow selected entry index)
@@ -345,8 +345,8 @@ _NEWGRID_ScheduleWorkflowState:
 ;------------------------------------------------------------------------------
 ; SYM: NEWGRID_SelectionScanEntryIndex/NEWGRID_SelectionScanRow   (selection scan cursors)
 ; TYPE: s32/u16
-; PURPOSE: Active entry/row scan cursors used by NEWGRID_UpdateSelectionFromInput.
-; USED BY: NEWGRID_UpdateSelectionFromInput
+; PURPOSE: Active entry/row scan cursors used by _NEWGRID_UpdateSelectionFromInput.
+; USED BY: _NEWGRID_UpdateSelectionFromInput
 ; NOTES: Entry index resets to window start when row cursor advances.
 ;------------------------------------------------------------------------------
 NEWGRID_SelectionScanEntryIndex:
@@ -354,42 +354,42 @@ NEWGRID_SelectionScanEntryIndex:
 NEWGRID_SelectionScanRow:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_ShowtimeBucketSeparator/NEWGRID_ShowtimeGenreSpacer/NEWGRID_ShowtimesWorkflowStateLatch   (showtime formatting controls)
+; SYM: _NEWGRID_ShowtimeBucketSeparator/_NEWGRID_ShowtimeGenreSpacer/NEWGRID_ShowtimesWorkflowStateLatch   (showtime formatting controls)
 ; TYPE: cstring/cstring/s32
 ; PURPOSE: Separators and phase latch used while assembling showtime strings.
 ; USED BY: NEWGRID1 showtime workflow
 ; NOTES: State latch follows 4/5 state-phase pattern.
 ;------------------------------------------------------------------------------
-NEWGRID_ShowtimeBucketSeparator:
+_NEWGRID_ShowtimeBucketSeparator:
     NStr    ", "
-Global_STR_SINGLE_SPACE_3:
+_Global_STR_SINGLE_SPACE_3:
     NStr    " "
-Global_STR_COMMA_AND_SINGLE_SPACE_1:
+_Global_STR_COMMA_AND_SINGLE_SPACE_1:
     NStr    ", "
-NEWGRID_ShowtimeGenreSpacer:
+_NEWGRID_ShowtimeGenreSpacer:
     NStr    " "
 NEWGRID_ShowtimesWorkflowStateLatch:
     DC.L    $00000004
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_ShowtimesWorkflowState   (showtimes workflow state id)
+; SYM: _NEWGRID_ShowtimesWorkflowState   (showtimes workflow state id)
 ; TYPE: s32
 ; PURPOSE: State variable for NEWGRID_ProcessShowtimesWorkflow.
 ; USED BY: NEWGRID_ProcessShowtimesWorkflow
 ; NOTES: Uses switch/jumptable with 0..7 states.
 ;------------------------------------------------------------------------------
-NEWGRID_ShowtimesWorkflowState:
+_NEWGRID_ShowtimesWorkflowState:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_ShowtimesColumnAdjust   (showtimes column adjustment accumulator)
+; SYM: _NEWGRID_ShowtimesColumnAdjust   (showtimes column adjustment accumulator)
 ; TYPE: s32
 ; PURPOSE: Stores temporary column/index adjustment during showtimes navigation.
 ; USED BY: NEWGRID_ProcessShowtimesWorkflow
 ; NOTES: Updated when calculating movement offsets from selection input.
 ;------------------------------------------------------------------------------
-NEWGRID_ShowtimesColumnAdjust:
+_NEWGRID_ShowtimesColumnAdjust:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: NEWGRID_AltSelectionRowCursor/NEWGRID_AltSelectionEntryCursor/NEWGRID_ShowtimeListSeparator/NEWGRID_ShowtimeRangeDash/NEWGRID_RenderStateLatch   (selection/showtime render scratch)
+; SYM: NEWGRID_AltSelectionRowCursor/NEWGRID_AltSelectionEntryCursor/_NEWGRID_ShowtimeListSeparator/_NEWGRID_ShowtimeRangeDash/NEWGRID_RenderStateLatch   (selection/showtime render scratch)
 ; TYPE: s32/u16/cstring/cstring/s32
 ; PURPOSE: Cursors, separators, and render latch used by alternate-selection/showtime render passes.
 ; USED BY: NEWGRID1_*, NEWGRID2_ProcessGridState
@@ -399,9 +399,9 @@ NEWGRID_AltSelectionRowCursor:
     DS.L    1
 NEWGRID_AltSelectionEntryCursor:
     DS.W    1
-NEWGRID_ShowtimeListSeparator:
+_NEWGRID_ShowtimeListSeparator:
     NStr    ", "
-NEWGRID_ShowtimeRangeDash:
+_NEWGRID_ShowtimeRangeDash:
     NStr    "-"
 NEWGRID_RenderStateLatch:
     DC.L    $00000004

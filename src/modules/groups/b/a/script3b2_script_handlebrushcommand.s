@@ -23,7 +23,7 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   _P_TYPE_GetSubtypeIfType20, _P_TYPE_ConsumePrimaryTypeIfPresent, _SCRIPT_SelectPlaybackCursorFromSearchText, _SCRIPT_SplitAndNormalizeSearchBuffer, _SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, _SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist, _SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState, _SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry, _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, SCRIPT3_JMPTBL_MATH_Mulu32, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _SCRIPT3_JMPTBL_STRING_CompareN, _SCRIPT3_JMPTBL_STRING_CopyPadNul, _SCRIPT_ReadHandshakeBit5Mask, _TEXTDISP_FindEntryIndexByWildcard, _TEXTDISP_HandleScriptCommand, _TEXTDISP_UpdateChannelRangeFlags, _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
+;   _P_TYPE_GetSubtypeIfType20, _P_TYPE_ConsumePrimaryTypeIfPresent, _SCRIPT_SelectPlaybackCursorFromSearchText, _SCRIPT_SplitAndNormalizeSearchBuffer, _SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, _SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist, _SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState, _SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry, _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit, _SCRIPT3_JMPTBL_MATH_Mulu32, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _SCRIPT3_JMPTBL_STRING_CompareN, _SCRIPT3_JMPTBL_STRING_CopyPadNul, _SCRIPT_ReadHandshakeBit5Mask, _TEXTDISP_FindEntryIndexByWildcard, _TEXTDISP_HandleScriptCommand, _TEXTDISP_UpdateChannelRangeFlags, _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
 ;   _BRUSH_SelectedNode, _CONFIG_LRBN_FlagChar, _CONFIG_MSN_FlagChar, _CTASKS_STR_1, _ESQ_DefaultNoFlagChar, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _ESQIFF_BrushIniListHead, _ESQIFF_GAdsBrushListCount, _Global_WORD_SELECT_CODE_IS_RAVESC, _LOCAVAIL_FilterModeFlag, _LOCAVAIL_FilterStep, _LOCAVAIL_PrimaryFilterState, _SCRIPT_Type20SubtypeCache, _SCRIPT_CommandTextPtr, _SCRIPT_BrushTag_Default00_Primary, _SCRIPT_BrushTag_Default00_Secondary, _SCRIPT_BrushTag_Clear11_Primary, _SCRIPT_BrushTag_Clear11_Secondary, _SCRIPT_ChannelRangeArmedFlag, _TEXTDISP_ChannelSourceMode, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _SCRIPT_PrimarySearchFirstFlag, _TEXTDISP_CurrentMatchIndex, _CLEANUP_AlignedStatusMatchIndex, _WDISP_CharClassTable, _WDISP_HighlightActive
 ; WRITES:
@@ -486,7 +486,7 @@ _SCRIPT_HandleBrushCommand:
     MOVE.L  D0,_SCRIPT_PlaybackCursor
     MOVE.B  1(A2),_SCRIPT_PendingTextdispCmdChar
     MOVE.B  2(A2),_SCRIPT_PendingTextdispCmdArg
-    LEA     3(A2),A0                        ; payload tail inside SCRIPT_CTRL_CMD_BUFFER packet
+    LEA     3(A2),A0                        ; payload tail inside _SCRIPT_CTRL_CMD_BUFFER packet
     ; Source is NUL-terminated by caller at packet end (0(A2,D7)=0).
     MOVE.L  _SCRIPT_CommandTextPtr,-(A7)
     MOVE.L  A0,-(A7)
@@ -626,7 +626,7 @@ _SCRIPT_HandleBrushCommand:
     SUB.L   D1,D2
     MOVE.L  D2,D0
     MOVE.L  #1000,D1
-    JSR     SCRIPT3_JMPTBL_MATH_Mulu32(PC)
+    JSR     _SCRIPT3_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #0,D1
     MOVE.B  5(A2),D1
@@ -634,7 +634,7 @@ _SCRIPT_HandleBrushCommand:
     SUB.L   D2,D1
     MOVE.L  D0,32(A7)
     MOVEQ   #100,D0
-    JSR     SCRIPT3_JMPTBL_MATH_Mulu32(PC)
+    JSR     _SCRIPT3_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  32(A7),D1
     ADD.L   D0,D1

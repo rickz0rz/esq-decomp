@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   A7/D0/D1/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MATH_DivS32
+;   _ESQIFF_JMPTBL_MATH_DivS32
 ; READS:
 ;   _ED_TextLimit
 ; WRITES:
@@ -25,12 +25,12 @@ _ED_UpdateCursorPosFromIndex:
     MOVE.L  8(A7),D7
     MOVE.L  D7,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_DivS32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D1,_ED_CursorColumnIndex
     MOVE.L  D7,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_DivS32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,_ED_ViewportOffset
 

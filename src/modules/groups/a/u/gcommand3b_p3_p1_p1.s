@@ -12,11 +12,11 @@
 ;   D0-D7, A0-A6
 ; CALLS:
 ;   _LVODisable, _LVOEnable, _GCOMMAND_ResetPresetWorkTables,
-;   GCOMMAND_ClearBannerQueue, _GCOMMAND_CopyImageDataToBitmap
+;   _GCOMMAND_ClearBannerQueue, _GCOMMAND_CopyImageDataToBitmap
 ; READS:
-;   GCOMMAND_BannerRowByteOffsetResetValue, _ESQSHARED4_InterleaveCopyTailOffsetReset, _Global_REF_696_400_BITMAP
+;   _GCOMMAND_BannerRowByteOffsetResetValue, _ESQSHARED4_InterleaveCopyTailOffsetReset, _Global_REF_696_400_BITMAP
 ; WRITES:
-;   GCOMMAND_BannerPhaseIndexCurrent, GCOMMAND_BannerRowByteOffsetCurrent, GCOMMAND_BannerRowByteOffsetPrevious, _GCOMMAND_BannerQueueSlotPrevious..GCOMMAND_BannerRowIndexCurrent, ESQSHARED4_InterleaveCopyTailOffsetCurrent, ED2_HighlightTickEnabledFlag, _ESQPARS2_ReadModeFlags
+;   _GCOMMAND_BannerPhaseIndexCurrent, _GCOMMAND_BannerRowByteOffsetCurrent, _GCOMMAND_BannerRowByteOffsetPrevious, _GCOMMAND_BannerQueueSlotPrevious.._GCOMMAND_BannerRowIndexCurrent, _ESQSHARED4_InterleaveCopyTailOffsetCurrent, _ED2_HighlightTickEnabledFlag, _ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Resets banner-related globals and rebuilds the banner tables into the bitmap.
 ; NOTES:
@@ -36,19 +36,19 @@ _GCOMMAND_BuildBannerTables:
     BSR.W   _GCOMMAND_ResetPresetWorkTables
 
     MOVEQ   #0,D0
-    MOVE.L  D0,GCOMMAND_BannerPhaseIndexCurrent
-    MOVE.L  D0,GCOMMAND_BannerRowByteOffsetPrevious
-    MOVE.L  GCOMMAND_BannerRowByteOffsetResetValue,D0
-    MOVE.L  D0,GCOMMAND_BannerRowByteOffsetCurrent
-    MOVE.L  _ESQSHARED4_InterleaveCopyTailOffsetReset,ESQSHARED4_InterleaveCopyTailOffsetCurrent
+    MOVE.L  D0,_GCOMMAND_BannerPhaseIndexCurrent
+    MOVE.L  D0,_GCOMMAND_BannerRowByteOffsetPrevious
+    MOVE.L  _GCOMMAND_BannerRowByteOffsetResetValue,D0
+    MOVE.L  D0,_GCOMMAND_BannerRowByteOffsetCurrent
+    MOVE.L  _ESQSHARED4_InterleaveCopyTailOffsetReset,_ESQSHARED4_InterleaveCopyTailOffsetCurrent
     MOVEQ   #97,D0
     MOVE.W  D0,_GCOMMAND_BannerQueueSlotPrevious
     SUBQ.W  #1,D0
     MOVE.W  D0,_GCOMMAND_BannerQueueSlotCurrent
     MOVEQ   #84,D0
-    MOVE.L  D0,GCOMMAND_BannerRowIndexPrevious
+    MOVE.L  D0,_GCOMMAND_BannerRowIndexPrevious
     MOVEQ   #85,D0
-    MOVE.L  D0,GCOMMAND_BannerRowIndexCurrent
+    MOVE.L  D0,_GCOMMAND_BannerRowIndexCurrent
     MOVEQ   #0,D0
     MOVE.W  D6,D0
     MOVEQ   #0,D1
@@ -56,7 +56,7 @@ _GCOMMAND_BuildBannerTables:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     -1(A5)
-    MOVE.L  GCOMMAND_BannerRowByteOffsetCurrent,-(A7)
+    MOVE.L  _GCOMMAND_BannerRowByteOffsetCurrent,-(A7)
     PEA     2992.W
     PEA     _ESQ_CopperListBannerA
     PEA     _Global_REF_696_400_BITMAP
@@ -64,7 +64,7 @@ _GCOMMAND_BuildBannerTables:
 
     MOVE.B  D7,-1(A5)
     MOVEQ   #88,D0
-    ADD.L   GCOMMAND_BannerRowByteOffsetCurrent,D0
+    ADD.L   _GCOMMAND_BannerRowByteOffsetCurrent,D0
     MOVEQ   #0,D1
     MOVE.W  D6,D1
     MOVEQ   #0,D2
@@ -78,9 +78,9 @@ _GCOMMAND_BuildBannerTables:
     PEA     _Global_REF_696_400_BITMAP
     BSR.W   _GCOMMAND_CopyImageDataToBitmap
 
-    BSR.W   GCOMMAND_ClearBannerQueue
+    BSR.W   _GCOMMAND_ClearBannerQueue
 
-    MOVE.W  #1,ED2_HighlightTickEnabledFlag
+    MOVE.W  #1,_ED2_HighlightTickEnabledFlag
     MOVE.W  #$100,_ESQPARS2_ReadModeFlags
     MOVEA.L AbsExecBase,A6
     JSR     _LVOEnable(A6)

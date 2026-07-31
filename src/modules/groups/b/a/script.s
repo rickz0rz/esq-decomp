@@ -1,8 +1,8 @@
-    XDEF    SCRIPT_AllocateBufferArray
+    XDEF    _SCRIPT_AllocateBufferArray
 
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_AllocateBufferArray   (AllocateBufferArrayuncertain)
+; FUNC: _SCRIPT_AllocateBufferArray   (AllocateBufferArrayuncertain)
 ; ARGS:
 ;   stack +4: outPtrs (array of long pointers)
 ;   stack +8: byteSize
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Uses MEMF_PUBLIC+MEMF_CLEAR and tags allocations with SCRIPT.C metadata.
 ;------------------------------------------------------------------------------
-SCRIPT_AllocateBufferArray:
+_SCRIPT_AllocateBufferArray:
     LINK.W  A5,#-4
     MOVEM.L D5-D7/A3,-(A7)
 
@@ -45,7 +45,7 @@ SCRIPT_AllocateBufferArray:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D1,-(A7)
     PEA     394.W
-    PEA     Global_STR_SCRIPT_C_1
+    PEA     _Global_STR_SCRIPT_C_1
     MOVE.L  D0,32(A7)
     JSR     _SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 

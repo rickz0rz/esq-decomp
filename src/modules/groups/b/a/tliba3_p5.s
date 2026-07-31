@@ -1,6 +1,6 @@
     XDEF    _TLIBA3_InitRuntimeEntries
-    XDEF    TLIBA3_SetFontForAllViewModes
-    XDEF    TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag
+    XDEF    _TLIBA3_SetFontForAllViewModes
+    XDEF    _TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag
 
 
 ;------------------------------------------------------------------------------
@@ -168,7 +168,7 @@ _TLIBA3_InitRuntimeEntries:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA3_SetFontForAllViewModes   (TLIBA3_SetFontForAllViewModes)
+; FUNC: _TLIBA3_SetFontForAllViewModes   (_TLIBA3_SetFontForAllViewModes)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -186,7 +186,7 @@ _TLIBA3_InitRuntimeEntries:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-TLIBA3_SetFontForAllViewModes:
+_TLIBA3_SetFontForAllViewModes:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEQ   #0,D7
@@ -218,7 +218,7 @@ TLIBA3_SetFontForAllViewModes:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag   (TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag)
+; FUNC: _TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag   (_TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -236,7 +236,7 @@ TLIBA3_SetFontForAllViewModes:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag:
+_TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag:
     JMP     _GCOMMAND_ApplyHighlightFlag
 
 ;!======

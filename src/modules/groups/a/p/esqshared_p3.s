@@ -1,9 +1,9 @@
-    XDEF    ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated
-    XDEF    ESQSHARED_JMPTBL_DST_BuildBannerTimeWord
-    XDEF    ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString
-    XDEF    ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes
-    XDEF    ESQSHARED_JMPTBL_ESQ_SetBit1Based
-    XDEF    ESQSHARED_JMPTBL_ESQ_TestBit1Based
+    XDEF    _ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated
+    XDEF    _ESQSHARED_JMPTBL_DST_BuildBannerTimeWord
+    XDEF    _ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString
+    XDEF    _ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes
+    XDEF    _ESQSHARED_JMPTBL_ESQ_SetBit1Based
+    XDEF    _ESQSHARED_JMPTBL_ESQ_TestBit1Based
     XDEF    _ESQSHARED_JMPTBL_ESQ_WildcardMatch
     XDEF    _ESQSHARED_JMPTBL_STR_SkipClass3Chars
 
@@ -14,7 +14,7 @@
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_JMPTBL_DST_BuildBannerTimeWord   (Routine at ESQSHARED_JMPTBL_DST_BuildBannerTimeWord)
+; FUNC: _ESQSHARED_JMPTBL_DST_BuildBannerTimeWord   (Routine at _ESQSHARED_JMPTBL_DST_BuildBannerTimeWord)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -32,11 +32,11 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-ESQSHARED_JMPTBL_DST_BuildBannerTimeWord:
+_ESQSHARED_JMPTBL_DST_BuildBannerTimeWord:
     JMP     _DST_BuildBannerTimeWord
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes   (Routine at ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes)
+; FUNC: _ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes   (Routine at _ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -54,11 +54,11 @@ ESQSHARED_JMPTBL_DST_BuildBannerTimeWord:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes:
+_ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes:
     JMP     _ESQ_ReverseBitsIn6Bytes
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_JMPTBL_ESQ_SetBit1Based   (Routine at ESQSHARED_JMPTBL_ESQ_SetBit1Based)
+; FUNC: _ESQSHARED_JMPTBL_ESQ_SetBit1Based   (Routine at _ESQSHARED_JMPTBL_ESQ_SetBit1Based)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -76,11 +76,11 @@ ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-ESQSHARED_JMPTBL_ESQ_SetBit1Based:
+_ESQSHARED_JMPTBL_ESQ_SetBit1Based:
     JMP     _ESQ_SetBit1Based
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString   (Routine at ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString)
+; FUNC: _ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString   (Routine at _ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -98,11 +98,11 @@ ESQSHARED_JMPTBL_ESQ_SetBit1Based:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString:
+_ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString:
     JMP     ESQ_AdjustBracketedHourInString
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated   (Routine at ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated)
+; FUNC: _ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated   (Routine at _ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -120,7 +120,7 @@ ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated:
+_ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated:
     JMP     _COI_EnsureAnimObjectAllocated
 
 ;------------------------------------------------------------------------------
@@ -168,7 +168,7 @@ _ESQSHARED_JMPTBL_STR_SkipClass3Chars:
     JMP     _STR_SkipClass3Chars
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_JMPTBL_ESQ_TestBit1Based   (Routine at ESQSHARED_JMPTBL_ESQ_TestBit1Based)
+; FUNC: _ESQSHARED_JMPTBL_ESQ_TestBit1Based   (Routine at _ESQSHARED_JMPTBL_ESQ_TestBit1Based)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -186,5 +186,5 @@ _ESQSHARED_JMPTBL_STR_SkipClass3Chars:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-ESQSHARED_JMPTBL_ESQ_TestBit1Based:
+_ESQSHARED_JMPTBL_ESQ_TestBit1Based:
     JMP     _ESQ_TestBit1Based

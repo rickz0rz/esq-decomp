@@ -5,11 +5,11 @@
     XDEF    _Global_REF_INTB_RBF_INTERRUPT
     XDEF    _ESQDISP_DisplayActiveFlag
     XDEF    _ESQDISP_StatusBannerClampGateFlag
-    XDEF    ESQDISP_PendingGridReinitFlag
+    XDEF    _ESQDISP_PendingGridReinitFlag
     XDEF    _ESQDISP_PrimarySecondaryMirrorFlag
     XDEF    ESQDISP_SecondaryPersistRequestFlag
     XDEF    _ESQDISP_StatusRefreshPendingFlag
-    XDEF    ESQDISP_ProgramInfoZeroTag
+    XDEF    _ESQDISP_ProgramInfoZeroTag
     XDEF    ESQDISP_LatchedInputModeBit
     XDEF    ESQDISP_InputModeDebounceCount
     XDEF    ESQDISP_LastPrimaryCountdownValue
@@ -60,7 +60,7 @@ _Global_REF_INTB_RBF_INTERRUPT:
 ; SYM: _ESQDISP_DisplayActiveFlag   (display-active gate)
 ; TYPE: u32 flag
 ; PURPOSE: Indicates whether ESQ display/update polling should run.
-; USED BY: ESQ, _ESQFUNC_ProcessUiFrameTick, SCRIPT_HandleSerialCtrlCmd
+; USED BY: ESQ, _ESQFUNC_ProcessUiFrameTick, _SCRIPT_HandleSerialCtrlCmd
 ; NOTES: Cleared at startup and set once display state is initialized.
 ;------------------------------------------------------------------------------
 _ESQDISP_DisplayActiveFlag:
@@ -69,25 +69,25 @@ _ESQDISP_DisplayActiveFlag:
 ; SYM: _ESQDISP_StatusBannerClampGateFlag   (status banner clamp gate)
 ; TYPE: u16 flag
 ; PURPOSE: Gates status-banner clamp/highlight setup around forced redraw paths.
-; USED BY: CLEANUP2_ForceStatusBannerRedraw, ESQDISP_DrawStatusBanner_Impl
+; USED BY: CLEANUP2_ForceStatusBannerRedraw, _ESQDISP_DrawStatusBanner_Impl
 ; NOTES: Temporarily cleared during cleanup-triggered redraw.
 ;------------------------------------------------------------------------------
 _ESQDISP_StatusBannerClampGateFlag:
     DC.W    $0001
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_PendingGridReinitFlag   (pending grid reinit)
+; SYM: _ESQDISP_PendingGridReinitFlag   (pending grid reinit)
 ; TYPE: u16 flag
 ; PURPOSE: Requests NEWGRID2 to reinitialize grid context after state commit.
 ; USED BY: ESQFUNC_CommitSecondaryStateAndPersist, _NEWGRID2_DispatchGridOperation
 ; NOTES: Producer sets to 1; NEWGRID2 consumes and clears.
 ;------------------------------------------------------------------------------
-ESQDISP_PendingGridReinitFlag:
+_ESQDISP_PendingGridReinitFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _ESQDISP_PrimarySecondaryMirrorFlag   (mirror-done flag)
 ; TYPE: u16 flag
 ; PURPOSE: Marks when primary entries were mirrored into secondary slots.
-; USED BY: ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty, _ESQFUNC_DrawDiagnosticsScreen
+; USED BY: _ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty, _ESQFUNC_DrawDiagnosticsScreen
 ; NOTES: Set on successful mirror path; cleared when not mirrored.
 ;------------------------------------------------------------------------------
 _ESQDISP_PrimarySecondaryMirrorFlag:
@@ -96,7 +96,7 @@ _ESQDISP_PrimarySecondaryMirrorFlag:
 ; SYM: ESQDISP_SecondaryPersistRequestFlag   (secondary persist request)
 ; TYPE: u32 flag
 ; PURPOSE: Requests secondary-state persistence/update work in frame tick processing.
-; USED BY: ESQDISP_DrawStatusBanner_Impl, _ESQFUNC_ProcessUiFrameTick
+; USED BY: _ESQDISP_DrawStatusBanner_Impl, _ESQFUNC_ProcessUiFrameTick
 ; NOTES: Armed by banner timing path and consumed/cleared by frame tick.
 ;------------------------------------------------------------------------------
 ESQDISP_SecondaryPersistRequestFlag:
@@ -111,13 +111,13 @@ ESQDISP_SecondaryPersistRequestFlag:
 _ESQDISP_StatusRefreshPendingFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_ProgramInfoZeroTag   (program info default "00")
+; SYM: _ESQDISP_ProgramInfoZeroTag   (program info default "00")
 ; TYPE: char[3]
 ; PURPOSE: Fallback two-digit token used when parsed program-info digits are absent.
 ; USED BY: ESQDISP_ParseProgramInfoCommandRecord
 ; NOTES: NUL-terminated.
 ;------------------------------------------------------------------------------
-ESQDISP_ProgramInfoZeroTag:
+_ESQDISP_ProgramInfoZeroTag:
     DC.B    "00",0
 ;------------------------------------------------------------------------------
 ; SYM: ESQDISP_LatchedInputModeBit   (latched input mode bit)
@@ -141,7 +141,7 @@ ESQDISP_InputModeDebounceCount:
 ; SYM: ESQDISP_LastPrimaryCountdownValue   (cached primary countdown)
 ; TYPE: u16
 ; PURPOSE: Caches previous _DST_PrimaryCountdown for edge-triggered slot handling.
-; USED BY: ESQDISP_DrawStatusBanner_Impl
+; USED BY: _ESQDISP_DrawStatusBanner_Impl
 ; NOTES: Detects countdown transitions (including 1->0 events).
 ;------------------------------------------------------------------------------
 ESQDISP_LastPrimaryCountdownValue:
@@ -150,7 +150,7 @@ ESQDISP_LastPrimaryCountdownValue:
 ; SYM: ESQDISP_SecondaryPersistArmGateFlag   (secondary persist arm gate)
 ; TYPE: u16 flag
 ; PURPOSE: One-shot gate controlling when secondary persist request can be re-armed.
-; USED BY: ESQDISP_DrawStatusBanner_Impl
+; USED BY: _ESQDISP_DrawStatusBanner_Impl
 ; NOTES: Behavior is slot-index dependent; naming remains conservative.
 ;------------------------------------------------------------------------------
 ESQDISP_SecondaryPersistArmGateFlag:
@@ -159,7 +159,7 @@ ESQDISP_SecondaryPersistArmGateFlag:
 ; SYM: ESQDISP_SecondaryPropagationDoneFlag   (secondary propagation done gate)
 ; TYPE: u16 flag
 ; PURPOSE: Prevents duplicate secondary metadata propagation within a slot window.
-; USED BY: ESQDISP_DrawStatusBanner_Impl
+; USED BY: _ESQDISP_DrawStatusBanner_Impl
 ; NOTES: Cleared at window start and set after propagation routine runs.
 ;------------------------------------------------------------------------------
 ESQDISP_SecondaryPropagationDoneFlag:

@@ -1,9 +1,9 @@
-    XDEF    SCRIPT_HandleSerialCtrlCmd
+    XDEF    _SCRIPT_HandleSerialCtrlCmd
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_HandleSerialCtrlCmd   (HandleSerialCtrlCmd)
+; FUNC: _SCRIPT_HandleSerialCtrlCmd   (HandleSerialCtrlCmd)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -11,25 +11,25 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   _SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte, _PARSEINI_CheckCtrlHChange, _SCRIPT_HandleBrushCommand, SCRIPT_ApplyPendingBannerTarget,
-;   _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, _TEXTDISP_SetRastForMode, SCRIPT_ProcessCtrlContextPlaybackTick, _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, _TEXTDISP_ResetSelectionAndRefresh
+;   _SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte, _PARSEINI_CheckCtrlHChange, _SCRIPT_HandleBrushCommand, _SCRIPT_ApplyPendingBannerTarget,
+;   _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight, _TEXTDISP_SetRastForMode, _SCRIPT_ProcessCtrlContextPlaybackTick, _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh, _TEXTDISP_ResetSelectionAndRefresh
 ; READS:
-;   _Global_WORD_SELECT_CODE_IS_RAVESC, _CONFIG_MSN_FlagChar, _SCRIPT_StatusRefreshHoldFlag, _ESQDISP_DisplayActiveFlag, SCRIPT_StatusMaskRefreshPending
-;   _Global_REF_CLOCKDATA_STRUCT, Global_WORD_CLOCK_SECONDS
-;   _SCRIPT_CTRL_READ_INDEX, _SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_STATE,
-;   _SCRIPT_RuntimeMode/2347/2348/2349/234A, SCRIPT_CTRL_CMD_BUFFER
+;   _Global_WORD_SELECT_CODE_IS_RAVESC, _CONFIG_MSN_FlagChar, _SCRIPT_StatusRefreshHoldFlag, _ESQDISP_DisplayActiveFlag, _SCRIPT_StatusMaskRefreshPending
+;   _Global_REF_CLOCKDATA_STRUCT, _Global_WORD_CLOCK_SECONDS
+;   _SCRIPT_CTRL_READ_INDEX, _SCRIPT_CTRL_CHECKSUM, _SCRIPT_CTRL_STATE,
+;   _SCRIPT_RuntimeMode/2347/2348/2349/234A, _SCRIPT_CTRL_CMD_BUFFER
 ; WRITES:
-;   _Global_RefreshTickCounter, SCRIPT_StatusMaskRefreshPending, Global_WORD_CLOCK_SECONDS,
-;   _SCRIPT_CTRL_READ_INDEX, _SCRIPT_CTRL_CHECKSUM, SCRIPT_CTRL_STATE,
-;   SCRIPT_CTRL_CMD_BUFFER, _SCRIPT_CtrlCmdCount/2348/2349
+;   _Global_RefreshTickCounter, _SCRIPT_StatusMaskRefreshPending, _Global_WORD_CLOCK_SECONDS,
+;   _SCRIPT_CTRL_READ_INDEX, _SCRIPT_CTRL_CHECKSUM, _SCRIPT_CTRL_STATE,
+;   _SCRIPT_CTRL_CMD_BUFFER, _SCRIPT_CtrlCmdCount/2348/2349
 ; DESC:
 ;   Polls the CTRL input buffer and advances a small state machine to parse
 ;   serial control commands; dispatches actions via a jump table.
 ; NOTES:
 ;   The jump table is a compiler switch/jumptable on the input byte (0..21).
-;   SCRIPT_CTRL_STATE acts as a parser state: 0=idle, 1/2/3=substates uncertain.
+;   _SCRIPT_CTRL_STATE acts as a parser state: 0=idle, 1/2/3=substates uncertain.
 ;------------------------------------------------------------------------------
-SCRIPT_HandleSerialCtrlCmd:
+_SCRIPT_HandleSerialCtrlCmd:
     MOVEM.L D6-D7,-(A7)
 
     TST.W   _Global_WORD_SELECT_CODE_IS_RAVESC
@@ -58,19 +58,19 @@ SCRIPT_HandleSerialCtrlCmd:
     BEQ.W   .return
 
 .ctrl_cmd_handle_status_timeout:
-    TST.W   SCRIPT_StatusMaskRefreshPending
+    TST.W   _SCRIPT_StatusMaskRefreshPending
     BEQ.S   .ctrl_cmd_poll_input
 
     MOVE.W  _Global_REF_CLOCKDATA_STRUCT,D0
-    MOVE.W  Global_WORD_CLOCK_SECONDS,D1
+    MOVE.W  _Global_WORD_CLOCK_SECONDS,D1
     CMP.W   D1,D0
     BEQ.S   .ctrl_cmd_poll_input
 
-    ADDQ.W  #1,Global_WORD_CLOCK_SECONDS
-    CMPI.W  #3,Global_WORD_CLOCK_SECONDS
+    ADDQ.W  #1,_Global_WORD_CLOCK_SECONDS
+    CMPI.W  #3,_Global_WORD_CLOCK_SECONDS
     BLT.S   .ctrl_cmd_poll_input
 
-    CLR.W   SCRIPT_StatusMaskRefreshPending
+    CLR.W   _SCRIPT_StatusMaskRefreshPending
     CLR.L   -(A7)
     PEA     32.W
     JSR     _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
@@ -97,7 +97,7 @@ SCRIPT_HandleSerialCtrlCmd:
     JSR     _SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte(PC)
 
     MOVE.L  D0,D7
-    MOVE.W  SCRIPT_CTRL_STATE,D0
+    MOVE.W  _SCRIPT_CTRL_STATE,D0
     TST.W   D0
     BEQ.S   .ctrl_cmd_state_idle
 
@@ -151,7 +151,7 @@ SCRIPT_HandleSerialCtrlCmd:
     DC.W    .ctrl_cmd_case_gated_by_select_code-.ctrl_cmd_jmptbl-2
 
 .ctrl_cmd_case_enter_state3:
-    MOVE.W  #3,SCRIPT_CTRL_STATE
+    MOVE.W  #3,_SCRIPT_CTRL_STATE
     BRA.W   .finish_29ABA    
 
 .ctrl_cmd_case_gated_by_select_code:
@@ -160,7 +160,7 @@ SCRIPT_HandleSerialCtrlCmd:
 
 .ctrl_cmd_case_start_packet:
     MOVEQ   #1,D0
-    LEA     SCRIPT_CTRL_CMD_BUFFER,A0
+    LEA     _SCRIPT_CTRL_CMD_BUFFER,A0
     ADDA.W  _SCRIPT_CTRL_READ_INDEX,A0
     MOVE.B  D7,(A0)
     MOVEQ   #0,D1
@@ -169,7 +169,7 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVE.W  _SCRIPT_CtrlCmdCount,D1
     ADDQ.W  #1,D1
     MOVE.W  D1,_SCRIPT_CtrlCmdCount
-    MOVE.W  D0,SCRIPT_CTRL_STATE
+    MOVE.W  D0,_SCRIPT_CTRL_STATE
     BRA.W   .finish_29ABA
 
 .ctrl_cmd_state_collect_body:
@@ -177,7 +177,7 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
     MOVE.W  D1,_SCRIPT_CTRL_READ_INDEX
-    LEA     SCRIPT_CTRL_CMD_BUFFER,A0
+    LEA     _SCRIPT_CTRL_CMD_BUFFER,A0
     ADDA.W  D1,A0
     MOVE.L  D7,D0
     MOVE.B  D0,(A0)
@@ -185,7 +185,7 @@ SCRIPT_HandleSerialCtrlCmd:
     CMP.B   D1,D0
     BNE.S   .ctrl_cmd_state_collect_update_checksum
 
-    MOVE.W  #2,SCRIPT_CTRL_STATE
+    MOVE.W  #2,_SCRIPT_CTRL_STATE
 
 .ctrl_cmd_state_collect_update_checksum:
     MOVE.W  _SCRIPT_CTRL_CHECKSUM,D0
@@ -210,13 +210,13 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVE.W  _SCRIPT_CTRL_READ_INDEX,D0
     EXT.L   D0
     ; Pass packet length into _SCRIPT_HandleBrushCommand; command bytes live in
-    ; SCRIPT_CTRL_CMD_BUFFER (200-byte storage in data/wdisp.s).
+    ; _SCRIPT_CTRL_CMD_BUFFER (200-byte storage in data/wdisp.s).
     MOVE.L  D0,-(A7)
-    PEA     SCRIPT_CTRL_CMD_BUFFER
+    PEA     _SCRIPT_CTRL_CMD_BUFFER
     PEA     _SCRIPT_CTRL_CONTEXT
     BSR.W   _SCRIPT_HandleBrushCommand
 
-    BSR.W   SCRIPT_ApplyPendingBannerTarget
+    BSR.W   _SCRIPT_ApplyPendingBannerTarget
 
     JSR     _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
@@ -236,22 +236,22 @@ SCRIPT_HandleSerialCtrlCmd:
 .ctrl_cmd_dispatch_brush_now:
     MOVE.W  _SCRIPT_CTRL_READ_INDEX,D0
     EXT.L   D0
-    ; Same packet-length/path as above (SCRIPT_CTRL_CMD_BUFFER + read index).
+    ; Same packet-length/path as above (_SCRIPT_CTRL_CMD_BUFFER + read index).
     MOVE.L  D0,-(A7)
-    PEA     SCRIPT_CTRL_CMD_BUFFER
+    PEA     _SCRIPT_CTRL_CMD_BUFFER
     PEA     _SCRIPT_CTRL_CONTEXT
     BSR.W   _SCRIPT_HandleBrushCommand
 
     PEA     _SCRIPT_CTRL_CONTEXT
-    BSR.W   SCRIPT_ProcessCtrlContextPlaybackTick
+    BSR.W   _SCRIPT_ProcessCtrlContextPlaybackTick
 
     LEA     16(A7),A7
     BRA.S   .ctrl_cmd_reset_parser
 
 .ctrl_cmd_defer_dispatch:
-    MOVE.W  SCRIPT_CtrlCmdDeferCounter,D0
+    MOVE.W  _SCRIPT_CtrlCmdDeferCounter,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,SCRIPT_CtrlCmdDeferCounter
+    MOVE.W  D0,_SCRIPT_CtrlCmdDeferCounter
     BRA.S   .ctrl_cmd_reset_parser
 
 .ctrl_cmd_checksum_mismatch:
@@ -260,29 +260,29 @@ SCRIPT_HandleSerialCtrlCmd:
     JSR     _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)
 
     ADDQ.W  #8,A7
-    MOVE.W  _Global_REF_CLOCKDATA_STRUCT,Global_WORD_CLOCK_SECONDS
+    MOVE.W  _Global_REF_CLOCKDATA_STRUCT,_Global_WORD_CLOCK_SECONDS
     MOVEQ   #1,D0
     MOVE.W  _SCRIPT_CtrlCmdChecksumErrorCount,D1
     ADDQ.W  #1,D1
     MOVE.W  D1,_SCRIPT_CtrlCmdChecksumErrorCount
-    MOVE.W  D0,SCRIPT_StatusMaskRefreshPending
+    MOVE.W  D0,_SCRIPT_StatusMaskRefreshPending
 
 .ctrl_cmd_reset_parser:
     MOVEQ   #0,D0
     MOVE.W  D0,_SCRIPT_CTRL_CHECKSUM
     MOVE.W  D0,_SCRIPT_CTRL_READ_INDEX
-    MOVE.W  D0,SCRIPT_CTRL_STATE
+    MOVE.W  D0,_SCRIPT_CTRL_STATE
     BRA.S   .finish_29ABA
 
 .ctrl_cmd_state3_clear:
-    CLR.W   SCRIPT_CTRL_STATE
+    CLR.W   _SCRIPT_CTRL_STATE
     BRA.S   .finish_29ABA
 
 .ctrl_cmd_state_invalid_reset:
     MOVEQ   #0,D0
     MOVE.W  D0,_SCRIPT_CTRL_CHECKSUM
     MOVE.W  D0,_SCRIPT_CTRL_READ_INDEX
-    MOVE.W  D0,SCRIPT_CTRL_STATE
+    MOVE.W  D0,_SCRIPT_CTRL_STATE
 
 .ctrl_cmd_finish_dispatch:
 .finish_29ABA:
@@ -297,7 +297,7 @@ SCRIPT_HandleSerialCtrlCmd:
     MOVE.W  D0,_SCRIPT_CTRL_CHECKSUM
     MOVE.W  D0,_SCRIPT_CTRL_READ_INDEX
     MOVE.W  _SCRIPT_RuntimeMode,D1
-    MOVE.W  D0,SCRIPT_CTRL_STATE
+    MOVE.W  D0,_SCRIPT_CTRL_STATE
     TST.W   D1
     BNE.S   .return
 

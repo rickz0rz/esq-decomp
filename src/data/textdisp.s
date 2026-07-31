@@ -15,7 +15,7 @@
     XDEF    _Global_STR_ASTERISK_2
     XDEF    _TEXTDISP_Tag_FIND1
     XDEF    _Global_STR_ASTERISK_3
-    XDEF    TEXTDISP_Tag_SPT_Select
+    XDEF    _TEXTDISP_Tag_SPT_Select
 ; ========== TEXTDISP.c ==========
 
 Global_STR_TEXTDISP_C_1:
@@ -82,7 +82,7 @@ TEXTDISP_FormatEntryFallbackTable:
 ; SYM: _TEXTDISP_CenterAlignToken   (center-align control token)
 ; TYPE: u8[2]
 ; PURPOSE: Prefix token sequence that requests centered text formatting.
-; USED BY: TEXTDISP_BuildEntryShortName, CLEANUP3_*, CLEANUP4_*
+; USED BY: _TEXTDISP_BuildEntryShortName, CLEANUP3_*, CLEANUP4_*
 ; NOTES: First byte is TextAlignCenter.
 ;------------------------------------------------------------------------------
 _TEXTDISP_CenterAlignToken:
@@ -97,7 +97,7 @@ _TEXTDISP_CenterAlignToken:
 _TEXTDISP_LeftAlignToken:
     DC.B    TextAlignLeft,0,0
 ;------------------------------------------------------------------------------
-; SYM: _TEXTDISP_Tag_PPV/_TEXTDISP_Tag_SBE/_TEXTDISP_Tag_SPORTS/_TEXTDISP_Tag_SPT_Filter/_TEXTDISP_Tag_FIND1/TEXTDISP_Tag_SPT_Select   (filter tags)
+; SYM: _TEXTDISP_Tag_PPV/_TEXTDISP_Tag_SBE/_TEXTDISP_Tag_SPORTS/_TEXTDISP_Tag_SPT_Filter/_TEXTDISP_Tag_FIND1/_TEXTDISP_Tag_SPT_Select   (filter tags)
 ; TYPE: char[] strings
 ; PURPOSE: Pattern tokens used by TEXTDISP wildcard/filter and selection logic.
 ; USED BY: _TEXTDISP_BuildMatchIndexList, TEXTDISP_SelectBestMatchFromList
@@ -117,5 +117,5 @@ _TEXTDISP_Tag_FIND1:
     NStr    "FIND1"
 _Global_STR_ASTERISK_3:
     NStr    "*"
-TEXTDISP_Tag_SPT_Select:
+_TEXTDISP_Tag_SPT_Select:
     NStr    "SPT"

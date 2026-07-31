@@ -5,11 +5,11 @@
     XDEF    _Global_STR_12_44_44_PM
     XDEF    Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED
     XDEF    _CLOCK_STR_TEMPLATE_CODE_SET_FGN
-    XDEF    CLOCK_AlignedInsetRenderGateFlag
+    XDEF    _CLOCK_AlignedInsetRenderGateFlag
     XDEF    _CLOCK_FileEofMarkerCtrlZ
     XDEF    _COI_FieldDelimiterTab
     XDEF    _COI_RecordTerminatorCrLf
-    XDEF    CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY
+    XDEF    _CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY
     XDEF    CLOCK_FMT_WRAP_CHAR_STRING_CHAR
     XDEF    CLOCK_STR_DOUBLE_SPACE
     XDEF    CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY
@@ -44,15 +44,15 @@ Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED:
 _CLOCK_STR_TEMPLATE_CODE_SET_FGN:
     NStr    "FGN"
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_AlignedInsetRenderGateFlag   (aligned inset render gate flag)
+; SYM: _CLOCK_AlignedInsetRenderGateFlag   (aligned inset render gate flag)
 ; TYPE: u8 flag in packed word storage
 ; PURPOSE: Enables framed/inset rendering path for inline styled text draw calls.
-; USED BY: CLEANUP_UpdateEntryFlagBytes, TLIBA1_DrawInlineStyledText, SCRIPT_DrawCenteredStyledTextLine
+; USED BY: CLEANUP_UpdateEntryFlagBytes, _TLIBA1_DrawInlineStyledText, SCRIPT_DrawCenteredStyledTextLine
 ; NOTES:
 ;   Accessed with byte ops (TST.B/MOVE.B/CLR.B). Remaining bytes are packed
 ;   adjacent constants; keep layout intact.
 ;------------------------------------------------------------------------------
-CLOCK_AlignedInsetRenderGateFlag:
+_CLOCK_AlignedInsetRenderGateFlag:
     DC.W    $0004
     DC.B    $0c
 ;------------------------------------------------------------------------------
@@ -77,13 +77,13 @@ _COI_RecordTerminatorCrLf:
     DC.B    $0d
     DC.W    $0a00
 ;------------------------------------------------------------------------------
-; SYM: CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY   (fallback entry flags)
+; SYM: _CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY   (fallback entry flags)
 ; TYPE: cstring
 ; PURPOSE: Default token string used when the primary entry record is missing.
 ; USED BY: CLEANUP_UpdateEntryFlagBytes
 ; NOTES: Format appears to be packed flag characters.
 ;------------------------------------------------------------------------------
-CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY:
+_CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY:
     NStr    "NYYYYYXX00"
 CLOCK_FMT_WRAP_CHAR_STRING_CHAR:
     NStr    "%c%s%c"

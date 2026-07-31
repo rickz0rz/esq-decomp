@@ -55,7 +55,7 @@
     XDEF    _Global_STR_TRUE_2
     XDEF    _Global_STR_FALSE_2
     XDEF    _ESQFUNC_BasePaletteRgbTriples
-    XDEF    ESQFUNC_WeatherSliceWidthInitGate
+    XDEF    _ESQFUNC_WeatherSliceWidthInitGate
     XDEF    _Global_PTR_STR_DF0_LOGO_LST
     XDEF    _ESQFUNC_FallbackType3BrushNode
     XDEF    _ESQIFF_BrushIniListHead
@@ -70,10 +70,10 @@
     XDEF    _Global_REF_LONG_GFX_G_ADS_DATA
     XDEF    _Global_REF_LONG_DF0_LOGO_LST_FILESIZE
     XDEF    _Global_REF_LONG_DF0_LOGO_LST_DATA
-    XDEF    ESQFUNC_MissingAssetRetryMask
+    XDEF    _ESQFUNC_MissingAssetRetryMask
     XDEF    ESQFUNC_IffTaskGateFlags
-    XDEF    ESQFUNC_TAG_00
-    XDEF    ESQFUNC_TAG_11
+    XDEF    _ESQFUNC_TAG_00
+    XDEF    _ESQFUNC_TAG_11
 ; ========== ESQFUNC.c ==========
 
 _Global_STR_ESQFUNC_C_1:
@@ -214,7 +214,7 @@ _ESQFUNC_BasePaletteRgbTriples:
     DC.B    1,6,10      ; Cyan/Blue
     DC.B    5,5,5       ; Medium Gray
     DC.B    0,0,3       ; Dark Blue (Repeat of pen 0)
-ESQFUNC_WeatherSliceWidthInitGate:
+_ESQFUNC_WeatherSliceWidthInitGate:
     DC.W    1
 Global_STR_DF0_LOGO_LST:
     NStr    "df0:logo.lst"
@@ -279,12 +279,12 @@ _Global_REF_LONG_DF0_LOGO_LST_FILESIZE:
     DS.L    1
 _Global_REF_LONG_DF0_LOGO_LST_DATA:
     DS.L    1
-ESQFUNC_MissingAssetRetryMask:
+_ESQFUNC_MissingAssetRetryMask:
     DS.W    1
     DS.B    1
 ESQFUNC_IffTaskGateFlags:
     DS.B    1
-ESQFUNC_TAG_00:
+_ESQFUNC_TAG_00:
     NStr    "00"
-ESQFUNC_TAG_11:
+_ESQFUNC_TAG_11:
     NStr    "11"

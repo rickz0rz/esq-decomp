@@ -1,5 +1,5 @@
     XDEF    GCOMMAND_RefreshBannerTables
-    XDEF    GCOMMAND_ServiceHighlightMessages
+    XDEF    _GCOMMAND_ServiceHighlightMessages
     XDEF    GCOMMAND_TickHighlightState
 
 
@@ -14,47 +14,47 @@
 ; CALLS:
 ;   _GCOMMAND_BuildBannerRow
 ; READS:
-;   GCOMMAND_BannerRowByteOffsetCurrent, GCOMMAND_BannerRowByteOffsetPrevious, GCOMMAND_BannerPhaseIndexCurrent, _WDISP_BannerRowScratchRasterTable0.._WDISP_BannerRowScratchRasterTable2, _ESQ_CopperListBannerA, _ESQ_CopperListBannerB
+;   _GCOMMAND_BannerRowByteOffsetCurrent, _GCOMMAND_BannerRowByteOffsetPrevious, _GCOMMAND_BannerPhaseIndexCurrent, _WDISP_BannerRowScratchRasterTable0.._WDISP_BannerRowScratchRasterTable2, _ESQ_CopperListBannerA, _ESQ_CopperListBannerB
 ; WRITES:
-;   _ESQPARS2_BannerSnapshotPlane0DstPtr, ESQPARS2_BannerSnapshotPlane1DstPtr, ESQPARS2_BannerSnapshotPlane2DstPtr
+;   _ESQPARS2_BannerSnapshotPlane0DstPtr, _ESQPARS2_BannerSnapshotPlane1DstPtr, _ESQPARS2_BannerSnapshotPlane2DstPtr
 ; DESC:
 ;   Rebuilds banner rows for both tables and refreshes row pointer globals.
 ; NOTES:
-;   Uses GCOMMAND_BannerRowByteOffsetCurrent as the active row index and GCOMMAND_BannerPhaseIndexCurrent as the base offset.
+;   Uses _GCOMMAND_BannerRowByteOffsetCurrent as the active row index and _GCOMMAND_BannerPhaseIndexCurrent as the base offset.
 ;------------------------------------------------------------------------------
 GCOMMAND_RefreshBannerTables:
-    MOVE.L  GCOMMAND_BannerRowByteOffsetCurrent,-(A7)
+    MOVE.L  _GCOMMAND_BannerRowByteOffsetCurrent,-(A7)
     PEA     98.W
-    MOVE.L  GCOMMAND_BannerPhaseIndexCurrent,-(A7)
+    MOVE.L  _GCOMMAND_BannerPhaseIndexCurrent,-(A7)
     PEA     _ESQ_CopperListBannerA
     PEA     _Global_REF_696_400_BITMAP
     BSR.W   _GCOMMAND_BuildBannerRow
 
     MOVEQ   #88,D0
-    ADD.L   GCOMMAND_BannerRowByteOffsetCurrent,D0
+    ADD.L   _GCOMMAND_BannerRowByteOffsetCurrent,D0
     MOVE.L  D0,(A7)
     PEA     98.W
-    MOVE.L  GCOMMAND_BannerPhaseIndexCurrent,-(A7)
+    MOVE.L  _GCOMMAND_BannerPhaseIndexCurrent,-(A7)
     PEA     _ESQ_CopperListBannerB
     PEA     _Global_REF_696_400_BITMAP
     BSR.W   _GCOMMAND_BuildBannerRow
 
     LEA     36(A7),A7
-    MOVE.L  GCOMMAND_BannerRowByteOffsetPrevious,D0
+    MOVE.L  _GCOMMAND_BannerRowByteOffsetPrevious,D0
     MOVEA.L _WDISP_BannerRowScratchRasterTable0,A0
     ADDA.L  D0,A0
     MOVE.L  A0,_ESQPARS2_BannerSnapshotPlane0DstPtr
     MOVEA.L _WDISP_BannerRowScratchRasterTable1,A0
     ADDA.L  D0,A0
-    MOVE.L  A0,ESQPARS2_BannerSnapshotPlane1DstPtr
+    MOVE.L  A0,_ESQPARS2_BannerSnapshotPlane1DstPtr
     MOVEA.L _WDISP_BannerRowScratchRasterTable2,A0
     ADDA.L  D0,A0
-    MOVE.L  A0,ESQPARS2_BannerSnapshotPlane2DstPtr
+    MOVE.L  A0,_ESQPARS2_BannerSnapshotPlane2DstPtr
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ServiceHighlightMessages   (Poll/process highlight messages and drive banner updates)
+; FUNC: _GCOMMAND_ServiceHighlightMessages   (Poll/process highlight messages and drive banner updates)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -78,7 +78,7 @@ GCOMMAND_RefreshBannerTables:
 ;   Message layout (inferred): +20/+24/+28 saved longs, +32 preset record ptr,
 ;   +52 countdown, +54 keycode/preset trigger byte.
 ;------------------------------------------------------------------------------
-GCOMMAND_ServiceHighlightMessages:
+_GCOMMAND_ServiceHighlightMessages:
     TST.L   _GCOMMAND_ActiveHighlightMsgPtr
     BNE.S   .update_tables
 
@@ -193,11 +193,11 @@ GCOMMAND_ServiceHighlightMessages:
 ; CLOBBERS:
 ;   D0-D2, A4
 ; CALLS:
-;   GCOMMAND_RebuildBannerTablesFromBounds, GCOMMAND_ServiceHighlightMessages
+;   _GCOMMAND_RebuildBannerTablesFromBounds, _GCOMMAND_ServiceHighlightMessages
 ; READS:
-;   GCOMMAND_BannerRebuildPendingFlag, GCOMMAND_BannerRowByteOffsetResetValue, GCOMMAND_BannerPhaseIndexCurrent, GCOMMAND_BannerRowByteOffsetCurrent, _ESQSHARED4_InterleaveCopyTailOffsetReset, _GCOMMAND_BannerQueueSlotCurrent, GCOMMAND_BannerRowIndexCurrent
+;   _GCOMMAND_BannerRebuildPendingFlag, _GCOMMAND_BannerRowByteOffsetResetValue, _GCOMMAND_BannerPhaseIndexCurrent, _GCOMMAND_BannerRowByteOffsetCurrent, _ESQSHARED4_InterleaveCopyTailOffsetReset, _GCOMMAND_BannerQueueSlotCurrent, _GCOMMAND_BannerRowIndexCurrent
 ; WRITES:
-;   GCOMMAND_BannerPhaseIndexCurrent, GCOMMAND_BannerRowByteOffsetCurrent, ESQSHARED4_InterleaveCopyTailOffsetCurrent, _GCOMMAND_BannerQueueSlotPrevious, _GCOMMAND_BannerQueueSlotCurrent, GCOMMAND_BannerRowIndexPrevious, GCOMMAND_BannerRowIndexCurrent
+;   _GCOMMAND_BannerPhaseIndexCurrent, _GCOMMAND_BannerRowByteOffsetCurrent, _ESQSHARED4_InterleaveCopyTailOffsetCurrent, _GCOMMAND_BannerQueueSlotPrevious, _GCOMMAND_BannerQueueSlotCurrent, _GCOMMAND_BannerRowIndexPrevious, _GCOMMAND_BannerRowIndexCurrent
 ; DESC:
 ;   Advances highlight/cycle counters and updates related globals.
 ; NOTES:
@@ -207,32 +207,32 @@ GCOMMAND_ServiceHighlightMessages:
 GCOMMAND_TickHighlightState:
     MOVEM.L D2/A4,-(A7)
     LEA     _Global_REF_LONG_FILE_SCRATCH,A4
-    TST.W   GCOMMAND_BannerRebuildPendingFlag
+    TST.W   _GCOMMAND_BannerRebuildPendingFlag
     BEQ.S   .skip_rebuild
 
-    BSR.W   GCOMMAND_RebuildBannerTablesFromBounds
+    BSR.W   _GCOMMAND_RebuildBannerTablesFromBounds
 
 .skip_rebuild:
-    ADDQ.L  #1,GCOMMAND_BannerPhaseIndexCurrent
-    MOVE.L  GCOMMAND_BannerRowByteOffsetCurrent,GCOMMAND_BannerRowByteOffsetPrevious
+    ADDQ.L  #1,_GCOMMAND_BannerPhaseIndexCurrent
+    MOVE.L  _GCOMMAND_BannerRowByteOffsetCurrent,_GCOMMAND_BannerRowByteOffsetPrevious
     MOVEQ   #98,D0
-    CMP.L   GCOMMAND_BannerPhaseIndexCurrent,D0
+    CMP.L   _GCOMMAND_BannerPhaseIndexCurrent,D0
     BNE.S   .advance_indices
 
     MOVEQ   #0,D1
-    MOVE.L  D1,GCOMMAND_BannerPhaseIndexCurrent
-    MOVE.L  GCOMMAND_BannerRowByteOffsetResetValue,D2
-    MOVE.L  D2,GCOMMAND_BannerRowByteOffsetCurrent
+    MOVE.L  D1,_GCOMMAND_BannerPhaseIndexCurrent
+    MOVE.L  _GCOMMAND_BannerRowByteOffsetResetValue,D2
+    MOVE.L  D2,_GCOMMAND_BannerRowByteOffsetCurrent
     MOVE.L  _ESQSHARED4_InterleaveCopyTailOffsetReset,D2
-    MOVE.L  D2,ESQSHARED4_InterleaveCopyTailOffsetCurrent
+    MOVE.L  D2,_ESQSHARED4_InterleaveCopyTailOffsetCurrent
     BRA.S   .update_counters
 
 .advance_indices:
     MOVEQ   #88,D1
     ADD.L   D1,D1
-    ADD.L   D1,GCOMMAND_BannerRowByteOffsetCurrent
+    ADD.L   D1,_GCOMMAND_BannerRowByteOffsetCurrent
     MOVEQ   #32,D1
-    ADD.L   D1,ESQSHARED4_InterleaveCopyTailOffsetCurrent
+    ADD.L   D1,_ESQSHARED4_InterleaveCopyTailOffsetCurrent
 
 .update_counters:
     MOVE.W  _GCOMMAND_BannerQueueSlotCurrent,D1
@@ -245,16 +245,16 @@ GCOMMAND_TickHighlightState:
     MOVE.W  #$61,_GCOMMAND_BannerQueueSlotCurrent
 
 .maybe_reset_slot:
-    MOVE.L  GCOMMAND_BannerRowIndexCurrent,D1
-    MOVE.L  D1,GCOMMAND_BannerRowIndexPrevious
-    ADDQ.L  #1,GCOMMAND_BannerRowIndexCurrent
-    CMP.L   GCOMMAND_BannerRowIndexCurrent,D0
+    MOVE.L  _GCOMMAND_BannerRowIndexCurrent,D1
+    MOVE.L  D1,_GCOMMAND_BannerRowIndexPrevious
+    ADDQ.L  #1,_GCOMMAND_BannerRowIndexCurrent
+    CMP.L   _GCOMMAND_BannerRowIndexCurrent,D0
     BNE.S   .service_messages
 
-    CLR.L   GCOMMAND_BannerRowIndexCurrent
+    CLR.L   _GCOMMAND_BannerRowIndexCurrent
 
 .service_messages:
-    BSR.W   GCOMMAND_ServiceHighlightMessages
+    BSR.W   _GCOMMAND_ServiceHighlightMessages
 
     MOVEM.L (A7)+,D2/A4
     RTS

@@ -225,7 +225,7 @@ _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_BeginBannerCharTransition
+;   _SCRIPT_BeginBannerCharTransition
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -236,7 +236,7 @@ _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition:
-    JMP     SCRIPT_BeginBannerCharTransition
+    JMP     _SCRIPT_BeginBannerCharTransition
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch   (Routine at GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch)

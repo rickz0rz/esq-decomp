@@ -1,5 +1,5 @@
     XDEF    COI_FormatEntryDisplayText
-    XDEF    COI_GetAnimFieldPointerByMode
+    XDEF    _COI_GetAnimFieldPointerByMode
     XDEF    COI_RenderClockFormatEntryVariant
     XDEF    COI_SelectAnimFieldPointer
     XDEF    COI_FormatEntryDisplayText_Return
@@ -26,7 +26,7 @@
 ;------------------------------------------------------------------------------
 COI_SelectAnimFieldPointer:
 ;------------------------------------------------------------------------------
-; FUNC: COI_GetAnimFieldPointerByMode   (Routine at COI_GetAnimFieldPointerByMode)
+; FUNC: _COI_GetAnimFieldPointerByMode   (Routine at _COI_GetAnimFieldPointerByMode)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -48,7 +48,7 @@ COI_SelectAnimFieldPointer:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-COI_GetAnimFieldPointerByMode:
+_COI_GetAnimFieldPointerByMode:
     LINK.W  A5,#-20
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -271,7 +271,7 @@ COI_RenderClockFormatEntryVariant:
 ; CLOBBERS:
 ;   A0/A2/A3/A5/A7/D0/D1/D2/D5/D6/D7
 ; CALLS:
-;   CLEANUP_TestEntryFlagYAndBit1, CLEANUP_UpdateEntryFlagBytes, _GROUP_AE_JMPTBL_WDISP_SPrintf, _GROUP_AI_JMPTBL_STRING_AppendAtNull, COI_GetAnimFieldPointerByMode, COI_TestEntryWithinTimeWindow
+;   CLEANUP_TestEntryFlagYAndBit1, CLEANUP_UpdateEntryFlagBytes, _GROUP_AE_JMPTBL_WDISP_SPrintf, _GROUP_AI_JMPTBL_STRING_AppendAtNull, _COI_GetAnimFieldPointerByMode, COI_TestEntryWithinTimeWindow
 ; READS:
 ;   COI_FormatEntryDisplayText_Return, COI_FMT_WRAP_CHAR_STRING_CHAR, COI_STR_SINGLE_SPACE, _CONFIG_TimeWindowMinutes, _GCOMMAND_PpvSelectionWindowMinutes, _GCOMMAND_PpvSelectionToleranceMinutes
 ; WRITES:
@@ -329,7 +329,7 @@ COI_FormatEntryDisplayText:
     PEA     1.W
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   COI_GetAnimFieldPointerByMode
+    BSR.W   _COI_GetAnimFieldPointerByMode
 
     LEA     12(A7),A7
     MOVE.L  D0,-20(A5)
@@ -350,7 +350,7 @@ COI_FormatEntryDisplayText:
     PEA     3.W
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   COI_GetAnimFieldPointerByMode
+    BSR.W   _COI_GetAnimFieldPointerByMode
 
     MOVE.L  D0,-16(A5)
     MOVE.L  D7,D0
@@ -358,7 +358,7 @@ COI_FormatEntryDisplayText:
     PEA     4.W
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   COI_GetAnimFieldPointerByMode
+    BSR.W   _COI_GetAnimFieldPointerByMode
 
     MOVE.L  D0,-12(A5)
     MOVE.L  D7,D0
@@ -366,7 +366,7 @@ COI_FormatEntryDisplayText:
     PEA     2.W
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   COI_GetAnimFieldPointerByMode
+    BSR.W   _COI_GetAnimFieldPointerByMode
 
     LEA     36(A7),A7
     MOVE.L  D0,-8(A5)
@@ -388,7 +388,7 @@ COI_FormatEntryDisplayText:
     PEA     6.W
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   COI_GetAnimFieldPointerByMode
+    BSR.W   _COI_GetAnimFieldPointerByMode
 
     PEA     20.W
     MOVE.L  D0,-(A7)

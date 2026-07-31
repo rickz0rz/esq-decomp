@@ -146,14 +146,14 @@ _GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   PARSEINI_ScanLogoDirectory
+;   _PARSEINI_ScanLogoDirectory
 ; DESC:
-;   Jump stub to PARSEINI_ScanLogoDirectory.
+;   Jump stub to _PARSEINI_ScanLogoDirectory.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AK_JMPTBL_PARSEINI_ScanLogoDirectory:
-    JMP     PARSEINI_ScanLogoDirectory
+    JMP     _PARSEINI_ScanLogoDirectory
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow   (JumpStub_SCRIPT_DeassertCtrlLineNow)

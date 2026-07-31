@@ -11,8 +11,8 @@
 ; CLOBBERS:
 ;   D0-D1/D7/A0/A6
 ; CALLS:
-;   _PARSEINI_AdjustHoursTo24HrFormat, PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch,
-;   PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch, PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock
+;   _PARSEINI_AdjustHoursTo24HrFormat, _PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch,
+;   _PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch, _PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock
 ; READS:
 ;   _CLOCK_DaySlotIndex-E, _CLOCK_CacheAmPmFlag, _Global_REF_UTILITY_LIBRARY, _Global_REF_BATTCLOCK_RESOURCE,
 ;   _Global_REF_CLOCKDATA_STRUCT
@@ -59,7 +59,7 @@ PARSEINI_WriteRtcFromGlobals:
     MOVE.W  _Global_REF_CLOCKDATA_STRUCT,D0
     MOVE.W  D0,.clockDataStruct(A5)
     PEA     .clockDataStruct(A5)
-    JSR     PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(PC)
+    JSR     _PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(PC)
 
     ; Clean the stack and test validity of clockdata struct seconds
     LEA     12(A7),A7
@@ -67,11 +67,11 @@ PARSEINI_WriteRtcFromGlobals:
     BEQ.S   .return
 
     PEA     .clockDataStruct(A5)
-    JSR     PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch(PC)
+    JSR     _PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,(A7)
-    JSR     PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock(PC)
+    JSR     _PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock(PC)
 
     ADDQ.W  #4,A7
 
@@ -91,12 +91,12 @@ PARSEINI_WriteRtcFromGlobals:
 ; CLOBBERS:
 ;   D0-D7/A0-A1
 ; CALLS:
-;   PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock, PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData,
-;   PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch, PARSEINI_NormalizeClockData
+;   _PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock, _PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData,
+;   _PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch, _PARSEINI_NormalizeClockData
 ; READS:
 ;   _Global_REF_UTILITY_LIBRARY, _Global_REF_BATTCLOCK_RESOURCE
 ; WRITES:
-;   _CLOCK_DaySlotIndex (date/time fields via PARSEINI_NormalizeClockData)
+;   _CLOCK_DaySlotIndex (date/time fields via _PARSEINI_NormalizeClockData)
 ; DESC:
 ;   Reads the battery-backed clock, validates the resulting date/time fields,
 ;   and updates the global date/time structure used by the UI.
@@ -122,15 +122,15 @@ PARSEINI_UpdateClockFromRtc:
     TST.L   _Global_REF_BATTCLOCK_RESOURCE
     BEQ.W   .return_status
 
-    JSR     PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock(PC)
+    JSR     _PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock(PC)
 
     MOVE.L  D0,D7
     PEA     .clockData(A5)
     MOVE.L  D7,-(A7)
-    JSR     PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData(PC)
+    JSR     _PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData(PC)
 
     PEA     .clockData(A5)
-    JSR     PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(PC)
+    JSR     _PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -215,15 +215,15 @@ PARSEINI_UpdateClockFromRtc:
 .invalid_date_data:
     PEA     -40(A5)
     PEA     _CLOCK_DaySlotIndex
-    BSR.W   PARSEINI_NormalizeClockData
+    BSR.W   _PARSEINI_NormalizeClockData
 
     ADDQ.W  #8,A7
     BRA.S   .return_status
 
 .fallback_default_date:
-    PEA     PARSEINI_FallbackClockDataRecord
+    PEA     _PARSEINI_FallbackClockDataRecord
     PEA     _CLOCK_DaySlotIndex
-    BSR.W   PARSEINI_NormalizeClockData
+    BSR.W   _PARSEINI_NormalizeClockData
 
     ADDQ.W  #8,A7
 

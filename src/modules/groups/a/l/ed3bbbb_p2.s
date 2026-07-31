@@ -18,7 +18,7 @@
 ;   _ED_DrawHelpPanels, SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE,
 ;   _SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
 ;   _GROUP_AM_JMPTBL_WDISP_SPrintf, _DISPLIB_DisplayTextAtPosition,
-;   ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
+;   _ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd
 ; READS:
 ;   _ED_TextLimit, _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,
 ;   _Global_REF_BOOL_IS_LINE_OR_PAGE, _Global_REF_BOOL_IS_TEXT_OR_CURSOR
@@ -79,7 +79,7 @@ _ED_DrawAdEditingScreen:
     MOVEQ   #8,D0
     SUB.L   _ED_TextLimit,D0
     MOVEQ   #30,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  #302,D1
     SUB.L   D0,D1
@@ -133,7 +133,7 @@ _ED_DrawAdEditingScreen:
 ; CLOBBERS:
 ;   A0/A1/A7/D0/D1/D2/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MATH_Mulu32, ESQFUNC_JMPTBL_STRING_CopyPadNul
+;   _ESQIFF_JMPTBL_MATH_Mulu32, _ESQFUNC_JMPTBL_STRING_CopyPadNul
 ; READS:
 ;   _ED_EditCursorOffset, _ED_ViewportOffset
 ; WRITES:
@@ -149,19 +149,19 @@ _ED_TransformLineSpacing_Mode1:
 
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     PEA     40.W
     MOVE.L  A0,-(A7)
     PEA     -49(A5)
-    JSR     ESQFUNC_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _ESQFUNC_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
@@ -217,7 +217,7 @@ _ED_TransformLineSpacing_Mode1:
     BGE.W   .return
 
     MOVE.L  _ED_ViewportOffset,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
@@ -236,7 +236,7 @@ _ED_TransformLineSpacing_Mode1:
 
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
@@ -255,7 +255,7 @@ _ED_TransformLineSpacing_Mode1:
 
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D7,D0
     LEA     ED_LineTransformSuffixScratchBuffer,A0
@@ -273,7 +273,7 @@ _ED_TransformLineSpacing_Mode1:
 
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D7,D0
     LEA     ED_LineTransformTailScratchBuffer,A0
@@ -305,7 +305,7 @@ _ED_TransformLineSpacing_Mode1:
 ; CLOBBERS:
 ;   A0/A1/A7/D0/D1/D2/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MATH_Mulu32, ESQFUNC_JMPTBL_STRING_CopyPadNul
+;   _ESQIFF_JMPTBL_MATH_Mulu32, _ESQFUNC_JMPTBL_STRING_CopyPadNul
 ; READS:
 ;   _ED_EditCursorOffset, _ED_ViewportOffset
 ; WRITES:
@@ -320,19 +320,19 @@ _ED_TransformLineSpacing_Mode2:
     MOVEM.L D2/D6-D7,-(A7)
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     PEA     40.W
     MOVE.L  A0,-(A7)
     PEA     -49(A5)
-    JSR     ESQFUNC_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _ESQFUNC_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
@@ -387,7 +387,7 @@ _ED_TransformLineSpacing_Mode2:
     BGE.W   .return
 
     MOVE.L  _ED_ViewportOffset,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D7,D0
     LEA     _ED_EditBufferScratch,A0
@@ -406,7 +406,7 @@ _ED_TransformLineSpacing_Mode2:
 
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D7,D0
     LEA     _ED_EditBufferLive,A0
@@ -425,7 +425,7 @@ _ED_TransformLineSpacing_Mode2:
 
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
@@ -445,7 +445,7 @@ _ED_TransformLineSpacing_Mode2:
 
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
@@ -479,7 +479,7 @@ _ED_TransformLineSpacing_Mode2:
 ; CLOBBERS:
 ;   A0/A1/A7/D0/D1/D2/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MATH_Mulu32, ESQFUNC_JMPTBL_STRING_CopyPadNul
+;   _ESQIFF_JMPTBL_MATH_Mulu32, _ESQFUNC_JMPTBL_STRING_CopyPadNul
 ; READS:
 ;   _ED_EditCursorOffset, _ED_ViewportOffset
 ; WRITES:
@@ -494,19 +494,19 @@ _ED_TransformLineSpacing_Mode3:
     MOVEM.L D2/D6-D7,-(A7)
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
     PEA     40.W
     MOVE.L  A0,-(A7)
     PEA     -49(A5)
-    JSR     ESQFUNC_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _ESQFUNC_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
@@ -574,7 +574,7 @@ _ED_TransformLineSpacing_Mode3:
     MOVE.L  D0,D7
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D7,D0
     LEA     _ED_EditBufferScratch,A0
@@ -593,7 +593,7 @@ _ED_TransformLineSpacing_Mode3:
 
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   D7,D0
     LEA     _ED_EditBufferLive,A0
@@ -612,7 +612,7 @@ _ED_TransformLineSpacing_Mode3:
 
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
@@ -632,7 +632,7 @@ _ED_TransformLineSpacing_Mode3:
 
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
@@ -669,7 +669,7 @@ _ED_TransformLineSpacing_Mode3:
     MOVE.L  D0,D7
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferScratch,A0
     ADDA.L  D0,A0
@@ -688,7 +688,7 @@ _ED_TransformLineSpacing_Mode3:
 
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _ED_EditBufferLive,A0
     ADDA.L  D0,A0
@@ -707,7 +707,7 @@ _ED_TransformLineSpacing_Mode3:
 
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D7,D0
     LEA     ED_LineTransformSuffixScratchBuffer,A0
@@ -725,7 +725,7 @@ _ED_TransformLineSpacing_Mode3:
 
     MOVE.L  _ED_ViewportOffset,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D7,D0
     LEA     ED_LineTransformTailScratchBuffer,A0
@@ -762,7 +762,7 @@ _ED_TransformLineSpacing_Mode3:
 ;   SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE,
 ;   _SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR,
 ;   _GROUP_AM_JMPTBL_WDISP_SPrintf, _DISPLIB_DisplayTextAtPosition,
-;   ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVORectFill
+;   _ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVORectFill
 ; READS:
 ;   _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, _ED_BlockOffset, _ED_TextLimit
 ; WRITES:
@@ -864,7 +864,7 @@ _ED_LoadCurrentAdIntoBuffers:
     MOVEQ   #8,D0
     SUB.L   _ED_TextLimit,D0
     MOVEQ   #30,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  #302,D1
     SUB.L   D0,D1

@@ -1,5 +1,5 @@
     XDEF    ESQFUNC_SelectAndApplyBrushForCurrentEntry
-    XDEF    ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner
+    XDEF    _ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner
     XDEF    ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts
     XDEF    _ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths
     XDEF    ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange
@@ -9,19 +9,19 @@
     XDEF    _ESQFUNC_JMPTBL_ESQ_TickGlobalCounters
     XDEF    _ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit
     XDEF    _ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState
-    XDEF    ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup
+    XDEF    _ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup
     XDEF    ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup
     XDEF    _ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues
     XDEF    _ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange
-    XDEF    ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData
+    XDEF    _ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData
     XDEF    _ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax
     XDEF    ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList
-    XDEF    ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList
+    XDEF    _ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList
     XDEF    _ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag
     XDEF    ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd
     XDEF    _ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag
     XDEF    _ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask
-    XDEF    ESQFUNC_JMPTBL_STRING_CopyPadNul
+    XDEF    _ESQFUNC_JMPTBL_STRING_CopyPadNul
     XDEF    _ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh
     XDEF    _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode
     XDEF    ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState
@@ -51,7 +51,7 @@ _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode:
     JMP     _TEXTDISP_SetRastForMode
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -69,7 +69,7 @@ _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList:
+_ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList:
     JMP     _P_TYPE_PromoteSecondaryList
 
 ;------------------------------------------------------------------------------
@@ -257,7 +257,7 @@ _ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   PARSEINI_MonitorClockChange
+;   _PARSEINI_MonitorClockChange
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -268,7 +268,7 @@ _ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange:
-    JMP     PARSEINI_MonitorClockChange
+    JMP     _PARSEINI_MonitorClockChange
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit   (Jump-table forwarder)
@@ -338,7 +338,7 @@ ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex:
     JMP     _ESQ_GetHalfHourSlotIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -356,7 +356,7 @@ ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner:
+_ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner:
     JMP     _CLEANUP_DrawClockBanner
 
 ;------------------------------------------------------------------------------
@@ -448,7 +448,7 @@ _ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask:
     JMP     _SCRIPT_ReadHandshakeBit5Mask
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -456,7 +456,7 @@ _ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   PARSEINI_NormalizeClockData
+;   _PARSEINI_NormalizeClockData
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -466,8 +466,8 @@ _ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData:
-    JMP     PARSEINI_NormalizeClockData
+_ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData:
+    JMP     _PARSEINI_NormalizeClockData
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQFUNC_JMPTBL_ESQ_TickGlobalCounters   (Jump-table forwarder)
@@ -500,7 +500,7 @@ _ESQFUNC_JMPTBL_ESQ_TickGlobalCounters:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_HandleSerialCtrlCmd
+;   _SCRIPT_HandleSerialCtrlCmd
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -511,7 +511,7 @@ _ESQFUNC_JMPTBL_ESQ_TickGlobalCounters:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd:
-    JMP     SCRIPT_HandleSerialCtrlCmd
+    JMP     _SCRIPT_HandleSerialCtrlCmd
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt   (Jump-table forwarder)
@@ -580,7 +580,7 @@ _ESQFUNC_JMPTBL_ESQ_PollCtrlInput:
     JMP     _ESQ_PollCtrlInput
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -598,11 +598,11 @@ _ESQFUNC_JMPTBL_ESQ_PollCtrlInput:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup:
+_ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup:
     JMP     _LOCAVAIL_RebuildFilterStateFromCurrentGroup
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_JMPTBL_STRING_CopyPadNul   (Jump-table forwarder)
+; FUNC: _ESQFUNC_JMPTBL_STRING_CopyPadNul   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -620,7 +620,7 @@ ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQFUNC_JMPTBL_STRING_CopyPadNul:
+_ESQFUNC_JMPTBL_STRING_CopyPadNul:
     JMP     _STRING_CopyPadNul
 
 ;!======
@@ -642,9 +642,9 @@ ESQFUNC_JMPTBL_STRING_CopyPadNul:
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_STRING_CompareN, _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQSHARED_JMPTBL_ESQ_WildcardMatch, _ESQIFF_RestoreBasePaletteTriples, _LVOSetRast
+;   _ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, _ESQIFF_JMPTBL_STRING_CompareN, _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQSHARED_JMPTBL_ESQ_WildcardMatch, _ESQIFF_RestoreBasePaletteTriples, _LVOSetRast
 ; READS:
-;   _BRUSH_ScriptPrimarySelection, _BRUSH_ScriptSecondarySelection, _BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_2, _ESQFUNC_BasePaletteRgbTriples, _ESQFUNC_FallbackType3BrushNode, _ESQIFF_BrushIniListHead, ESQFUNC_TAG_00, ESQFUNC_TAG_11, _TEXTDISP_ActiveGroupId, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _WDISP_PaletteTriplesRBase, _TEXTDISP_CurrentMatchIndex, e8
+;   _BRUSH_ScriptPrimarySelection, _BRUSH_ScriptSecondarySelection, _BRUSH_SelectedNode, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_2, _ESQFUNC_BasePaletteRgbTriples, _ESQFUNC_FallbackType3BrushNode, _ESQIFF_BrushIniListHead, _ESQFUNC_TAG_00, _ESQFUNC_TAG_11, _TEXTDISP_ActiveGroupId, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _WDISP_PaletteTriplesRBase, _TEXTDISP_CurrentMatchIndex, e8
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -697,9 +697,9 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     MOVEA.L -8(A5),A0
     ADDA.W  #$2b,A0
     PEA     2.W
-    PEA     ESQFUNC_TAG_00
+    PEA     _ESQFUNC_TAG_00
     MOVE.L  A0,-(A7)
-    JSR     ESQIFF_JMPTBL_STRING_CompareN(PC)
+    JSR     _ESQIFF_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -713,9 +713,9 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     MOVEA.L -8(A5),A0
     ADDA.W  #$2b,A0
     PEA     2.W
-    PEA     ESQFUNC_TAG_11
+    PEA     _ESQFUNC_TAG_11
     MOVE.L  A0,-(A7)
-    JSR     ESQIFF_JMPTBL_STRING_CompareN(PC)
+    JSR     _ESQIFF_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -792,7 +792,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     PEA     2.W
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     ESQIFF_JMPTBL_STRING_CompareN(PC)
+    JSR     _ESQIFF_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -855,7 +855,7 @@ ESQFUNC_SelectAndApplyBrushForCurrentEntry:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
+    JSR     _ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     LEA     28(A7),A7
 

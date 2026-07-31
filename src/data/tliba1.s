@@ -1,7 +1,7 @@
     XDEF    Global_STR_TLIBA1_C_1
     XDEF    Global_STR_TLIBA1_C_2
-    XDEF    Global_STR_TLIBA1_C_3
-    XDEF    TLIBA1_STR_TLIBA1_DOT_C
+    XDEF    _Global_STR_TLIBA1_C_3
+    XDEF    _TLIBA1_STR_TLIBA1_DOT_C
     XDEF    TLIBA1_FormatFallbackBuffer
     XDEF    TLIBA1_FormatFallbackFieldPtr0
     XDEF    TLIBA1_FormatFallbackFieldPtr1
@@ -63,9 +63,9 @@ Global_STR_TLIBA1_C_1:
     NStr    "TLIBA1.c"
 Global_STR_TLIBA1_C_2:
     NStr    "TLIBA1.c"
-Global_STR_TLIBA1_C_3:
+_Global_STR_TLIBA1_C_3:
     NStr    "TLIBA1.c"
-TLIBA1_STR_TLIBA1_DOT_C:
+_TLIBA1_STR_TLIBA1_DOT_C:
     DC.B    "TLIBA1.c",0
 TLIBA1_FormatFallbackBuffer:
     DS.B    1

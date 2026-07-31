@@ -1,10 +1,10 @@
-    XDEF    TEXTDISP_DrawNextEntryPreview
-    XDEF    TEXTDISP_UpdateHighlightOrPreview
+    XDEF    _TEXTDISP_DrawNextEntryPreview
+    XDEF    _TEXTDISP_UpdateHighlightOrPreview
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_DrawNextEntryPreview   (Draw next preview entry)
+; FUNC: _TEXTDISP_DrawNextEntryPreview   (Draw next preview entry)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -12,7 +12,7 @@
 ; CLOBBERS:
 ;   D0-D1/A0-A1
 ; CALLS:
-;   _MATH_DivS32, TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview
+;   _MATH_DivS32, _TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview
 ; READS:
 ;   _LADFUNC_EntryPtrTable, _LADFUNC_EntryCount
 ; WRITES:
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Wraps via division by 46.
 ;------------------------------------------------------------------------------
-TEXTDISP_DrawNextEntryPreview:
+_TEXTDISP_DrawNextEntryPreview:
 .loop:
     MOVE.W  _LADFUNC_EntryCount,D0
     EXT.L   D0
@@ -47,7 +47,7 @@ TEXTDISP_DrawNextEntryPreview:
     MOVE.W  _LADFUNC_EntryCount,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview(PC)
+    JSR     _TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview(PC)
 
     ADDQ.W  #4,A7
     MOVE.W  _LADFUNC_EntryCount,D0
@@ -58,7 +58,7 @@ TEXTDISP_DrawNextEntryPreview:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_UpdateHighlightOrPreview   (Update highlight/preview)
+; FUNC: _TEXTDISP_UpdateHighlightOrPreview   (Update highlight/preview)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -66,7 +66,7 @@ TEXTDISP_DrawNextEntryPreview:
 ; CLOBBERS:
 ;   D0-D2/D7
 ; CALLS:
-;   _TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame, TEXTDISP_DrawNextEntryPreview, _TEXTDISP_ResetSelectionAndRefresh
+;   _TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame, _TEXTDISP_DrawNextEntryPreview, _TEXTDISP_ResetSelectionAndRefresh
 ; READS:
 ;   _LOCAVAIL_FilterModeFlag/1FE8/1FE9, _ED_DiagGraphModeChar, _WDISP_HighlightActive
 ; WRITES:
@@ -76,7 +76,7 @@ TEXTDISP_DrawNextEntryPreview:
 ; NOTES:
 ;   Uses _ED_DiagGraphModeChar == 'N' (78) gate.
 ;------------------------------------------------------------------------------
-TEXTDISP_UpdateHighlightOrPreview:
+_TEXTDISP_UpdateHighlightOrPreview:
     MOVEM.L D2/D7,-(A7)
     MOVEQ   #1,D0
     CMP.L   _LOCAVAIL_FilterModeFlag,D0
@@ -115,7 +115,7 @@ TEXTDISP_UpdateHighlightOrPreview:
     CMP.L   D1,D7
     BNE.S   .do_reset_selection
 
-    BSR.W   TEXTDISP_DrawNextEntryPreview
+    BSR.W   _TEXTDISP_DrawNextEntryPreview
 
     BRA.S   .return
 
@@ -141,7 +141,7 @@ TEXTDISP_UpdateHighlightOrPreview:
     SUBQ.W  #1,D1
     BNE.S   .do_reset_selection_alt
 
-    BSR.W   TEXTDISP_DrawNextEntryPreview
+    BSR.W   _TEXTDISP_DrawNextEntryPreview
 
     BRA.S   .return
 

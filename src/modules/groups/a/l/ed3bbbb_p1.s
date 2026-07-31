@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   A1/A6/A7/D0/D1/D2/D3/D7
 ; CALLS:
-;   _ED_DrawCursorChar, _GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble, ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVORectFill
+;   _ED_DrawCursorChar, _GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble, _ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVORectFill
 ; READS:
 ;   _ED_EditCursorOffset, _ED_BlockOffset, _ED_TextLimit, _ED_EditBufferLive
 ; WRITES:
@@ -40,7 +40,7 @@ _ED_RedrawAllRows:
 
     MOVE.L  _ED_TextLimit,D0
     MOVEQ   #30,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #68,D1
     ADD.L   D1,D0
@@ -78,7 +78,7 @@ _ED_RedrawAllRows:
 ; CLOBBERS:
 ;   A1/A6/A7/D0/D1/D6/D7
 ; CALLS:
-;   _ED_DrawCursorChar, ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen
+;   _ED_DrawCursorChar, _ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVOSetBPen
 ; READS:
 ;   _ED_EditCursorOffset, _ED_BlockOffset, _ED_TextLimit
 ; WRITES:
@@ -95,7 +95,7 @@ _ED_RedrawRow:
     MOVE.L  _ED_EditCursorOffset,D6
     MOVE.L  D7,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,_ED_EditCursorOffset
 
@@ -103,7 +103,7 @@ _ED_RedrawRow:
     MOVE.L  D7,D0
     ADDQ.L  #1,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  _ED_EditCursorOffset,D1
     CMP.L   D0,D1

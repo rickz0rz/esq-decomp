@@ -1,8 +1,8 @@
-    XDEF    DST_UpdateBannerQueue
+    XDEF    _DST_UpdateBannerQueue
 
 
 ;------------------------------------------------------------------------------
-; FUNC: DST_UpdateBannerQueue   (Update the rotating banner queue)
+; FUNC: _DST_UpdateBannerQueue   (Update the rotating banner queue)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -21,7 +21,7 @@
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
 ; Update the rotating banner queue; free resources when entries expire.
-DST_UpdateBannerQueue:
+_DST_UpdateBannerQueue:
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVEQ   #0,D6

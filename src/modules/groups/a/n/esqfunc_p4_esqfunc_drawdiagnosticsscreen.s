@@ -166,7 +166,7 @@ _ESQFUNC_DrawDiagnosticsScreen:
     ; Layout-coupled _LOCAVAIL_PrimaryFilterState longs (+12 then +8).
     MOVE.L  LOCAVAIL_PrimaryFilterState_Field0C,(A7)
     MOVE.L  LOCAVAIL_PrimaryFilterState_Field08,-(A7)
-    ; Filter class/step/mode are state-machine outputs from LOCAVAIL_UpdateFilterStateMachine.
+    ; Filter class/step/mode are state-machine outputs from _LOCAVAIL_UpdateFilterStateMachine.
     MOVE.L  _LOCAVAIL_FilterClassId,-(A7)
     MOVE.L  _LOCAVAIL_FilterStep,-(A7)
     MOVE.L  _LOCAVAIL_FilterModeFlag,-(A7)
@@ -187,7 +187,7 @@ _ESQFUNC_DrawDiagnosticsScreen:
     JSR     _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(PC)
 
     LEA     12(A7),A7
-    ; Clock globals are normalized by PARSEINI_NormalizeClockData.
+    ; Clock globals are normalized by _PARSEINI_NormalizeClockData.
     ; Month/day are 0-based table indexes; month is +1 only when writing RTC.
     MOVE.W  _CLOCK_CacheMonthIndex0,D0
     EXT.L   D0

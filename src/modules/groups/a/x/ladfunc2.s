@@ -62,7 +62,7 @@ LADFUNC2_EmitEscapedStringWithLimit:
 ; CLOBBERS:
 ;   A3/A7/D0/D1/D6/D7
 ; CALLS:
-;   _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer, _LADFUNC2_EmitEscapedCharToScratch, NEWGRID_JMPTBL_MATH_DivS32
+;   _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer, _LADFUNC2_EmitEscapedCharToScratch, _NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
 ;   LADFUNC_STR_QuoteAndNewline, LADFUNC_STR_Quote
 ; WRITES:
@@ -92,7 +92,7 @@ LADFUNC2_EmitEscapedStringWithLimit_Return:
 
     MOVE.L  D6,D0
     MOVE.L  D7,D1
-    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     TST.L   D1
     BNE.S   .branch_2

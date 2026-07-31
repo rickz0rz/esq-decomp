@@ -1,32 +1,32 @@
-    XDEF    GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable
-    XDEF    Global_STR_GCOMMAND_C_1
-    XDEF    GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile
+    XDEF    _GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable
+    XDEF    _Global_STR_GCOMMAND_C_1
+    XDEF    _GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile
     XDEF    GCOMMAND_NicheParseScratchSeedWord
     XDEF    _GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateLoad
     XDEF    _Global_STR_GCOMMAND_C_2
     XDEF    _GCOMMAND_FMT_PCT_T_MplexTemplateLoad
     XDEF    _GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateSave
     XDEF    _GCOMMAND_MplexTemplateFieldSeparatorByteStorage
-    XDEF    GCOMMAND_MplexParseScratchSeedWord
-    XDEF    GCOMMAND_FMT_PCT_T_MplexTemplateParse
-    XDEF    GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad
-    XDEF    GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad
-    XDEF    GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete
-    XDEF    Global_STR_GCOMMAND_C_3
+    XDEF    _GCOMMAND_MplexParseScratchSeedWord
+    XDEF    _GCOMMAND_FMT_PCT_T_MplexTemplateParse
+    XDEF    _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad
+    XDEF    _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad
+    XDEF    _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete
+    XDEF    _Global_STR_GCOMMAND_C_3
     XDEF    _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplateSave
     XDEF    _GCOMMAND_PpvTemplateFieldSeparatorByteStorage
-    XDEF    GCOMMAND_PpvParseScratchSeedLong
+    XDEF    _GCOMMAND_PpvParseScratchSeedLong
     XDEF    _GCOMMAND_PATH_GFX_COLON
     XDEF    _GCOMMAND_STR_WORK_COLON
     XDEF    _GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_LOGO_DOT_LS
     XDEF    _GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_WORK_COLON_
-    XDEF    GCOMMAND_PresetSeedPackedWordTable
+    XDEF    _GCOMMAND_PresetSeedPackedWordTable
     XDEF    _GCOMMAND_PresetWorkResetPendingFlag
-    XDEF    GCOMMAND_BannerRebuildPendingFlag
+    XDEF    _GCOMMAND_BannerRebuildPendingFlag
     XDEF    _GCOMMAND_BannerRowFallbackOnFirstRowFlag
     XDEF    _GCOMMAND_ActiveHighlightMsgPtr
-    XDEF    GCOMMAND_BannerRowByteOffsetResetValue
-    XDEF    GCOMMAND_BannerPhaseIndexCurrent
+    XDEF    _GCOMMAND_BannerRowByteOffsetResetValue
+    XDEF    _GCOMMAND_BannerPhaseIndexCurrent
     XDEF    _GCOMMAND_HighlightHoldoffTickCount
     XDEF    GCOMMAND_FMT_PCT_S_COLON
     XDEF    GCOMMAND_STR_GRADIENT
@@ -41,11 +41,11 @@
     XDEF    _Global_STR_CONSOLE_DEVICE
 ; ========== GCOMMAND.c ==========
 
-GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable:
+_GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable:
     NStr    "DF0:Digital_Niche.dat"
-Global_STR_GCOMMAND_C_1:
+_Global_STR_GCOMMAND_C_1:
     NStr    "GCOMMAND.c"
-GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile:
+_GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile:
     NStr    "DF0:Digital_Niche.dat"
 ;------------------------------------------------------------------------------
 ; SYM: GCOMMAND_NicheParseScratchSeedWord   (niche option-parse scratch seed word)
@@ -79,7 +79,7 @@ _GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateSave:
 _GCOMMAND_MplexTemplateFieldSeparatorByteStorage:
     DC.L    $12001200
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_MplexParseScratchSeedWord   (mplex option-parse scratch seed word)
+; SYM: _GCOMMAND_MplexParseScratchSeedWord   (mplex option-parse scratch seed word)
 ; TYPE: u16 (used as first half of a 4-byte seed copy)
 ; PURPOSE: Seed word copied into local parse scratch before reading mplex option flags.
 ; USED BY: GCOMMAND_ParseCommandString
@@ -88,34 +88,34 @@ _GCOMMAND_MplexTemplateFieldSeparatorByteStorage:
 ;   parsing (`MOVE.B (A0)+` x4). Bytes 2..3 are layout-coupled with immediately
 ;   following data and should be treated as legacy parse seeding behavior.
 ;------------------------------------------------------------------------------
-GCOMMAND_MplexParseScratchSeedWord:
+_GCOMMAND_MplexParseScratchSeedWord:
     DS.W    1
-GCOMMAND_FMT_PCT_T_MplexTemplateParse:
+_GCOMMAND_FMT_PCT_T_MplexTemplateParse:
     NStr    "%T"
-GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad:
+_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad:
     NStr    "DF0:Digital_PPV3.dat"
-GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad:
+_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad:
     NStr    "DF0:Digital_PPV.dat"
-GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete:
+_GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete:
     NStr    "DF0:Digital_PPV.dat"
-Global_STR_GCOMMAND_C_3:
+_Global_STR_GCOMMAND_C_3:
     NStr    "GCOMMAND.c"
 _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplateSave:
     NStr    "DF0:Digital_PPV3.dat"
 _GCOMMAND_PpvTemplateFieldSeparatorByteStorage:
     DC.L    $12001200
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_PpvParseScratchSeedLong   (ppv option-parse scratch seed long)
+; SYM: _GCOMMAND_PpvParseScratchSeedLong   (ppv option-parse scratch seed long)
 ; TYPE: u32 seed + trailing u32 list (legacy/unresolved)
 ; PURPOSE: 4-byte seed copied into local parse scratch before PPV option parsing.
-; USED BY: GCOMMAND_ParsePPVCommand
+; USED BY: _GCOMMAND_ParsePPVCommand
 ; NOTES:
 ;   Callsite copies 4 bytes starting at this symbol into `-12(A5)..-9(A5)` before
 ;   parsing (`MOVE.B (A0)+` x4).
 ;   The following longword list is contiguous legacy data with no direct symbolic
 ;   references yet; keep together until a confirmed reader is traced.
 ;------------------------------------------------------------------------------
-GCOMMAND_PpvParseScratchSeedLong:
+_GCOMMAND_PpvParseScratchSeedLong:
     DC.L    $00000000
     DC.L    $00000067,$00000069,$00000072,$00000073
     DC.L    $00000074,$00000075,$00000076,$00000077
@@ -252,7 +252,7 @@ _GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_LOGO_DOT_LS:
 _GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_WORK_COLON_:
     NStr    "COPY >NIL: GFX:#? WORK: CLONE ALL"
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_PresetSeedPackedWordTable   (preset seed packed-word table)
+; SYM: _GCOMMAND_PresetSeedPackedWordTable   (preset seed packed-word table)
 ; TYPE: u16 stream (packed in mixed DC.L/DS.* form)
 ; PURPOSE: Seed data for _GCOMMAND_InitPresetTableFromPalette.
 ; USED BY: _GCOMMAND_InitPresetTableFromPalette
@@ -264,7 +264,7 @@ _GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_WORK_COLON_:
 GCOMMAND_PresetSeedPackedWordTable_RowCount        = 16
 GCOMMAND_PresetSeedPackedWordTable_RowStrideBytes  = 62
 GCOMMAND_PresetSeedPackedWordTable_Size            = 992
-GCOMMAND_PresetSeedPackedWordTable:
+_GCOMMAND_PresetSeedPackedWordTable:
     DC.L    $00030000
     DS.L    14
     DC.L    $00000aaa
@@ -329,21 +329,21 @@ GCOMMAND_PresetSeedPackedWordTable:
 ; SYM: _GCOMMAND_PresetWorkResetPendingFlag   (preset-work reset pending flag)
 ; TYPE: u16 flag
 ; PURPOSE: Requests one-time reset of preset work entries before active highlight message tick.
-; USED BY: GCOMMAND_ValidatePresetTable, _GCOMMAND_ResetPresetWorkTables, GCOMMAND_ServiceHighlightMessages
+; USED BY: GCOMMAND_ValidatePresetTable, _GCOMMAND_ResetPresetWorkTables, _GCOMMAND_ServiceHighlightMessages
 ; NOTES:
 ;   Set when preset defaults are copied/validated and cleared by _GCOMMAND_ResetPresetWorkTables.
 ;------------------------------------------------------------------------------
 _GCOMMAND_PresetWorkResetPendingFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_BannerRebuildPendingFlag   (banner rebuild pending flag)
+; SYM: _GCOMMAND_BannerRebuildPendingFlag   (banner rebuild pending flag)
 ; TYPE: u16 flag
 ; PURPOSE: Defers banner-table rebuild until the next highlight tick.
-; USED BY: GCOMMAND_UpdateBannerBounds, GCOMMAND_RebuildBannerTablesFromBounds, GCOMMAND_TickHighlightState
+; USED BY: GCOMMAND_UpdateBannerBounds, _GCOMMAND_RebuildBannerTablesFromBounds, GCOMMAND_TickHighlightState
 ; NOTES:
 ;   Set after bounds/step updates, consumed then cleared by rebuild path.
 ;------------------------------------------------------------------------------
-GCOMMAND_BannerRebuildPendingFlag:
+_GCOMMAND_BannerRebuildPendingFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _GCOMMAND_BannerRowFallbackOnFirstRowFlag   (first-row fallback toggle)
@@ -360,13 +360,13 @@ _GCOMMAND_BannerRowFallbackOnFirstRowFlag:
 ; SYM: _GCOMMAND_ActiveHighlightMsgPtr   (active highlight message node)
 ; TYPE: pointer (Exec message)
 ; PURPOSE: Holds the current in-flight highlight message while countdown/tick logic runs.
-; USED BY: GCOMMAND_ServiceHighlightMessages, _GCOMMAND_ResetHighlightMessages
+; USED BY: _GCOMMAND_ServiceHighlightMessages, _GCOMMAND_ResetHighlightMessages
 ; NOTES: Null when no message is active; replied and cleared when countdown reaches zero.
 ;------------------------------------------------------------------------------
 _GCOMMAND_ActiveHighlightMsgPtr:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_BannerRowByteOffsetResetValue   (banner row-byte offset reset seed)
+; SYM: _GCOMMAND_BannerRowByteOffsetResetValue   (banner row-byte offset reset seed)
 ; TYPE: u32 scalar
 ; PURPOSE: Initial/reset byte offset for banner row fetches.
 ; USED BY: _GCOMMAND_BuildBannerTables, GCOMMAND_TickHighlightState
@@ -375,10 +375,10 @@ _GCOMMAND_ActiveHighlightMsgPtr:
 ;   Not a table; this is a single longword constant.
 ;------------------------------------------------------------------------------
 ; GCOMMAND_BannerRowByteOffsetResetValueDefault moved to src/data-lengths.s (plain constant, value 5984)
-GCOMMAND_BannerRowByteOffsetResetValue:
+_GCOMMAND_BannerRowByteOffsetResetValue:
     DC.L    GCOMMAND_BannerRowByteOffsetResetValueDefault
 ;------------------------------------------------------------------------------
-; SYM: GCOMMAND_BannerPhaseIndexCurrent   (banner phase/ring index)
+; SYM: _GCOMMAND_BannerPhaseIndexCurrent   (banner phase/ring index)
 ; TYPE: u32 scalar
 ; PURPOSE: Tracks the current phase index for banner row generation.
 ; USED BY: _GCOMMAND_BuildBannerTables, GCOMMAND_TickHighlightState, GCOMMAND_RefreshBannerTables, _GCOMMAND_BuildBannerRow
@@ -386,7 +386,7 @@ GCOMMAND_BannerRowByteOffsetResetValue:
 ;   Increments once per highlight tick and wraps at 98 (`0..97`).
 ;   Passed as the `baseRowIndex` argument into _GCOMMAND_BuildBannerRow.
 ;------------------------------------------------------------------------------
-GCOMMAND_BannerPhaseIndexCurrent:
+_GCOMMAND_BannerPhaseIndexCurrent:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: _GCOMMAND_HighlightHoldoffTickCount   (highlight holdoff countdown)

@@ -1,8 +1,8 @@
     XDEF    _TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine
     XDEF    _TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame
-    XDEF    TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility
+    XDEF    _TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility
     XDEF    _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition
-    XDEF    TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor
+    XDEF    _TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor
 
 
     ; Alignment
@@ -11,7 +11,7 @@
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor   (JumpStub)
+; FUNC: _TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor   (JumpStub)
 ; ARGS:
 ;   see _NEWGRID_ShouldOpenEditor
 ; RET:
@@ -19,11 +19,11 @@
 ; DESC:
 ;   Jump stub to _NEWGRID_ShouldOpenEditor.
 ;------------------------------------------------------------------------------
-TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor:
+_TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor:
     JMP     _NEWGRID_ShouldOpenEditor
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility   (JumpStub)
+; FUNC: _TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility   (JumpStub)
 ; ARGS:
 ;   see ESQDISP_TestEntryGridEligibility
 ; RET:
@@ -31,7 +31,7 @@ TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor:
 ; DESC:
 ;   Jump stub to ESQDISP_TestEntryGridEligibility.
 ;------------------------------------------------------------------------------
-TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility:
+_TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility:
     JMP     ESQDISP_TestEntryGridEligibility
 
 ;------------------------------------------------------------------------------

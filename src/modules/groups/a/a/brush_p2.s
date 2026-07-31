@@ -1,10 +1,10 @@
-    XDEF    BRUSH_PopulateBrushList
+    XDEF    _BRUSH_PopulateBrushList
 
 
 ; Load every brush descriptor reachable via the singly linked list rooted at A3.
 ; Successful loads are appended to the list pointed at A2.
 ;------------------------------------------------------------------------------
-; FUNC: BRUSH_PopulateBrushList   (Routine at BRUSH_PopulateBrushList)
+; FUNC: _BRUSH_PopulateBrushList   (Routine at _BRUSH_PopulateBrushList)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -14,9 +14,9 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0
 ; CALLS:
-;   BRUSH_LoadBrushAsset, _BRUSH_NormalizeBrushNames, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOForbid, _LVOPermit
+;   _BRUSH_LoadBrushAsset, _BRUSH_NormalizeBrushNames, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOForbid, _LVOPermit
 ; READS:
-;   AbsExecBase, Global_STR_BRUSH_C_8
+;   AbsExecBase, _Global_STR_BRUSH_C_8
 ; WRITES:
 ;   _BRUSH_LoadInProgressFlag, _PARSEINI_ParsedDescriptorListHead
 ; DESC:
@@ -24,7 +24,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-BRUSH_PopulateBrushList:
+_BRUSH_PopulateBrushList:
     LINK.W  A5,#-12
     MOVEM.L A2-A3,-(A7)
 
@@ -47,13 +47,13 @@ BRUSH_PopulateBrushList:
     BEQ.S   .populate_finalize
 
     MOVE.L  A3,-(A7)
-    BSR.W   BRUSH_LoadBrushAsset
+    BSR.W   _BRUSH_LoadBrushAsset
 
     MOVE.L  234(A3),-12(A5)
     PEA     238.W
     MOVE.L  A3,-(A7)
     PEA     845.W
-    PEA     Global_STR_BRUSH_C_8
+    PEA     _Global_STR_BRUSH_C_8
     MOVE.L  D0,-4(A5)
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 

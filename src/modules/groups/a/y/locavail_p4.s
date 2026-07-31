@@ -1,9 +1,9 @@
-    XDEF    LOCAVAIL_UpdateFilterStateMachine
+    XDEF    _LOCAVAIL_UpdateFilterStateMachine
     XDEF    LOCAVAIL_UpdateFilterStateMachine_Return
 
 
 ;------------------------------------------------------------------------------
-; FUNC: LOCAVAIL_UpdateFilterStateMachine   (Routine at LOCAVAIL_UpdateFilterStateMachine)
+; FUNC: _LOCAVAIL_UpdateFilterStateMachine   (Routine at _LOCAVAIL_UpdateFilterStateMachine)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -12,9 +12,9 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D4/D5
 ; CALLS:
-;   _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask, _LOCAVAIL_ResetFilterCursorState, _NEWGRID_JMPTBL_MATH_Mulu32
+;   _GROUP_AS_JMPTBL_STR_FindCharPtr, _GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask, _LOCAVAIL_ResetFilterCursorState, _NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
-;   LOCAVAIL_UpdateFilterStateMachine_Return, _ESQIFF_GAdsBrushListCount, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _LOCAVAIL_FilterModeFlag, _LOCAVAIL_FilterStep, _LOCAVAIL_FilterClassId, LOCAVAIL_STR_YYLLZ_FilterStateUpdate, _WDISP_HighlightActive, lab_0F7F, lab_0F7F_0008, lab_0F7F_0040, lab_0F7F_0062, lab_0F83, lab_0F84, lab_0F86, lab_0F86_001E, lab_0F86_0066, lab_0F89, lab_0F8C, lab_0F8C_001E, lab_0F8C_0046
+;   LOCAVAIL_UpdateFilterStateMachine_Return, _ESQIFF_GAdsBrushListCount, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _LOCAVAIL_FilterModeFlag, _LOCAVAIL_FilterStep, _LOCAVAIL_FilterClassId, _LOCAVAIL_STR_YYLLZ_FilterStateUpdate, _WDISP_HighlightActive, lab_0F7F, lab_0F7F_0008, lab_0F7F_0040, lab_0F7F_0062, lab_0F83, lab_0F84, lab_0F86, lab_0F86_001E, lab_0F86_0066, lab_0F89, lab_0F8C, lab_0F8C_001E, lab_0F8C_0046
 ; WRITES:
 ;   _LOCAVAIL_FilterStep, _LOCAVAIL_FilterClassId, _LOCAVAIL_FilterPrevClassId, _LOCAVAIL_FilterWindowHalfSpan, _LOCAVAIL_FilterCooldownTicks
 ; DESC:
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-LOCAVAIL_UpdateFilterStateMachine:
+_LOCAVAIL_UpdateFilterStateMachine:
     LINK.W  A5,#-4
     MOVEM.L D2-D5/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -104,14 +104,14 @@ LOCAVAIL_UpdateFilterStateMachine:
     MOVEQ   #0,D0
     MOVE.B  _ED_DiagVinModeChar,D0
     MOVE.L  D0,-(A7)
-    PEA     LOCAVAIL_STR_YYLLZ_FilterStateUpdate
+    PEA     _LOCAVAIL_STR_YYLLZ_FilterStateUpdate
     JSR     _GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
     BEQ.S   .lab_0F81
 
-    JSR     GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(PC)
+    JSR     _GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(PC)
 
     TST.B   D0
     BEQ.S   .lab_0F81

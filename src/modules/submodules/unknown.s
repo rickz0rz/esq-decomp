@@ -4,7 +4,7 @@
     XDEF    UNKNOWN_ParseRecordAndUpdateDisplay
     XDEF    ESQPROTO_VerifyChecksumAndParseList
     XDEF    ESQPROTO_VerifyChecksumAndParseRecord
-    XDEF    UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
+    XDEF    _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
     XDEF    UNKNOWN_JMPTBL_DST_NormalizeDayOfYear
     XDEF    UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer
     XDEF    _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString
@@ -21,7 +21,7 @@
 ; CLOBBERS:
 ;   A3/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   _UNKNOWN_JMPTBL_ESQ_WildcardMatch, _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
+;   _UNKNOWN_JMPTBL_ESQ_WildcardMatch, _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
 ;   _ED_DiagnosticsScreenActive, _WDISP_WeatherStatusLabelBuffer, _WDISP_WeatherStatusOverlayTextPtr, _Global_REF_RASTPORT_1
 ; WRITES:
@@ -100,7 +100,7 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
     PEA     172.W
     CLR.L   -(A7)
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
-    JSR     UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    JSR     _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
 
@@ -540,7 +540,7 @@ ESQPROTO_VerifyChecksumAndParseList:
 ; CLOBBERS:
 ;   A0/A1/A3/A7/D0/D1/D2/D7
 ; CALLS:
-;   _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
+;   _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
 ;   _WDISP_WeatherStatusTextPtr, _ED_DiagnosticsScreenActive, _Global_REF_RASTPORT_1
 ; WRITES:
@@ -608,7 +608,7 @@ ESQPROTO_ParseDigitLabelAndDisplay:
     PEA     172.W
     CLR.L   -(A7)
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
-    JSR     UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    JSR     _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
 
@@ -695,7 +695,7 @@ UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer:
     JMP     _ESQIFF2_ReadSerialRecordIntoBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition   (JumpStub_DISPLIB_DisplayTextAtPosition)
+; FUNC: _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition   (JumpStub_DISPLIB_DisplayTextAtPosition)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -713,7 +713,7 @@ UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition:
+_UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition:
     JMP     _DISPLIB_DisplayTextAtPosition
 
 ;------------------------------------------------------------------------------

@@ -1,12 +1,12 @@
-    XDEF    NEWGRID_AdjustClockStringBySlot
-    XDEF    NEWGRID_AdjustClockStringBySlotWithOffset
-    XDEF    NEWGRID_ComputeDaySlotFromClock
-    XDEF    NEWGRID_ComputeDaySlotFromClockWithOffset
-    XDEF    NEWGRID_DrawAwaitingListingsMessage
+    XDEF    _NEWGRID_AdjustClockStringBySlot
+    XDEF    _NEWGRID_AdjustClockStringBySlotWithOffset
+    XDEF    _NEWGRID_ComputeDaySlotFromClock
+    XDEF    _NEWGRID_ComputeDaySlotFromClockWithOffset
+    XDEF    _NEWGRID_DrawAwaitingListingsMessage
 
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_DrawAwaitingListingsMessage   (Draw waiting banner)
+; FUNC: _NEWGRID_DrawAwaitingListingsMessage   (Draw waiting banner)
 ; ARGS:
 ;   stack +8: A3 = base rastport/struct
 ; RET:
@@ -24,7 +24,7 @@
 ; NOTES:
 ;   Uses text length to center the string within the 624px region. Seemingly truncates text if it's longer than 624px.
 ;------------------------------------------------------------------------------
-NEWGRID_DrawAwaitingListingsMessage:
+_NEWGRID_DrawAwaitingListingsMessage:
     LINK.W  A5,#-4
     MOVEM.L D2/A2-A3,-(A7)
     MOVEA.L 24(A7),A3
@@ -126,7 +126,7 @@ NEWGRID_DrawAwaitingListingsMessage:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_ComputeDaySlotFromClock   (Compute day slot index)
+; FUNC: _NEWGRID_ComputeDaySlotFromClock   (Compute day slot index)
 ; ARGS:
 ;   stack +8: A3 = clockdata struct
 ; RET:
@@ -144,7 +144,7 @@ NEWGRID_DrawAwaitingListingsMessage:
 ; NOTES:
 ;   Returns 0 when month/day out of supported bounds.
 ;------------------------------------------------------------------------------
-NEWGRID_ComputeDaySlotFromClock:
+_NEWGRID_ComputeDaySlotFromClock:
     LINK.W  A5,#-28
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -194,7 +194,7 @@ NEWGRID_ComputeDaySlotFromClock:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_ComputeDaySlotFromClockWithOffset   (Compute slot with offset)
+; FUNC: _NEWGRID_ComputeDaySlotFromClockWithOffset   (Compute slot with offset)
 ; ARGS:
 ;   stack +8: A3 = clockdata struct
 ; RET:
@@ -210,9 +210,9 @@ NEWGRID_ComputeDaySlotFromClock:
 ; DESC:
 ;   Computes a day slot index using a dynamic offset (_GCOMMAND_MplexClockOffsetMinutes) and clamps it.
 ; NOTES:
-;   Similar to NEWGRID_ComputeDaySlotFromClock but adjusts thresholds.
+;   Similar to _NEWGRID_ComputeDaySlotFromClock but adjusts thresholds.
 ;------------------------------------------------------------------------------
-NEWGRID_ComputeDaySlotFromClockWithOffset:
+_NEWGRID_ComputeDaySlotFromClockWithOffset:
     LINK.W  A5,#-28
     MOVEM.L D2/D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -269,7 +269,7 @@ NEWGRID_ComputeDaySlotFromClockWithOffset:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_AdjustClockStringBySlot   (Adjust clock string and validate)
+; FUNC: _NEWGRID_AdjustClockStringBySlot   (Adjust clock string and validate)
 ; ARGS:
 ;   stack +8: A3 = clockdata pointer
 ; RET:
@@ -277,7 +277,7 @@ NEWGRID_ComputeDaySlotFromClockWithOffset:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds, NEWGRID_JMPTBL_MATH_DivS32, _NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_DATETIME_SecondsToStruct, NEWGRID_ComputeDaySlotFromClock
+;   _NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds, _NEWGRID_JMPTBL_MATH_DivS32, _NEWGRID_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_DATETIME_SecondsToStruct, _NEWGRID_ComputeDaySlotFromClock
 ; READS:
 ;   _CLOCK_FormatVariantCode
 ; WRITES:
@@ -287,7 +287,7 @@ NEWGRID_ComputeDaySlotFromClockWithOffset:
 ; NOTES:
 ;   Uses 22-byte copy (DBF runs D0+1 iterations).
 ;------------------------------------------------------------------------------
-NEWGRID_AdjustClockStringBySlot:
+_NEWGRID_AdjustClockStringBySlot:
     LINK.W  A5,#-28
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -300,13 +300,13 @@ NEWGRID_AdjustClockStringBySlot:
     MOVE.B  (A0)+,(A1)+
     DBF     D0,.copy_clocktext
     PEA     -22(A5)
-    JSR     NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(PC)
+    JSR     _NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(PC)
 
     MOVE.L  D0,D7
     MOVEQ   #0,D0
     MOVE.B  _CLOCK_FormatVariantCode,D0
     MOVEQ   #30,D1
-    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #60,D0
     JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
@@ -314,10 +314,10 @@ NEWGRID_AdjustClockStringBySlot:
     SUB.L   D0,D7
     PEA     -22(A5)
     MOVE.L  D7,-(A7)
-    JSR     NEWGRID_JMPTBL_DATETIME_SecondsToStruct(PC)
+    JSR     _NEWGRID_JMPTBL_DATETIME_SecondsToStruct(PC)
 
     PEA     -22(A5)
-    BSR.W   NEWGRID_ComputeDaySlotFromClock
+    BSR.W   _NEWGRID_ComputeDaySlotFromClock
 
     MOVEM.L -36(A5),D7/A3
     UNLK    A5
@@ -326,7 +326,7 @@ NEWGRID_AdjustClockStringBySlot:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_AdjustClockStringBySlotWithOffset   (Adjust clock string with offset)
+; FUNC: _NEWGRID_AdjustClockStringBySlotWithOffset   (Adjust clock string with offset)
 ; ARGS:
 ;   stack +8: A3 = clockdata pointer
 ; RET:
@@ -334,17 +334,17 @@ NEWGRID_AdjustClockStringBySlot:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds, NEWGRID_JMPTBL_MATH_DivS32, _NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_DATETIME_SecondsToStruct, NEWGRID_ComputeDaySlotFromClockWithOffset
+;   _NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds, _NEWGRID_JMPTBL_MATH_DivS32, _NEWGRID_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_DATETIME_SecondsToStruct, _NEWGRID_ComputeDaySlotFromClockWithOffset
 ; READS:
 ;   _CLOCK_FormatVariantCode
 ; WRITES:
 ;   local buffer -22(A5)
 ; DESC:
-;   Like NEWGRID_AdjustClockStringBySlot but uses the offset-based slot computation.
+;   Like _NEWGRID_AdjustClockStringBySlot but uses the offset-based slot computation.
 ; NOTES:
 ;   Uses 22-byte copy (DBF runs D0+1 iterations).
 ;------------------------------------------------------------------------------
-NEWGRID_AdjustClockStringBySlotWithOffset:
+_NEWGRID_AdjustClockStringBySlotWithOffset:
     LINK.W  A5,#-28
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -358,13 +358,13 @@ NEWGRID_AdjustClockStringBySlotWithOffset:
     DBF     D0,.copy_clocktext
 
     PEA     -22(A5)
-    JSR     NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(PC)
+    JSR     _NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(PC)
 
     MOVE.L  D0,D7
     MOVEQ   #0,D0
     MOVE.B  _CLOCK_FormatVariantCode,D0
     MOVEQ   #30,D1
-    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #60,D0
     JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
@@ -372,10 +372,10 @@ NEWGRID_AdjustClockStringBySlotWithOffset:
     SUB.L   D0,D7
     PEA     -22(A5)
     MOVE.L  D7,-(A7)
-    JSR     NEWGRID_JMPTBL_DATETIME_SecondsToStruct(PC)
+    JSR     _NEWGRID_JMPTBL_DATETIME_SecondsToStruct(PC)
 
     PEA     -22(A5)
-    BSR.W   NEWGRID_ComputeDaySlotFromClockWithOffset
+    BSR.W   _NEWGRID_ComputeDaySlotFromClockWithOffset
 
     MOVEM.L -36(A5),D7/A3
     UNLK    A5

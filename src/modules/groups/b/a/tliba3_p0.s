@@ -17,7 +17,7 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVOTextLength
+;   _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVOTextLength
 ; READS:
 ;   Global_REF_GRAPHICS_LIBRARY, LAB_181F
 ; WRITES:
@@ -120,7 +120,7 @@ TLIBA3_DrawCenteredWrappedTextLines:
     MOVE.L  D7,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    JSR     _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
 

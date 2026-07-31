@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   A1/A6/A7/D0/D1/D2/D3/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVORectFill
+;   _ESQIFF_JMPTBL_MATH_Mulu32, _LVOSetAPen, _LVORectFill
 ; READS:
 ;   _ED_EditCursorOffset, _Global_REF_RASTPORT_1
 ; WRITES:
@@ -32,7 +32,7 @@ _ED_DrawMenuSelectionHighlight:
 
     MOVE.L  D7,D0
     MOVEQ   #30,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #67,D1
     ADD.L   D1,D0
@@ -52,7 +52,7 @@ _ED_DrawMenuSelectionHighlight:
 
     MOVE.L  _ED_EditCursorOffset,D0
     MOVEQ   #30,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,D1
     MOVEQ   #68,D2

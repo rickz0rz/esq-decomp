@@ -1,5 +1,5 @@
     XDEF    _NEWGRID_DrawGridCell
-    XDEF    NEWGRID_DrawGridCellText
+    XDEF    _NEWGRID_DrawGridCellText
     XDEF    _NEWGRID_SetRowColor
     XDEF    _NEWGRID_ValidateSelectionCode
 
@@ -304,7 +304,7 @@ _NEWGRID_ValidateSelectionCode:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_DrawGridCellText   (Draw primary/secondary cell labels)
+; FUNC: _NEWGRID_DrawGridCellText   (Draw primary/secondary cell labels)
 ; ARGS:
 ;   stack +8: A3 = rastport
 ;   stack +12: A2 = primary string
@@ -315,7 +315,7 @@ _NEWGRID_ValidateSelectionCode:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   PARSEINI_JMPTBL_STRING_AppendAtNull, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength,
+;   _PARSEINI_JMPTBL_STRING_AppendAtNull, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength,
 ;   _LVOMove, _LVOText
 ; READS:
 ;   NEWGRID_SampleTimeTextWidthPx, _NEWGRID_RowHeightPx, _NEWGRID_GridOperationId,
@@ -327,7 +327,7 @@ _NEWGRID_ValidateSelectionCode:
 ; NOTES:
 ;   Uses _NEWGRID_GridOperationId/_CTASKS_STR_C to alter pen/centering behavior.
 ;------------------------------------------------------------------------------
-NEWGRID_DrawGridCellText:
+_NEWGRID_DrawGridCellText:
     LINK.W  A5,#-36
     MOVEM.L D2-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -349,7 +349,7 @@ NEWGRID_DrawGridCellText:
     ADDQ.L  #2,A0
     MOVE.L  A0,-(A7)
     PEA     -26(A5)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     LEA     -26(A5),A0
@@ -652,7 +652,7 @@ NEWGRID_DrawGridCellText:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _NEWGRID2_JMPTBL_STR_SkipClass3Chars, _NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame, _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, NEWGRID_DrawGridCellText
+;   _NEWGRID2_JMPTBL_STR_SkipClass3Chars, _NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame, _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _NEWGRID_DrawGridCellText
 ; READS:
 ;   _NEWGRID_ColumnStartXPx, _NEWGRID_RowHeightPx
 ; WRITES:
@@ -726,7 +726,7 @@ _NEWGRID_DrawGridCell:
     MOVE.L  -4(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_DrawGridCellText
+    BSR.W   _NEWGRID_DrawGridCellText
 
     MOVEM.L -24(A5),D2/D7/A2-A3
     UNLK    A5

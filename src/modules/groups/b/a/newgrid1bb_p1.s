@@ -3,13 +3,13 @@
     XDEF    NEWGRID_DrawGridFrameVariant4
     XDEF    NEWGRID_DrawShowtimesPrompt
     XDEF    NEWGRID_InitSelectionWindowAlt
-    XDEF    NEWGRID_TestEntrySelectable
+    XDEF    _NEWGRID_TestEntrySelectable
     XDEF    NEWGRID_TestPrimeTimeWindow
     XDEF    NEWGRID_UpdateSelectionFromInputAlt
 
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_TestEntrySelectable   (Test whether entry is selectable under current mode)
+; FUNC: _NEWGRID_TestEntrySelectable   (Test whether entry is selectable under current mode)
 ; ARGS:
 ;   stack +8: A3 = entry header
 ;   stack +12: A2 = entry data
@@ -19,13 +19,13 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2
+;   _NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2
 ; READS:
 ;   27(A3), 40(A3)
 ; DESC:
 ;   Checks entry flags and mode rules to decide if selection is allowed.
 ;------------------------------------------------------------------------------
-NEWGRID_TestEntrySelectable:
+_NEWGRID_TestEntrySelectable:
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVEA.L 24(A7),A2
@@ -60,7 +60,7 @@ NEWGRID_TestEntrySelectable:
     BNE.S   .set_false
 
     MOVE.L  A3,-(A7)
-    JSR     NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -92,7 +92,7 @@ NEWGRID_TestEntrySelectable:
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
-;   _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode, _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, NEWGRID_TestEntrySelectable
+;   _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode, _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _NEWGRID_TestEntrySelectable
 ; READS:
 ;   _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupPresentFlag, _TEXTDISP_SecondaryGroupPresentFlag
 ; WRITES:
@@ -133,7 +133,7 @@ NEWGRID_ClearMarkersIfSelectable:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-8(A5)
-    BSR.W   NEWGRID_TestEntrySelectable
+    BSR.W   _NEWGRID_TestEntrySelectable
 
     LEA     24(A7),A7
     TST.L   D0
@@ -180,7 +180,7 @@ NEWGRID_ClearMarkersIfSelectable:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  D0,-8(A5)
-    BSR.W   NEWGRID_TestEntrySelectable
+    BSR.W   _NEWGRID_TestEntrySelectable
 
     LEA     24(A7),A7
     TST.L   D0
@@ -306,8 +306,8 @@ NEWGRID_InitSelectionWindowAlt:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_ClearMarkersIfSelectable, NEWGRID_TestEntrySelectable,
-;   NEWGRID_UpdatePresetEntry, NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState, TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility
+;   NEWGRID_ClearMarkersIfSelectable, _NEWGRID_TestEntrySelectable,
+;   _NEWGRID_UpdatePresetEntry, _NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, _NEWGRID2_JMPTBL_ESQ_TestBit1Based, _NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState, _TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility
 ; READS:
 ;   NEWGRID_AltSelectionRowCursor/203A, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryGroupPresentFlag
 ; WRITES:
@@ -396,12 +396,12 @@ NEWGRID_UpdateSelectionFromInputAlt:
     MOVE.L  D0,-(A7)
     PEA     -8(A5)
     PEA     -4(A5)
-    BSR.W   NEWGRID_UpdatePresetEntry
+    BSR.W   _NEWGRID_UpdatePresetEntry
 
     MOVE.L  D6,(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   NEWGRID_TestEntrySelectable
+    BSR.W   _NEWGRID_TestEntrySelectable
 
     LEA     24(A7),A7
     TST.L   D0
@@ -427,7 +427,7 @@ NEWGRID_UpdateSelectionFromInputAlt:
     MOVE.L  D0,-(A7)
     PEA     -8(A5)
     PEA     -4(A5)
-    BSR.W   NEWGRID_UpdatePresetEntry
+    BSR.W   _NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
     MOVE.L  D0,D4
@@ -457,7 +457,7 @@ NEWGRID_UpdateSelectionFromInputAlt:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D4
@@ -472,7 +472,7 @@ NEWGRID_UpdateSelectionFromInputAlt:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -503,7 +503,7 @@ NEWGRID_UpdateSelectionFromInputAlt:
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(PC)
 
     LEA     20(A7),A7
     TST.L   D0
@@ -517,7 +517,7 @@ NEWGRID_UpdateSelectionFromInputAlt:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(PC)
+    JSR     _TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -616,10 +616,10 @@ NEWGRID_UpdateSelectionFromInputAlt:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility, _TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID_UpdatePresetEntry, _NEWGRID2_JMPTBL_STR_SkipClass3Chars,
-;   PARSEINI_JMPTBL_STRING_AppendAtNull
+;   _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, _TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility, _TEXTDISP_FormatEntryTimeForIndex, _NEWGRID2_JMPTBL_ESQ_TestBit1Based, _NEWGRID_UpdatePresetEntry, _NEWGRID2_JMPTBL_STR_SkipClass3Chars,
+;   _PARSEINI_JMPTBL_STRING_AppendAtNull
 ; READS:
-;   _CONFIG_TimeWindowMinutes, NEWGRID_ShowtimeListSeparator
+;   _CONFIG_TimeWindowMinutes, _NEWGRID_ShowtimeListSeparator
 ; WRITES:
 ;   output buffer contents
 ; DESC:
@@ -729,7 +729,7 @@ NEWGRID_AppendShowtimesForRow:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  4(A3),-(A7)
-    JSR     TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(PC)
+    JSR     _TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -781,7 +781,7 @@ NEWGRID_AppendShowtimesForRow:
     MOVE.L  D0,-(A7)
     PEA     -84(A5)
     PEA     -80(A5)
-    BSR.W   NEWGRID_UpdatePresetEntry
+    BSR.W   _NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
 
@@ -814,7 +814,7 @@ NEWGRID_AppendShowtimesForRow:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -911,7 +911,7 @@ NEWGRID_AppendShowtimesForRow:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  -84(A5),-(A7)
-    JSR     TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(PC)
+    JSR     _TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -1038,7 +1038,7 @@ NEWGRID_AppendShowtimesForRow:
     TST.B   (A2)
     BNE.S   .append_showtime
 
-    LEA     Global_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
+    LEA     _Global_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
     MOVEA.L A2,A1
 
 .copy_showtimes_prefix:
@@ -1051,7 +1051,7 @@ NEWGRID_AppendShowtimesForRow:
     MOVE.L  D0,(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  D0,-10(A5)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -1066,14 +1066,14 @@ NEWGRID_AppendShowtimesForRow:
     PEA     -31(A5)
     JSR     _NEWGRID2_JMPTBL_STR_SkipClass3Chars(PC)
 
-    PEA     NEWGRID_ShowtimeListSeparator
+    PEA     _NEWGRID_ShowtimeListSeparator
     MOVE.L  A2,-(A7)
     MOVE.L  D0,-10(A5)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     MOVE.L  -10(A5),(A7)
     MOVE.L  A2,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     28(A7),A7
     MOVEA.L -84(A5),A0
@@ -1088,7 +1088,7 @@ NEWGRID_AppendShowtimesForRow:
     TST.B   (A2)
     BNE.S   .return
 
-    LEA     Global_STR_SHOWING_AT_AND_SINGLE_SPACE,A0
+    LEA     _Global_STR_SHOWING_AT_AND_SINGLE_SPACE,A0
     MOVEA.L A2,A1
 
 .copy_showing_at_prefix:
@@ -1101,7 +1101,7 @@ NEWGRID_AppendShowtimesForRow:
     MOVE.L  D0,(A7)
     MOVE.L  A2,-(A7)
     MOVE.L  D0,-10(A5)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 
@@ -1123,11 +1123,11 @@ NEWGRID_AppendShowtimesForRow:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   _NEWGRID2_JMPTBL_STR_SkipClass3Chars, NEWGRID2_JMPTBL_STRING_AppendN, PARSEINI_JMPTBL_STRING_AppendAtNull,
+;   _NEWGRID2_JMPTBL_STR_SkipClass3Chars, _NEWGRID2_JMPTBL_STRING_AppendN, _PARSEINI_JMPTBL_STRING_AppendAtNull,
 ;   _NEWGRID_DrawGridFrame, _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOSetAPen, _LVOSetDrMd,
 ;   _LVOTextLength, _LVOMove, _LVOText, _NEWGRID_ValidateSelectionCode
 ; READS:
-;   SCRIPT_PtrSportsOnPrefix, SCRIPT_PtrSummaryOfPrefix, SCRIPT_PtrChannelSuffix, _NEWGRID_RowHeightPx, _NEWGRID_ColumnStartXPx, _NEWGRID_ColumnWidthPx
+;   _SCRIPT_PtrSportsOnPrefix, _SCRIPT_PtrSummaryOfPrefix, _SCRIPT_PtrChannelSuffix, _NEWGRID_RowHeightPx, _NEWGRID_ColumnStartXPx, _NEWGRID_ColumnWidthPx
 ; WRITES:
 ;   output buffer contents, 32(A3), 52(A3)
 ; DESC:
@@ -1158,7 +1158,7 @@ NEWGRID_DrawShowtimesPrompt:
     TST.L   D7
     BNE.S   .copy_prompt_b
 
-    MOVEA.L SCRIPT_PtrSummaryOfPrefix,A0
+    MOVEA.L _SCRIPT_PtrSummaryOfPrefix,A0
     LEA     -136(A5),A1
 
 .copy_prompt_a:
@@ -1168,7 +1168,7 @@ NEWGRID_DrawShowtimesPrompt:
     BRA.S   .prompt_done
 
 .copy_prompt_b:
-    MOVEA.L SCRIPT_PtrSportsOnPrefix,A0
+    MOVEA.L _SCRIPT_PtrSportsOnPrefix,A0
     LEA     -136(A5),A1
 
 .copy_prompt_b_loop:
@@ -1187,7 +1187,7 @@ NEWGRID_DrawShowtimesPrompt:
     MOVE.L  A0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     -136(A5)
-    JSR     NEWGRID2_JMPTBL_STRING_AppendN(PC)
+    JSR     _NEWGRID2_JMPTBL_STRING_AppendN(PC)
 
     LEA     12(A7),A7
     TST.L   -8(A5)
@@ -1197,9 +1197,9 @@ NEWGRID_DrawShowtimesPrompt:
     TST.B   (A0)
     BEQ.S   .draw_frame
 
-    MOVE.L  SCRIPT_PtrChannelSuffix,-(A7)
+    MOVE.L  _SCRIPT_PtrChannelSuffix,-(A7)
     PEA     -136(A5)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     TST.W   _Global_WORD_SELECT_CODE_IS_RAVESC
@@ -1215,17 +1215,17 @@ NEWGRID_DrawShowtimesPrompt:
     CLR.B   -144(A5)
     PEA     -146(A5)
     PEA     -136(A5)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
-    PEA     NEWGRID_ShowtimeRangeDash
+    PEA     _NEWGRID_ShowtimeRangeDash
     PEA     -136(A5)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     MOVEA.L -8(A5),A0
     ADDQ.L  #2,A0
     MOVE.L  A0,(A7)
     PEA     -136(A5)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     20(A7),A7
     BRA.S   .draw_frame
@@ -1233,7 +1233,7 @@ NEWGRID_DrawShowtimesPrompt:
 .append_suffix:
     MOVE.L  -8(A5),-(A7)
     PEA     -136(A5)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
 

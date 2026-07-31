@@ -13,7 +13,7 @@
 ; CALLS:
 ;   GROUP_AY_JMPTBL_MATH_Mulu32, _LOCAVAIL_FreeNodeAtPointer, _LOCAVAIL_ResetFilterStateStruct, _NEWGRID_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   Global_STR_LOCAVAIL_C_2, Global_STR_LOCAVAIL_C_3
+;   _Global_STR_LOCAVAIL_C_2, _Global_STR_LOCAVAIL_C_3
 ; WRITES:
 ;   shared refcount at *(A3+16), released node payload/array ownership
 ; DESC:
@@ -53,7 +53,7 @@ _LOCAVAIL_FreeResourceChain:
     PEA     4.W
     MOVE.L  A0,-(A7)
     PEA     159.W
-    PEA     Global_STR_LOCAVAIL_C_2
+    PEA     _Global_STR_LOCAVAIL_C_2
     JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -84,7 +84,7 @@ _LOCAVAIL_FreeResourceChain:
     MOVE.L  D0,-(A7)
     MOVE.L  20(A3),-(A7)
     PEA     164.W
-    PEA     Global_STR_LOCAVAIL_C_3
+    PEA     _Global_STR_LOCAVAIL_C_3
     JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7

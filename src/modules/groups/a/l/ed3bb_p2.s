@@ -35,7 +35,7 @@ _ED_DrawAreYouSurePrompt:
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     Global_STR_ARE_YOU_SURE
+    PEA     _Global_STR_ARE_YOU_SURE
     PEA     330.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)

@@ -1,8 +1,8 @@
-    XDEF    DISPTEXT_ComputeVisibleLineCount
+    XDEF    _DISPTEXT_ComputeVisibleLineCount
 
 
 ;------------------------------------------------------------------------------
-; FUNC: DISPTEXT_ComputeVisibleLineCount   (Compute visible line countuncertain)
+; FUNC: _DISPTEXT_ComputeVisibleLineCount   (Compute visible line countuncertain)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Uses booleanize pattern on _DISPTEXT_ControlMarkersEnabledFlag.
 ;------------------------------------------------------------------------------
-DISPTEXT_ComputeVisibleLineCount:
+_DISPTEXT_ComputeVisibleLineCount:
     LINK.W  A5,#-12
     MOVEM.L D5-D7,-(A7)
     MOVE.L  8(A5),D7

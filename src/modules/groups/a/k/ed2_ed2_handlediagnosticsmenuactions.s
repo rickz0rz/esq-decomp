@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   A0/A7/D0/D1
 ; CALLS:
-;   _GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides, _ED_FindNextCharInTable, _ED_DrawDiagnosticModeText, ESQIFF_JMPTBL_MATH_Mulu32,
+;   _GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides, _ED_FindNextCharInTable, _ED_DrawDiagnosticModeText, _ESQIFF_JMPTBL_MATH_Mulu32,
 ;   _DISPLIB_DisplayTextAtPosition, _GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte, _GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn,
 ;   _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight,
 ;   _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight,
@@ -208,7 +208,7 @@ _ED2_HandleDiagnosticsMenuActions:
     SUB.L   D1,D0
     MOVE.L  D0,_ED_TextLimit
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,_ED_BlockOffset
     JSR     _ED_DrawDiagnosticModeText(PC)

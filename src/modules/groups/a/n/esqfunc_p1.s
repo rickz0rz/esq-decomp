@@ -11,11 +11,11 @@
 ; CLOBBERS:
 ;   A7/D7
 ; CALLS:
-;   DATETIME_SavePairToFile, ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup, ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList, _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded, ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile, _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile, ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile, ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty, ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _ESQDISP_PromoteSecondaryGroupToPrimary, _ESQDISP_PromoteSecondaryLineHeadTailIfMarked, _ESQFUNC_UpdateDiskWarningAndRefreshTick
+;   _DATETIME_SavePairToFile, _ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup, _ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList, _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded, _ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile, _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile, _ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile, _ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty, _ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _ESQDISP_PromoteSecondaryGroupToPrimary, _ESQDISP_PromoteSecondaryLineHeadTailIfMarked, _ESQFUNC_UpdateDiskWarningAndRefreshTick
 ; READS:
 ;   _ESQPARS2_ReadModeFlags, _DST_BannerWindowPrimary, _LOCAVAIL_PrimaryFilterState, _LOCAVAIL_SecondaryFilterState
 ; WRITES:
-;   ESQDISP_PendingGridReinitFlag, _ESQPARS2_ReadModeFlags
+;   _ESQDISP_PendingGridReinitFlag, _ESQPARS2_ReadModeFlags
 ; DESC:
 ;   Temporarily switches parser read mode, promotes/normalizes secondary state into
 ;   primary structures, persists dependent files, then restores previous read flags.
@@ -26,29 +26,29 @@ ESQFUNC_CommitSecondaryStateAndPersist:
     MOVE.L  D7,-(A7)
     MOVE.W  _ESQPARS2_ReadModeFlags,D7
     MOVE.W  #$100,_ESQPARS2_ReadModeFlags
-    MOVE.W  #1,ESQDISP_PendingGridReinitFlag
-    BSR.W   ESQDISP_PropagatePrimaryTitleMetadataToSecondary
+    MOVE.W  #1,_ESQDISP_PendingGridReinitFlag
+    BSR.W   _ESQDISP_PropagatePrimaryTitleMetadataToSecondary
 
-    JSR     ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup(PC)
+    JSR     _ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup(PC)
 
     BSR.W   _ESQDISP_PromoteSecondaryGroupToPrimary
 
-    BSR.W   ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty
+    BSR.W   _ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty
 
     BSR.W   _ESQDISP_PromoteSecondaryLineHeadTailIfMarked
 
     JSR     _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(PC)
 
-    JSR     ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile(PC)
+    JSR     _ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile(PC)
 
     PEA     _LOCAVAIL_SecondaryFilterState
     PEA     _LOCAVAIL_PrimaryFilterState
-    JSR     ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(PC)
+    JSR     _ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(PC)
 
     PEA     _DST_BannerWindowPrimary
-    JSR     DATETIME_SavePairToFile(PC)
+    JSR     _DATETIME_SavePairToFile(PC)
 
-    JSR     ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList(PC)
+    JSR     _ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList(PC)
 
     JSR     _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(PC)
 

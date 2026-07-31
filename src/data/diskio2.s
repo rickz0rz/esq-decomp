@@ -2,7 +2,7 @@
     XDEF    _Global_STR_DISKIO2_C_2
     XDEF    _Global_STR_DREV_5_1
     XDEF    _Global_STR_DISKIO2_C_3
-    XDEF    Global_STR_38_SPACES
+    XDEF    _Global_STR_38_SPACES
     XDEF    DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT
     XDEF    DISKIO2_STR_SAVING_TEXT_ADS_DOT
     XDEF    DISKIO2_STR_SAVING_CONFIGURATION_FILE_DOT
@@ -59,7 +59,7 @@
     XDEF    _DISKIO2_DiagnosticsDiskUsagePercentBuffer
     XDEF    _DISKIO2_DiagnosticsSoftErrorCountBuffer
     XDEF    DISKIO2_TransferCrc32Table
-    XDEF    DISKIO2_FlushDataFilesGuardFlag
+    XDEF    _DISKIO2_FlushDataFilesGuardFlag
     XDEF    _Global_JMPTBL_HALF_HOURS_12_HR_FMT
     XDEF    _Global_JMPTBL_HALF_HOURS_24_HR_FMT
     XDEF    DISPLIB_STR_InlineAlignPadCharCenter
@@ -74,7 +74,7 @@ _Global_STR_DREV_5_1:
     NStr    "DREV 5"
 _Global_STR_DISKIO2_C_3:
     NStr    "DISKIO2.c"
-Global_STR_38_SPACES:
+_Global_STR_38_SPACES:
     NStr    "                                      "
 DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT:
     NStr    "Saving programming data.           "
@@ -228,7 +228,7 @@ DISKIO2_TransferCrc32Table:
     DC.L    $aed16a4a,$d9d65adc,$40df0b66,$37d83bf0,$a9bcae53,$debb9ec5,$47b2cf7f,$30b5ffe9
     DC.L    $bdbdf21c,$cabac28a,$53b39330,$24b4a3a6,$bad03605,$cdd70693,$54de5729,$23d967bf
     DC.L    $b3667a2e,$c4614ab8,$5d681b02,$2a6f2b94,$b40bbe37,$c30c8ea1,$5a05df1b,$2d02ef8d
-DISKIO2_FlushDataFilesGuardFlag:
+_DISKIO2_FlushDataFilesGuardFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: CLOCK_HalfHourLabelEmpty12Hr   (half-hour 12h table slot-0 empty label)

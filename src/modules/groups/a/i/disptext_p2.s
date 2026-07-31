@@ -13,7 +13,7 @@
 ; CLOBBERS:
 ;   A0/A1/A3/A6/A7/D0/D4/D5/D6/D7
 ; CALLS:
-;   GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers, _LVOTextLength
+;   _GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers, _LVOTextLength
 ; READS:
 ;   _DISPTEXT_ControlMarkerWidthPx
 ; WRITES:
@@ -35,7 +35,7 @@ DISPTEXT_ComputeMarkerWidths:
     PEA     -1(A5)
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
-    JSR     GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers(PC)
+    JSR     _GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers(PC)
 
     LEA     24(A7),A7
     TST.B   -1(A5)
@@ -252,7 +252,7 @@ DISPTEXT_LayoutSourceToLines:
 ; READS:
 ;   _DISPTEXT_TextBufferPtr/21D4/21D5/21D6/21D7/21D8/21D9/21DA/21DB
 ; WRITES:
-;   _DISPTEXT_CurrentLineIndex, _DISPTEXT_LineLengthTable, Global_REF_1000_BYTES_ALLOCATED_2
+;   _DISPTEXT_CurrentLineIndex, _DISPTEXT_LineLengthTable, _Global_REF_1000_BYTES_ALLOCATED_2
 ; DESC:
 ;   Builds line segments into the scratch buffer and appends to global text.
 ; NOTES:
@@ -313,7 +313,7 @@ _DISPTEXT_LayoutAndAppendToBuffer:
     SUB.L   _DISPTEXT_ControlMarkerWidthPx,D7
 
 .init_scratch:
-    MOVEA.L Global_REF_1000_BYTES_ALLOCATED_2,A0
+    MOVEA.L _Global_REF_1000_BYTES_ALLOCATED_2,A0
     CLR.B   (A0)
     MOVEQ   #0,D0
     MOVE.W  _DISPTEXT_CurrentLineIndex,D0
@@ -334,7 +334,7 @@ _DISPTEXT_LayoutAndAppendToBuffer:
     BLE.S   .fallback_layout
 
     LEA     DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX,A0
-    MOVEA.L Global_REF_1000_BYTES_ALLOCATED_2,A1
+    MOVEA.L _Global_REF_1000_BYTES_ALLOCATED_2,A1
 
 .copy_prefix:
     MOVE.B  (A0)+,(A1)+
@@ -398,7 +398,7 @@ _DISPTEXT_LayoutAndAppendToBuffer:
     SUBA.L  A0,A1
     MOVE.L  A1,D5
     MOVE.L  A0,(A7)
-    MOVE.L  Global_REF_1000_BYTES_ALLOCATED_2,-(A7)
+    MOVE.L  _Global_REF_1000_BYTES_ALLOCATED_2,-(A7)
     JSR     _GROUP_AI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     20(A7),A7
@@ -436,7 +436,7 @@ _DISPTEXT_LayoutAndAppendToBuffer:
     BRA.W   .line_loop
 
 .flush_remaining:
-    MOVEA.L Global_REF_1000_BYTES_ALLOCATED_2,A0
+    MOVEA.L _Global_REF_1000_BYTES_ALLOCATED_2,A0
     TST.B   (A0)
     BEQ.S   .return_status
 

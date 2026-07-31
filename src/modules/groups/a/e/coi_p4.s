@@ -209,7 +209,7 @@ COI_TestEntryWithinTimeWindow:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D5/D7
 ; CALLS:
-;   _GROUP_AE_JMPTBL_WDISP_SPrintf, COI_GetAnimFieldPointerByMode
+;   _GROUP_AE_JMPTBL_WDISP_SPrintf, _COI_GetAnimFieldPointerByMode
 ; READS:
 ;   COI_FMT_WIDE_STR_WITH_TRAILING_SPACE
 ; WRITES:
@@ -237,7 +237,7 @@ COI_TestEntryWithinTimeWindow_Return:
     CLR.L   -(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   COI_GetAnimFieldPointerByMode
+    BSR.W   _COI_GetAnimFieldPointerByMode
 
     LEA     12(A7),A7
     MOVE.L  D0,-4(A5)

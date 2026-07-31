@@ -13,7 +13,7 @@
 ;   _LVOExecute, _LVOFindTask, _LVOOpenLibrary, _LVOOpenResource,
 ;   _GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode, _GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS,
 ;   _LVOOpenFont, _LVOOpenDiskFont, _ESQIFF_JMPTBL_MEMORY_AllocateMemory,
-;   _LVOInitRastPort, _LVOSetFont, ESQIFF_JMPTBL_MATH_DivS32, _ESQDISP_JMPTBL_GRAPHICS_AllocRaster,
+;   _LVOInitRastPort, _LVOSetFont, _ESQIFF_JMPTBL_MATH_DivS32, _ESQDISP_JMPTBL_GRAPHICS_AllocRaster,
 ;   _LVOBltClear, _LVOInitBitMap, _GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory,
 ;   _GROUP_AM_JMPTBL_ESQ_CheckCompatibleVideoChip, _ESQDISP_AllocateHighlightBitmaps, _GROUP_AM_JMPTBL_LIST_InitHeader, _ESQDISP_QueueHighlightDrawMessage,
 ;   _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, _GROUP_AM_JMPTBL_ESQ_FormatDiskErrorMessage, _GROUP_AM_JMPTBL_ESQ_CheckTopazFontGuard, _GROUP_AM_JMPTBL_PARSEINI_UpdateClockFromRtc, _DST_RefreshBannerBuffer,
@@ -294,7 +294,7 @@ _ESQ_MainInitAndRun:
     MOVE.W  D0,D1
     MOVE.L  D1,D0
     MOVEQ   #2,D1
-    JSR     ESQIFF_JMPTBL_MATH_DivS32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_DivS32(PC)
 
     TST.L   D1
     BEQ.S   .adjust_rastport_text_spacing

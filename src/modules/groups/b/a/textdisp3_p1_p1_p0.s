@@ -1,9 +1,9 @@
-    XDEF    TEXTDISP_BuildEntryShortName
-    XDEF    TEXTDISP_DrawInsetRectFrame
+    XDEF    _TEXTDISP_BuildEntryShortName
+    XDEF    _TEXTDISP_DrawInsetRectFrame
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_DrawInsetRectFrame   (Draw inset rectangle)
+; FUNC: _TEXTDISP_DrawInsetRectFrame   (Draw inset rectangle)
 ; ARGS:
 ;   stack +8: rectPtr
 ;   stack +14: mode (word)
@@ -12,16 +12,16 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   TLIBA1_DrawFormattedTextBlock
+;   _TLIBA1_DrawFormattedTextBlock
 ; READS:
 ;   _WDISP_DisplayContextBase
 ; DESC:
 ;   Computes a rectangle from _WDISP_DisplayContextBase metrics and draws it via
-;   TLIBA1_DrawFormattedTextBlock.
+;   _TLIBA1_DrawFormattedTextBlock.
 ; NOTES:
 ;   Mode 2 adjusts half-width; mode 3 uses rastport defaults.
 ;------------------------------------------------------------------------------
-TEXTDISP_DrawInsetRectFrame:
+_TEXTDISP_DrawInsetRectFrame:
     LINK.W  A5,#-8
     MOVEM.L D2-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -68,7 +68,7 @@ TEXTDISP_DrawInsetRectFrame:
     MOVE.L  D1,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  _Global_REF_RASTPORT_2,-(A7)
-    BSR.W   TLIBA1_DrawFormattedTextBlock
+    BSR.W   _TLIBA1_DrawFormattedTextBlock
 
     LEA     24(A7),A7
     BRA.S   .return
@@ -89,7 +89,7 @@ TEXTDISP_DrawInsetRectFrame:
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  A1,-(A7)
-    BSR.W   TLIBA1_DrawFormattedTextBlock
+    BSR.W   _TLIBA1_DrawFormattedTextBlock
 
     LEA     24(A7),A7
 
@@ -101,7 +101,7 @@ TEXTDISP_DrawInsetRectFrame:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_BuildEntryShortName   (Build entry display name)
+; FUNC: _TEXTDISP_BuildEntryShortName   (Build entry display name)
 ; ARGS:
 ;   stack +8: entryPtr (A3)
 ;   stack +12: outPtr (A2)
@@ -118,7 +118,7 @@ TEXTDISP_DrawInsetRectFrame:
 ; NOTES:
 ;   Falls back to entry+19 and prefixes a center-align token when short.
 ;------------------------------------------------------------------------------
-TEXTDISP_BuildEntryShortName:
+_TEXTDISP_BuildEntryShortName:
     LINK.W  A5,#-12
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3

@@ -1,10 +1,10 @@
     XDEF    GCOMMAND_AdjustBannerCopperOffset
     XDEF    GCOMMAND_SeedBannerDefaults
     XDEF    _GCOMMAND_SeedBannerFromPrefs
-    XDEF    GCOMMAND_UpdateBannerOffset
+    XDEF    _GCOMMAND_UpdateBannerOffset
 
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_UpdateBannerOffset   (Apply signed row-index delta with ring wrap and pointer refresh)
+; FUNC: _GCOMMAND_UpdateBannerOffset   (Apply signed row-index delta with ring wrap and pointer refresh)
 ; ARGS:
 ;   stack +8: delta (byte)
 ; RET:
@@ -12,55 +12,55 @@
 ; CLOBBERS:
 ;   D0-D1, D7
 ; CALLS:
-;   GCOMMAND_UpdateBannerRowPointers
+;   _GCOMMAND_UpdateBannerRowPointers
 ; READS:
-;   GCOMMAND_BannerRowIndexCurrent
+;   _GCOMMAND_BannerRowIndexCurrent
 ; WRITES:
-;   GCOMMAND_BannerRowIndexPrevious, GCOMMAND_BannerRowIndexCurrent, _ESQ_CopperListBannerA, _ESQ_CopperListBannerB
+;   _GCOMMAND_BannerRowIndexPrevious, _GCOMMAND_BannerRowIndexCurrent, _ESQ_CopperListBannerA, _ESQ_CopperListBannerB
 ; DESC:
-;   Applies a signed delta to GCOMMAND_BannerRowIndexCurrent, wrapping it into 0..97, then updates
-;   banner tables via GCOMMAND_UpdateBannerRowPointers.
+;   Applies a signed delta to _GCOMMAND_BannerRowIndexCurrent, wrapping it into 0..97, then updates
+;   banner tables via _GCOMMAND_UpdateBannerRowPointers.
 ; NOTES:
 ;   Skips all work when delta is zero.
 ;------------------------------------------------------------------------------
-GCOMMAND_UpdateBannerOffset:
+_GCOMMAND_UpdateBannerOffset:
     MOVE.L  D7,-(A7)
     MOVE.B  11(A7),D7
     TST.B   D7
     BEQ.S   .lab_0DF0
 
-    MOVE.L  GCOMMAND_BannerRowIndexCurrent,D0
-    MOVE.L  D0,GCOMMAND_BannerRowIndexPrevious
+    MOVE.L  _GCOMMAND_BannerRowIndexCurrent,D0
+    MOVE.L  D0,_GCOMMAND_BannerRowIndexPrevious
     MOVE.L  D7,D1
     EXT.W   D1
     EXT.L   D1
-    SUB.L   D1,GCOMMAND_BannerRowIndexCurrent
+    SUB.L   D1,_GCOMMAND_BannerRowIndexCurrent
 
 .lab_0DED:
-    MOVE.L  GCOMMAND_BannerRowIndexCurrent,D0
+    MOVE.L  _GCOMMAND_BannerRowIndexCurrent,D0
     MOVEQ   #98,D1
     CMP.L   D1,D0
     BLT.S   .lab_0DEE
 
     MOVEQ   #98,D1
-    SUB.L   D1,GCOMMAND_BannerRowIndexCurrent
+    SUB.L   D1,_GCOMMAND_BannerRowIndexCurrent
     BRA.S   .lab_0DED
 
 .lab_0DEE:
-    MOVE.L  GCOMMAND_BannerRowIndexCurrent,D0
+    MOVE.L  _GCOMMAND_BannerRowIndexCurrent,D0
     TST.L   D0
     BPL.S   .lab_0DEF
 
     MOVEQ   #98,D1
-    ADD.L   D1,GCOMMAND_BannerRowIndexCurrent
+    ADD.L   D1,_GCOMMAND_BannerRowIndexCurrent
     BRA.S   .lab_0DEE
 
 .lab_0DEF:
     PEA     _ESQ_CopperListBannerA
-    BSR.W   GCOMMAND_UpdateBannerRowPointers
+    BSR.W   _GCOMMAND_UpdateBannerRowPointers
 
     PEA     _ESQ_CopperListBannerB
-    BSR.W   GCOMMAND_UpdateBannerRowPointers
+    BSR.W   _GCOMMAND_UpdateBannerRowPointers
 
     ADDQ.W  #8,A7
 
@@ -78,7 +78,7 @@ GCOMMAND_UpdateBannerOffset:
 ; CLOBBERS:
 ;   D0-D1, D7, A0
 ; CALLS:
-;   _GCOMMAND_AddBannerTableByteDelta, GCOMMAND_UpdateBannerOffset
+;   _GCOMMAND_AddBannerTableByteDelta, _GCOMMAND_UpdateBannerOffset
 ; READS:
 ;   _ESQ_CopperListBannerA
 ; WRITES:
@@ -86,7 +86,7 @@ GCOMMAND_UpdateBannerOffset:
 ; DESC:
 ;   Applies a signed offset to banner tables when in range.
 ; NOTES:
-;   Uses _GCOMMAND_AddBannerTableByteDelta/GCOMMAND_UpdateBannerOffset helpers
+;   Uses _GCOMMAND_AddBannerTableByteDelta/_GCOMMAND_UpdateBannerOffset helpers
 ;   to update the banner data.
 ;------------------------------------------------------------------------------
 GCOMMAND_AdjustBannerCopperOffset:
@@ -127,7 +127,7 @@ GCOMMAND_AdjustBannerCopperOffset:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,(A7)
-    BSR.W   GCOMMAND_UpdateBannerOffset
+    BSR.W   _GCOMMAND_UpdateBannerOffset
 
     LEA     12(A7),A7
 

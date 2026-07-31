@@ -12,3 +12,10 @@ c/esqiff_set_apen_to_brightest_palette_index.c   SHORTINT
 c/textdisp_find_entry_match_index.c              SHORTINT
 c/newgrid_process_schedule_state.c                SHORTINT
 c/gcommand_apply_highlight_flag.c                 SHORTINT
+c/newgrid_set_row_color.c                         SHORTINT
+c/newgrid_test_prime_time_window.c                SHORTINT
+c/dst_handle_banner_command32_33.c                SHORTINT
+c/script_update_runtime_mode_for_playback_cursor.c SHORTINT
+c/tliba1_draw_formatted_text_block.c            SHORTINT
+c/locavail_parse_filter_state_from_buffer.c        SHORTINT
+c/script_setup_highlight_effect.c                  SHORTINT

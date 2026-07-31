@@ -13,9 +13,9 @@
 ; CALLS:
 ;   _PARSEINI_JMPTBL_BRUSH_AllocBrushNode, _PARSEINI_JMPTBL_STRING_CompareNoCase, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _SCRIPT3_JMPTBL_STRING_CopyPadNul, _SCRIPT_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   Global_STR_PARSEINI_C_3, _PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_TAG_FILENAME_WeatherBlock, PARSEINI_STR_LOADCOLOR, PARSEINI_TAG_ALL, PARSEINI_TAG_NONE, PARSEINI_TAG_TEXT, PARSEINI_TAG_XPOS, PARSEINI_TAG_TYPE, PARSEINI_TAG_DITHER, PARSEINI_TAG_YPOS, PARSEINI_TAG_XSOURCE, PARSEINI_TAG_YSOURCE, PARSEINI_TAG_SIZEX, PARSEINI_TAG_SIZEY, PARSEINI_TAG_SOURCE, PARSEINI_TAG_PPV, PARSEINI_STR_HORIZONTAL, PARSEINI_TAG_RIGHT, PARSEINI_TAG_CENTER_HorizontalAlign, PARSEINI_TAG_VERTICAL, PARSEINI_TAG_BOTTOM, PARSEINI_TAG_CENTER_VerticalAlign, PARSEINI_TAG_ID, PARSEINI_CurrentWeatherBlockPtr, MEMF_CLEAR, MEMF_PUBLIC, check_key_2084, return
+;   _Global_STR_PARSEINI_C_3, _PARSEINI_ParsedDescriptorListHead, _PARSEINI_CurrentWeatherBlockTempPtr, _PARSEINI_TAG_FILENAME_WeatherBlock, _PARSEINI_STR_LOADCOLOR, _PARSEINI_TAG_ALL, _PARSEINI_TAG_NONE, _PARSEINI_TAG_TEXT, _PARSEINI_TAG_XPOS, _PARSEINI_TAG_TYPE, _PARSEINI_TAG_DITHER, _PARSEINI_TAG_YPOS, _PARSEINI_TAG_XSOURCE, _PARSEINI_TAG_YSOURCE, _PARSEINI_TAG_SIZEX, _PARSEINI_TAG_SIZEY, _PARSEINI_TAG_SOURCE, _PARSEINI_TAG_PPV, _PARSEINI_STR_HORIZONTAL, _PARSEINI_TAG_RIGHT, _PARSEINI_TAG_CENTER_HorizontalAlign, _PARSEINI_TAG_VERTICAL, _PARSEINI_TAG_BOTTOM, _PARSEINI_TAG_CENTER_VerticalAlign, _PARSEINI_TAG_ID, _PARSEINI_CurrentWeatherBlockPtr, MEMF_CLEAR, MEMF_PUBLIC, check_key_2084, return
 ; WRITES:
-;   _PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_CurrentWeatherBlockPtr
+;   _PARSEINI_ParsedDescriptorListHead, _PARSEINI_CurrentWeatherBlockTempPtr, _PARSEINI_CurrentWeatherBlockPtr
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -31,11 +31,11 @@ _PARSEINI_ProcessWeatherBlocks:
     TST.L   _PARSEINI_ParsedDescriptorListHead
     BNE.S   .after_init_state
 
-    MOVE.L  A0,PARSEINI_CurrentWeatherBlockTempPtr
-    MOVE.L  A0,PARSEINI_CurrentWeatherBlockPtr
+    MOVE.L  A0,_PARSEINI_CurrentWeatherBlockTempPtr
+    MOVE.L  A0,_PARSEINI_CurrentWeatherBlockPtr
 
 .after_init_state:
-    PEA     PARSEINI_TAG_FILENAME_WeatherBlock
+    PEA     _PARSEINI_TAG_FILENAME_WeatherBlock
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -43,25 +43,25 @@ _PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.S   .check_key_2075
 
-    CLR.L   PARSEINI_CurrentWeatherBlockTempPtr
-    MOVE.L  PARSEINI_CurrentWeatherBlockPtr,-(A7)
+    CLR.L   _PARSEINI_CurrentWeatherBlockTempPtr
+    MOVE.L  _PARSEINI_CurrentWeatherBlockPtr,-(A7)
     MOVE.L  A2,-(A7)
     JSR     _PARSEINI_JMPTBL_BRUSH_AllocBrushNode(PC)
 
     ADDQ.W  #8,A7
     MOVEA.L D0,A0
     MOVE.B  #$1,190(A0)
-    MOVE.L  D0,PARSEINI_CurrentWeatherBlockPtr
+    MOVE.L  D0,_PARSEINI_CurrentWeatherBlockPtr
     TST.L   _PARSEINI_ParsedDescriptorListHead
     BNE.S   .check_key_2075
 
     MOVE.L  D0,_PARSEINI_ParsedDescriptorListHead
 
 .check_key_2075:
-    TST.L   PARSEINI_CurrentWeatherBlockPtr
+    TST.L   _PARSEINI_CurrentWeatherBlockPtr
     BEQ.W   .return
 
-    PEA     PARSEINI_STR_LOADCOLOR
+    PEA     _PARSEINI_STR_LOADCOLOR
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -69,7 +69,7 @@ _PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.S   .check_key_2079
 
-    PEA     PARSEINI_TAG_ALL
+    PEA     _PARSEINI_TAG_ALL
     MOVE.L  A2,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -77,12 +77,12 @@ _PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.S   .check_mode_2077
 
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     CLR.L   194(A0)
     BRA.W   .return
 
 .check_mode_2077:
-    PEA     PARSEINI_TAG_NONE
+    PEA     _PARSEINI_TAG_NONE
     MOVE.L  A2,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -91,12 +91,12 @@ _PARSEINI_ProcessWeatherBlocks:
     BNE.S   .check_mode_2078
 
     MOVEQ   #2,D0
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,194(A0)
     BRA.W   .return
 
 .check_mode_2078:
-    PEA     PARSEINI_TAG_TEXT
+    PEA     _PARSEINI_TAG_TEXT
     MOVE.L  A2,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -105,18 +105,18 @@ _PARSEINI_ProcessWeatherBlocks:
     BNE.S   .set_default_mode_194
 
     MOVEQ   #3,D0
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,194(A0)
     BRA.W   .return
 
 .set_default_mode_194:
     MOVEQ   #1,D0
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,194(A0)
     BRA.W   .return
 
 .check_key_2079:
-    PEA     PARSEINI_TAG_XPOS
+    PEA     _PARSEINI_TAG_XPOS
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -129,12 +129,12 @@ _PARSEINI_ProcessWeatherBlocks:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D7,198(A0)
     BRA.W   .return
 
 .check_key_207A:
-    PEA     PARSEINI_TAG_TYPE
+    PEA     _PARSEINI_TAG_TYPE
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -142,7 +142,7 @@ _PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.S   .check_key_207C
 
-    PEA     PARSEINI_TAG_DITHER
+    PEA     _PARSEINI_TAG_DITHER
     MOVE.L  A2,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -150,12 +150,12 @@ _PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.W   .return
 
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.B  #$2,190(A0)
     BRA.W   .return
 
 .check_key_207C:
-    PEA     PARSEINI_TAG_YPOS
+    PEA     _PARSEINI_TAG_YPOS
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -168,12 +168,12 @@ _PARSEINI_ProcessWeatherBlocks:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D7,202(A0)
     BRA.W   .return
 
 .check_key_207D:
-    PEA     PARSEINI_TAG_XSOURCE
+    PEA     _PARSEINI_TAG_XSOURCE
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -186,12 +186,12 @@ _PARSEINI_ProcessWeatherBlocks:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D7,206(A0)
     BRA.W   .return
 
 .check_key_207E:
-    PEA     PARSEINI_TAG_YSOURCE
+    PEA     _PARSEINI_TAG_YSOURCE
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -204,12 +204,12 @@ _PARSEINI_ProcessWeatherBlocks:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D7,210(A0)
     BRA.W   .return
 
 .check_key_207F:
-    PEA     PARSEINI_TAG_SIZEX
+    PEA     _PARSEINI_TAG_SIZEX
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -222,12 +222,12 @@ _PARSEINI_ProcessWeatherBlocks:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D7,214(A0)
     BRA.W   .return
 
 .check_key_2080:
-    PEA     PARSEINI_TAG_SIZEY
+    PEA     _PARSEINI_TAG_SIZEY
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -240,12 +240,12 @@ _PARSEINI_ProcessWeatherBlocks:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D7
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D7,218(A0)
     BRA.W   .return
 
 .check_key_2081:
-    PEA     PARSEINI_TAG_SOURCE
+    PEA     _PARSEINI_TAG_SOURCE
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -265,7 +265,7 @@ _PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BLE.W   .check_key_2084
 
-    PEA     PARSEINI_TAG_PPV
+    PEA     _PARSEINI_TAG_PPV
     MOVE.L  A2,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -273,20 +273,20 @@ _PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.S   .alloc_weather_node
 
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.B  #$3,190(A0)
     BRA.W   .return
 
 .alloc_weather_node:
-    MOVE.L  PARSEINI_CurrentWeatherBlockTempPtr,-8(A5)
+    MOVE.L  _PARSEINI_CurrentWeatherBlockTempPtr,-8(A5)
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     12.W
     PEA     670.W
-    PEA     Global_STR_PARSEINI_C_3
+    PEA     _Global_STR_PARSEINI_C_3
     JSR     _SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,PARSEINI_CurrentWeatherBlockTempPtr
+    MOVE.L  D0,_PARSEINI_CurrentWeatherBlockTempPtr
     TST.L   D0
     BEQ.W   .return
 
@@ -299,21 +299,21 @@ _PARSEINI_ProcessWeatherBlocks:
     MOVE.B  (A0)+,(A1)+
     BNE.S   .copy_node_label
 
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     TST.L   230(A0)
     BNE.S   .append_node_link
 
-    MOVEA.L PARSEINI_CurrentWeatherBlockTempPtr,A1
+    MOVEA.L _PARSEINI_CurrentWeatherBlockTempPtr,A1
     MOVE.L  A1,230(A0)
     BRA.W   .return
 
 .append_node_link:
     MOVEA.L -8(A5),A1
-    MOVE.L  PARSEINI_CurrentWeatherBlockTempPtr,8(A1)
+    MOVE.L  _PARSEINI_CurrentWeatherBlockTempPtr,8(A1)
     BRA.W   .return
 
 .check_key_2084:
-    PEA     PARSEINI_STR_HORIZONTAL
+    PEA     _PARSEINI_STR_HORIZONTAL
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -321,7 +321,7 @@ _PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.S   .check_key_2087
 
-    PEA     PARSEINI_TAG_RIGHT
+    PEA     _PARSEINI_TAG_RIGHT
     MOVE.L  A2,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -330,12 +330,12 @@ _PARSEINI_ProcessWeatherBlocks:
     BNE.S   .check_mode_2086
 
     MOVEQ   #2,D0
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,222(A0)
     BRA.W   .return
 
 .check_mode_2086:
-    PEA     PARSEINI_TAG_CENTER_HorizontalAlign
+    PEA     _PARSEINI_TAG_CENTER_HorizontalAlign
     MOVE.L  A2,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -344,17 +344,17 @@ _PARSEINI_ProcessWeatherBlocks:
     BNE.S   .set_mode_222_default
 
     MOVEQ   #1,D0
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,222(A0)
     BRA.W   .return
 
 .set_mode_222_default:
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     CLR.L   222(A0)
     BRA.W   .return
 
 .check_key_2087:
-    PEA     PARSEINI_TAG_VERTICAL
+    PEA     _PARSEINI_TAG_VERTICAL
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -362,7 +362,7 @@ _PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.S   .check_key_208A
 
-    PEA     PARSEINI_TAG_BOTTOM
+    PEA     _PARSEINI_TAG_BOTTOM
     MOVE.L  A2,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -371,12 +371,12 @@ _PARSEINI_ProcessWeatherBlocks:
     BNE.S   .check_mode_2089
 
     MOVEQ   #2,D0
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,226(A0)
     BRA.S   .return
 
 .check_mode_2089:
-    PEA     PARSEINI_TAG_CENTER_VerticalAlign
+    PEA     _PARSEINI_TAG_CENTER_VerticalAlign
     MOVE.L  A2,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -385,17 +385,17 @@ _PARSEINI_ProcessWeatherBlocks:
     BNE.S   .set_mode_226_default
 
     MOVEQ   #1,D0
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     MOVE.L  D0,226(A0)
     BRA.S   .return
 
 .set_mode_226_default:
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     CLR.L   226(A0)
     BRA.S   .return
 
 .check_key_208A:
-    PEA     PARSEINI_TAG_ID
+    PEA     _PARSEINI_TAG_ID
     MOVE.L  A3,-(A7)
     JSR     _PARSEINI_JMPTBL_STRING_CompareNoCase(PC)
 
@@ -403,7 +403,7 @@ _PARSEINI_ProcessWeatherBlocks:
     TST.L   D0
     BNE.S   .return
 
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     ADDA.W  #191,A0
     PEA     2.W
     MOVE.L  A2,-(A7)
@@ -411,7 +411,7 @@ _PARSEINI_ProcessWeatherBlocks:
     JSR     _SCRIPT3_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
-    MOVEA.L PARSEINI_CurrentWeatherBlockPtr,A0
+    MOVEA.L _PARSEINI_CurrentWeatherBlockPtr,A0
     CLR.B   193(A0)
 
 .return:

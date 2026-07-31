@@ -25,7 +25,7 @@
     XDEF    _ED2_DiagnosticDiskUsagePercent
     XDEF    _ED2_DiagnosticDiskSoftErrorCount
     XDEF    _Global_STR_PUSH_ANY_KEY_TO_CONTINUE_2
-    XDEF    ED2_HighlightTickEnabledFlag
+    XDEF    _ED2_HighlightTickEnabledFlag
     XDEF    _ED2_SelectedEntryDataPtr
     XDEF    _ED2_SelectedEntryTitlePtr
     XDEF    _ED2_FMT_SCRSPD_PCT_D
@@ -100,15 +100,15 @@
     XDEF    _ED2_STR_START_TAPE_VIDEO
     XDEF    _ED2_STR_STOP
     XDEF    _Global_REF_BOOL_IS_TEXT_OR_CURSOR
-    XDEF    Global_STR_EDIT_ADS
-    XDEF    Global_STR_EDIT_ATTRIBUTES
-    XDEF    Global_STR_CHANGE_SCROLL_SPEED
-    XDEF    Global_STR_DIAGNOSTIC_MODE
-    XDEF    Global_STR_SPECIAL_FUNCTIONS
-    XDEF    Global_STR_VERSIONS_SCREEN
-    XDEF    Global_STR_PUSH_ESC_TO_RESUME
-    XDEF    Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_1
-    XDEF    Global_STR_PUSH_ANY_KEY_TO_SELECT_1
+    XDEF    _Global_STR_EDIT_ADS
+    XDEF    _Global_STR_EDIT_ATTRIBUTES
+    XDEF    _Global_STR_CHANGE_SCROLL_SPEED
+    XDEF    _Global_STR_DIAGNOSTIC_MODE
+    XDEF    _Global_STR_SPECIAL_FUNCTIONS
+    XDEF    _Global_STR_VERSIONS_SCREEN
+    XDEF    _Global_STR_PUSH_ESC_TO_RESUME
+    XDEF    _Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_1
+    XDEF    _Global_STR_PUSH_ANY_KEY_TO_SELECT_1
     XDEF    _Global_STR_VIN_BCK_FWD_SSPD_AD_LINE
     XDEF    _Global_STR_TZ_DST_CONT_TXT_GRPH
     XDEF    _Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_3
@@ -130,18 +130,18 @@
     XDEF    _Global_STR_R_EQUALS
     XDEF    _Global_STR_G_EQUALS
     XDEF    _Global_STR_B_EQUALS
-    XDEF    Global_STR_ARE_YOU_SURE
+    XDEF    _Global_STR_ARE_YOU_SURE
     XDEF    Global_STR_ENTER_AD_NUMBER_ONE_HYPHEN
     XDEF    Global_STR_LEFT_PARENTHESIS_THEN
     XDEF    Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_2
     XDEF    Global_STR_SINGLE_SPACE_4
     XDEF    Global_STR_AD_NUMBER_QUESTIONMARK
     XDEF    _Global_STR_CURRENT_COLOR_FORMATTED
-    XDEF    Global_STR_TEXT
-    XDEF    Global_STR_CURSOR
-    XDEF    Global_STR_LINE
-    XDEF    Global_STR_PAGE
-    XDEF    Global_STR_AD_NUMBER_FORMATTED
+    XDEF    _Global_STR_TEXT
+    XDEF    _Global_STR_CURSOR
+    XDEF    _Global_STR_LINE
+    XDEF    _Global_STR_PAGE
+    XDEF    _Global_STR_AD_NUMBER_FORMATTED
     XDEF    _Global_STR_ACTIVE_INACTIVE
     XDEF    Global_STR_PUSH_ESC_TO_MAKE_ANOTHER_SELECTION
     XDEF    Global_STR_PUSH_HELP_FOR_OTHER_EDIT_FUNCTIONS
@@ -274,13 +274,13 @@ _ED2_DiagnosticDiskSoftErrorCount:
 _Global_STR_PUSH_ANY_KEY_TO_CONTINUE_2:
     NStr    "Push any key to continue."
 ;------------------------------------------------------------------------------
-; SYM: ED2_HighlightTickEnabledFlag   (highlight tick gate)
+; SYM: _ED2_HighlightTickEnabledFlag   (highlight tick gate)
 ; TYPE: u16 flag
 ; PURPOSE: Gates highlight tick updates once banner tables are initialized.
 ; USED BY: _GCOMMAND_BuildBannerTables, ESQSHARED4_TickCopperAndBannerTransitions
 ; NOTES: Set to 1 when banner table rebuild completes; tested before highlight tick call.
 ;------------------------------------------------------------------------------
-ED2_HighlightTickEnabledFlag:
+_ED2_HighlightTickEnabledFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _ED2_SelectedEntryDataPtr/_ED2_SelectedEntryTitlePtr   (currently selected entry pointers)
@@ -441,23 +441,23 @@ _Global_REF_BOOL_IS_TEXT_OR_CURSOR:
     DC.L    1
 
 ; Strings for the ESC menu
-Global_STR_EDIT_ADS:
+_Global_STR_EDIT_ADS:
     NStr    "Edit Ads"
-Global_STR_EDIT_ATTRIBUTES:
+_Global_STR_EDIT_ATTRIBUTES:
     NStr    "Edit Attributes"
-Global_STR_CHANGE_SCROLL_SPEED:
+_Global_STR_CHANGE_SCROLL_SPEED:
     NStr    "Change Scroll Speed"
-Global_STR_DIAGNOSTIC_MODE:
+_Global_STR_DIAGNOSTIC_MODE:
     NStr    "Diagnostic Mode"
-Global_STR_SPECIAL_FUNCTIONS:
+_Global_STR_SPECIAL_FUNCTIONS:
     NStr    "Special Functions"
-Global_STR_VERSIONS_SCREEN:
+_Global_STR_VERSIONS_SCREEN:
     NStr    "Versions Screen"
-Global_STR_PUSH_ESC_TO_RESUME:
+_Global_STR_PUSH_ESC_TO_RESUME:
     NStr    " Push ESC to resume"
-Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_1:
+_Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_1:
     NStr    " Push RETURN to enter selection"
-Global_STR_PUSH_ANY_KEY_TO_SELECT_1:
+_Global_STR_PUSH_ANY_KEY_TO_SELECT_1:
     NStr    " Push any key to select"
 
 ; Some strings for ESC -> Diagnostic Mode
@@ -509,7 +509,7 @@ _Global_STR_G_EQUALS:
     NStr    "G= "
 _Global_STR_B_EQUALS:
     NStr    "B= "
-Global_STR_ARE_YOU_SURE:
+_Global_STR_ARE_YOU_SURE:
     NStr    " Are you sure? (Y/N)"
 Global_STR_ENTER_AD_NUMBER_ONE_HYPHEN:
     NStr    " Enter ad number (1-"
@@ -523,15 +523,15 @@ Global_STR_AD_NUMBER_QUESTIONMARK:
     NStr    "Ad Number? "
 _Global_STR_CURRENT_COLOR_FORMATTED:
     NStr    " Current Color %02X "
-Global_STR_TEXT:
+_Global_STR_TEXT:
     NStr    "   Text"
-Global_STR_CURSOR:
+_Global_STR_CURSOR:
     NStr    " Cursor"
-Global_STR_LINE:
+_Global_STR_LINE:
     NStr    " Line"
-Global_STR_PAGE:
+_Global_STR_PAGE:
     NStr    " Page"
-Global_STR_AD_NUMBER_FORMATTED:
+_Global_STR_AD_NUMBER_FORMATTED:
     NStr    "Ad Number %2ld"
 _Global_STR_ACTIVE_INACTIVE:
     NStr    "Active Inactive"

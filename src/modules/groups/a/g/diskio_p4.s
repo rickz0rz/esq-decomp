@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOInfo, _LVOLock, _LVOUnLock
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, Global_STR_DISKIO_C_7, Global_STR_DISKIO_C_8, MEMF_CLEAR, Struct_InfoData_Size
+;   Global_REF_DOS_LIBRARY_2, _Global_STR_DISKIO_C_7, _Global_STR_DISKIO_C_8, MEMF_CLEAR, Struct_InfoData_Size
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -39,7 +39,7 @@ _DISKIO_QueryVolumeSoftErrorCount:
     MOVE.L  #(MEMF_CLEAR),-(A7)
     PEA     Struct_InfoData_Size.W
     PEA     593.W
-    PEA     Global_STR_DISKIO_C_7
+    PEA     _Global_STR_DISKIO_C_7
     JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -62,7 +62,7 @@ _DISKIO_QueryVolumeSoftErrorCount:
     PEA     Struct_InfoData_Size.W
     MOVE.L  D2,-(A7)
     PEA     599.W
-    PEA     Global_STR_DISKIO_C_8
+    PEA     _Global_STR_DISKIO_C_8
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7

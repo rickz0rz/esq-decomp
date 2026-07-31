@@ -8,16 +8,16 @@
     XDEF    _SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit
     XDEF    _SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry
     XDEF    _SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState
-    XDEF    SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
+    XDEF    _SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
     XDEF    SCRIPT3_JMPTBL_MATH_DivS32
-    XDEF    SCRIPT3_JMPTBL_MATH_Mulu32
+    XDEF    _SCRIPT3_JMPTBL_MATH_Mulu32
     XDEF    _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
     XDEF    _SCRIPT3_JMPTBL_STRING_CompareN
     XDEF    _SCRIPT3_JMPTBL_STRING_CopyPadNul
 
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine   (Routine at SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine)
+; FUNC: _SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine   (Routine at _SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -25,7 +25,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   LOCAVAIL_UpdateFilterStateMachine
+;   _LOCAVAIL_UpdateFilterStateMachine
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -35,8 +35,8 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine:
-    JMP     LOCAVAIL_UpdateFilterStateMachine
+_SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine:
+    JMP     _LOCAVAIL_UpdateFilterStateMachine
 
 ;------------------------------------------------------------------------------
 ; FUNC: SCRIPT3_JMPTBL_MATH_DivS32   (Routine at SCRIPT3_JMPTBL_MATH_DivS32)
@@ -291,7 +291,7 @@ _SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry:
     JMP     LOCAVAIL_ComputeFilterOffsetForEntry
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT3_JMPTBL_MATH_Mulu32   (Routine at SCRIPT3_JMPTBL_MATH_Mulu32)
+; FUNC: _SCRIPT3_JMPTBL_MATH_Mulu32   (Routine at _SCRIPT3_JMPTBL_MATH_Mulu32)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -309,7 +309,7 @@ _SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-SCRIPT3_JMPTBL_MATH_Mulu32:
+_SCRIPT3_JMPTBL_MATH_Mulu32:
     BRA.W   _MATH_Mulu32
 
 ;------------------------------------------------------------------------------

@@ -1,12 +1,12 @@
     XDEF    BRUSH_AllocBrushNode
     XDEF    BRUSH_CloneBrushRecord
-    XDEF    BRUSH_LoadBrushAsset
+    XDEF    _BRUSH_LoadBrushAsset
 
 
 
 ; Open the brush file described by A3, load its ILBM payload, and prepare raster data.
 ;------------------------------------------------------------------------------
-; FUNC: BRUSH_LoadBrushAsset   (Routine at BRUSH_LoadBrushAsset)
+; FUNC: _BRUSH_LoadBrushAsset   (Routine at _BRUSH_LoadBrushAsset)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +12: arg_2 (via 16(A5))
@@ -23,9 +23,9 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   _BITMAP_ProcessIlbmImage, _ESQ_PackBitsDecode, GROUP_AA_JMPTBL_STRING_CompareN, GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster, _GROUP_AG_JMPTBL_MATH_DivS32, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit, _LVORead, _LVOSeek
+;   _BITMAP_ProcessIlbmImage, _ESQ_PackBitsDecode, _GROUP_AA_JMPTBL_STRING_CompareN, _GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster, _GROUP_AG_JMPTBL_MATH_DivS32, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit, _LVORead, _LVOSeek
 ; READS:
-;   AbsExecBase, _BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, Global_REF_DOS_LIBRARY_2, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_10, Global_STR_BRUSH_C_11, Global_STR_BRUSH_C_12, Global_STR_BRUSH_C_13, Global_STR_BRUSH_C_14, Global_STR_BRUSH_C_15, Global_STR_BRUSH_C_16, BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
+;   AbsExecBase, _BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, Global_REF_DOS_LIBRARY_2, Global_REF_GRAPHICS_LIBRARY, _Global_STR_BRUSH_C_10, _Global_STR_BRUSH_C_11, _Global_STR_BRUSH_C_12, _Global_STR_BRUSH_C_13, _Global_STR_BRUSH_C_14, _Global_STR_BRUSH_C_15, _Global_STR_BRUSH_C_16, _BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
 ; WRITES:
 ;   _BRUSH_PendingAlertCode, _BRUSH_SnapshotDepth, _BRUSH_SnapshotWidth
 ; DESC:
@@ -33,7 +33,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-BRUSH_LoadBrushAsset:
+_BRUSH_LoadBrushAsset:
     LINK.W  A5,#-76
     MOVEM.L D2-D3/D5-D7/A2-A3,-(A7)
 
@@ -67,9 +67,9 @@ BRUSH_LoadBrushAsset:
     BNE.W   .loadasset_after_file_stage
 
     PEA     4.W
-    PEA     BRUSH_STR_IFF_FORM
+    PEA     _BRUSH_STR_IFF_FORM
     MOVE.L  D2,-(A7)
-    JSR     GROUP_AA_JMPTBL_STRING_CompareN(PC)
+    JSR     _GROUP_AA_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -93,7 +93,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  #130000,-(A7)
     PEA     977.W
-    PEA     Global_STR_BRUSH_C_10
+    PEA     _Global_STR_BRUSH_C_10
     JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -184,7 +184,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     372.W
     PEA     1064.W
-    PEA     Global_STR_BRUSH_C_11
+    PEA     _Global_STR_BRUSH_C_11
     JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -311,10 +311,10 @@ BRUSH_LoadBrushAsset:
     MOVE.L  D2,-(A7)                      ; Height
     MOVE.L  D1,-(A7)                      ; Width
     PEA     1134.W                        ; Line Number
-    PEA     Global_STR_BRUSH_C_12           ; Calling file
+    PEA     _Global_STR_BRUSH_C_12           ; Calling file
     MOVE.L  D0,52(A7)
     MOVE.L  D0,48(A7)
-    JSR     GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(PC)
+    JSR     _GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(PC)
 
     LEA     16(A7),A7
     MOVE.L  36(A7),D1
@@ -493,7 +493,7 @@ BRUSH_LoadBrushAsset:
     ADDI.L  #$90,D3
     MOVE.L  0(A0,D3.L),-(A7)
     PEA     1202.W
-    PEA     Global_STR_BRUSH_C_13
+    PEA     _Global_STR_BRUSH_C_13
     JSR     _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(PC)
 
     LEA     20(A7),A7
@@ -506,7 +506,7 @@ BRUSH_LoadBrushAsset:
     PEA     372.W
     MOVE.L  -16(A5),-(A7)
     PEA     1205.W
-    PEA     Global_STR_BRUSH_C_14
+    PEA     _Global_STR_BRUSH_C_14
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -520,7 +520,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     372.W
     PEA     1220.W
-    PEA     Global_STR_BRUSH_C_15
+    PEA     _Global_STR_BRUSH_C_15
     JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -560,7 +560,7 @@ BRUSH_LoadBrushAsset:
     MOVE.L  #130000,-(A7)
     MOVE.L  -50(A5),-(A7)
     PEA     1236.W
-    PEA     Global_STR_BRUSH_C_16
+    PEA     _Global_STR_BRUSH_C_16
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -583,7 +583,7 @@ BRUSH_LoadBrushAsset:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D7
 ; CALLS:
-;   GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit
+;   _GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit
 ; READS:
 ;   AbsExecBase, _BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, Global_REF_GRAPHICS_LIBRARY, Global_STR_BRUSH_C_17, Global_STR_BRUSH_C_18, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
@@ -731,7 +731,7 @@ BRUSH_CloneBrushRecord:
     PEA     1302.W                        ; Line Number
     PEA     Global_STR_BRUSH_C_18           ; Calling file
     MOVE.L  D0,32(A7)
-    JSR     GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(PC)
+    JSR     _GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(PC)
 
     LEA     16(A7),A7
     MOVEA.L -8(A5),A0
@@ -818,9 +818,9 @@ BRUSH_CloneBrushRecord:
 ; CALLS:
 ;   _GROUP_AG_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   BRUSH_LastAllocatedNode, Global_STR_BRUSH_C_19, MEMF_CLEAR, MEMF_PUBLIC
+;   _BRUSH_LastAllocatedNode, _Global_STR_BRUSH_C_19, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
-;   BRUSH_LastAllocatedNode
+;   _BRUSH_LastAllocatedNode
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -834,11 +834,11 @@ BRUSH_AllocBrushNode:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     238.W
     PEA     1352.W
-    PEA     Global_STR_BRUSH_C_19
+    PEA     _Global_STR_BRUSH_C_19
     JSR     _GROUP_AG_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
-    MOVE.L  D0,BRUSH_LastAllocatedNode   ; expose allocation for cleanup/error handlers
+    MOVE.L  D0,_BRUSH_LastAllocatedNode   ; expose allocation for cleanup/error handlers
     TST.L   D0
     BEQ.S   .allocnode_return
 
@@ -850,7 +850,7 @@ BRUSH_AllocBrushNode:
     BNE.S   .allocnode_copy_header_loop
 
     MOVEQ   #1,D0
-    MOVEA.L BRUSH_LastAllocatedNode,A0
+    MOVEA.L _BRUSH_LastAllocatedNode,A0
     MOVE.L  D0,194(A0)
     CLR.B   190(A0)
     MOVEQ   #0,D0
@@ -865,7 +865,7 @@ BRUSH_AllocBrushNode:
     CLR.L   234(A0)
 
 .allocnode_return:
-    MOVE.L  BRUSH_LastAllocatedNode,D0
+    MOVE.L  _BRUSH_LastAllocatedNode,D0
     MOVEM.L (A7)+,A2-A3
     RTS
 

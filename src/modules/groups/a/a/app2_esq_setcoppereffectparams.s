@@ -14,7 +14,7 @@
 ; READS:
 ;   (none)
 ; WRITES:
-;   _HIGHLIGHT_CopperEffectSeed, _HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectListA, ESQ_CopperEffectListB
+;   _HIGHLIGHT_CopperEffectSeed, _HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, _ESQ_CopperEffectListA, _ESQ_CopperEffectListB
 ; DESC:
 ;   Stores the effect parameters and regenerates the copper tables.
 ; NOTES:

@@ -7,12 +7,12 @@
     XDEF    _NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry
     XDEF    _NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1
     XDEF    _NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes
-    XDEF    NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState
+    XDEF    _NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState
     XDEF    _NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant
     XDEF    _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer
-    XDEF    NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex
+    XDEF    _NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex
     XDEF    _NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource
-    XDEF    NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths
+    XDEF    _NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths
     XDEF    _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
     XDEF    _NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount
     XDEF    _NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines
@@ -27,11 +27,11 @@
     XDEF    _NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow
     XDEF    _NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
     XDEF    _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode
-    XDEF    NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2
+    XDEF    _NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2
     XDEF    _NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex
-    XDEF    NEWGRID2_JMPTBL_ESQ_TestBit1Based
-    XDEF    NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
-    XDEF    NEWGRID2_JMPTBL_STRING_AppendN
+    XDEF    _NEWGRID2_JMPTBL_ESQ_TestBit1Based
+    XDEF    _NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
+    XDEF    _NEWGRID2_JMPTBL_STRING_AppendN
     XDEF    _NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex
     XDEF    _NEWGRID2_JMPTBL_STR_SkipClass3Chars
 
@@ -249,7 +249,7 @@ _NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant:
     JMP     COI_RenderClockFormatEntryVariant
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -261,7 +261,7 @@ _NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant:
 ; DESC:
 ;   Jump table entry that forwards to ESQDISP_TestEntryBits0And2.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2:
+_NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2:
     JMP     ESQDISP_TestEntryBits0And2
 
 ;------------------------------------------------------------------------------
@@ -273,12 +273,12 @@ NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   DISPTEXT_ComputeVisibleLineCount
+;   _DISPTEXT_ComputeVisibleLineCount
 ; DESC:
-;   Jump table entry that forwards to DISPTEXT_ComputeVisibleLineCount.
+;   Jump table entry that forwards to _DISPTEXT_ComputeVisibleLineCount.
 ;------------------------------------------------------------------------------
 _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount:
-    JMP     DISPTEXT_ComputeVisibleLineCount
+    JMP     _DISPTEXT_ComputeVisibleLineCount
 
 ;------------------------------------------------------------------------------
 ; FUNC: _NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode   (Jump stub)
@@ -313,7 +313,7 @@ _NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine:
     JMP     DISPTEXT_RenderCurrentLine
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -325,7 +325,7 @@ _NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine:
 ; DESC:
 ;   Jump table entry that forwards to COI_ProcessEntrySelectionState.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState:
+_NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState:
     JMP     COI_ProcessEntrySelectionState
 
 ;------------------------------------------------------------------------------
@@ -393,7 +393,7 @@ _NEWGRID2_JMPTBL_STR_SkipClass3Chars:
     JMP     _STR_SkipClass3Chars
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_STRING_AppendN   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_STRING_AppendN   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -405,7 +405,7 @@ _NEWGRID2_JMPTBL_STR_SkipClass3Chars:
 ; DESC:
 ;   Jump table entry that forwards to STRING_AppendN.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_STRING_AppendN:
+_NEWGRID2_JMPTBL_STRING_AppendN:
     JMP     STRING_AppendN
 
 ;------------------------------------------------------------------------------
@@ -425,7 +425,7 @@ _NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow:
     JMP     _ESQDISP_ComputeScheduleOffsetForRow
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -437,7 +437,7 @@ _NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow:
 ; DESC:
 ;   Jump table entry that forwards to _PARSE_ReadSignedLongSkipClass3_Alt.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
+_NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt:
     JMP     _PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------
@@ -505,7 +505,7 @@ _NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame:
     JMP     _BEVEL_DrawBeveledFrame
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -517,11 +517,11 @@ _NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame:
 ; DESC:
 ;   Jump table entry that forwards to DISPLIB_FindPreviousValidEntryIndex.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex:
+_NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex:
     JMP     DISPLIB_FindPreviousValidEntryIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -533,11 +533,11 @@ NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex:
 ; DESC:
 ;   Jump table entry that forwards to DISPTEXT_ComputeMarkerWidths.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths:
+_NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths:
     JMP     DISPTEXT_ComputeMarkerWidths
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID2_JMPTBL_ESQ_TestBit1Based   (Jump stub)
+; FUNC: _NEWGRID2_JMPTBL_ESQ_TestBit1Based   (Jump stub)
 ; ARGS:
 ;   Forwarded unchanged to target routine.
 ; RET:
@@ -549,7 +549,7 @@ NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths:
 ; DESC:
 ;   Jump table entry that forwards to _ESQ_TestBit1Based.
 ;------------------------------------------------------------------------------
-NEWGRID2_JMPTBL_ESQ_TestBit1Based:
+_NEWGRID2_JMPTBL_ESQ_TestBit1Based:
     JMP     _ESQ_TestBit1Based
 
 ;------------------------------------------------------------------------------

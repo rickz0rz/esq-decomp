@@ -1,8 +1,8 @@
-    XDEF    SCRIPT_BeginBannerCharTransition
+    XDEF    _SCRIPT_BeginBannerCharTransition
 
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_BeginBannerCharTransition   (Configure and start banner-char transition)
+; FUNC: _SCRIPT_BeginBannerCharTransition   (Configure and start banner-char transition)
 ; ARGS:
 ;   stack +6: arg_1 (via 10(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -12,7 +12,7 @@
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   _GCOMMAND_GetBannerChar, SCRIPT3_JMPTBL_MATH_DivS32, SCRIPT3_JMPTBL_MATH_Mulu32
+;   _GCOMMAND_GetBannerChar, SCRIPT3_JMPTBL_MATH_DivS32, _SCRIPT3_JMPTBL_MATH_Mulu32
 ; READS:
 ;   _CONFIG_LRBN_FlagChar/_CONFIG_MSN_FlagChar, _Global_WORD_SELECT_CODE_IS_RAVESC, _SCRIPT_BannerTransitionActive
 ; WRITES:
@@ -23,7 +23,7 @@
 ;   Clamps target to 130..226 and rate to 0..$1D4C. Uses current banner char
 ;   from _GCOMMAND_GetBannerChar; returns 0 if already at target or busy.
 ;------------------------------------------------------------------------------
-SCRIPT_BeginBannerCharTransition:
+_SCRIPT_BeginBannerCharTransition:
     LINK.W  A5,#-12
     MOVEM.L D2/D4-D7,-(A7)
 
@@ -144,7 +144,7 @@ SCRIPT_BeginBannerCharTransition:
     MOVE.W  D0,_SCRIPT_BannerTransitionStepDelta
     EXT.L   D0
     MOVE.L  -10(A5),D1
-    JSR     SCRIPT3_JMPTBL_MATH_Mulu32(PC)
+    JSR     _SCRIPT3_JMPTBL_MATH_Mulu32(PC)
 
     SUB.L   D0,D4
     BLE.S   .begin_banner_no_remainder

@@ -40,7 +40,7 @@ TEXTDISP_SelectBestMatchFromList:
     MOVE.B  D0,_TEXTDISP_BannerFallbackValidFlag
     MOVE.B  D0,_TEXTDISP_BannerSelectedValidFlag
     MOVE.B  #$64,_TEXTDISP_BannerCharSelected
-    LEA     TEXTDISP_Tag_SPT_Select,A0
+    LEA     _TEXTDISP_Tag_SPT_Select,A0
     MOVEA.L A2,A1
     MOVE.B  D0,-23(A5)
 

@@ -1,5 +1,5 @@
-    XDEF    TEXTDISP_ApplySourceConfigAllEntries
-    XDEF    TEXTDISP_ApplySourceConfigToEntry
+    XDEF    _TEXTDISP_ApplySourceConfigAllEntries
+    XDEF    _TEXTDISP_ApplySourceConfigToEntry
     XDEF    _TEXTDISP_ClearSourceConfig
 
 
@@ -82,7 +82,7 @@ _TEXTDISP_ClearSourceConfig:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_ApplySourceConfigToEntry   (Apply SourceCfg flags)
+; FUNC: _TEXTDISP_ApplySourceConfigToEntry   (Apply SourceCfg flags)
 ; ARGS:
 ;   stack +20: entryPtr (A3)
 ; RET:
@@ -100,7 +100,7 @@ _TEXTDISP_ClearSourceConfig:
 ; NOTES:
 ;   Clears masked flags before applying matches.
 ;------------------------------------------------------------------------------
-TEXTDISP_ApplySourceConfigToEntry:
+_TEXTDISP_ApplySourceConfigToEntry:
     MOVEM.L D7/A2-A3/A6,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.L  A3,D0
@@ -160,7 +160,7 @@ TEXTDISP_ApplySourceConfigToEntry:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_ApplySourceConfigAllEntries   (Apply SourceCfg to all entries)
+; FUNC: _TEXTDISP_ApplySourceConfigAllEntries   (Apply SourceCfg to all entries)
 ; ARGS:
 ;   none
 ; RET:
@@ -168,7 +168,7 @@ TEXTDISP_ApplySourceConfigToEntry:
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TEXTDISP_ApplySourceConfigToEntry
+;   _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, _TEXTDISP_ApplySourceConfigToEntry
 ; READS:
 ;   _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_SecondaryGroupEntryCount
 ; DESC:
@@ -176,7 +176,7 @@ TEXTDISP_ApplySourceConfigToEntry:
 ; NOTES:
 ;   Uses group IDs 1 and 2.
 ;------------------------------------------------------------------------------
-TEXTDISP_ApplySourceConfigAllEntries:
+_TEXTDISP_ApplySourceConfigAllEntries:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7
@@ -193,7 +193,7 @@ TEXTDISP_ApplySourceConfigAllEntries:
 
     MOVE.L  D0,(A7)
     MOVE.L  D0,-8(A5)
-    BSR.W   TEXTDISP_ApplySourceConfigToEntry
+    BSR.W   _TEXTDISP_ApplySourceConfigToEntry
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D7
@@ -214,7 +214,7 @@ TEXTDISP_ApplySourceConfigAllEntries:
 
     MOVE.L  D0,(A7)
     MOVE.L  D0,-8(A5)
-    BSR.W   TEXTDISP_ApplySourceConfigToEntry
+    BSR.W   _TEXTDISP_ApplySourceConfigToEntry
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D7

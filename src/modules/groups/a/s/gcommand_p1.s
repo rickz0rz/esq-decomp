@@ -16,9 +16,9 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _GCOMMAND_LoadMplexFile, _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_STRING_CopyPadNul, _ESQPARS_ReplaceOwnedString, _FLIB2_LoadDigitalMplexDefaults, _LADFUNC_ParseHexDigit
+;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _GCOMMAND_LoadMplexFile, _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _GROUP_AS_JMPTBL_STR_FindCharPtr, _GROUP_AW_JMPTBL_STRING_CopyPadNul, _ESQPARS_ReplaceOwnedString, _FLIB2_LoadDigitalMplexDefaults, _LADFUNC_ParseHexDigit
 ; READS:
-;   GCOMMAND_MplexParseScratchSeedWord, GCOMMAND_FMT_PCT_T_MplexTemplateParse, _WDISP_CharClassTable, _GCOMMAND_MplexListingsTemplatePtr, _GCOMMAND_MplexAtTemplatePtr, after_tail_append, return
+;   _GCOMMAND_MplexParseScratchSeedWord, _GCOMMAND_FMT_PCT_T_MplexTemplateParse, _WDISP_CharClassTable, _GCOMMAND_MplexListingsTemplatePtr, _GCOMMAND_MplexAtTemplatePtr, after_tail_append, return
 ; WRITES:
 ;   _GCOMMAND_DigitalMplexEnabledFlag, _GCOMMAND_MplexModeCycleCount, _GCOMMAND_MplexSearchRowLimit, _GCOMMAND_MplexClockOffsetMinutes, _GCOMMAND_MplexMessageTextPen, _GCOMMAND_MplexMessageFramePen, _GCOMMAND_MplexEditorLayoutPen, _GCOMMAND_MplexEditorRowPen, _GCOMMAND_MplexDetailLayoutPen, _GCOMMAND_MplexDetailInitialLineIndex, _GCOMMAND_MplexDetailRowPen, _GCOMMAND_MplexWorkflowMode, _GCOMMAND_MplexDetailLayoutFlag, _GCOMMAND_MplexListingsTemplatePtr, _GCOMMAND_MplexAtTemplatePtr
 ; DESC:
@@ -32,7 +32,7 @@ GCOMMAND_ParseCommandString:
     MOVEM.L D2/D4-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEQ   #0,D6
-    LEA     GCOMMAND_MplexParseScratchSeedWord,A0
+    LEA     _GCOMMAND_MplexParseScratchSeedWord,A0
     LEA     -12(A5),A1
     MOVE.B  (A0)+,(A1)+
     MOVE.B  (A0)+,(A1)+
@@ -55,7 +55,7 @@ GCOMMAND_ParseCommandString:
     PEA     2.W
     MOVE.L  A3,-(A7)
     PEA     -12(A5)
-    JSR     GROUP_AW_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _GROUP_AW_JMPTBL_STRING_CopyPadNul(PC)
 
     CLR.B   -10(A5)
     PEA     -12(A5)
@@ -592,7 +592,7 @@ GCOMMAND_ParseCommandString:
     TST.B   (A0)
     BEQ.S   .check_suffix_slot
 
-    PEA     GCOMMAND_FMT_PCT_T_MplexTemplateParse
+    PEA     _GCOMMAND_FMT_PCT_T_MplexTemplateParse
     MOVE.L  A0,-(A7)
     JSR     _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
@@ -634,7 +634,7 @@ GCOMMAND_ParseCommandString:
 ; CALLS:
 ;   _GCOMMAND_LoadPPVTemplate, _GROUP_AS_JMPTBL_STR_FindCharPtr, _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, _ESQPARS_ReplaceOwnedString, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _LVOCopyMem, _LVODeleteFile
 ; READS:
-;   AbsExecBase, Global_REF_DOS_LIBRARY_2, _Global_REF_LONG_FILE_SCRATCH, Global_STR_GCOMMAND_C_3, GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad, GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad, GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete, _Global_PTR_WORK_BUFFER, _GCOMMAND_DigitalPpvEnabledFlag, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PPVPeriodTemplatePtr, return
+;   AbsExecBase, Global_REF_DOS_LIBRARY_2, _Global_REF_LONG_FILE_SCRATCH, _Global_STR_GCOMMAND_C_3, _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad, _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad, _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete, _Global_PTR_WORK_BUFFER, _GCOMMAND_DigitalPpvEnabledFlag, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PPVPeriodTemplatePtr, return
 ; WRITES:
 ;   _Global_PTR_WORK_BUFFER, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PPVPeriodTemplatePtr
 ; DESC:
@@ -647,7 +647,7 @@ _GCOMMAND_LoadPPV3Template:
     MOVEM.L D5-D7,-(A7)
     MOVEQ   #0,D6
     MOVEQ   #0,D5
-    PEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad
+    PEA     _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad
     JSR     _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -660,7 +660,7 @@ _GCOMMAND_LoadPPV3Template:
 
 .try_fallback_template:
     ; Fall back to alternate template (Digital_PPV).
-    PEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad
+    PEA     _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad
     JSR     _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -668,7 +668,7 @@ _GCOMMAND_LoadPPV3Template:
     BEQ.S   .template_ready
 
     MOVEQ   #52,D6
-    LEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete,A0
+    LEA     _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete,A0
     MOVE.L  A0,D1
     MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVODeleteFile(A6)
@@ -724,7 +724,7 @@ _GCOMMAND_LoadPPV3Template:
     MOVE.L  D0,(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     993.W
-    PEA     Global_STR_GCOMMAND_C_3
+    PEA     _Global_STR_GCOMMAND_C_3
     JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     24(A7),A7

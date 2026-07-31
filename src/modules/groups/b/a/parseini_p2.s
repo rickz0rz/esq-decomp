@@ -1,31 +1,31 @@
     XDEF    PARSEINI_HandleFontCommand
-    XDEF    PARSEINI_ScanLogoDirectory
-    XDEF    PARSEINI_TestMemoryAndOpenTopazFont
+    XDEF    _PARSEINI_ScanLogoDirectory
+    XDEF    _PARSEINI_TestMemoryAndOpenTopazFont
     XDEF    _PARSEINI_JMPTBL_BRUSH_AllocBrushNode
-    XDEF    PARSEINI_JMPTBL_BRUSH_FreeBrushList
-    XDEF    PARSEINI_JMPTBL_BRUSH_FreeBrushResources
-    XDEF    PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk
+    XDEF    _PARSEINI_JMPTBL_BRUSH_FreeBrushList
+    XDEF    _PARSEINI_JMPTBL_BRUSH_FreeBrushResources
+    XDEF    _PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk
     XDEF    _PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer
     XDEF    _PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer
-    XDEF    PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen
-    XDEF    PARSEINI_JMPTBL_ED1_EnterEscMenu
-    XDEF    PARSEINI_JMPTBL_ED1_ExitEscMenu
-    XDEF    PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0
-    XDEF    PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1
-    XDEF    PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion
-    XDEF    PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable
-    XDEF    PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey
-    XDEF    PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad
+    XDEF    _PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen
+    XDEF    _PARSEINI_JMPTBL_ED1_EnterEscMenu
+    XDEF    _PARSEINI_JMPTBL_ED1_ExitEscMenu
+    XDEF    _PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0
+    XDEF    _PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1
+    XDEF    _PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion
+    XDEF    _PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable
+    XDEF    _PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey
+    XDEF    _PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad
     XDEF    _PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
-    XDEF    PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator
+    XDEF    _PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator
     XDEF    _PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette
     XDEF    _PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable
-    XDEF    PARSEINI_JMPTBL_HANDLE_OpenWithMode
-    XDEF    PARSEINI_JMPTBL_STREAM_ReadLineWithLimit
-    XDEF    PARSEINI_JMPTBL_STRING_AppendAtNull
+    XDEF    _PARSEINI_JMPTBL_HANDLE_OpenWithMode
+    XDEF    _PARSEINI_JMPTBL_STREAM_ReadLineWithLimit
+    XDEF    _PARSEINI_JMPTBL_STRING_AppendAtNull
     XDEF    _PARSEINI_JMPTBL_STRING_CompareNoCase
     XDEF    _PARSEINI_JMPTBL_STRING_CompareNoCaseN
-    XDEF    PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest
+    XDEF    _PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest
     XDEF    _PARSEINI_JMPTBL_STR_FindAnyCharPtr
     XDEF    _PARSEINI_JMPTBL_STR_FindCharPtr
     XDEF    _PARSEINI_JMPTBL_WDISP_SPrintf
@@ -54,7 +54,7 @@
 ;   Sets D0=1 when it could not load the desired font.
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_TestMemoryAndOpenTopazFont   (Routine at PARSEINI_TestMemoryAndOpenTopazFont)
+; FUNC: _PARSEINI_TestMemoryAndOpenTopazFont   (Routine at _PARSEINI_TestMemoryAndOpenTopazFont)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -73,7 +73,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-PARSEINI_TestMemoryAndOpenTopazFont:
+_PARSEINI_TestMemoryAndOpenTopazFont:
     LINK.W  A5,#-8
     MOVEM.L D7/A2-A3,-(A7)
 
@@ -179,7 +179,7 @@ PARSEINI_HandleFontCommand:
 
 .handle_32_execute:
     MOVE.L  A3,-(A7)
-    PEA     Global_STR_PERCENT_S_2
+    PEA     _Global_STR_PERCENT_S_2
     PEA     -80(A5)
     JSR     _PARSEINI_JMPTBL_WDISP_SPrintf(PC)
 
@@ -236,7 +236,7 @@ PARSEINI_HandleFontCommand:
     BRA.W   .return
 
 .cmd_wait_clear_flag0:
-    JSR     PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0(PC)
+    JSR     _PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0(PC)
 
     BRA.W   .return
 
@@ -246,22 +246,22 @@ PARSEINI_HandleFontCommand:
     CMP.B   D1,D0
     BNE.S   .after_optional_logo_scan
 
-    BSR.W   PARSEINI_ScanLogoDirectory
+    BSR.W   _PARSEINI_ScanLogoDirectory
 
 .after_optional_logo_scan:
-    JSR     PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1(PC)
+    JSR     _PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1(PC)
 
     BRA.W   .return
 
 .cmd_call_lab_09DB:
-    JSR     PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable(PC)
+    JSR     _PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable(PC)
 
     BRA.W   .return
 
 .cmd_set_h26f_font:
     PEA     _Global_STRUCT_TEXTATTR_H26F_FONT
     PEA     _Global_HANDLE_H26F_FONT
-    BSR.W   PARSEINI_TestMemoryAndOpenTopazFont
+    BSR.W   _PARSEINI_TestMemoryAndOpenTopazFont
 
     ADDQ.W  #8,A7
     TST.W   D0
@@ -280,7 +280,7 @@ PARSEINI_HandleFontCommand:
 .cmd_set_prevuec_font:
     PEA     _Global_STRUCT_TEXTATTR_PREVUEC_FONT
     PEA     _Global_HANDLE_PREVUEC_FONT
-    BSR.W   PARSEINI_TestMemoryAndOpenTopazFont
+    BSR.W   _PARSEINI_TestMemoryAndOpenTopazFont
 
     ADDQ.W  #8,A7
     TST.W   D0
@@ -320,7 +320,7 @@ PARSEINI_HandleFontCommand:
     MOVE.L  D6,D0
     MOVEQ   #80,D1
     ADD.L   D1,D1
-    JSR     SCRIPT3_JMPTBL_MATH_Mulu32(PC)
+    JSR     _SCRIPT3_JMPTBL_MATH_Mulu32(PC)
 
     LEA     _GCOMMAND_HighlightMessageSlotTable,A0
     ADDA.L  D0,A0
@@ -334,7 +334,7 @@ PARSEINI_HandleFontCommand:
 
 .after_prevuec_font_loop:
     MOVE.L  _Global_HANDLE_PREVUEC_FONT,-(A7)
-    BSR.W   TLIBA3_SetFontForAllViewModes
+    BSR.W   _TLIBA3_SetFontForAllViewModes
 
     ADDQ.W  #4,A7
     BRA.W   .return
@@ -342,20 +342,20 @@ PARSEINI_HandleFontCommand:
 .cmd_set_prevue_font:
     PEA     _Global_STRUCT_TEXTATTR_PREVUE_FONT
     PEA     _Global_HANDLE_PREVUE_FONT
-    BSR.W   PARSEINI_TestMemoryAndOpenTopazFont
+    BSR.W   _PARSEINI_TestMemoryAndOpenTopazFont
 
     ADDQ.W  #8,A7
     TST.W   D0
     BRA.W   .return
 
 .cmd_parse_ini_from_disk:
-    JSR     PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk(PC)
+    JSR     _PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk(PC)
 
     BRA.W   .return
 
 .cmd_call_lab_0A93:
     PEA     97.W
-    JSR     PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(PC)
+    JSR     _PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .return
@@ -363,14 +363,14 @@ PARSEINI_HandleFontCommand:
 .cmd_parse_gradient_ini:
     ; Loads/parses gradient.ini into _GCOMMAND_GradientPresetTable staging data.
     ; No direct runtime consumer of this table is confirmed in named-symbol paths yet.
-    PEA     Global_STR_DF0_GRADIENT_INI_3
+    PEA     _Global_STR_DF0_GRADIENT_INI_3
     BSR.W   _PARSEINI_ParseIniBufferAndDispatch
 
     ADDQ.W  #4,A7
     BRA.W   .return
 
 .cmd_parse_banner_ini:
-    PEA     Global_STR_DF0_BANNER_INI_2
+    PEA     _Global_STR_DF0_BANNER_INI_2
     JSR     _SCRIPT_CheckPathExists(PC)
 
     ADDQ.W  #4,A7
@@ -383,33 +383,33 @@ PARSEINI_HandleFontCommand:
 
     CLR.L   -(A7)
     PEA     _WDISP_WeatherStatusBrushListHead
-    JSR     PARSEINI_JMPTBL_BRUSH_FreeBrushList(PC)
+    JSR     _PARSEINI_JMPTBL_BRUSH_FreeBrushList(PC)
 
     PEA     _PARSEINI_BannerBrushResourceHead
-    JSR     PARSEINI_JMPTBL_BRUSH_FreeBrushResources(PC)
+    JSR     _PARSEINI_JMPTBL_BRUSH_FreeBrushResources(PC)
 
-    PEA     Global_STR_DF0_BANNER_INI_3
+    PEA     _Global_STR_DF0_BANNER_INI_3
 
     BSR.W   _PARSEINI_ParseIniBufferAndDispatch
 
     PEA     1.W
-    JSR     PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(PC)
+    JSR     _PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(PC)
 
     LEA     20(A7),A7
     BRA.S   .return
 
 .cmd_parse_default_ini:
-    PEA     Global_STR_DF0_DEFAULT_INI_2
+    PEA     _Global_STR_DF0_DEFAULT_INI_2
     BSR.W   _PARSEINI_ParseIniBufferAndDispatch
 
     ADDQ.W  #4,A7
     BRA.S   .return
 
 .cmd_parse_sourcecfg_ini:
-    PEA     Global_STR_DF0_SOURCECFG_INI_1
+    PEA     _Global_STR_DF0_SOURCECFG_INI_1
     BSR.W   _PARSEINI_ParseIniBufferAndDispatch
 
-    JSR     TEXTDISP_ApplySourceConfigAllEntries(PC)
+    JSR     _TEXTDISP_ApplySourceConfigAllEntries(PC)
 
     ADDQ.W  #4,A7
 
@@ -431,23 +431,23 @@ PARSEINI_HandleFontCommand:
     BRA.S   .return
 
 .cmd_show_then_exit_esc_menu:
-    JSR     PARSEINI_JMPTBL_ED1_EnterEscMenu(PC)
+    JSR     _PARSEINI_JMPTBL_ED1_EnterEscMenu(PC)
 
-    JSR     PARSEINI_JMPTBL_ED1_ExitEscMenu(PC)
+    JSR     _PARSEINI_JMPTBL_ED1_ExitEscMenu(PC)
 
     BRA.S   .return
 
 .cmd_draw_diagnostics:
-    JSR     PARSEINI_JMPTBL_ED1_EnterEscMenu(PC)
+    JSR     _PARSEINI_JMPTBL_ED1_EnterEscMenu(PC)
 
-    JSR     PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen(PC)
+    JSR     _PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen(PC)
 
     BRA.S   .return
 
 .cmd_draw_version:
-    JSR     PARSEINI_JMPTBL_ED1_EnterEscMenu(PC)
+    JSR     _PARSEINI_JMPTBL_ED1_EnterEscMenu(PC)
 
-    JSR     PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion(PC)
+    JSR     _PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion(PC)
 
 .return:
     MOVEM.L (A7)+,D2-D3/D6-D7/A3
@@ -457,7 +457,7 @@ PARSEINI_HandleFontCommand:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_ScanLogoDirectory   (Scan logo directory and build name/path lists)
+; FUNC: _PARSEINI_ScanLogoDirectory   (Scan logo directory and build name/path lists)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -465,9 +465,9 @@ PARSEINI_HandleFontCommand:
 ; CLOBBERS:
 ;   D0-D7/A0-A2
 ; CALLS:
-;   _LVOExecute, PARSEINI_JMPTBL_HANDLE_OpenWithMode, PARSEINI_JMPTBL_STREAM_ReadLineWithLimit, PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator, _SCRIPT_JMPTBL_MEMORY_AllocateMemory
+;   _LVOExecute, _PARSEINI_JMPTBL_HANDLE_OpenWithMode, _PARSEINI_JMPTBL_STREAM_ReadLineWithLimit, _PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator, _SCRIPT_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK, PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST/2099/209A/209B strings
+;   _Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK, _PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST/2099/209A/209B strings
 ; WRITES:
 ;   local temp buffers and allocated lists at -500/-900(A5)
 ; DESC:
@@ -476,7 +476,7 @@ PARSEINI_HandleFontCommand:
 ; NOTES:
 ;   Iterates up to 100 entries per list, trimming CR/LF/commas from lines.
 ;------------------------------------------------------------------------------
-PARSEINI_ScanLogoDirectory:
+_PARSEINI_ScanLogoDirectory:
     LINK.W  A5,#-960
     MOVEM.L D2-D3/D5-D7/A2,-(A7)
 
@@ -503,16 +503,16 @@ PARSEINI_ScanLogoDirectory:
     BRA.S   .clear_entry_tables_loop
 
 .exec_list_command:
-    LEA     Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK,A0
+    LEA     _Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK,A0
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
     MOVEA.L Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
-    PEA     PARSEINI_STR_RB_LogoListPrimary
-    PEA     PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST
-    JSR     PARSEINI_JMPTBL_HANDLE_OpenWithMode(PC)
+    PEA     _PARSEINI_STR_RB_LogoListPrimary
+    PEA     _PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST
+    JSR     _PARSEINI_JMPTBL_HANDLE_OpenWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-4(A5)
@@ -521,9 +521,9 @@ PARSEINI_ScanLogoDirectory:
     CLR.L   -96(A5)
 
 .after_open_primary:
-    PEA     PARSEINI_STR_RB_LogoListSecondary
-    PEA     PARSEINI_PATH_RAM_COLON_LOGODIR_DOT_TXT
-    JSR     PARSEINI_JMPTBL_HANDLE_OpenWithMode(PC)
+    PEA     _PARSEINI_STR_RB_LogoListSecondary
+    PEA     _PARSEINI_PATH_RAM_COLON_LOGODIR_DOT_TXT
+    JSR     _PARSEINI_JMPTBL_HANDLE_OpenWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)
@@ -545,7 +545,7 @@ PARSEINI_ScanLogoDirectory:
     MOVE.L  -4(A5),-(A7)
     PEA     99.W
     PEA     -88(A5)
-    JSR     PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(PC)
+    JSR     _PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(PC)
 
     LEA     12(A7),A7
     LEA     -88(A5),A0
@@ -586,7 +586,7 @@ PARSEINI_ScanLogoDirectory:
 
 .primary_alloc_and_store:
     PEA     -88(A5)
-    JSR     PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(PC)
+    JSR     _PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(PC)
 
     MOVE.L  D5,D1
     ASL.L   #2,D1
@@ -605,7 +605,7 @@ PARSEINI_ScanLogoDirectory:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),(A7)
     MOVE.L  D1,-(A7)
     PEA     1263.W
-    PEA     Global_STR_PARSEINI_C_4
+    PEA     _Global_STR_PARSEINI_C_4
     MOVE.L  D0,-92(A5)
     MOVE.L  A0,40(A7)
     JSR     _SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
@@ -641,7 +641,7 @@ PARSEINI_ScanLogoDirectory:
     MOVE.L  -8(A5),-(A7)
     PEA     99.W
     PEA     -88(A5)
-    JSR     PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(PC)
+    JSR     _PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(PC)
 
     LEA     12(A7),A7
     LEA     -88(A5),A0
@@ -695,7 +695,7 @@ PARSEINI_ScanLogoDirectory:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     1287.W
-    PEA     Global_STR_PARSEINI_C_5
+    PEA     _Global_STR_PARSEINI_C_5
     MOVE.L  A0,40(A7)
     JSR     _SCRIPT_JMPTBL_MEMORY_AllocateMemory(PC)
 
@@ -765,7 +765,7 @@ PARSEINI_ScanLogoDirectory:
     TST.L   -916(A5)
     BNE.S   .free_secondary_entry
 
-    LEA     Global_STR_DELETE_NIL_DH2_LOGOS,A0
+    LEA     _Global_STR_DELETE_NIL_DH2_LOGOS,A0
     LEA     -956(A5),A1
     MOVEQ   #5,D0
 
@@ -780,7 +780,7 @@ PARSEINI_ScanLogoDirectory:
     ADDA.L  D0,A0
     MOVE.L  (A0),-(A7)
     PEA     -956(A5)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     LEA     -956(A5),A0
@@ -810,7 +810,7 @@ PARSEINI_ScanLogoDirectory:
     MOVE.L  D0,-(A7)
     MOVE.L  (A1),-(A7)
     PEA     1323.W
-    PEA     Global_STR_PARSEINI_C_6
+    PEA     _Global_STR_PARSEINI_C_6
     JSR     _SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -847,7 +847,7 @@ PARSEINI_ScanLogoDirectory:
     MOVE.L  D0,-(A7)
     MOVE.L  (A1),-(A7)
     PEA     1329.W
-    PEA     Global_STR_PARSEINI_C_7
+    PEA     _Global_STR_PARSEINI_C_7
     JSR     _SCRIPT_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -859,7 +859,7 @@ PARSEINI_ScanLogoDirectory:
     BEQ.S   .close_secondary_handle
 
     MOVE.L  -4(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(PC)
+    JSR     _PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(PC)
 
     ADDQ.W  #4,A7
 
@@ -868,7 +868,7 @@ PARSEINI_ScanLogoDirectory:
     BEQ.S   .return
 
     MOVE.L  -8(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(PC)
+    JSR     _PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(PC)
 
     ADDQ.W  #4,A7
 
@@ -898,7 +898,7 @@ _PARSEINI_JMPTBL_STRING_CompareNoCase:
     JMP     _STRING_CompareNoCase
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0   (JumpStub_ED1_WaitForFlagAndClearBit0)
+; FUNC: _PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0   (JumpStub_ED1_WaitForFlagAndClearBit0)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -912,11 +912,11 @@ _PARSEINI_JMPTBL_STRING_CompareNoCase:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0:
+_PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0:
     JMP     _ED1_WaitForFlagAndClearBit0
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk   (JumpStub)
+; FUNC: _PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk   (JumpStub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -930,7 +930,7 @@ PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk:
+_PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk:
     JMP     _DISKIO2_ParseIniFileFromDisk
 
 ;------------------------------------------------------------------------------
@@ -952,7 +952,7 @@ _PARSEINI_JMPTBL_STR_FindCharPtr:
     JMP     _STR_FindCharPtr
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_HANDLE_OpenWithMode   (JumpStub_HANDLE_OpenWithMode)
+; FUNC: _PARSEINI_JMPTBL_HANDLE_OpenWithMode   (JumpStub_HANDLE_OpenWithMode)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -966,11 +966,11 @@ _PARSEINI_JMPTBL_STR_FindCharPtr:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_HANDLE_OpenWithMode:
+_PARSEINI_JMPTBL_HANDLE_OpenWithMode:
     JMP     HANDLE_OpenWithMode
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad   (JumpStub)
+; FUNC: _PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad   (JumpStub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -984,11 +984,11 @@ PARSEINI_JMPTBL_HANDLE_OpenWithMode:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad:
+_PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad:
     JMP     ESQIFF_QueueIffBrushLoad
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey   (JumpStub)
+; FUNC: _PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey   (JumpStub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1002,11 +1002,11 @@ PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey:
+_PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey:
     JMP     _ESQIFF_HandleBrushIniReloadHotkey
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_BRUSH_FreeBrushResources   (JumpStub_BRUSH_FreeBrushResources)
+; FUNC: _PARSEINI_JMPTBL_BRUSH_FreeBrushResources   (JumpStub_BRUSH_FreeBrushResources)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1020,11 +1020,11 @@ PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_BRUSH_FreeBrushResources:
+_PARSEINI_JMPTBL_BRUSH_FreeBrushResources:
     JMP     _BRUSH_FreeBrushResources
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable   (JumpStub)
+; FUNC: _PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable   (JumpStub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1038,11 +1038,11 @@ PARSEINI_JMPTBL_BRUSH_FreeBrushResources:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable:
+_PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable:
     JMP     _ESQFUNC_RebuildPwBrushListFromTagTable
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator   (JumpStub_GCOMMAND_FindPathSeparator)
+; FUNC: _PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator   (JumpStub_GCOMMAND_FindPathSeparator)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1056,7 +1056,7 @@ PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator:
+_PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator:
     JMP     _GCOMMAND_FindPathSeparator
 
 ;------------------------------------------------------------------------------
@@ -1078,7 +1078,7 @@ _PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer:
     JMP     _DISKIO_ConsumeLineFromWorkBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen   (JumpStub_ED1_DrawDiagnosticsScreen)
+; FUNC: _PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen   (JumpStub_ED1_DrawDiagnosticsScreen)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1092,11 +1092,11 @@ _PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen:
+_PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen:
     JMP     _ED1_DrawDiagnosticsScreen
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_BRUSH_FreeBrushList   (JumpStub_BRUSH_FreeBrushList)
+; FUNC: _PARSEINI_JMPTBL_BRUSH_FreeBrushList   (JumpStub_BRUSH_FreeBrushList)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1110,7 +1110,7 @@ PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_BRUSH_FreeBrushList:
+_PARSEINI_JMPTBL_BRUSH_FreeBrushList:
     JMP     _BRUSH_FreeBrushList
 
 ;------------------------------------------------------------------------------
@@ -1150,7 +1150,7 @@ _PARSEINI_JMPTBL_BRUSH_AllocBrushNode:
     JMP     BRUSH_AllocBrushNode
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest   (JumpStub_UNKNOWN36_FinalizeRequest)
+; FUNC: _PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest   (JumpStub_UNKNOWN36_FinalizeRequest)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1164,7 +1164,7 @@ _PARSEINI_JMPTBL_BRUSH_AllocBrushNode:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest:
+_PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest:
     JMP     UNKNOWN36_FinalizeRequest
 
 ;------------------------------------------------------------------------------
@@ -1204,7 +1204,7 @@ _PARSEINI_JMPTBL_STRING_CompareNoCaseN:
     JMP     _STRING_CompareNoCaseN
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_STRING_AppendAtNull   (JumpStub_STRING_AppendAtNull)
+; FUNC: _PARSEINI_JMPTBL_STRING_AppendAtNull   (JumpStub_STRING_AppendAtNull)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1218,7 +1218,7 @@ _PARSEINI_JMPTBL_STRING_CompareNoCaseN:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_STRING_AppendAtNull:
+_PARSEINI_JMPTBL_STRING_AppendAtNull:
     JMP     _STRING_AppendAtNull
 
 ;------------------------------------------------------------------------------
@@ -1240,7 +1240,7 @@ _PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer:
     JMP     _DISKIO_LoadFileToWorkBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1   (JumpStub_ED1_WaitForFlagAndClearBit1)
+; FUNC: _PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1   (JumpStub_ED1_WaitForFlagAndClearBit1)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1254,7 +1254,7 @@ _PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1:
+_PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1:
     JMP     _ED1_WaitForFlagAndClearBit1
 
 ;------------------------------------------------------------------------------
@@ -1276,7 +1276,7 @@ _PARSEINI_JMPTBL_WDISP_SPrintf:
     JMP     _WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_STREAM_ReadLineWithLimit   (JumpStub_STREAM_ReadLineWithLimit)
+; FUNC: _PARSEINI_JMPTBL_STREAM_ReadLineWithLimit   (JumpStub_STREAM_ReadLineWithLimit)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1290,7 +1290,7 @@ _PARSEINI_JMPTBL_WDISP_SPrintf:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_STREAM_ReadLineWithLimit:
+_PARSEINI_JMPTBL_STREAM_ReadLineWithLimit:
     JMP     STREAM_ReadLineWithLimit
 
 ;------------------------------------------------------------------------------
@@ -1312,7 +1312,7 @@ _PARSEINI_JMPTBL_STR_FindAnyCharPtr:
     JMP     STR_FindAnyCharPtr
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_ED1_ExitEscMenu   (JumpStub_ED1_ExitEscMenu)
+; FUNC: _PARSEINI_JMPTBL_ED1_ExitEscMenu   (JumpStub_ED1_ExitEscMenu)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1326,7 +1326,7 @@ _PARSEINI_JMPTBL_STR_FindAnyCharPtr:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_ED1_ExitEscMenu:
+_PARSEINI_JMPTBL_ED1_ExitEscMenu:
     JMP     ED1_ExitEscMenu
 
 ;------------------------------------------------------------------------------
@@ -1348,7 +1348,7 @@ _PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString:
     JMP     _ESQPARS_ReplaceOwnedString
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_ED1_EnterEscMenu   (JumpStub_ED1_EnterEscMenu)
+; FUNC: _PARSEINI_JMPTBL_ED1_EnterEscMenu   (JumpStub_ED1_EnterEscMenu)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1362,11 +1362,11 @@ _PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_ED1_EnterEscMenu:
+_PARSEINI_JMPTBL_ED1_EnterEscMenu:
     JMP     _ED1_EnterEscMenu
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion   (JumpStub_ESQFUNC_DrawEscMenuVersion)
+; FUNC: _PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion   (JumpStub_ESQFUNC_DrawEscMenuVersion)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -1380,7 +1380,7 @@ PARSEINI_JMPTBL_ED1_EnterEscMenu:
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
-PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion:
+_PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion:
     JMP     _ESQFUNC_DrawEscMenuVersion
 
     RTS

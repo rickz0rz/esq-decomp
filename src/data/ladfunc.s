@@ -1,7 +1,7 @@
     XDEF    _Global_STR_LADFUNC_C_1
     XDEF    _Global_STR_LADFUNC_C_2
     XDEF    _Global_STR_LADFUNC_C_3
-    XDEF    Global_STR_LADFUNC_C_4
+    XDEF    _Global_STR_LADFUNC_C_4
     XDEF    LADFUNC_TAG_RS_ResetTriggerSet
     XDEF    LADFUNC_TAG_RS_ParseAllowedSet
     XDEF    Global_STR_LADFUNC_C_5
@@ -15,22 +15,22 @@
     XDEF    Global_STR_LADFUNC_C_11
     XDEF    Global_STR_LADFUNC_C_12
     XDEF    Global_STR_LADFUNC_C_13
-    XDEF    Global_STR_SINGLE_SPACE_1
-    XDEF    Global_STR_LADFUNC_C_14
-    XDEF    Global_STR_LADFUNC_C_15
-    XDEF    Global_STR_SINGLE_SPACE_2
-    XDEF    Global_STR_LADFUNC_C_16
-    XDEF    Global_STR_LADFUNC_C_17
-    XDEF    Global_STR_LADFUNC_C_18
-    XDEF    Global_STR_LADFUNC_C_19
-    XDEF    Global_STR_LADFUNC_C_20
-    XDEF    Global_STR_LADFUNC_C_21
-    XDEF    Global_STR_LADFUNC_C_22
-    XDEF    Global_STR_LADFUNC_C_23
-    XDEF    Global_STR_LADFUNC_C_24
-    XDEF    Global_STR_LADFUNC_C_25
-    XDEF    Global_STR_LADFUNC_C_26
-    XDEF    Global_STR_LADFUNC_C_27
+    XDEF    _Global_STR_SINGLE_SPACE_1
+    XDEF    _Global_STR_LADFUNC_C_14
+    XDEF    _Global_STR_LADFUNC_C_15
+    XDEF    _Global_STR_SINGLE_SPACE_2
+    XDEF    _Global_STR_LADFUNC_C_16
+    XDEF    _Global_STR_LADFUNC_C_17
+    XDEF    _Global_STR_LADFUNC_C_18
+    XDEF    _Global_STR_LADFUNC_C_19
+    XDEF    _Global_STR_LADFUNC_C_20
+    XDEF    _Global_STR_LADFUNC_C_21
+    XDEF    _Global_STR_LADFUNC_C_22
+    XDEF    _Global_STR_LADFUNC_C_23
+    XDEF    _Global_STR_LADFUNC_C_24
+    XDEF    _Global_STR_LADFUNC_C_25
+    XDEF    _Global_STR_LADFUNC_C_26
+    XDEF    _Global_STR_LADFUNC_C_27
     XDEF    Global_STR_LADFUNC_C_28
     XDEF    Global_STR_LADFUNC_C_29
     XDEF    Global_STR_LADFUNC_C_30
@@ -54,7 +54,7 @@ _Global_STR_LADFUNC_C_2:
     NStr    "LADFUNC.c"
 _Global_STR_LADFUNC_C_3:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_4:
+_Global_STR_LADFUNC_C_4:
     NStr    "LADFUNC.c"
 LADFUNC_TAG_RS_ResetTriggerSet:
     NStr    "RS"
@@ -82,37 +82,37 @@ Global_STR_LADFUNC_C_12:
     NStr    "LADFUNC.c"
 Global_STR_LADFUNC_C_13:
     NStr    "LADFUNC.c"
-Global_STR_SINGLE_SPACE_1:
+_Global_STR_SINGLE_SPACE_1:
     NStr    " "
-Global_STR_LADFUNC_C_14:
+_Global_STR_LADFUNC_C_14:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_15:
+_Global_STR_LADFUNC_C_15:
     NStr    "LADFUNC.c"
-Global_STR_SINGLE_SPACE_2:
+_Global_STR_SINGLE_SPACE_2:
     NStr    " "
-Global_STR_LADFUNC_C_16:
+_Global_STR_LADFUNC_C_16:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_17:
+_Global_STR_LADFUNC_C_17:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_18:
+_Global_STR_LADFUNC_C_18:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_19:
+_Global_STR_LADFUNC_C_19:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_20:
+_Global_STR_LADFUNC_C_20:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_21:
+_Global_STR_LADFUNC_C_21:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_22:
+_Global_STR_LADFUNC_C_22:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_23:
+_Global_STR_LADFUNC_C_23:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_24:
+_Global_STR_LADFUNC_C_24:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_25:
+_Global_STR_LADFUNC_C_25:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_26:
+_Global_STR_LADFUNC_C_26:
     NStr    "LADFUNC.c"
-Global_STR_LADFUNC_C_27:
+_Global_STR_LADFUNC_C_27:
     NStr    "LADFUNC.c"
 Global_STR_LADFUNC_C_28:
     NStr    "LADFUNC.c"

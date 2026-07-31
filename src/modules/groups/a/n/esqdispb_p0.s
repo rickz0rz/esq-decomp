@@ -1,4 +1,4 @@
-    XDEF    ESQDISP_FillProgramInfoHeaderFields
+    XDEF    _ESQDISP_FillProgramInfoHeaderFields
     XDEF    ESQDISP_ParseProgramInfoCommandRecord
     XDEF    ESQDISP_TestEntryGridEligibility
     XDEF    _ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages
@@ -61,7 +61,7 @@ _ESQDISP_JMPTBL_GRAPHICS_AllocRaster:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_FillProgramInfoHeaderFields   (Populate program-info header fields)
+; FUNC: _ESQDISP_FillProgramInfoHeaderFields   (Populate program-info header fields)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -69,7 +69,7 @@ _ESQDISP_JMPTBL_GRAPHICS_AllocRaster:
 ; CLOBBERS:
 ;   A0/A2/A3/A7/D0/D4/D5/D6/D7
 ; CALLS:
-;   ESQFUNC_JMPTBL_STRING_CopyPadNul
+;   _ESQFUNC_JMPTBL_STRING_CopyPadNul
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -80,7 +80,7 @@ _ESQDISP_JMPTBL_GRAPHICS_AllocRaster:
 ; NOTES:
 ;   Returns early if destination pointer is NULL.
 ;------------------------------------------------------------------------------
-ESQDISP_FillProgramInfoHeaderFields:
+_ESQDISP_FillProgramInfoHeaderFields:
     MOVEM.L D4-D7/A2-A3,-(A7)
     MOVEA.L 28(A7),A3
     MOVE.B  35(A7),D7
@@ -99,7 +99,7 @@ ESQDISP_FillProgramInfoHeaderFields:
     PEA     2.W
     MOVE.L  A2,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     ESQFUNC_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _ESQFUNC_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     CLR.B   45(A3)
@@ -119,7 +119,7 @@ ESQDISP_FillProgramInfoHeaderFields:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Shared return tail for ESQDISP_FillProgramInfoHeaderFields.
+;   Shared return tail for _ESQDISP_FillProgramInfoHeaderFields.
 ; NOTES:
 ;   Restores D4-D7/A2-A3 and returns.
 ;------------------------------------------------------------------------------
@@ -150,9 +150,9 @@ ESQDISP_FillProgramInfoHeaderFields_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   _ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit, ESQFUNC_JMPTBL_STRING_CopyPadNul, ESQIFF_JMPTBL_MATH_Mulu32, ESQDISP_FillProgramInfoHeaderFields
+;   _ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit, _ESQFUNC_JMPTBL_STRING_CopyPadNul, _ESQIFF_JMPTBL_MATH_Mulu32, _ESQDISP_FillProgramInfoHeaderFields
 ; READS:
-;   ESQDISP_ParseProgramInfoCommandRecord_Return, ESQDISP_ProgramInfoZeroTag, _WDISP_CharClassTable, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, branch, ff, lab_0918
+;   ESQDISP_ParseProgramInfoCommandRecord_Return, _ESQDISP_ProgramInfoZeroTag, _WDISP_CharClassTable, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, branch, ff, lab_0918
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -213,7 +213,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     BRA.S   .lab_08E8
 
@@ -484,13 +484,13 @@ ESQDISP_ParseProgramInfoCommandRecord:
     PEA     2.W
     MOVE.L  A0,-(A7)
     PEA     -27(A5)
-    JSR     ESQFUNC_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _ESQFUNC_JMPTBL_STRING_CopyPadNul(PC)
 
     LEA     12(A7),A7
     BRA.S   .branch_4
 
 .branch_2:
-    LEA     ESQDISP_ProgramInfoZeroTag,A0
+    LEA     _ESQDISP_ProgramInfoZeroTag,A0
     LEA     -27(A5),A1
 
 .branch_3:
@@ -701,7 +701,7 @@ ESQDISP_ParseProgramInfoCommandRecord:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  -36(A5),-(A7)
-    BSR.W   ESQDISP_FillProgramInfoHeaderFields
+    BSR.W   _ESQDISP_FillProgramInfoHeaderFields
 
     LEA     24(A7),A7
 

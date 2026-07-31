@@ -86,16 +86,16 @@ _GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   TEXTDISP_DrawChannelBanner
+;   _TEXTDISP_DrawChannelBanner
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to TEXTDISP_DrawChannelBanner.
+;   Jump stub to _TEXTDISP_DrawChannelBanner.
 ;------------------------------------------------------------------------------
 _GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner:
-    JMP     TEXTDISP_DrawChannelBanner
+    JMP     _TEXTDISP_DrawChannelBanner
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime   (JumpStub_TEXTDISP_FormatEntryTime)
@@ -146,16 +146,16 @@ _GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   TEXTDISP_BuildEntryShortName
+;   _TEXTDISP_BuildEntryShortName
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to TEXTDISP_BuildEntryShortName.
+;   Jump stub to _TEXTDISP_BuildEntryShortName.
 ;------------------------------------------------------------------------------
 _GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName:
-    JMP     TEXTDISP_BuildEntryShortName
+    JMP     _TEXTDISP_BuildEntryShortName
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort   (JumpStub_GRAPHICS_BltBitMapRastPort)
@@ -246,16 +246,16 @@ _GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   TEXTDISP_DrawInsetRectFrame
+;   _TEXTDISP_DrawInsetRectFrame
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to TEXTDISP_DrawInsetRectFrame.
+;   Jump stub to _TEXTDISP_DrawInsetRectFrame.
 ;------------------------------------------------------------------------------
 _GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame:
-    JMP     TEXTDISP_DrawInsetRectFrame
+    JMP     _TEXTDISP_DrawInsetRectFrame
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth   (JumpStub_TEXTDISP_TrimTextToPixelWidth)
@@ -346,16 +346,16 @@ _GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   DST_ComputeBannerIndex
+;   _DST_ComputeBannerIndex
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to DST_ComputeBannerIndex.
+;   Jump stub to _DST_ComputeBannerIndex.
 ;------------------------------------------------------------------------------
 _GROUP_AD_JMPTBL_DST_ComputeBannerIndex:
-    JMP     DST_ComputeBannerIndex
+    JMP     _DST_ComputeBannerIndex
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight   (JumpStub)

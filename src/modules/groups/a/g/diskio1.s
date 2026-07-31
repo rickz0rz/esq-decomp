@@ -929,7 +929,7 @@ DISKIO1_DumpDefaultCoiInfoBlock_Return:
 ; CALLS:
 ;   _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer
 ; READS:
-;   _Global_REF_STR_CLOCK_FORMAT, DISKIO1_DumpProgramSourceRecordVerbose_Return, DISKIO_FMT_CHANNEL_LINE_UP_PCT_D, DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT, DISKIO_STR_ATTR, DISKIO_STR_NONE_VerboseSourceAttrFlags, DISKIO_STR_HILITE_SRC_VerboseSourceAttrFlags, DISKIO_STR_SUM_SRC_VerboseSourceAttrFlags, DISKIO_STR_VIDEO_TAG_DISABLE_VerboseSourceAttrFlags, DISKIO_STR_PPV_SRC_VerboseSourceAttrFlags, DISKIO_STR_DITTO_VerboseSourceAttrFlags, DISKIO_STR_ALTHILITESRC_VerboseSourceAttrFlags, DISKIO_STR_STEREO, DISKIO_STR_ProgramAttrCloseParenNewline, DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC, DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_, DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord, DISKIO_FMT_PROGRAM_INFO_PCT_LD, DISKIO_FMT_PROG_SRCE_PCT_S_VerboseProgramInfo, DISKIO_STR_NewlineOnly_A, DISKIO_FMT_PCT_02LD_PCT_S_COLON_ATTR_PCT_02LX, DISKIO_STR_NONE_VerboseProgramAttrFlags, DISKIO_STR_MOVIE_VerboseProgramAttrFlags, DISKIO_STR_ALTHILITE_PROG_VerboseProgramAttrFlags, DISKIO_STR_TAG_PROG_VerboseProgramAttrFlags, DISKIO_STR_0X10, DISKIO_STR_0X20_VerboseProgramAttrFlags, DISKIO_STR_0X40, DISKIO_STR_PREV_DAYS_DATA_VerboseProgramAttrFlags, DISKIO_STR_ProgramAttrCloseAndProgPrefix, DISKIO_FMT_PCT_S_VerboseProgramStringLine, DISKIO_STR_NullLine, DISKIO_STR_NewlineOnly_B, branch_18, branch_7
+;   _Global_REF_STR_CLOCK_FORMAT, DISKIO1_DumpProgramSourceRecordVerbose_Return, _DISKIO_FMT_CHANNEL_LINE_UP_PCT_D, _DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT, _DISKIO_STR_ATTR, _DISKIO_STR_NONE_VerboseSourceAttrFlags, _DISKIO_STR_HILITE_SRC_VerboseSourceAttrFlags, _DISKIO_STR_SUM_SRC_VerboseSourceAttrFlags, _DISKIO_STR_VIDEO_TAG_DISABLE_VerboseSourceAttrFlags, _DISKIO_STR_PPV_SRC_VerboseSourceAttrFlags, _DISKIO_STR_DITTO_VerboseSourceAttrFlags, _DISKIO_STR_ALTHILITESRC_VerboseSourceAttrFlags, _DISKIO_STR_STEREO, _DISKIO_STR_ProgramAttrCloseParenNewline, _DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC, _DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_, _DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord, DISKIO_FMT_PROGRAM_INFO_PCT_LD, DISKIO_FMT_PROG_SRCE_PCT_S_VerboseProgramInfo, DISKIO_STR_NewlineOnly_A, DISKIO_FMT_PCT_02LD_PCT_S_COLON_ATTR_PCT_02LX, DISKIO_STR_NONE_VerboseProgramAttrFlags, DISKIO_STR_MOVIE_VerboseProgramAttrFlags, DISKIO_STR_ALTHILITE_PROG_VerboseProgramAttrFlags, DISKIO_STR_TAG_PROG_VerboseProgramAttrFlags, DISKIO_STR_0X10, DISKIO_STR_0X20_VerboseProgramAttrFlags, DISKIO_STR_0X40, DISKIO_STR_PREV_DAYS_DATA_VerboseProgramAttrFlags, DISKIO_STR_ProgramAttrCloseAndProgPrefix, DISKIO_FMT_PCT_S_VerboseProgramStringLine, DISKIO_STR_NullLine, DISKIO_STR_NewlineOnly_B, branch_18, branch_7
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -942,7 +942,7 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
     MOVEA.L 32(A7),A3
     MOVE.L  36(A7),D7
     MOVE.L  D7,-(A7)
-    PEA     DISKIO_FMT_CHANNEL_LINE_UP_PCT_D
+    PEA     _DISKIO_FMT_CHANNEL_LINE_UP_PCT_D
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -954,10 +954,10 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT
+    PEA     _DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    PEA     DISKIO_STR_ATTR
+    PEA     _DISKIO_STR_ATTR
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     28(A7),A7
@@ -965,7 +965,7 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
     CMP.B   27(A3),D0
     BNE.S   .lab_043A
 
-    PEA     DISKIO_STR_NONE_VerboseSourceAttrFlags
+    PEA     _DISKIO_STR_NONE_VerboseSourceAttrFlags
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -974,7 +974,7 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #1,27(A3)
     BEQ.S   .lab_043B
 
-    PEA     DISKIO_STR_HILITE_SRC_VerboseSourceAttrFlags
+    PEA     _DISKIO_STR_HILITE_SRC_VerboseSourceAttrFlags
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -983,7 +983,7 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #2,27(A3)
     BEQ.S   .branch
 
-    PEA     DISKIO_STR_SUM_SRC_VerboseSourceAttrFlags
+    PEA     _DISKIO_STR_SUM_SRC_VerboseSourceAttrFlags
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -992,7 +992,7 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #3,27(A3)
     BEQ.S   .branch_1
 
-    PEA     DISKIO_STR_VIDEO_TAG_DISABLE_VerboseSourceAttrFlags
+    PEA     _DISKIO_STR_VIDEO_TAG_DISABLE_VerboseSourceAttrFlags
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1001,7 +1001,7 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #4,27(A3)
     BEQ.S   .branch_2
 
-    PEA     DISKIO_STR_PPV_SRC_VerboseSourceAttrFlags
+    PEA     _DISKIO_STR_PPV_SRC_VerboseSourceAttrFlags
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1010,7 +1010,7 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #5,27(A3)
     BEQ.S   .branch_3
 
-    PEA     DISKIO_STR_DITTO_VerboseSourceAttrFlags
+    PEA     _DISKIO_STR_DITTO_VerboseSourceAttrFlags
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1019,7 +1019,7 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #6,27(A3)
     BEQ.S   .branch_4
 
-    PEA     DISKIO_STR_ALTHILITESRC_VerboseSourceAttrFlags
+    PEA     _DISKIO_STR_ALTHILITESRC_VerboseSourceAttrFlags
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -1028,13 +1028,13 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
     BTST    #7,27(A3)
     BEQ.S   .branch_5
 
-    PEA     DISKIO_STR_STEREO
+    PEA     _DISKIO_STR_STEREO
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
 
 .branch_5:
-    PEA     DISKIO_STR_ProgramAttrCloseParenNewline
+    PEA     _DISKIO_STR_ProgramAttrCloseParenNewline
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1055,7 +1055,7 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC
+    PEA     _DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1076,7 +1076,7 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_
+    PEA     _DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     MOVEQ   #0,D0
@@ -1093,7 +1093,7 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
     MOVE.L  D2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    PEA     DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord
+    PEA     _DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord
     JSR     _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     72(A7),A7
@@ -1102,6 +1102,17 @@ _DISKIO1_DumpProgramSourceRecordVerbose:
 
 ;!======
 
+;------------------------------------------------------------------------------
+; FUNC: DISKIO1_DumpProgramInfoRecordVerbose   (Verbose dump of one program-info record)
+; NOTES:
+;   This function had NO LABEL. refbytes.py extracts label-to-label, so it was
+;   being absorbed into _DISKIO1_DumpProgramSourceRecordVerbose above, which
+;   therefore measured 754 bytes instead of its true 416. Labelling it is
+;   byte-neutral -- both gates stay green -- and it needs no XDEF, because
+;   nothing outside this module refers to it. See AGENTS.md, "...and not every
+;   function has a label".
+;------------------------------------------------------------------------------
+DISKIO1_DumpProgramInfoRecordVerbose:
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVE.L  20(A7),D7

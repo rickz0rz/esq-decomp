@@ -1,8 +1,8 @@
-    XDEF    PARSEINI_MonitorClockChange
+    XDEF    _PARSEINI_MonitorClockChange
 
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSEINI_MonitorClockChange   (Monitor clock-change edge and status mask)
+; FUNC: _PARSEINI_MonitorClockChange   (Monitor clock-change edge and status mask)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -13,16 +13,16 @@
 ;   _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh
 ; READS:
 ;   _Global_WORD_H_VALUE, _Global_WORD_T_VALUE, _Global_REF_CLOCKDATA_STRUCT,
-;   PARSEINI_ClockSecondsSnapshot-20A8
+;   _PARSEINI_ClockSecondsSnapshot-20A8
 ; WRITES:
-;   PARSEINI_ClockSecondsSnapshot-20A8
+;   _PARSEINI_ClockSecondsSnapshot-20A8
 ; DESC:
 ;   Tracks transitions between H/T mismatch and stable states, latches RTC second
 ;   samples, and toggles a status-mask bit via _ESQDISP_UpdateStatusMaskAndRefresh.
 ; NOTES:
-;   Uses a 3-sample threshold before clearing PARSEINI_ClockChangeActiveFlag.
+;   Uses a 3-sample threshold before clearing _PARSEINI_ClockChangeActiveFlag.
 ;------------------------------------------------------------------------------
-PARSEINI_MonitorClockChange:
+_PARSEINI_MonitorClockChange:
     MOVEM.L D2/D7,-(A7)
 
     MOVEQ   #0,D7       ; Prefill D7 with 0x00000000
@@ -37,35 +37,35 @@ PARSEINI_MonitorClockChange:
     TST.W   D7          ; Test D7 against 0
     BEQ.S   .check_clockdata_update   ; If D7 is now 0, jump to .check_clockdata_update
 
-    MOVE.W  _Global_REF_CLOCKDATA_STRUCT,PARSEINI_ClockSecondsSnapshot  ; Get the first word of the clockdata struct, which is seconds
+    MOVE.W  _Global_REF_CLOCKDATA_STRUCT,_PARSEINI_ClockSecondsSnapshot  ; Get the first word of the clockdata struct, which is seconds
     MOVEQ   #1,D0               ; Move 1 into D0
-    CMP.W   PARSEINI_ClockChangeActiveFlag,D0         ; Compare PARSEINI_ClockChangeActiveFlag - D0 (1)
-    BEQ.S   .return             ; If PARSEINI_ClockChangeActiveFlag was 1, then return
+    CMP.W   _PARSEINI_ClockChangeActiveFlag,D0         ; Compare _PARSEINI_ClockChangeActiveFlag - D0 (1)
+    BEQ.S   .return             ; If _PARSEINI_ClockChangeActiveFlag was 1, then return
 
     MOVEQ   #1,D1           ; Push 1 into D1
     MOVE.L  D1,-(A7)        ; Push D1 onto the stack
     MOVE.L  D1,-(A7)        ; Push it again onto the stack
-    MOVE.W  D0,PARSEINI_ClockChangeActiveFlag     ; Push the least 2 sig bytes in D0 into PARSEINI_ClockChangeActiveFlag
+    MOVE.W  D0,_PARSEINI_ClockChangeActiveFlag     ; Push the least 2 sig bytes in D0 into _PARSEINI_ClockChangeActiveFlag
     JSR     _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)    ; JSR
 
     ADDQ.W  #8,A7           ; Add 8 to whatever value is in the stack (the stack pointer) clearing the last two values in the stack (D1 x2).
     BRA.S   .return
 
 .check_clockdata_update:
-    TST.W   PARSEINI_ClockChangeActiveFlag
+    TST.W   _PARSEINI_ClockChangeActiveFlag
     BEQ.S   .return
 
     MOVE.W  _Global_REF_CLOCKDATA_STRUCT,D0
-    MOVE.W  PARSEINI_ClockSecondsSnapshot,D1
+    MOVE.W  _PARSEINI_ClockSecondsSnapshot,D1
     CMP.W   D0,D1
     BEQ.S   .return
 
-    ADDQ.W  #1,PARSEINI_ClockChangeSampleCounter
-    MOVE.W  D0,PARSEINI_ClockSecondsSnapshot
-    CMPI.W  #3,PARSEINI_ClockChangeSampleCounter
+    ADDQ.W  #1,_PARSEINI_ClockChangeSampleCounter
+    MOVE.W  D0,_PARSEINI_ClockSecondsSnapshot
+    CMPI.W  #3,_PARSEINI_ClockChangeSampleCounter
     BLT.S   .return
 
-    CLR.W   PARSEINI_ClockChangeActiveFlag
+    CLR.W   _PARSEINI_ClockChangeActiveFlag
     CLR.L   -(A7)
     PEA     1.W
     JSR     _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(PC)

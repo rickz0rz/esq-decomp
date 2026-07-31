@@ -1,6 +1,6 @@
     XDEF    TLIBA1_BuildClockFormatEntryIfVisible
-    XDEF    TLIBA1_DrawFormattedTextBlock
-    XDEF    TLIBA1_DrawInlineStyledText
+    XDEF    _TLIBA1_DrawFormattedTextBlock
+    XDEF    _TLIBA1_DrawInlineStyledText
     XDEF    TLIBA1_FormatClockFormatEntry
     XDEF    _TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry
     XDEF    TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode
@@ -10,12 +10,12 @@
     XDEF    _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
     XDEF    _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode
     XDEF    _TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold
-    XDEF    TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble
-    XDEF    TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble
+    XDEF    _TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble
+    XDEF    _TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA1_DrawInlineStyledText   (Render one text line with inline style markers)
+; FUNC: _TLIBA1_DrawInlineStyledText   (Render one text line with inline style markers)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +6: arg_2 (via 10(A5))
@@ -30,20 +30,20 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D5/D6/D7
 ; CALLS:
-;   TLIBA1_DrawTextWithInsetSegments, _TLIBA1_ParseStyleCodeChar, MEM_Move,
-;   TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble, TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble, _STR_FindCharPtr,
-;   UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition, _LVOTextLength
+;   _TLIBA1_DrawTextWithInsetSegments, _TLIBA1_ParseStyleCodeChar, _MEM_Move,
+;   _TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble, _TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble, _STR_FindCharPtr,
+;   _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition, _LVOTextLength
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, CLOCK_AlignedInsetRenderGateFlag, CLEANUP_AlignedInsetNibblePrimary, CLEANUP_AlignedInsetNibbleSecondary, ff, if_eq_1780, if_eq_1787, if_ne_1773, return_1788
+;   Global_REF_GRAPHICS_LIBRARY, _CLOCK_AlignedInsetRenderGateFlag, _CLEANUP_AlignedInsetNibblePrimary, _CLEANUP_AlignedInsetNibbleSecondary, ff, if_eq_1780, if_eq_1787, if_ne_1773, return_1788
 ; WRITES:
-;   CLOCK_AlignedInsetRenderGateFlag
+;   _CLOCK_AlignedInsetRenderGateFlag
 ; DESC:
 ;   Parses inline marker sequences and chooses framed/plain drawing paths for a
 ;   single rendered text row.
 ; NOTES:
-;   Updates CLOCK_AlignedInsetRenderGateFlag gating flag after framed draw path.
+;   Updates _CLOCK_AlignedInsetRenderGateFlag gating flag after framed draw path.
 ;------------------------------------------------------------------------------
-TLIBA1_DrawInlineStyledText:
+_TLIBA1_DrawInlineStyledText:
     LINK.W  A5,#-24
     MOVEM.L D2-D3/D5-D7/A2-A3/A6,-(A7)
     MOVEA.L 8(A5),A3
@@ -53,7 +53,7 @@ TLIBA1_DrawInlineStyledText:
     MOVEQ   #0,D0
     MOVE.L  D0,-18(A5)
     MOVE.L  D0,-14(A5)
-    TST.B   CLOCK_AlignedInsetRenderGateFlag
+    TST.B   _CLOCK_AlignedInsetRenderGateFlag
     BEQ.S   .if_eq_1772
 
     PEA     19.W
@@ -73,19 +73,19 @@ TLIBA1_DrawInlineStyledText:
     BEQ.S   .if_eq_1772
 
     MOVEQ   #0,D0
-    MOVE.B  CLEANUP_AlignedInsetNibbleSecondary,D0
+    MOVE.B  _CLEANUP_AlignedInsetNibbleSecondary,D0
     MOVEQ   #0,D1
-    MOVE.B  CLEANUP_AlignedInsetNibblePrimary,D1
+    MOVE.B  _CLEANUP_AlignedInsetNibblePrimary,D1
     MOVE.L  A2,-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   TLIBA1_DrawTextWithInsetSegments
+    BSR.W   _TLIBA1_DrawTextWithInsetSegments
 
     LEA     24(A7),A7
-    CLR.B   CLOCK_AlignedInsetRenderGateFlag
+    CLR.B   _CLOCK_AlignedInsetRenderGateFlag
     BRA.W   .return_1788
 
 .if_eq_1772:
@@ -196,7 +196,7 @@ TLIBA1_DrawInlineStyledText:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     MEM_Move(PC)
+    JSR     _MEM_Move(PC)
 
     LEA     12(A7),A7
     BRA.S   .skip_177E
@@ -210,7 +210,7 @@ TLIBA1_DrawInlineStyledText:
     MOVE.L  D0,-(A7)
     MOVE.L  A6,-(A7)
     MOVE.L  A1,-(A7)
-    JSR     MEM_Move(PC)
+    JSR     _MEM_Move(PC)
 
     MOVEA.L -4(A5),A0
     ADDA.L  -22(A5),A0
@@ -229,7 +229,7 @@ TLIBA1_DrawInlineStyledText:
     MOVE.L  D0,(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  -8(A5),-(A7)
-    JSR     MEM_Move(PC)
+    JSR     _MEM_Move(PC)
 
     LEA     20(A7),A7
     MOVEA.L -4(A5),A0
@@ -280,7 +280,7 @@ TLIBA1_DrawInlineStyledText:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   TLIBA1_DrawTextWithInsetSegments
+    BSR.W   _TLIBA1_DrawTextWithInsetSegments
 
     LEA     24(A7),A7
     BRA.W   .return_1788
@@ -315,7 +315,7 @@ TLIBA1_DrawInlineStyledText:
     MOVEA.L -4(A5),A0
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
-    JSR     TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble(PC)
+    JSR     _TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble(PC)
 
     ADDQ.W  #4,A7
     MOVE.B  D0,-10(A5)
@@ -335,7 +335,7 @@ TLIBA1_DrawInlineStyledText:
     MOVEA.L -4(A5),A0
     MOVE.B  (A0),D0
     MOVE.L  D0,-(A7)
-    JSR     TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble(PC)
+    JSR     _TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D5
@@ -374,7 +374,7 @@ TLIBA1_DrawInlineStyledText:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   TLIBA1_DrawTextWithInsetSegments
+    BSR.W   _TLIBA1_DrawTextWithInsetSegments
 
     LEA     24(A7),A7
     BRA.S   .return_1788
@@ -384,7 +384,7 @@ TLIBA1_DrawInlineStyledText:
     MOVE.L  D6,-(A7)
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
+    JSR     _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     16(A7),A7
 
@@ -396,7 +396,7 @@ TLIBA1_DrawInlineStyledText:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA1_DrawFormattedTextBlock   (Layout and draw a multi-line formatted block)
+; FUNC: _TLIBA1_DrawFormattedTextBlock   (Layout and draw a multi-line formatted block)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +6: arg_2 (via 10(A5))
@@ -420,19 +420,19 @@ TLIBA1_DrawInlineStyledText:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   TLIBA1_DrawInlineStyledText, _MATH_DivS32, _MATH_Mulu32, _MEMORY_AllocateMemory,
+;   _TLIBA1_DrawInlineStyledText, _MATH_DivS32, _MATH_Mulu32, _MEMORY_AllocateMemory,
 ;   _MEMORY_DeallocateMemory, _LVOSetAPen, _LVOSetFont, _LVOTextLength
 ; READS:
-;   _Global_HANDLE_PREVUE_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_TLIBA1_C_3, CLOCK_AlignedInsetRenderGateFlag, TLIBA1_STR_TLIBA1_DOT_C, CLEANUP_AlignedInsetNibblePrimary, _TEXTDISP_LinePenOverrideEnabledFlag, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
+;   _Global_HANDLE_PREVUE_FONT, Global_REF_GRAPHICS_LIBRARY, _Global_STR_TLIBA1_C_3, _CLOCK_AlignedInsetRenderGateFlag, _TLIBA1_STR_TLIBA1_DOT_C, _CLEANUP_AlignedInsetNibblePrimary, _TEXTDISP_LinePenOverrideEnabledFlag, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Tokenizes source text into render runs, computes per-line offsets/fonts,
-;   then renders each line with TLIBA1_DrawInlineStyledText.
+;   then renders each line with _TLIBA1_DrawInlineStyledText.
 ; NOTES:
 ;   Uses a temporary 10-byte record table per emitted line.
 ;------------------------------------------------------------------------------
-TLIBA1_DrawFormattedTextBlock:
+_TLIBA1_DrawFormattedTextBlock:
     LINK.W  A5,#-48
     MOVEM.L D2-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -509,7 +509,7 @@ TLIBA1_DrawFormattedTextBlock:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     2115.W
-    PEA     Global_STR_TLIBA1_C_3
+    PEA     _Global_STR_TLIBA1_C_3
     JSR     _MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -773,11 +773,11 @@ TLIBA1_DrawFormattedTextBlock:
     MOVE.L  36(A7),D0
     JSR     _LVOTextLength(A6)
 
-    TST.B   CLOCK_AlignedInsetRenderGateFlag
+    TST.B   _CLOCK_AlignedInsetRenderGateFlag
     BEQ.S   .if_eq_17A1
 
     MOVEQ   #0,D1
-    MOVE.B  CLEANUP_AlignedInsetNibblePrimary,D1
+    MOVE.B  _CLEANUP_AlignedInsetNibblePrimary,D1
     MOVEQ   #0,D2
     NOT.B   D2
     CMP.L   D2,D1
@@ -841,7 +841,7 @@ TLIBA1_DrawFormattedTextBlock:
     MOVE.L  D1,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   TLIBA1_DrawInlineStyledText
+    BSR.W   _TLIBA1_DrawInlineStyledText
 
     LEA     16(A7),A7
     ADDQ.W  #1,-12(A5)
@@ -870,7 +870,7 @@ TLIBA1_DrawFormattedTextBlock:
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     2385.W
-    PEA     TLIBA1_STR_TLIBA1_DOT_C
+    PEA     _TLIBA1_STR_TLIBA1_DOT_C
     JSR     _MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -1363,16 +1363,16 @@ TLIBA1_FormatClockFormatEntry:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   COI_GetAnimFieldPointerByMode
+;   _COI_GetAnimFieldPointerByMode
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to COI_GetAnimFieldPointerByMode.
+;   Jump stub to _COI_GetAnimFieldPointerByMode.
 ;------------------------------------------------------------------------------
 TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode:
-    JMP     COI_GetAnimFieldPointerByMode
+    JMP     _COI_GetAnimFieldPointerByMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode   (JumpStub)
@@ -1395,7 +1395,7 @@ _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
     JMP     _ESQDISP_GetEntryAuxPointerByMode
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble   (JumpStub)
+; FUNC: _TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1411,7 +1411,7 @@ _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode:
 ; DESC:
 ;   Jump stub to _LADFUNC_GetPackedPenLowNibble.
 ;------------------------------------------------------------------------------
-TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble:
+_TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble:
     JMP     _LADFUNC_GetPackedPenLowNibble
 
 ;------------------------------------------------------------------------------
@@ -1535,7 +1535,7 @@ _TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex:
     JMP     DISPLIB_FindPreviousValidEntryIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble   (JumpStub)
+; FUNC: _TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble   (JumpStub)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -1551,7 +1551,7 @@ _TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex:
 ; DESC:
 ;   Jump stub to _LADFUNC_GetPackedPenHighNibble.
 ;------------------------------------------------------------------------------
-TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble:
+_TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble:
     JMP     _LADFUNC_GetPackedPenHighNibble
 
 ;!======

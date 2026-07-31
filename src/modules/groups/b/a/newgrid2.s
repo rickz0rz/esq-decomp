@@ -406,7 +406,7 @@ NEWGRID2_HandleGridState:
 ; CALLS:
 ;   NEWGRID2_HandleGridState, NEWGRID_HandleGridSelection, NEWGRID_ProcessAltEntryState, _NEWGRID_ProcessSecondaryState, _NEWGRID_ProcessScheduleState, NEWGRID_ProcessShowtimesWorkflow
 ; READS:
-;   ESQDISP_PendingGridReinitFlag, NEWGRID2_PendingOperationId
+;   _ESQDISP_PendingGridReinitFlag, NEWGRID2_PendingOperationId
 ; WRITES:
 ;   _NEWGRID_GridOperationId, NEWGRID2_PendingOperationId, NEWGRID2_LastDispatchResult
 ; DESC:
@@ -436,10 +436,10 @@ _NEWGRID2_DispatchGridOperation:
     MOVE.L  D7,NEWGRID2_PendingOperationId
 
 .prepare_operation_context:
-    TST.W   ESQDISP_PendingGridReinitFlag
+    TST.W   _ESQDISP_PendingGridReinitFlag
     BEQ.S   .dispatch_operation
 
-    CLR.W   ESQDISP_PendingGridReinitFlag
+    CLR.W   _ESQDISP_PendingGridReinitFlag
     SUBA.L  A3,A3
 
 .dispatch_operation:

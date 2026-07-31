@@ -1,6 +1,6 @@
     XDEF    ESQIFF2_ParseGroupRecordAndRefresh
     XDEF    ESQIFF2_ParseLineHeadTailRecord
-    XDEF    ESQIFF2_ValidateFieldIndexAndLength
+    XDEF    _ESQIFF2_ValidateFieldIndexAndLength
     XDEF    ESQIFF2_ParseGroupRecordAndRefresh_Return
     XDEF    ESQIFF2_ParseLineHeadTailRecord_Return
     XDEF    ESQIFF2_ValidateFieldIndexAndLength_Return
@@ -245,11 +245,11 @@ ESQIFF2_ParseLineHeadTailRecord_Return:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache, ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries, ESQIFF2_ValidateFieldIndexAndLength, _ESQIFF2_PadEntriesToMaxTitleWidth, _ESQPARS_RemoveGroupEntryAndReleaseStrings, ESQSHARED_CreateGroupEntryAndTitle
+;   _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache, _ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries, _ESQIFF2_ValidateFieldIndexAndLength, _ESQIFF2_PadEntriesToMaxTitleWidth, _ESQPARS_RemoveGroupEntryAndReleaseStrings, _ESQSHARED_CreateGroupEntryAndTitle
 ; READS:
-;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _ESQIFF_RecordLength, _TEXTDISP_PrimaryGroupRecordChecksum, _TEXTDISP_PrimaryGroupRecordLength, _TEXTDISP_SecondaryGroupRecordChecksum, _TEXTDISP_SecondaryGroupRecordLength, _ESQIFF_RecordChecksumByte, ESQIFF_ParseField0Buffer, ESQIFF_ParseField1Buffer, ESQIFF_ParseField2Buffer, ESQIFF_ParseField3Buffer, ff
+;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _ESQIFF_RecordLength, _TEXTDISP_PrimaryGroupRecordChecksum, _TEXTDISP_PrimaryGroupRecordLength, _TEXTDISP_SecondaryGroupRecordChecksum, _TEXTDISP_SecondaryGroupRecordLength, _ESQIFF_RecordChecksumByte, _ESQIFF_ParseField0Buffer, _ESQIFF_ParseField1Buffer, _ESQIFF_ParseField2Buffer, _ESQIFF_ParseField3Buffer, ff
 ; WRITES:
-;   _TEXTDISP_PrimaryGroupRecordChecksum, _TEXTDISP_PrimaryGroupRecordLength, _TEXTDISP_MaxEntryTitleLength, _TEXTDISP_SecondaryGroupRecordChecksum, _TEXTDISP_SecondaryGroupRecordLength, _NEWGRID_RefreshStateFlag, ESQIFF_ParseField0Buffer, ESQIFF_ParseField0TailBuffer, ESQIFF_ParseField1Buffer, ESQIFF_ParseField1TailByte, ESQIFF_ParseField3Buffer, ESQIFF_ParseField3TailBuffer
+;   _TEXTDISP_PrimaryGroupRecordChecksum, _TEXTDISP_PrimaryGroupRecordLength, _TEXTDISP_MaxEntryTitleLength, _TEXTDISP_SecondaryGroupRecordChecksum, _TEXTDISP_SecondaryGroupRecordLength, _NEWGRID_RefreshStateFlag, _ESQIFF_ParseField0Buffer, _ESQIFF_ParseField0TailBuffer, _ESQIFF_ParseField1Buffer, _ESQIFF_ParseField1TailByte, _ESQIFF_ParseField3Buffer, _ESQIFF_ParseField3TailBuffer
 ; DESC:
 ;   Parses incoming group record fields, refreshes entry/title structures when
 ;   checksum/length changed, pads titles, and triggers source-config/index rebuild.
@@ -335,8 +335,8 @@ ESQIFF2_ParseGroupRecordAndRefresh:
 .init_parse_state:
     MOVEQ   #1,D6
     MOVEQ   #0,D0
-    MOVE.B  D0,ESQIFF_ParseField0Buffer
-    MOVE.B  D0,ESQIFF_ParseField1Buffer
+    MOVE.B  D0,_ESQIFF_ParseField0Buffer
+    MOVE.B  D0,_ESQIFF_ParseField1Buffer
     MOVEQ   #0,D5
 
 .init_field2_defaults_loop:
@@ -344,14 +344,14 @@ ESQIFF2_ParseGroupRecordAndRefresh:
     CMP.W   D0,D5
     BGE.S   .parse_next_byte_loop_entry
 
-    LEA     ESQIFF_ParseField2Buffer,A0
+    LEA     _ESQIFF_ParseField2Buffer,A0
     ADDA.W  D5,A0
     MOVE.B  #$ff,(A0)
     ADDQ.W  #1,D5
     BRA.S   .init_field2_defaults_loop
 
 .parse_next_byte_loop_entry:
-    CLR.B   ESQIFF_ParseField3Buffer
+    CLR.B   _ESQIFF_ParseField3Buffer
     MOVEQ   #0,D4
     MOVEQ   #0,D5
     MOVEQ   #1,D0
@@ -391,7 +391,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   ESQIFF2_ValidateFieldIndexAndLength
+    BSR.W   _ESQIFF2_ValidateFieldIndexAndLength
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -404,7 +404,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
 .branch_1:
     MOVE.L  D4,D0
     MULS    #10,D0
-    LEA     ESQIFF_ParseField0Buffer,A0
+    LEA     _ESQIFF_ParseField0Buffer,A0
     ADDA.L  D0,A0
     ADDA.W  D5,A0
     CLR.B   (A0)
@@ -414,8 +414,8 @@ ESQIFF2_ParseGroupRecordAndRefresh:
     TST.W   -14(A5)
     BNE.S   .branch_3
 
-    LEA     ESQIFF_ParseField0Buffer,A0
-    LEA     ESQIFF_ParseField3Buffer,A1
+    LEA     _ESQIFF_ParseField0Buffer,A0
+    LEA     _ESQIFF_ParseField3Buffer,A1
 
 .branch_2:
     MOVE.B  (A0)+,(A1)+
@@ -423,20 +423,20 @@ ESQIFF2_ParseGroupRecordAndRefresh:
 
 .branch_3:
     MOVEQ   #0,D0
-    MOVE.B  D0,ESQIFF_ParseField0TailBuffer
-    MOVE.B  D0,ESQIFF_ParseField1TailByte
-    MOVE.B  D0,ESQIFF_ParseField3TailBuffer
+    MOVE.B  D0,_ESQIFF_ParseField0TailBuffer
+    MOVE.B  D0,_ESQIFF_ParseField1TailByte
+    MOVE.B  D0,_ESQIFF_ParseField3TailBuffer
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVEQ   #0,D1
     MOVE.B  D6,D1
-    PEA     ESQIFF_ParseField3Buffer
-    PEA     ESQIFF_ParseField2Buffer
-    PEA     ESQIFF_ParseField1Buffer
-    PEA     ESQIFF_ParseField0Buffer
+    PEA     _ESQIFF_ParseField3Buffer
+    PEA     _ESQIFF_ParseField2Buffer
+    PEA     _ESQIFF_ParseField1Buffer
+    PEA     _ESQIFF_ParseField0Buffer
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQSHARED_CreateGroupEntryAndTitle(PC)
+    JSR     _ESQSHARED_CreateGroupEntryAndTitle(PC)
 
     LEA     24(A7),A7
     MOVEQ   #0,D0
@@ -448,8 +448,8 @@ ESQIFF2_ParseGroupRecordAndRefresh:
 
 .branch_5:
     MOVEQ   #0,D0
-    MOVE.B  D0,ESQIFF_ParseField0Buffer
-    MOVE.B  D0,ESQIFF_ParseField1Buffer
+    MOVE.B  D0,_ESQIFF_ParseField0Buffer
+    MOVE.B  D0,_ESQIFF_ParseField1Buffer
     MOVEQ   #0,D5
 
 .branch_6:
@@ -457,14 +457,14 @@ ESQIFF2_ParseGroupRecordAndRefresh:
     CMP.W   D0,D5
     BGE.S   .branch_7
 
-    LEA     ESQIFF_ParseField2Buffer,A0
+    LEA     _ESQIFF_ParseField2Buffer,A0
     ADDA.W  D5,A0
     MOVE.B  #$ff,(A0)
     ADDQ.W  #1,D5
     BRA.S   .branch_6
 
 .branch_7:
-    CLR.B   ESQIFF_ParseField3Buffer
+    CLR.B   _ESQIFF_ParseField3Buffer
     MOVEQ   #0,D4
     MOVEQ   #0,D5
     MOVE.B  (A3)+,D6
@@ -477,7 +477,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   ESQIFF2_ValidateFieldIndexAndLength
+    BSR.W   _ESQIFF2_ValidateFieldIndexAndLength
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -490,7 +490,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
 .branch_8:
     MOVE.L  D4,D0
     MULS    #10,D0
-    LEA     ESQIFF_ParseField0Buffer,A0
+    LEA     _ESQIFF_ParseField0Buffer,A0
     ADDA.L  D0,A0
     ADDA.W  D5,A0
     CLR.B   (A0)
@@ -505,7 +505,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   ESQIFF2_ValidateFieldIndexAndLength
+    BSR.W   _ESQIFF2_ValidateFieldIndexAndLength
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -518,7 +518,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
 .branch_9:
     MOVE.L  D4,D0
     MULS    #10,D0
-    LEA     ESQIFF_ParseField0Buffer,A0
+    LEA     _ESQIFF_ParseField0Buffer,A0
     ADDA.L  D0,A0
     ADDA.W  D5,A0
     CLR.B   (A0)
@@ -529,7 +529,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
     CMP.W   D0,D5
     BGE.W   .parse_next_byte_loop
 
-    LEA     ESQIFF_ParseField2Buffer,A0
+    LEA     _ESQIFF_ParseField2Buffer,A0
     ADDA.W  D5,A0
     MOVE.B  (A3)+,(A0)
     ADDQ.W  #1,D5
@@ -542,7 +542,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   ESQIFF2_ValidateFieldIndexAndLength
+    BSR.W   _ESQIFF2_ValidateFieldIndexAndLength
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -559,7 +559,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
 
     MOVE.L  D4,D0
     MULS    #10,D0
-    LEA     ESQIFF_ParseField0Buffer,A0
+    LEA     _ESQIFF_ParseField0Buffer,A0
     ADDA.L  D0,A0
     ADDA.W  D5,A0
     CLR.B   (A0)
@@ -577,7 +577,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   ESQIFF2_ValidateFieldIndexAndLength
+    BSR.W   _ESQIFF2_ValidateFieldIndexAndLength
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -590,7 +590,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
 .branch_13:
     MOVE.L  D4,D0
     MULS    #10,D0
-    LEA     ESQIFF_ParseField0Buffer,A0
+    LEA     _ESQIFF_ParseField0Buffer,A0
     ADDA.L  D0,A0
     MOVE.L  D5,D0
     ADDQ.W  #1,D5
@@ -605,7 +605,7 @@ ESQIFF2_ParseGroupRecordAndRefresh:
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   ESQIFF2_ValidateFieldIndexAndLength
+    BSR.W   _ESQIFF2_ValidateFieldIndexAndLength
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -617,32 +617,32 @@ ESQIFF2_ParseGroupRecordAndRefresh:
 .branch_14:
     MOVE.L  D4,D0
     MULS    #10,D0
-    LEA     ESQIFF_ParseField0Buffer,A0
+    LEA     _ESQIFF_ParseField0Buffer,A0
     ADDA.L  D0,A0
     ADDA.W  D5,A0
     MOVEQ   #0,D0
     MOVE.B  D0,(A0)
-    MOVE.B  D0,ESQIFF_ParseField0TailBuffer
-    MOVE.B  D0,ESQIFF_ParseField1TailByte
-    MOVE.B  D0,ESQIFF_ParseField3TailBuffer
+    MOVE.B  D0,_ESQIFF_ParseField0TailBuffer
+    MOVE.B  D0,_ESQIFF_ParseField1TailByte
+    MOVE.B  D0,_ESQIFF_ParseField3TailBuffer
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVEQ   #0,D1
     MOVE.B  D6,D1
-    PEA     ESQIFF_ParseField3Buffer
-    PEA     ESQIFF_ParseField2Buffer
-    PEA     ESQIFF_ParseField1Buffer
-    PEA     ESQIFF_ParseField0Buffer
+    PEA     _ESQIFF_ParseField3Buffer
+    PEA     _ESQIFF_ParseField2Buffer
+    PEA     _ESQIFF_ParseField1Buffer
+    PEA     _ESQIFF_ParseField0Buffer
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
-    JSR     ESQSHARED_CreateGroupEntryAndTitle(PC)
+    JSR     _ESQSHARED_CreateGroupEntryAndTitle(PC)
 
     MOVEQ   #0,D0
     MOVE.B  D7,D0
     MOVE.L  D0,(A7)
     BSR.W   _ESQIFF2_PadEntriesToMaxTitleWidth
 
-    JSR     ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries(PC)
+    JSR     _ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries(PC)
 
     JSR     _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache(PC)
 
@@ -673,7 +673,7 @@ ESQIFF2_ParseGroupRecordAndRefresh_Return:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQIFF2_ValidateFieldIndexAndLength   (Validate group-record field index/length bounds)
+; FUNC: _ESQIFF2_ValidateFieldIndexAndLength   (Validate group-record field index/length bounds)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -691,7 +691,7 @@ ESQIFF2_ParseGroupRecordAndRefresh_Return:
 ; NOTES:
 ;   Field index 1 allows up to 10 chars; all other fields allow up to 7.
 ;------------------------------------------------------------------------------
-ESQIFF2_ValidateFieldIndexAndLength:
+_ESQIFF2_ValidateFieldIndexAndLength:
     MOVEM.L D6-D7,-(A7)
     MOVE.W  14(A7),D7
     MOVE.W  18(A7),D6

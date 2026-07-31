@@ -14,7 +14,7 @@
 ; CLOBBERS:
 ;   D0-D1/D5-D7/A0-A3
 ; CALLS:
-;   COI_GetAnimFieldPointerByMode
+;   _COI_GetAnimFieldPointerByMode
 ; READS:
 ;   entryPtr+40 (bit 1), entry data at fieldOffset
 ; WRITES:
@@ -23,7 +23,7 @@
 ;   Looks up entry data for entryIndex and returns 1 if the selected byte
 ;   equals 'Y' and a flag bit is set in the entry.
 ; NOTES:
-;   - Uses COI_GetAnimFieldPointerByMode to resolve the entry record.
+;   - Uses _COI_GetAnimFieldPointerByMode to resolve the entry record.
 ;------------------------------------------------------------------------------
 CLEANUP_TestEntryFlagYAndBit1:
     LINK.W  A5,#-8
@@ -36,7 +36,7 @@ CLEANUP_TestEntryFlagYAndBit1:
     PEA     7.W
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   COI_GetAnimFieldPointerByMode
+    BSR.W   _COI_GetAnimFieldPointerByMode
 
     LEA     12(A7),A7
     MOVE.L  D0,-4(A5)
@@ -83,16 +83,16 @@ CLEANUP_TestEntryFlagYAndBit1:
 ; CLOBBERS:
 ;   D0-D1/D7/A0-A3
 ; CALLS:
-;   COI_GetAnimFieldPointerByMode, GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
+;   _COI_GetAnimFieldPointerByMode, _GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
 ; READS:
-;   _WDISP_CharClassTable, CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY
+;   _WDISP_CharClassTable, _CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY
 ; WRITES:
-;   DISPTEXT_InsetNibblePrimary, DISPTEXT_InsetNibbleSecondary
+;   _DISPTEXT_InsetNibblePrimary, _DISPTEXT_InsetNibbleSecondary
 ; DESC:
 ;   Loads two flag bytes from the entry data and writes derived values into
-;   DISPTEXT_InsetNibblePrimary/DISPTEXT_InsetNibbleSecondary using _WDISP_CharClassTable attribute bits.
+;   _DISPTEXT_InsetNibblePrimary/_DISPTEXT_InsetNibbleSecondary using _WDISP_CharClassTable attribute bits.
 ; NOTES:
-;   - Falls back to CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY when the entry record is missing.
+;   - Falls back to _CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY when the entry record is missing.
 ;------------------------------------------------------------------------------
 CLEANUP_UpdateEntryFlagBytes:
     LINK.W  A5,#-16
@@ -104,14 +104,14 @@ CLEANUP_UpdateEntryFlagBytes:
     PEA     7.W
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   COI_GetAnimFieldPointerByMode
+    BSR.W   _COI_GetAnimFieldPointerByMode
 
     LEA     12(A7),A7
     MOVE.L  D0,-4(A5)
     TST.L   D0
     BNE.S   .entry_ok
 
-    LEA     CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY,A0
+    LEA     _CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY,A0
     LEA     -15(A5),A1
 
 .copy_default_entry_loop:
@@ -135,7 +135,7 @@ CLEANUP_UpdateEntryFlagBytes:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     _GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -147,7 +147,7 @@ CLEANUP_UpdateEntryFlagBytes:
     NOT.B   D1
 
 .store_flag6:
-    MOVE.B  D1,DISPTEXT_InsetNibblePrimary
+    MOVE.B  D1,_DISPTEXT_InsetNibblePrimary
     MOVEA.L -4(A5),A0
     MOVE.B  7(A0),D0
     EXT.W   D0
@@ -161,7 +161,7 @@ CLEANUP_UpdateEntryFlagBytes:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     _GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -173,7 +173,7 @@ CLEANUP_UpdateEntryFlagBytes:
     NOT.B   D1
 
 .store_flag7:
-    MOVE.B  D1,DISPTEXT_InsetNibbleSecondary
+    MOVE.B  D1,_DISPTEXT_InsetNibbleSecondary
     MOVEM.L (A7)+,D7/A3
     UNLK    A5
     RTS
@@ -197,17 +197,17 @@ CLEANUP_UpdateEntryFlagBytes:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode, CLEANUP_TestEntryFlagYAndBit1, COI_GetAnimFieldPointerByMode,
-;   _GROUP_AE_JMPTBL_WDISP_SPrintf, _GROUP_AI_JMPTBL_STRING_AppendAtNull, GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
+;   _GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode, CLEANUP_TestEntryFlagYAndBit1, _COI_GetAnimFieldPointerByMode,
+;   _GROUP_AE_JMPTBL_WDISP_SPrintf, _GROUP_AI_JMPTBL_STRING_AppendAtNull, _GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
 ; READS:
 ;   CLOCK_FMT_WRAP_CHAR_STRING_CHAR, CLOCK_STR_DOUBLE_SPACE, CLOCK_STR_FALLBACK_ENTRY_FLAGS_SECONDARY, _WDISP_CharClassTable, _TEXTDISP_CenterAlignToken
 ; WRITES:
-;   CLEANUP_AlignedInsetNibblePrimary, CLEANUP_AlignedInsetNibbleSecondary, CLOCK_AlignedInsetRenderGateFlag
+;   _CLEANUP_AlignedInsetNibblePrimary, _CLEANUP_AlignedInsetNibbleSecondary, _CLOCK_AlignedInsetRenderGateFlag
 ; DESC:
 ;   Builds an aligned status string into outText, optionally using entry data
 ;   and setting flag bytes for later rendering.
 ; NOTES:
-;   - Uses COI_GetAnimFieldPointerByMode to resolve entry records and _WDISP_CharClassTable for attribute bits.
+;   - Uses _COI_GetAnimFieldPointerByMode to resolve entry records and _WDISP_CharClassTable for attribute bits.
 ;------------------------------------------------------------------------------
 _CLEANUP_BuildAlignedStatusLine:
     LINK.W  A5,#-32
@@ -250,7 +250,7 @@ _CLEANUP_BuildAlignedStatusLine:
     PEA     6.W
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   COI_GetAnimFieldPointerByMode
+    BSR.W   _COI_GetAnimFieldPointerByMode
 
     LEA     12(A7),A7
     MOVE.L  D0,-28(A5)
@@ -294,7 +294,7 @@ _CLEANUP_BuildAlignedStatusLine:
     PEA     7.W
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
-    BSR.W   COI_GetAnimFieldPointerByMode
+    BSR.W   _COI_GetAnimFieldPointerByMode
 
     LEA     20(A7),A7
     MOVE.L  D0,-32(A5)
@@ -325,7 +325,7 @@ _CLEANUP_BuildAlignedStatusLine:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     _GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -337,7 +337,7 @@ _CLEANUP_BuildAlignedStatusLine:
     NOT.B   D1
 
 .store_entry2_flag6:
-    MOVE.B  D1,CLEANUP_AlignedInsetNibblePrimary
+    MOVE.B  D1,_CLEANUP_AlignedInsetNibblePrimary
     MOVEA.L -32(A5),A0
     MOVE.B  7(A0),D0
     EXT.W   D0
@@ -351,7 +351,7 @@ _CLEANUP_BuildAlignedStatusLine:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    JSR     GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(PC)
+    JSR     _GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D1
@@ -363,12 +363,12 @@ _CLEANUP_BuildAlignedStatusLine:
     NOT.B   D1
 
 .store_entry2_flag7:
-    MOVE.B  D1,CLEANUP_AlignedInsetNibbleSecondary
-    MOVE.B  #$1,CLOCK_AlignedInsetRenderGateFlag
+    MOVE.B  D1,_CLEANUP_AlignedInsetNibbleSecondary
+    MOVE.B  #$1,_CLOCK_AlignedInsetRenderGateFlag
     BRA.S   .done
 
 .clear_status_flag:
-    CLR.B   CLOCK_AlignedInsetRenderGateFlag
+    CLR.B   _CLOCK_AlignedInsetRenderGateFlag
 
 .done:
     MOVEM.L (A7)+,D5-D7/A3

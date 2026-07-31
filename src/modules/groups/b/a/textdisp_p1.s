@@ -1,8 +1,8 @@
-    XDEF    TEXTDISP_SetSelectionFields
+    XDEF    _TEXTDISP_SetSelectionFields
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_SetSelectionFields   (Update mode/index selection)
+; FUNC: _TEXTDISP_SetSelectionFields   (Update mode/index selection)
 ; ARGS:
 ;   stack +20: entryPtr (A3)
 ;   stack +24: mode (long, 1/2/3)
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Resets state when mode or indices are invalid.
 ;------------------------------------------------------------------------------
-TEXTDISP_SetSelectionFields:
+_TEXTDISP_SetSelectionFields:
     MOVEM.L D5-D7/A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.L  24(A7),D7

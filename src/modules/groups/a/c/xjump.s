@@ -183,14 +183,14 @@ _GROUP_AC_JMPTBL_ESQDISP_DrawStatusBanner:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DST_UpdateBannerQueue
+;   _DST_UpdateBannerQueue
 ; DESC:
-;   Jump stub to DST_UpdateBannerQueue.
+;   Jump stub to _DST_UpdateBannerQueue.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AC_JMPTBL_DST_UpdateBannerQueue:
-    JMP     DST_UpdateBannerQueue
+    JMP     _DST_UpdateBannerQueue
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AC_JMPTBL_DST_RefreshBannerBuffer   (JumpStub_DST_RefreshBannerBuffer)

@@ -13,7 +13,7 @@
 ; CLOBBERS:
 ;   A0/A1/A5/A7/D0/D7
 ; CALLS:
-;   GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes
+;   _GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, _GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes
 ; READS:
 ;   _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplateSave, _GCOMMAND_PpvTemplateFieldSeparatorByteStorage, _GCOMMAND_DigitalPpvEnabledFlag, MODE_NEWFILE, copy_template_loop, return
 ; WRITES:
@@ -28,7 +28,7 @@ _GCOMMAND_LoadPPVTemplate:
     MOVE.L  D7,-(A7)
     PEA     MODE_NEWFILE.W
     PEA     _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplateSave
-    JSR     GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -51,7 +51,7 @@ _GCOMMAND_LoadPPVTemplate:
     PEA     56.W
     PEA     -68(A5)
     MOVE.L  D7,-(A7)
-    JSR     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
     MOVEA.L -8(A5),A0
     MOVE.L  A0,-20(A5)
@@ -67,13 +67,13 @@ _GCOMMAND_LoadPPVTemplate:
     MOVE.L  A0,(A7)
     MOVE.L  -20(A5),-(A7)
     MOVE.L  D7,-(A7)
-    JSR     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
     MOVEQ   #1,D0
     MOVE.L  D0,(A7)
     PEA     _GCOMMAND_PpvTemplateFieldSeparatorByteStorage
     MOVE.L  D7,-(A7)
-    JSR     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
     MOVEA.L -24(A5),A0
 
@@ -89,10 +89,10 @@ _GCOMMAND_LoadPPVTemplate:
     MOVE.L  D0,(A7)
     MOVE.L  -24(A5),-(A7)
     MOVE.L  D7,-(A7)
-    JSR     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
     MOVE.L  D7,(A7)
-    JSR     GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(PC)
 
     LEA     36(A7),A7
 

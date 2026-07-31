@@ -1,16 +1,16 @@
-    XDEF    GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush
-    XDEF    GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer
+    XDEF    _GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush
+    XDEF    _GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer
     XDEF    _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer
-    XDEF    GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer
-    XDEF    GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer
-    XDEF    GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes
+    XDEF    _GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer
+    XDEF    _GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer
+    XDEF    _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes
     XDEF    GROUP_AY_JMPTBL_DISKIO_WriteDecimalField
     XDEF    GROUP_AY_JMPTBL_MATH_Mulu32
-    XDEF    GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask
-    XDEF    GROUP_AY_JMPTBL_STRING_CompareNoCaseN
+    XDEF    _GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask
+    XDEF    _GROUP_AY_JMPTBL_STRING_CompareNoCaseN
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer   (Routine at GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer)
+; FUNC: _GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer   (Routine at _GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -28,11 +28,11 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer:
+_GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer:
     JMP     _DISKIO_ConsumeCStringFromWorkBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer   (Routine at GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer)
+; FUNC: _GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer   (Routine at _GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -50,7 +50,7 @@ GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer:
+_GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer:
     JMP     _DISKIO_ParseLongFromWorkBuffer
 
 ;------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ GROUP_AY_JMPTBL_DISKIO_WriteDecimalField:
     JMP     _DISKIO_WriteDecimalField
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes   (Routine at GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes)
+; FUNC: _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes   (Routine at _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -94,11 +94,11 @@ GROUP_AY_JMPTBL_DISKIO_WriteDecimalField:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes:
+_GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes:
     JMP     _DISKIO_WriteBufferedBytes
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush   (Routine at GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush)
+; FUNC: _GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush   (Routine at _GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -116,11 +116,11 @@ GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush:
+_GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush:
     JMP     _DISKIO_CloseBufferedFileAndFlush
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AY_JMPTBL_STRING_CompareNoCaseN   (Routine at GROUP_AY_JMPTBL_STRING_CompareNoCaseN)
+; FUNC: _GROUP_AY_JMPTBL_STRING_CompareNoCaseN   (Routine at _GROUP_AY_JMPTBL_STRING_CompareNoCaseN)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -138,7 +138,7 @@ GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AY_JMPTBL_STRING_CompareNoCaseN:
+_GROUP_AY_JMPTBL_STRING_CompareNoCaseN:
     JMP     _STRING_CompareNoCaseN
 
 ;------------------------------------------------------------------------------
@@ -186,7 +186,7 @@ _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer:
     JMP     _DISKIO_LoadFileToWorkBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask   (Routine at GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask)
+; FUNC: _GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask   (Routine at _GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -204,11 +204,11 @@ _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask:
+_GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask:
     JMP     _SCRIPT_ReadHandshakeBit5Mask
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer   (Routine at GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer)
+; FUNC: _GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer   (Routine at _GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -226,7 +226,7 @@ GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer:
+_GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer:
     JMP     _DISKIO_OpenFileWithBuffer
 
     RTS

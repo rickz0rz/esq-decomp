@@ -14,7 +14,7 @@
 ; READS:
 ;   _HIGHLIGHT_CustomValue, CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, _HIGHLIGHT_CopperEffectSeed, _HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectListA, ESQ_CopperEffectListB
+;   CIAB_PRA, _HIGHLIGHT_CopperEffectSeed, _HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, _ESQ_CopperEffectListA, _ESQ_CopperEffectListB
 ; DESC:
 ;   Forces CIAB_PRA bits 6/7 high, uses _HIGHLIGHT_CustomValue as a parameter, and updates
 ;   the copper tables.

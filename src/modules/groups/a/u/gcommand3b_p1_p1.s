@@ -12,7 +12,7 @@
 ; CLOBBERS:
 ;   D0-D7, A0, A3
 ; CALLS:
-;   GCOMMAND_SetPresetEntry
+;   _GCOMMAND_SetPresetEntry
 ; READS:
 ;   _GCOMMAND_DefaultPresetTable
 ; WRITES:
@@ -78,7 +78,7 @@ _GCOMMAND_InitPresetWorkEntry:
     MOVE.L  D1,8(A3)
     PEA     1365.W
     MOVE.L  D0,-(A7)
-    BSR.W   GCOMMAND_SetPresetEntry
+    BSR.W   _GCOMMAND_SetPresetEntry
 
     ADDQ.W  #8,A7
 

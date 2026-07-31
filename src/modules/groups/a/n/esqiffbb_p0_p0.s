@@ -17,17 +17,17 @@
 ; CLOBBERS:
 ;   A0/A1/A5/A6/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, _ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_MATH_DivS32, _ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition, _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, _LVOCopyMem, _LVOSetAPen, _LVOSetRast
+;   _ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, _ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, _ESQIFF_JMPTBL_MATH_DivS32, _ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition, _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, _LVOCopyMem, _LVOSetAPen, _LVOSetRast
 ; READS:
 ;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_2, _ACCUMULATOR_Row0_CaptureValue, _ACCUMULATOR_Row1_CaptureValue, _ACCUMULATOR_Row2_CaptureValue, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _SCRIPT_BannerTransitionActive, _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, _WDISP_AccumulatorRowTable, _WDISP_AccumulatorRow0_Value, _WDISP_AccumulatorRow0_CopperIndexStart, _WDISP_AccumulatorRow0_CopperIndexEnd, _WDISP_AccumulatorRow1_Value, _WDISP_AccumulatorRow1_CopperIndexStart, _WDISP_AccumulatorRow1_CopperIndexEnd, _WDISP_AccumulatorRow2_Value, _WDISP_AccumulatorRow2_CopperIndexStart, _WDISP_AccumulatorRow2_CopperIndexEnd, _WDISP_AccumulatorRow3_Value, _WDISP_AccumulatorRow3_CopperIndexStart, _WDISP_AccumulatorRow3_CopperIndexEnd, e8
 ; WRITES:
-;   _ACCUMULATOR_Row0_CaptureValue, _ACCUMULATOR_Row1_CaptureValue, _ACCUMULATOR_Row2_CaptureValue, _ACCUMULATOR_Row3_CaptureValue, _ACCUMULATOR_Row0_Sum, _ACCUMULATOR_Row1_Sum, _ACCUMULATOR_Row2_Sum, _ACCUMULATOR_Row3_Sum, _ACCUMULATOR_Row0_SaturateFlag, _ACCUMULATOR_Row1_SaturateFlag, _ACCUMULATOR_Row2_SaturateFlag, _ACCUMULATOR_Row3_SaturateFlag, ESQFUNC_MissingAssetRetryMask, _WDISP_DisplayContextBase, _WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
+;   _ACCUMULATOR_Row0_CaptureValue, _ACCUMULATOR_Row1_CaptureValue, _ACCUMULATOR_Row2_CaptureValue, _ACCUMULATOR_Row3_CaptureValue, _ACCUMULATOR_Row0_Sum, _ACCUMULATOR_Row1_Sum, _ACCUMULATOR_Row2_Sum, _ACCUMULATOR_Row3_Sum, _ACCUMULATOR_Row0_SaturateFlag, _ACCUMULATOR_Row1_SaturateFlag, _ACCUMULATOR_Row2_SaturateFlag, _ACCUMULATOR_Row3_SaturateFlag, _ESQFUNC_MissingAssetRetryMask, _WDISP_DisplayContextBase, _WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
 ; DESC:
 ;   Selects source brush list by mode, performs drop/rise copper transitions, builds
 ;   a display context, blits the external asset, and captures accumulator thresholds
 ;   used by subsequent copper palette motion.
 ; NOTES:
-;   Missing-asset path sets ESQFUNC_MissingAssetRetryMask bits to request deferred retries.
+;   Missing-asset path sets _ESQFUNC_MissingAssetRetryMask bits to request deferred retries.
 ;------------------------------------------------------------------------------
 ESQIFF_ShowExternalAssetWithCopperFx:
     LINK.W  A5,#-36
@@ -69,7 +69,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.L  D0,20(A7)
     MOVE.L  D1,D0
     MOVE.L  20(A7),D1
-    JSR     ESQIFF_JMPTBL_MATH_DivS32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D6
     MOVEQ   #120,D0
@@ -217,7 +217,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVE.L  D4,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  -22(A5),-(A7)
-    JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
+    JSR     _ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     LEA     28(A7),A7
     MOVEA.L -22(A5),A0
@@ -392,7 +392,7 @@ ESQIFF_ShowExternalAssetWithCopperFx:
     MOVEQ   #2,D0
 
 .branch_13:
-    OR.L    D0,ESQFUNC_MissingAssetRetryMask
+    OR.L    D0,_ESQFUNC_MissingAssetRetryMask
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQIFF_ShowExternalAssetWithCopperFx_Return   (Return tail for external-asset copper blit)
@@ -429,11 +429,11 @@ ESQIFF_ShowExternalAssetWithCopperFx_Return:
 ; CLOBBERS:
 ;   A7/D0/D1/D7
 ; CALLS:
-;   _ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_ReloadExternalAssetCatalogBuffers, ESQIFF_QueueNextExternalAssetIffJob
+;   _ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_ReloadExternalAssetCatalogBuffers, _ESQIFF_QueueNextExternalAssetIffJob
 ; READS:
 ;   _Global_WORD_SELECT_CODE_IS_RAVESC, _COI_AttentionOverlayBusyFlag, _ESQIFF_ExternalAssetFlags, _DISKIO_Drive0WriteProtectedCode, _DISKIO_DriveWriteProtectStatusCodeDrive1
 ; WRITES:
-;   _ESQIFF_AssetSourceSelect, ESQIFF_GAdsSourceEnabled
+;   _ESQIFF_AssetSourceSelect, _ESQIFF_GAdsSourceEnabled
 ; DESC:
 ;   Sets source-selection flags by mode, conditionally reloads external catalogs,
 ;   then queues the next external asset IFF job.
@@ -457,11 +457,11 @@ ESQIFF_ServiceExternalAssetSourceState:
     MOVEQ   #0,D0
     MOVE.W  D0,_ESQIFF_AssetSourceSelect
     MOVEQ   #-1,D1
-    MOVE.W  D1,ESQIFF_GAdsSourceEnabled
+    MOVE.W  D1,_ESQIFF_GAdsSourceEnabled
     BRA.S   .reload_logo_catalog_if_needed
 
 .configure_source_for_secondary_mode:
-    CLR.W   ESQIFF_GAdsSourceEnabled
+    CLR.W   _ESQIFF_GAdsSourceEnabled
     MOVE.W  #(-1),_ESQIFF_AssetSourceSelect
 
 .reload_logo_catalog_if_needed:
@@ -495,7 +495,7 @@ ESQIFF_ServiceExternalAssetSourceState:
 .queue_next_asset_after_reload_checks:
     JSR     _ESQDISP_ProcessGridMessagesIfIdle(PC)
 
-    BSR.W   ESQIFF_QueueNextExternalAssetIffJob
+    BSR.W   _ESQIFF_QueueNextExternalAssetIffJob
 
 .return:
     MOVE.L  (A7)+,D7
@@ -514,7 +514,7 @@ ESQIFF_ServiceExternalAssetSourceState:
 ; CALLS:
 ;   _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, ESQIFF_JMPTBL_BRUSH_PopBrushHead, ESQIFF_JMPTBL_ESQ_NoOp, _ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled, ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner, _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, _ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_RestoreBasePaletteTriples, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, _ESQIFF_SetApenToBrightestPaletteIndex, ESQIFF_ShowExternalAssetWithCopperFx, ESQIFF_ServiceExternalAssetSourceState, _LVOForbid, _LVOPermit, _LVOSetAPen, _LVOSetDrMd, _LVOSetRast
 ; READS:
-;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_2, _TEXTDISP_DeferredActionCountdown, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryGroupEntryCount, _WDISP_AccumulatorCaptureActive, ESQIFF_ExternalAssetStateTable, ESQIFF_ExternalAssetPathCommaFlag
+;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_2, _TEXTDISP_DeferredActionCountdown, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryGroupEntryCount, _WDISP_AccumulatorCaptureActive, _ESQIFF_ExternalAssetStateTable, _ESQIFF_ExternalAssetPathCommaFlag
 ; WRITES:
 ;   _ESQIFF_GAdsBrushListCount, _ESQIFF_LogoBrushListCount, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, _WDISP_AccumulatorCaptureActive, _TEXTDISP_CurrentMatchIndex
 ; DESC:
@@ -544,14 +544,14 @@ _ESQIFF_PlayNextExternalAssetFrame:
 
 .validate_asset_list_and_match_index:
     MOVE.W  _TEXTDISP_PrimaryGroupEntryCount,D0
-    MOVE.W  ESQIFF_ExternalAssetStateTable,D1
+    MOVE.W  _ESQIFF_ExternalAssetStateTable,D1
     CMP.W   D1,D0
     BCC.S   .prepare_display_context_for_asset_blit
 
     TST.W   D7
     BNE.S   .prepare_display_context_for_asset_blit
 
-    TST.W   ESQIFF_ExternalAssetPathCommaFlag
+    TST.W   _ESQIFF_ExternalAssetPathCommaFlag
     BNE.S   .prepare_display_context_for_asset_blit
 
     BSR.W   _ESQIFF_RestoreBasePaletteTriples
@@ -621,7 +621,7 @@ _ESQIFF_PlayNextExternalAssetFrame:
     TST.W   D7
     BNE.S   .pop_rendered_asset_head
 
-    TST.W   ESQIFF_ExternalAssetPathCommaFlag
+    TST.W   _ESQIFF_ExternalAssetPathCommaFlag
     BNE.S   .pop_rendered_asset_head
 
     MOVEA.L _WDISP_DisplayContextBase,A0
@@ -633,7 +633,7 @@ _ESQIFF_PlayNextExternalAssetFrame:
 
     BSR.W   _ESQIFF_SetApenToBrightestPaletteIndex
 
-    MOVE.W  ESQIFF_ExternalAssetStateTable,_TEXTDISP_CurrentMatchIndex
+    MOVE.W  _ESQIFF_ExternalAssetStateTable,_TEXTDISP_CurrentMatchIndex
     PEA     2.W
     PEA     1.W
     JSR     ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner(PC)

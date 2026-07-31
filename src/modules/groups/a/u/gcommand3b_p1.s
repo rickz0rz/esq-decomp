@@ -1,9 +1,9 @@
-    XDEF    GCOMMAND_UpdatePresetEntryCache
+    XDEF    _GCOMMAND_UpdatePresetEntryCache
     XDEF    GCOMMAND_UpdatePresetEntryCache_Return
 
 
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_UpdatePresetEntryCache   (Populate cached preset deltas for one preset record)
+; FUNC: _GCOMMAND_UpdatePresetEntryCache   (Populate cached preset deltas for one preset record)
 ; ARGS:
 ;   stack +4: presetRecord (struct pointer)
 ; RET:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Field layout is inferred; cache is written starting at offset 36.
 ;------------------------------------------------------------------------------
-GCOMMAND_UpdatePresetEntryCache:
+_GCOMMAND_UpdatePresetEntryCache:
     LINK.W  A5,#-16
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 8(A5),A3

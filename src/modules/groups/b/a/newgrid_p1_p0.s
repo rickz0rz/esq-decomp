@@ -1,8 +1,8 @@
-    XDEF    NEWGRID_MapSelectionToMode
+    XDEF    _NEWGRID_MapSelectionToMode
 
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_MapSelectionToMode   (Map selection index to mode)
+; FUNC: _NEWGRID_MapSelectionToMode   (Map selection index to mode)
 ; ARGS:
 ;   stack +8: D7 = selection index
 ;   stack +12: D6 = mode argument
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Returns 0 when input is out of range.
 ;------------------------------------------------------------------------------
-NEWGRID_MapSelectionToMode:
+_NEWGRID_MapSelectionToMode:
     MOVEM.L D6-D7,-(A7)
     MOVE.L  12(A7),D7
     MOVE.W  18(A7),D6

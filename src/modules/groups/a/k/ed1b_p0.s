@@ -177,14 +177,14 @@ _ED1_JMPTBL_GCOMMAND_SeedBannerDefaults:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MEM_Move
+;   _MEM_Move
 ; DESC:
-;   Jump stub to MEM_Move.
+;   Jump stub to _MEM_Move.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _ED1_JMPTBL_MEM_Move:
-    JMP     MEM_Move
+    JMP     _MEM_Move
 
 ;------------------------------------------------------------------------------
 ; FUNC: ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs   (Jump stub)

@@ -15,7 +15,7 @@
 ; CALLS:
 ;   _GROUP_AE_JMPTBL_WDISP_SPrintf, _DISKIO_WriteBufferedBytes
 ; READS:
-;   Global_STR_PERCENT_LD
+;   _Global_STR_PERCENT_LD
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -31,7 +31,7 @@ _DISKIO_WriteDecimalField:
     MOVE.L  12(A5),D6
 
     MOVE.L  D6,-(A7)
-    PEA     Global_STR_PERCENT_LD
+    PEA     _Global_STR_PERCENT_LD
     PEA     -10(A5)
     JSR     _GROUP_AE_JMPTBL_WDISP_SPrintf(PC)
 

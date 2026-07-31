@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   NEWGRID_JMPTBL_MATH_DivS32
+;   _NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
 ;   _NEWGRID_RowHeightPx, 52(A3), 54(A3)
 ; WRITES:
@@ -42,7 +42,7 @@ _NEWGRID_ComputeColumnIndex:
     MOVE.L  D0,8(A7)
     MOVE.L  D1,D0
     MOVE.L  8(A7),D1
-    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D0,D7
 

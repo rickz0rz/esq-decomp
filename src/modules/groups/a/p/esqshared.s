@@ -1,10 +1,10 @@
-    XDEF    ESQSHARED_ParseCompactEntryRecord
+    XDEF    _ESQSHARED_ParseCompactEntryRecord
 
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_ParseCompactEntryRecord   (Parse compact entry record and apply by title)
+; FUNC: _ESQSHARED_ParseCompactEntryRecord   (Parse compact entry record and apply by title)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +11: arg_2 (via 15(A5))
@@ -14,18 +14,18 @@
 ; CLOBBERS:
 ;   A3/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   ESQSHARED_UpdateMatchingEntriesByTitle
+;   _ESQSHARED_UpdateMatchingEntriesByTitle
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
 ;   Parses compact record fields (group/type/title/key byte) and forwards update
-;   payload to ESQSHARED_UpdateMatchingEntriesByTitle.
+;   payload to _ESQSHARED_UpdateMatchingEntriesByTitle.
 ; NOTES:
 ;   Title field is read up to delimiter 0x12 (or 8 bytes max) before dispatch.
 ;------------------------------------------------------------------------------
-ESQSHARED_ParseCompactEntryRecord:
+_ESQSHARED_ParseCompactEntryRecord:
     LINK.W  A5,#-16
     MOVEM.L D2/D4-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -61,7 +61,7 @@ ESQSHARED_ParseCompactEntryRecord:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     PEA     -15(A5)
-    BSR.W   ESQSHARED_UpdateMatchingEntriesByTitle
+    BSR.W   _ESQSHARED_UpdateMatchingEntriesByTitle
 
     MOVEM.L -40(A5),D2/D4-D7/A3
     UNLK    A5

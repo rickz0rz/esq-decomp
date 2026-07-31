@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   D0-D7
 ; CALLS:
-;   _NEWGRID_JMPTBL_MATH_Mulu32, NEWGRID_JMPTBL_MATH_DivS32
+;   _NEWGRID_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
 ;   _GCOMMAND_DefaultPresetTable
 ; WRITES:
@@ -55,7 +55,7 @@ _GCOMMAND_ComputePresetIncrement:
     JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D4,D1
-    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     BRA.S   .store_result
 

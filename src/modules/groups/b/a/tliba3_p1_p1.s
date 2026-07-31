@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   A0/A1/A3/A6/A7/D0
 ; CALLS:
-;   _TLIBA3_DrawVerticalScaleTicks, TLIBA3_DrawHorizontalScaleTicks, _TLIBA3_DrawOuterFrameBorder, _TLIBA3_DrawInnerFrameBorder, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont
+;   _TLIBA3_DrawVerticalScaleTicks, _TLIBA3_DrawHorizontalScaleTicks, _TLIBA3_DrawOuterFrameBorder, _TLIBA3_DrawInnerFrameBorder, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont
 ; READS:
 ;   _Global_HANDLE_PREVUEC_FONT, _Global_HANDLE_TOPAZ_FONT, Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
@@ -64,7 +64,7 @@ TLIBA3_DrawViewModeGuides:
     ASR.L   #1,D0
     MOVE.L  D0,(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   TLIBA3_DrawHorizontalScaleTicks
+    BSR.W   _TLIBA3_DrawHorizontalScaleTicks
 
     MOVE.L  A3,(A7)
     BSR.W   _TLIBA3_DrawOuterFrameBorder

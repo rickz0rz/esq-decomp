@@ -2,10 +2,10 @@
     XDEF    GROUP_AJ_JMPTBL_MATH_DivU32
     XDEF    GROUP_AJ_JMPTBL_MATH_Mulu32
     XDEF    _GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals
-    XDEF    GROUP_AJ_JMPTBL_STRING_FindSubstring
+    XDEF    _GROUP_AJ_JMPTBL_STRING_FindSubstring
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AJ_JMPTBL_STRING_FindSubstring   (Jump stub)
+; FUNC: _GROUP_AJ_JMPTBL_STRING_FindSubstring   (Jump stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -17,7 +17,7 @@
 ; DESC:
 ;   Jump stub to STRING_FindSubstring.
 ;------------------------------------------------------------------------------
-GROUP_AJ_JMPTBL_STRING_FindSubstring:
+_GROUP_AJ_JMPTBL_STRING_FindSubstring:
     JMP     STRING_FindSubstring
 
 ;------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-    XDEF    Global_STR_ESQIFF_C_1
+    XDEF    _Global_STR_ESQIFF_C_1
     XDEF    ESQIFF_BannerBrushResourceCursor
     XDEF    ESQIFF_STR_WEATHER
     XDEF    Global_STR_ESQIFF_C_2
@@ -9,8 +9,8 @@
     XDEF    _Global_STR_ESQIFF_C_4
     XDEF    _Global_STR_ESQIFF_C_5
     XDEF    _Global_STR_ESQIFF_C_6
-    XDEF    ESQIFF_PATH_DF0_COLON
-    XDEF    ESQIFF_PATH_RAM_COLON_LOGOS_SLASH
+    XDEF    _ESQIFF_PATH_DF0_COLON
+    XDEF    _ESQIFF_PATH_RAM_COLON_LOGOS_SLASH
     XDEF    _Global_STR_ESQIFF_C_7
     XDEF    _Global_STR_ESQIFF_C_8
     XDEF    _Global_STR_DF0_BRUSH_INI_2
@@ -31,7 +31,7 @@
     XDEF    _Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL
 ; ========== ESQIFF.c ==========
 
-Global_STR_ESQIFF_C_1:
+_Global_STR_ESQIFF_C_1:
     NStr    "ESQIFF.c"
 ;------------------------------------------------------------------------------
 ; SYM: ESQIFF_BannerBrushResourceCursor   (banner brush resource cursor)
@@ -86,10 +86,10 @@ _Global_STR_ESQIFF_C_5:
     NStr    "ESQIFF.c"
 _Global_STR_ESQIFF_C_6:
     NStr    "ESQIFF.c"
-ESQIFF_PATH_DF0_COLON:
+_ESQIFF_PATH_DF0_COLON:
     NStr    "df0:"
     NStr    "df0:"
-ESQIFF_PATH_RAM_COLON_LOGOS_SLASH:
+_ESQIFF_PATH_RAM_COLON_LOGOS_SLASH:
     NStr    "ram:logos/ "
     NStr    "ram:logos/ "
 _Global_STR_ESQIFF_C_7:

@@ -1,9 +1,9 @@
-    XDEF    DATETIME_CopyPairAndRecalc
+    XDEF    _DATETIME_CopyPairAndRecalc
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: DATETIME_CopyPairAndRecalc   (Copy two date structs and recalc)
+; FUNC: _DATETIME_CopyPairAndRecalc   (Copy two date structs and recalc)
 ; ARGS:
 ;   stack +8: A3 = dest struct
 ;   stack +12: A2 = src1 pointer
@@ -23,7 +23,7 @@
 ; NOTES:
 ;   DBF loops run (Dn+1) iterations (22 bytes).
 ;------------------------------------------------------------------------------
-DATETIME_CopyPairAndRecalc:
+_DATETIME_CopyPairAndRecalc:
     LINK.W  A5,#0
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 8(A5),A3

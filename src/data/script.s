@@ -1,11 +1,11 @@
-    XDEF    Global_STR_SCRIPT_C_1
+    XDEF    _Global_STR_SCRIPT_C_1
     XDEF    _Global_STR_SCRIPT_C_2
     XDEF    _SCRIPT_SerialReadModeOverflowCount
     XDEF    _SCRIPT_CtrlLineAssertedFlag
     XDEF    _Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE
     XDEF    _SCRIPT_PtrNoForecastWeatherData
     XDEF    _SCRIPT_PtrWeatherDataAvailabilityDisclaimer
-    XDEF    Global_JMPTBL_MONTHS
+    XDEF    _Global_JMPTBL_MONTHS
     XDEF    _Global_JMPTBL_SHORT_MONTHS
     XDEF    _Global_JMPTBL_DAYS_OF_WEEK
     XDEF    _Global_JMPTBL_SHORT_DAYS_OF_WEEK
@@ -14,27 +14,27 @@
     XDEF    _Global_STR_ALIGNED_NEXT_SHOWING
     XDEF    _Global_STR_ALIGNED_TODAY_AT
     XDEF    _Global_STR_ALIGNED_TOMORROW_AT
-    XDEF    Global_STR_SHOWTIMES_AND_SINGLE_SPACE
-    XDEF    Global_STR_SHOWING_AT_AND_SINGLE_SPACE
-    XDEF    SCRIPT_StrHoursPluralSuffix
-    XDEF    SCRIPT_StrHourSingularSuffix
-    XDEF    SCRIPT_StrMinutesSuffix
+    XDEF    _Global_STR_SHOWTIMES_AND_SINGLE_SPACE
+    XDEF    _Global_STR_SHOWING_AT_AND_SINGLE_SPACE
+    XDEF    _SCRIPT_StrHoursPluralSuffix
+    XDEF    _SCRIPT_StrHourSingularSuffix
+    XDEF    _SCRIPT_StrMinutesSuffix
     XDEF    _Global_STR_ALIGNED_TONIGHT_AT
     XDEF    _Global_STR_ALIGNED_ON
     XDEF    _Global_STR_ALIGNED_CHANNEL_1
-    XDEF    SCRIPT_PtrSportsOnPrefix
+    XDEF    _SCRIPT_PtrSportsOnPrefix
     XDEF    SCRIPT_PtrMovieSummaryForPrefix
-    XDEF    SCRIPT_PtrSummaryOfPrefix
-    XDEF    SCRIPT_PtrChannelSuffix
+    XDEF    _SCRIPT_PtrSummaryOfPrefix
+    XDEF    _SCRIPT_PtrChannelSuffix
     XDEF    _SCRIPT_PtrNoDataPlaceholder
     XDEF    Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
-    XDEF    SCRIPT_PtrOffAirPlaceholder
-    XDEF    Global_STR_GRID_DATE_FORMAT_STRING
+    XDEF    _SCRIPT_PtrOffAirPlaceholder
+    XDEF    _Global_STR_GRID_DATE_FORMAT_STRING
     XDEF    _Global_STR_WEATHER_UPDATE_FOR
     XDEF    _SCRIPT_CtrlHandshakeStage
-    XDEF    SCRIPT_CtrlHandshakeRetryCount
-    XDEF    SCRIPT_RuntimeModeDispatchLatch
-    XDEF    SCRIPT_CtrlCmdDeferCounter
+    XDEF    _SCRIPT_CtrlHandshakeRetryCount
+    XDEF    _SCRIPT_RuntimeModeDispatchLatch
+    XDEF    _SCRIPT_CtrlCmdDeferCounter
     XDEF    _SCRIPT_PlaybackFallbackCounter
     XDEF    _SCRIPT_Type20SubtypeCache
     XDEF    _SCRIPT_PendingBannerTargetChar
@@ -44,18 +44,18 @@
     XDEF    _SCRIPT_ReadModeActiveLatch
     XDEF    _BRUSH_ScriptPrimarySelection
     XDEF    _BRUSH_ScriptSecondarySelection
-    XDEF    SCRIPT_RuntimeModeDeferredFlag
+    XDEF    _SCRIPT_RuntimeModeDeferredFlag
     XDEF    _SCRIPT_PendingWeatherCommandChar
     XDEF    _SCRIPT_PendingTextdispCmdChar
     XDEF    _SCRIPT_PendingTextdispCmdArg
     XDEF    _SCRIPT_CommandTextPtr
     XDEF    _SCRIPT_BannerTransitionStepCursor
-    XDEF    SCRIPT_StatusMaskRefreshPending
+    XDEF    _SCRIPT_StatusMaskRefreshPending
     XDEF    _SCRIPT_BrushTag_Default00_Primary
     XDEF    _SCRIPT_BrushTag_Default00_Secondary
     XDEF    _SCRIPT_BrushTag_Clear11_Primary
     XDEF    _SCRIPT_BrushTag_Clear11_Secondary
-    XDEF    SCRIPT_Tag_YL
+    XDEF    _SCRIPT_Tag_YL
     XDEF    _TEXTDISP_SourceConfigFlagMask
     XDEF    _TEXTDISP_PtrPrevueSportsTag
     XDEF    _SCRIPT_AlignedPrefixEmptyA
@@ -68,24 +68,24 @@
     XDEF    SCRIPT_AlignedPrefixEmptyD
     XDEF    SCRIPT_SpacerTripleC
     XDEF    SCRIPT_AlignedPrefixEmptyE
-    XDEF    SCRIPT_AlignedPrefixEmptyF
-    XDEF    SCRIPT_AlignedStringFormat
-    XDEF    SCRIPT_StrAtSeparator
-    XDEF    SCRIPT_StrVsDotSeparator
-    XDEF    SCRIPT_StrVsSeparator
-    XDEF    SCRIPT_AlignedPrefixEmptyG
-    XDEF    Global_STR_ALIGNED_CHANNEL_2
-    XDEF    TEXTDISP_FilterModeId
-    XDEF    SCRIPT_FilterTag_PPV
-    XDEF    SCRIPT_FilterTag_SBE
-    XDEF    SCRIPT_FilterTag_SPORTS
+    XDEF    _SCRIPT_AlignedPrefixEmptyF
+    XDEF    _SCRIPT_AlignedStringFormat
+    XDEF    _SCRIPT_StrAtSeparator
+    XDEF    _SCRIPT_StrVsDotSeparator
+    XDEF    _SCRIPT_StrVsSeparator
+    XDEF    _SCRIPT_AlignedPrefixEmptyG
+    XDEF    _Global_STR_ALIGNED_CHANNEL_2
+    XDEF    _TEXTDISP_FilterModeId
+    XDEF    _SCRIPT_FilterTag_PPV
+    XDEF    _SCRIPT_FilterTag_SBE
+    XDEF    _SCRIPT_FilterTag_SPORTS
     XDEF    TEXTDISP_LastDispatchMatchIndex
     XDEF    TEXTDISP_LastDispatchGroupId
     XDEF    TEXTDISP_CommandBufferPtr
     XDEF    TEXTDISP_CommandPrefixFormat
 ; ========== SCRIPT.c ==========
 
-Global_STR_SCRIPT_C_1:
+_Global_STR_SCRIPT_C_1:
     NStr    "SCRIPT.c"
 _Global_STR_SCRIPT_C_2:
     NStr    "SCRIPT.c"
@@ -149,7 +149,7 @@ Global_STR_NOVEMBER:
 Global_STR_DECEMBER:
     NStr    "December"
 
-Global_JMPTBL_MONTHS:
+_Global_JMPTBL_MONTHS:
     DC.L    Global_STR_JANUARY
     DC.L    Global_STR_FEBRUARY
     DC.L    Global_STR_MARCH
@@ -375,15 +375,15 @@ _Global_STR_ALIGNED_TODAY_AT:
     DC.B    TextAlignCenter,"Today at ",0
 _Global_STR_ALIGNED_TOMORROW_AT:
     DC.B    TextAlignCenter,"Tomorrow at ",0
-Global_STR_SHOWTIMES_AND_SINGLE_SPACE:
+_Global_STR_SHOWTIMES_AND_SINGLE_SPACE:
     NStr    "Showtimes "
-Global_STR_SHOWING_AT_AND_SINGLE_SPACE:
+_Global_STR_SHOWING_AT_AND_SINGLE_SPACE:
     NStr    "Showing at "
-SCRIPT_StrHoursPluralSuffix:
+_SCRIPT_StrHoursPluralSuffix:
     DC.B    "hrs ",0
-SCRIPT_StrHourSingularSuffix:
+_SCRIPT_StrHourSingularSuffix:
     DC.B    "hr ",0
-SCRIPT_StrMinutesSuffix:
+_SCRIPT_StrMinutesSuffix:
     DC.B    "min)",0
 _Global_STR_ALIGNED_TONIGHT_AT:
     DC.B    TextAlignCenter,"Tonight at ",0
@@ -393,7 +393,7 @@ _Global_STR_ALIGNED_CHANNEL_1:
     NStr2   TextAlignCenter,"Channel "
 SCRIPT_StrSportsOnPrefix:
     NStr    "Sports on "
-SCRIPT_PtrSportsOnPrefix:
+_SCRIPT_PtrSportsOnPrefix:
     DC.L    SCRIPT_StrSportsOnPrefix
 SCRIPT_StrMovieSummaryForPrefix:
     NStr    "Movie Summary for "
@@ -401,11 +401,11 @@ SCRIPT_PtrMovieSummaryForPrefix:
     DC.L    SCRIPT_StrMovieSummaryForPrefix
 SCRIPT_StrSummaryOfPrefix:
     NStr    "Summary of "
-SCRIPT_PtrSummaryOfPrefix:
+_SCRIPT_PtrSummaryOfPrefix:
     DC.L    SCRIPT_StrSummaryOfPrefix
 SCRIPT_StrChannelSuffix:
     NStr    " channel "
-SCRIPT_PtrChannelSuffix:
+_SCRIPT_PtrChannelSuffix:
     DC.L    SCRIPT_StrChannelSuffix
 SCRIPT_StrNoDataPlaceholder:
     NStr    "No Data."
@@ -417,27 +417,27 @@ Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
     DC.L    Global_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
 Global_STR_OFF_AIR_1:
     NStr    "Off Air."
-SCRIPT_PtrOffAirPlaceholder:
+_SCRIPT_PtrOffAirPlaceholder:
     DC.L    Global_STR_OFF_AIR_1
-Global_STR_GRID_DATE_FORMAT_STRING:
+_Global_STR_GRID_DATE_FORMAT_STRING:
     NStr    "%s %s %ld %04ld"
 _Global_STR_WEATHER_UPDATE_FOR:
     NStr    "Weather Update for "
 ;------------------------------------------------------------------------------
-; SYM: _SCRIPT_CtrlHandshakeStage/SCRIPT_CtrlHandshakeRetryCount/SCRIPT_RuntimeModeDispatchLatch/SCRIPT_CtrlCmdDeferCounter/_SCRIPT_PlaybackFallbackCounter/_SCRIPT_Type20SubtypeCache   (script ctrl/runtime state cluster)
+; SYM: _SCRIPT_CtrlHandshakeStage/_SCRIPT_CtrlHandshakeRetryCount/_SCRIPT_RuntimeModeDispatchLatch/_SCRIPT_CtrlCmdDeferCounter/_SCRIPT_PlaybackFallbackCounter/_SCRIPT_Type20SubtypeCache   (script ctrl/runtime state cluster)
 ; TYPE: u16/u16/u16/u16/u16/u16
 ; PURPOSE: Tracks CTRL handshake/retry/dispatch state and cached subtype in runtime command processing.
-; USED BY: SCRIPT_UpdateCtrlStateMachine, _SCRIPT_HandleBrushCommand, SCRIPT_ProcessCtrlContextPlaybackTick, _ESQFUNC_DrawDiagnosticsScreen
+; USED BY: SCRIPT_UpdateCtrlStateMachine, _SCRIPT_HandleBrushCommand, _SCRIPT_ProcessCtrlContextPlaybackTick, _ESQFUNC_DrawDiagnosticsScreen
 ; NOTES:
 ;   `_SCRIPT_Type20SubtypeCache` semantics are still partially inferred from P_TYPE type-20 helper flows.
 ;------------------------------------------------------------------------------
 _SCRIPT_CtrlHandshakeStage:
     DS.W    1
-SCRIPT_CtrlHandshakeRetryCount:
+_SCRIPT_CtrlHandshakeRetryCount:
     DS.W    1
-SCRIPT_RuntimeModeDispatchLatch:
+_SCRIPT_RuntimeModeDispatchLatch:
     DS.W    1
-SCRIPT_CtrlCmdDeferCounter:
+_SCRIPT_CtrlCmdDeferCounter:
     DS.W    1
 _SCRIPT_PlaybackFallbackCounter:
     DS.W    1
@@ -447,7 +447,7 @@ _SCRIPT_Type20SubtypeCache:
 ; SYM: _SCRIPT_PendingBannerTargetChar/_SCRIPT_BannerTransitionActive   (banner transition control)
 ; TYPE: s16/u16
 ; PURPOSE: Stores a deferred banner-char target and whether a transition is currently active.
-; USED BY: SCRIPT_BeginBannerCharTransition, _SCRIPT_UpdateBannerCharTransition, SCRIPT_ApplyPendingBannerTarget
+; USED BY: _SCRIPT_BeginBannerCharTransition, _SCRIPT_UpdateBannerCharTransition, _SCRIPT_ApplyPendingBannerTarget
 ; NOTES: `_SCRIPT_PendingBannerTargetChar` uses sentinels (-2 = one-shot staged value, -1 = none pending).
 ;------------------------------------------------------------------------------
 _SCRIPT_PendingBannerTargetChar:
@@ -466,13 +466,13 @@ _BRUSH_ScriptPrimarySelection:
 _BRUSH_ScriptSecondarySelection:
     DS.L    1
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_RuntimeModeDeferredFlag/_SCRIPT_PendingWeatherCommandChar/_SCRIPT_PendingTextdispCmdChar/_SCRIPT_PendingTextdispCmdArg   (deferred command payload cluster)
+; SYM: _SCRIPT_RuntimeModeDeferredFlag/_SCRIPT_PendingWeatherCommandChar/_SCRIPT_PendingTextdispCmdChar/_SCRIPT_PendingTextdispCmdArg   (deferred command payload cluster)
 ; TYPE: u32/u8/u8/u16
 ; PURPOSE: Holds deferred runtime-mode and pending command bytes consumed by weather/TEXTDISP dispatch paths.
-; USED BY: _SCRIPT_HandleBrushCommand, SCRIPT_ProcessCtrlContextPlaybackTick, _SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, ESQIFF2_ApplyIncomingStatusPacket
+; USED BY: _SCRIPT_HandleBrushCommand, _SCRIPT_ProcessCtrlContextPlaybackTick, _SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, ESQIFF2_ApplyIncomingStatusPacket
 ; NOTES: Command chars/arg are serialized into CTRL context at offsets +437..+439.
 ;------------------------------------------------------------------------------
-SCRIPT_RuntimeModeDeferredFlag:
+_SCRIPT_RuntimeModeDeferredFlag:
     DS.L    1
 _SCRIPT_PendingWeatherCommandChar:
     DC.B    "x"
@@ -486,13 +486,13 @@ _SCRIPT_PendingTextdispCmdArg:
 ; PURPOSE: Stores heap-owned text payload used by TEXTDISP command dispatch (`cmd 'C'` path).
 ; USED BY: _SCRIPT_HandleBrushCommand, _SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, _TEXTDISP_HandleScriptCommand
 ; NOTES: Updated through _ESQPARS_ReplaceOwnedString; source commonly comes from
-;   SCRIPT_CTRL_CMD_BUFFER tail (`LEA 3(A2),A0`) after parser NUL-termination.
+;   _SCRIPT_CTRL_CMD_BUFFER tail (`LEA 3(A2),A0`) after parser NUL-termination.
 ;------------------------------------------------------------------------------
 _SCRIPT_CommandTextPtr:
     DS.L    1
 _SCRIPT_BannerTransitionStepCursor:
     DS.W    1
-SCRIPT_StatusMaskRefreshPending:
+_SCRIPT_StatusMaskRefreshPending:
     DS.W    1
 _SCRIPT_BrushTag_Default00_Primary:
     NStr    "00"
@@ -502,14 +502,14 @@ _SCRIPT_BrushTag_Clear11_Primary:
     NStr    "11"
 _SCRIPT_BrushTag_Clear11_Secondary:
     NStr    "11"
-SCRIPT_Tag_YL:
+_SCRIPT_Tag_YL:
     NStr    "yl"
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _TEXTDISP_SourceConfigFlagMask   (source-config aggregate flag mask)
 ; TYPE: u16
 ; PURPOSE: Accumulates SourceCfg feature flags while loading/applying source config entries.
-; USED BY: _TEXTDISP_LoadSourceConfig, _TEXTDISP_ClearSourceConfig, TEXTDISP_ApplySourceConfigToEntry, _TEXTDISP_AddSourceConfigEntry
+; USED BY: _TEXTDISP_LoadSourceConfig, _TEXTDISP_ClearSourceConfig, _TEXTDISP_ApplySourceConfigToEntry, _TEXTDISP_AddSourceConfigEntry
 ; NOTES: Updated by OR-ing per-entry flags.
 ;------------------------------------------------------------------------------
 _TEXTDISP_SourceConfigFlagMask:
@@ -538,34 +538,34 @@ SCRIPT_SpacerTripleC:
     NStr    "   "
 SCRIPT_AlignedPrefixEmptyE:
     NStr    TextAlignCenter
-SCRIPT_AlignedPrefixEmptyF:
+_SCRIPT_AlignedPrefixEmptyF:
     NStr    TextAlignCenter
-SCRIPT_AlignedStringFormat:
+_SCRIPT_AlignedStringFormat:
     NStr2   TextAlignCenter,"%s"
-SCRIPT_StrAtSeparator:
+_SCRIPT_StrAtSeparator:
     NStr    " at "
-SCRIPT_StrVsDotSeparator:
+_SCRIPT_StrVsDotSeparator:
     NStr    " vs. "
-SCRIPT_StrVsSeparator:
+_SCRIPT_StrVsSeparator:
     NStr    " vs "
-SCRIPT_AlignedPrefixEmptyG:
+_SCRIPT_AlignedPrefixEmptyG:
     NStr    TextAlignCenter
-Global_STR_ALIGNED_CHANNEL_2:
+_Global_STR_ALIGNED_CHANNEL_2:
     NStr2   TextAlignCenter,"Channel "
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_FilterModeId   (text-display filter mode id)
+; SYM: _TEXTDISP_FilterModeId   (text-display filter mode id)
 ; TYPE: u8 (stored in word slot)
 ; PURPOSE: Active mode selector for TEXTDISP filter/search passes.
 ; USED BY: TEXTDISP_FilterAndSelectEntry
 ; NOTES: Observed values cycle through 1..3.
 ;------------------------------------------------------------------------------
-TEXTDISP_FilterModeId:
+_TEXTDISP_FilterModeId:
     DC.W    $0300
-SCRIPT_FilterTag_PPV:
+_SCRIPT_FilterTag_PPV:
     NStr    "PPV"
-SCRIPT_FilterTag_SBE:
+_SCRIPT_FilterTag_SBE:
     NStr    "SBE"
-SCRIPT_FilterTag_SPORTS:
+_SCRIPT_FilterTag_SPORTS:
     NStr    "SPORTS"
 ;------------------------------------------------------------------------------
 ; SYM: TEXTDISP_LastDispatchMatchIndex/TEXTDISP_LastDispatchGroupId/TEXTDISP_CommandBufferPtr/TEXTDISP_CommandPrefixFormat   (textdisp dispatch scratch cluster)

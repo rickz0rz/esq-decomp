@@ -13,7 +13,7 @@
 ; CLOBBERS:
 ;   A1/A6/A7/D0/D1/D6/D7
 ; CALLS:
-;   _ED_GetEscMenuActionCode, ED_DrawAdNumberPrompt, _ED_DrawDiagnosticModeHelpText, _ED_DrawMenuSelectionHighlight, _ED_DrawScrollSpeedMenuText, _ED_DrawBottomHelpBarBackground, ED_DrawEscMainMenuText,
+;   _ED_GetEscMenuActionCode, ED_DrawAdNumberPrompt, _ED_DrawDiagnosticModeHelpText, _ED_DrawMenuSelectionHighlight, _ED_DrawScrollSpeedMenuText, _ED_DrawBottomHelpBarBackground, _ED_DrawEscMainMenuText,
 ;   _ED1_DrawDiagnosticsScreen, _ED_DrawSpecialFunctionsMenu,
 ;   _DISPLIB_DisplayTextAtPosition, _LVOSetAPen
 ; READS:
@@ -53,7 +53,14 @@ ED1_HandleEscMenuInput:
     DC.W    .case_set_flag-.dispatch_table-2
 
 .case_show_version:
-    BSR.W   *+(_ED1_EnterEscMenu_AfterVersionText-.dispatch_table+2)
+; Action 0 is the ESC key, and it LEAVES the menu. The disassembly wrote this
+; target as a hand-computed offset, which resolves to ED1_ExitEscMenu only while
+; the bytes between the two anchor labels stay the same size. ESQ_FARCALLS=1
+; widens the JSR inside that span by 2 bytes, so the old form landed on the RTS
+; above ED1_ExitEscMenu and the menu never closed. The symbolic form assembles
+; to the same bytes and cannot drift. See AGENTS.md, "ESQ_FARCALLS=1 lifts the
+; 16-bit ceiling".
+    BSR.W   ED1_ExitEscMenu
 
     BRA.W   .done
 
@@ -146,10 +153,10 @@ ED1_HandleEscMenuInput:
     ADD.L   D0,_ED_EditCursorOffset
     MOVE.L  _ED_EditCursorOffset,D0
     MOVEQ   #6,D1
-    JSR     ESQIFF_JMPTBL_MATH_DivS32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_DivS32(PC)
 
     MOVE.L  D1,_ED_EditCursorOffset
-    JSR     ED_DrawEscMainMenuText(PC)
+    JSR     _ED_DrawEscMainMenuText(PC)
 
 .done:
     TST.B   D6
@@ -322,7 +329,7 @@ _ED1_EnterEscMenu:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #0,D1
     MOVE.B  _ESQ_TAG_36+1,D1
@@ -344,7 +351,7 @@ _ED1_EnterEscMenu:
 .clamp_minor_version:
     MOVE.L  _ED_TextLimit,D0
     MOVEQ   #40,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.L  D0,_ED_BlockOffset
     MOVEQ   #1,D0
@@ -488,7 +495,7 @@ ED1_ExitEscMenu:
 
     MOVEQ   #1,D0
     MOVE.L  D0,_NEWGRID_RefreshStateFlag
-    MOVE.L  NEWGRID_LastRefreshRequest,-(A7)
+    MOVE.L  _NEWGRID_LastRefreshRequest,-(A7)
     MOVE.L  _NEWGRID_MessagePumpSuspendFlag,-(A7)
     JSR     _ESQFUNC_UpdateRefreshModeState(PC)
 

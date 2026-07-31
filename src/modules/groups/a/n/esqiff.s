@@ -30,9 +30,9 @@
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A6/A7/D0/D1/D2/D5/D6/D7
 ; CALLS:
-;   _ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate, ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, ESQIFF_JMPTBL_MATH_DivS32, ESQIFF_JMPTBL_MATH_Mulu32, _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQFUNC_TrimTextToPixelWidthWordBoundary, _ESQPARS_ReplaceOwnedString, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast, _LVOText, _LVOTextLength
+;   _ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate, _ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, _ESQIFF_JMPTBL_MATH_DivS32, _ESQIFF_JMPTBL_MATH_Mulu32, _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, _ESQFUNC_TrimTextToPixelWidthWordBoundary, _ESQPARS_ReplaceOwnedString, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, Global_STR_ESQIFF_C_1, _WDISP_WeatherStatusOverlayTextPtr, _ESQFUNC_PwBrushListHead, _ESQFUNC_STR_I5, _WDISP_WeatherStatusBrushIndex
+;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, _Global_STR_ESQIFF_C_1, _WDISP_WeatherStatusOverlayTextPtr, _ESQFUNC_PwBrushListHead, _ESQFUNC_STR_I5, _WDISP_WeatherStatusBrushIndex
 ; WRITES:
 ;   weather-overlay working copy buffer, selected brush flags (+356/+360) ??
 ; DESC:
@@ -40,7 +40,7 @@
 ;   separators, and draws up to 10 segments into brush raster text columns.
 ; NOTES:
 ;   Uses caller brush/rastport at A3 and restores original APen/DrMd on exit.
-;   Segment width is trimmed via ESQFUNC_TrimTextToPixelWidthWordBoundary.
+;   Segment width is trimmed via _ESQFUNC_TrimTextToPixelWidthWordBoundary.
 ;------------------------------------------------------------------------------
 ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     LINK.W  A5,#-68
@@ -156,7 +156,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  D2,-(A7)
     MOVE.L  D2,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
+    JSR     _ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     LEA     28(A7),A7
     MOVEQ   #0,D0
@@ -173,7 +173,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     ASR.L   #1,D1
     MOVE.L  D0,-48(A5)
     MOVE.L  D1,-32(A5)
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVEQ   #80,D1
     ADD.L   D1,D1
@@ -184,7 +184,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  D1,D0
     MOVE.L  D1,-40(A5)
     MOVE.L  -36(A5),D1
-    JSR     ESQIFF_JMPTBL_MATH_DivS32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #0,D1
     MOVE.W  176(A3),D1
@@ -218,7 +218,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  -48(A5),D2
     ADD.L   D1,D2
     MOVE.L  D2,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     ADD.L   -44(A5),D0
     MOVEQ   #0,D1
@@ -242,7 +242,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -56(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   ESQFUNC_TrimTextToPixelWidthWordBoundary
+    BSR.W   _ESQFUNC_TrimTextToPixelWidthWordBoundary
 
     LEA     12(A7),A7
     LEA     36(A3),A0
@@ -296,7 +296,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  -8(A5),-(A7)
     MOVE.L  -56(A5),-(A7)
     MOVE.L  A0,-(A7)
-    BSR.W   ESQFUNC_TrimTextToPixelWidthWordBoundary
+    BSR.W   _ESQFUNC_TrimTextToPixelWidthWordBoundary
 
     LEA     12(A7),A7
     LEA     36(A3),A0
@@ -354,7 +354,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  -28(A5),-(A7)
     MOVE.L  -4(A5),-(A7)
     PEA     672.W
-    PEA     Global_STR_ESQIFF_C_1
+    PEA     _Global_STR_ESQIFF_C_1
     JSR     _ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     36(A3),A0
@@ -387,7 +387,7 @@ ESQIFF_DrawWeatherStatusOverlayIntoBrush:
 ; CLOBBERS:
 ;   A0/A7/D0/D1/D7
 ; CALLS:
-;   _ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_BRUSH_CloneBrushRecord, ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQIFF_JMPTBL_STRING_CompareNoCase, ESQIFF_DrawWeatherStatusOverlayIntoBrush
+;   _ESQIFF_JMPTBL_BRUSH_AllocBrushNode, ESQIFF_JMPTBL_BRUSH_CloneBrushRecord, _ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess, _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQIFF_JMPTBL_STRING_CompareNoCase, ESQIFF_DrawWeatherStatusOverlayIntoBrush
 ; READS:
 ;   Global_STR_ESQIFF_C_2, _PARSEINI_BannerBrushResourceHead, _CTASKS_PendingIffBrushDescriptor, ESQIFF_BannerBrushResourceCursor, ESQIFF_STR_WEATHER, _WDISP_WeatherStatusCountdown, _WDISP_WeatherStatusDigitChar
 ; WRITES:
@@ -483,7 +483,7 @@ ESQIFF_QueueIffBrushLoad:
     MOVEA.L D0,A0
     MOVE.B  #$6,190(A0)
     MOVE.W  #6,_CTASKS_IffTaskState
-    JSR     ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(PC)
+    JSR     _ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(PC)
 
     ADDQ.W  #8,A7
 
@@ -516,11 +516,11 @@ ESQIFF_QueueIffBrushLoad:
 ; CLOBBERS:
 ;   A0/A3/A7/D0/D1/D2/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, _ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode
+;   _ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, _ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode
 ; READS:
-;   ESQIFF_RenderWeatherStatusBrushSlice_Return, _CONFIG_NewgridSelectionCode16EnabledFlag, ESQFUNC_WeatherSliceWidthInitGate, ESQIFF_WeatherSliceRemainingWidth, ESQIFF_WeatherSliceSourceOffset, ESQIFF_WeatherSliceValidateGateFlag
+;   ESQIFF_RenderWeatherStatusBrushSlice_Return, _CONFIG_NewgridSelectionCode16EnabledFlag, _ESQFUNC_WeatherSliceWidthInitGate, ESQIFF_WeatherSliceRemainingWidth, ESQIFF_WeatherSliceSourceOffset, ESQIFF_WeatherSliceValidateGateFlag
 ; WRITES:
-;   ESQFUNC_WeatherSliceWidthInitGate, ESQIFF_WeatherSliceRemainingWidth, ESQIFF_WeatherSliceSourceOffset, ESQIFF_WeatherSliceValidateGateFlag
+;   _ESQFUNC_WeatherSliceWidthInitGate, ESQIFF_WeatherSliceRemainingWidth, ESQIFF_WeatherSliceSourceOffset, ESQIFF_WeatherSliceValidateGateFlag
 ; DESC:
 ;   Initializes/continues weather-slice progress state, blits one or two brush
 ;   slices depending on mode byte, and updates remaining/consumed pixel counters.
@@ -546,12 +546,12 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     TST.W   D0
     BLE.S   .reset_slice_state
 
-    TST.W   ESQFUNC_WeatherSliceWidthInitGate
+    TST.W   _ESQFUNC_WeatherSliceWidthInitGate
     BEQ.S   .clamp_slice_width
 
 .reset_slice_state:
     MOVEQ   #0,D0
-    MOVE.W  D0,ESQFUNC_WeatherSliceWidthInitGate
+    MOVE.W  D0,_ESQFUNC_WeatherSliceWidthInitGate
     MOVE.W  178(A2),D1
     MOVE.B  #$1,ESQIFF_WeatherSliceValidateGateFlag
     MOVE.W  D0,ESQIFF_WeatherSliceSourceOffset
@@ -590,7 +590,7 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     CLR.L   -(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
+    JSR     _ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     MOVEQ   #0,D0
     MOVE.W  176(A2),D0
@@ -613,7 +613,7 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     CLR.L   -(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
+    JSR     _ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     LEA     52(A7),A7
     BRA.S   .update_slice_progress_and_return
@@ -647,7 +647,7 @@ ESQIFF_RenderWeatherStatusBrushSlice:
     CLR.L   -(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  A2,-(A7)
-    JSR     ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
+    JSR     _ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(PC)
 
     LEA     28(A7),A7
     MOVEQ   #11,D0

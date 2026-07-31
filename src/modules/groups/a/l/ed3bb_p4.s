@@ -42,11 +42,11 @@ _SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR:
     CMP.L   D0,D7
     BNE.S   .setTextToCursor
 
-    LEA     Global_STR_TEXT,A0
+    LEA     _Global_STR_TEXT,A0
     BRA.S   .drawText
 
 .setTextToCursor:
-    LEA     Global_STR_CURSOR,A0
+    LEA     _Global_STR_CURSOR,A0
 
 .drawText:
     MOVE.L  A0,-(A7)
@@ -109,11 +109,11 @@ SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE:
     TST.L   _Global_REF_BOOL_IS_LINE_OR_PAGE
     BNE.S   .setTextToPage
 
-    LEA     Global_STR_LINE,A0
+    LEA     _Global_STR_LINE,A0
     BRA.S   .drawText
 
 .setTextToPage:
-    LEA     Global_STR_PAGE,A0
+    LEA     _Global_STR_PAGE,A0
 
 .drawText:
     MOVE.L  A0,-(A7)

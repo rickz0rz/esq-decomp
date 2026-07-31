@@ -14,7 +14,7 @@
 ; READS:
 ;   CIAB_PRA
 ; WRITES:
-;   CIAB_PRA, _HIGHLIGHT_CopperEffectSeed, _HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectListA, ESQ_CopperEffectListB
+;   CIAB_PRA, _HIGHLIGHT_CopperEffectSeed, _HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, _ESQ_CopperEffectListA, _ESQ_CopperEffectListB
 ; DESC:
 ;   Clears CIAB_PRA bits 6/7, sets both parameters to $3F, and updates the
 ;   copper tables.

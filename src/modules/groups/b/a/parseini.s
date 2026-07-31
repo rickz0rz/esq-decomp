@@ -12,11 +12,11 @@
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   _PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer, _PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer, _PARSEINI_JMPTBL_STR_FindCharPtr, _PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette, _PARSEINI_JMPTBL_STRING_CompareNoCase, _TEXTDISP_ClearSourceConfig, _PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString,
-;   PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator, PARSEINI_JMPTBL_HANDLE_OpenWithMode, PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad, PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey, _PARSEINI_ProcessWeatherBlocks/_PARSEINI_LoadWeatherStrings/_PARSEINI_LoadWeatherMessageStrings/_PARSEINI_ParseColorTable helpers
+;   _PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator, _PARSEINI_JMPTBL_HANDLE_OpenWithMode, _PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad, _PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey, _PARSEINI_ProcessWeatherBlocks/_PARSEINI_LoadWeatherStrings/_PARSEINI_LoadWeatherMessageStrings/_PARSEINI_ParseColorTable helpers
 ; READS:
-;   _Global_PTR_WORK_BUFFER, _WDISP_CharClassTable (char class table), many LAB_205* globals, _PARSEINI_ParsedDescriptorListHead, PARSEINI_CurrentWeatherBlockPtr
+;   _Global_PTR_WORK_BUFFER, _WDISP_CharClassTable (char class table), many LAB_205* globals, _PARSEINI_ParsedDescriptorListHead, _PARSEINI_CurrentWeatherBlockPtr
 ; WRITES:
-;   _P_TYPE_WeatherBrushRefreshPendingFlag-2064/206A..., _TEXTDISP_AliasCount, PARSEINI_CurrentWeatherBlockTempPtr, PARSEINI_CurrentWeatherBlockPtr, _PARSEINI_CurrentRangeTableIndex, _P_TYPE_WeatherCurrentMsgPtr-C, etc.
+;   _P_TYPE_WeatherBrushRefreshPendingFlag-2064/206A..., _TEXTDISP_AliasCount, _PARSEINI_CurrentWeatherBlockTempPtr, _PARSEINI_CurrentWeatherBlockPtr, _PARSEINI_CurrentRangeTableIndex, _P_TYPE_WeatherCurrentMsgPtr-C, etc.
 ; DESC:
 ;   Top-level INI parser: scans the buffer, skips whitespace/comment chars, detects
 ;   section headers and key/value pairs, and dispatches to per-section handlers.

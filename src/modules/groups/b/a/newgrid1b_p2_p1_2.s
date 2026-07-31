@@ -15,7 +15,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   _NEWGRID_DrawGridFrame, _NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry, PARSEINI_JMPTBL_STRING_AppendAtNull,
+;   _NEWGRID_DrawGridFrame, _NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry, _PARSEINI_JMPTBL_STRING_AppendAtNull,
 ;   _NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight, _LVOSetAPen, _LVOSetDrMd, _LVOTextLength, _LVOMove, _LVOText,
 ;   _NEWGRID_ValidateSelectionCode
 ; READS:
@@ -51,7 +51,7 @@ NEWGRID_DrawEmptyGridMessage:
 
     PEA     -159(A5)
     PEA     -128(A5)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     60(A3),A0
     MOVEQ   #0,D0

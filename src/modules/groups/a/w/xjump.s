@@ -1,15 +1,15 @@
     XDEF    _GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding
-    XDEF    GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition
-    XDEF    GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition
-    XDEF    GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition
-    XDEF    GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight
-    XDEF    GROUP_AW_JMPTBL_MEM_Move
-    XDEF    GROUP_AW_JMPTBL_STRING_CopyPadNul
-    XDEF    GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode
-    XDEF    GROUP_AW_JMPTBL_WDISP_SPrintf
+    XDEF    _GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition
+    XDEF    _GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition
+    XDEF    _GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition
+    XDEF    _GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight
+    XDEF    _GROUP_AW_JMPTBL_MEM_Move
+    XDEF    _GROUP_AW_JMPTBL_STRING_CopyPadNul
+    XDEF    _GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode
+    XDEF    _GROUP_AW_JMPTBL_WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode   (Routine at GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode)
+; FUNC: _GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode   (Routine at _GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -27,7 +27,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
+_GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode:
     JMP     _TLIBA3_BuildDisplayContextForViewMode
 
 ;------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ _GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding:
     JMP     DISPLIB_ApplyInlineAlignmentPadding
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition   (Routine at GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition)
+; FUNC: _GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition   (Routine at _GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -71,11 +71,11 @@ _GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition:
+_GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition:
     JMP     _ESQIFF_RunCopperRiseTransition
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition   (Routine at GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition)
+; FUNC: _GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition   (Routine at _GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -93,11 +93,11 @@ GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition:
+_GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition:
     JMP     _ESQIFF_RunCopperDropTransition
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition   (Routine at GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition)
+; FUNC: _GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition   (Routine at _GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -115,11 +115,11 @@ GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition:
+_GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition:
     JMP     _DISPLIB_DisplayTextAtPosition
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AW_JMPTBL_MEM_Move   (Routine at GROUP_AW_JMPTBL_MEM_Move)
+; FUNC: _GROUP_AW_JMPTBL_MEM_Move   (Routine at _GROUP_AW_JMPTBL_MEM_Move)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -127,7 +127,7 @@ GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MEM_Move
+;   _MEM_Move
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -137,11 +137,11 @@ GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AW_JMPTBL_MEM_Move:
-    JMP     MEM_Move
+_GROUP_AW_JMPTBL_MEM_Move:
+    JMP     _MEM_Move
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AW_JMPTBL_WDISP_SPrintf   (Routine at GROUP_AW_JMPTBL_WDISP_SPrintf)
+; FUNC: _GROUP_AW_JMPTBL_WDISP_SPrintf   (Routine at _GROUP_AW_JMPTBL_WDISP_SPrintf)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -159,11 +159,11 @@ GROUP_AW_JMPTBL_MEM_Move:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AW_JMPTBL_WDISP_SPrintf:
+_GROUP_AW_JMPTBL_WDISP_SPrintf:
     JMP     _WDISP_SPrintf
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight   (Routine at GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight)
+; FUNC: _GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight   (Routine at _GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -181,7 +181,7 @@ GROUP_AW_JMPTBL_WDISP_SPrintf:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight:
+_GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight:
     JMP     _ESQ_SetCopperEffect_OffDisableHighlight
 
 ;!======
@@ -191,7 +191,7 @@ GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight:
     DC.W    $0000
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AW_JMPTBL_STRING_CopyPadNul   (Routine at GROUP_AW_JMPTBL_STRING_CopyPadNul)
+; FUNC: _GROUP_AW_JMPTBL_STRING_CopyPadNul   (Routine at _GROUP_AW_JMPTBL_STRING_CopyPadNul)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -209,5 +209,5 @@ GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AW_JMPTBL_STRING_CopyPadNul:
+_GROUP_AW_JMPTBL_STRING_CopyPadNul:
     JMP     _STRING_CopyPadNul

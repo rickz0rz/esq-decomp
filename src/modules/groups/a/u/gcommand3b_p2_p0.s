@@ -1,4 +1,4 @@
-    XDEF    GCOMMAND_RebuildBannerTablesFromBounds
+    XDEF    _GCOMMAND_RebuildBannerTablesFromBounds
     XDEF    GCOMMAND_UpdateBannerBounds
 
 ;------------------------------------------------------------------------------
@@ -17,12 +17,12 @@
 ; READS:
 ;   _Global_UIBusyFlag
 ; WRITES:
-;   GCOMMAND_BannerBoundLeft, GCOMMAND_BannerBoundTop, GCOMMAND_BannerBoundRight, GCOMMAND_BannerBoundBottom,
-;   GCOMMAND_BannerStepLeft..GCOMMAND_BannerStepBottom, GCOMMAND_BannerRebuildPendingFlag
+;   _GCOMMAND_BannerBoundLeft, _GCOMMAND_BannerBoundTop, _GCOMMAND_BannerBoundRight, _GCOMMAND_BannerBoundBottom,
+;   _GCOMMAND_BannerStepLeft.._GCOMMAND_BannerStepBottom, _GCOMMAND_BannerRebuildPendingFlag
 ; DESC:
 ;   Cache banner geometry parameters used by the display routines.
 ; NOTES:
-;   Sets GCOMMAND_BannerRebuildPendingFlag to request a banner-table rebuild on the next tick.
+;   Sets _GCOMMAND_BannerRebuildPendingFlag to request a banner-table rebuild on the next tick.
 ;------------------------------------------------------------------------------
 GCOMMAND_UpdateBannerBounds:
     LINK.W  A5,#-4
@@ -31,10 +31,10 @@ GCOMMAND_UpdateBannerBounds:
     MOVE.L  12(A5),D6
     MOVE.L  16(A5),D5
     MOVE.L  20(A5),D4
-    MOVE.L  D7,GCOMMAND_BannerBoundLeft
-    MOVE.L  D6,GCOMMAND_BannerBoundTop
-    MOVE.L  D5,GCOMMAND_BannerBoundRight
-    MOVE.L  D4,GCOMMAND_BannerBoundBottom
+    MOVE.L  D7,_GCOMMAND_BannerBoundLeft
+    MOVE.L  D6,_GCOMMAND_BannerBoundTop
+    MOVE.L  D5,_GCOMMAND_BannerBoundRight
+    MOVE.L  D4,_GCOMMAND_BannerBoundBottom
     TST.W   _Global_UIBusyFlag
     BEQ.S   .use_zero
 
@@ -50,26 +50,26 @@ GCOMMAND_UpdateBannerBounds:
     MOVE.L  D0,-4(A5)
     BSR.W   _GCOMMAND_ComputePresetIncrement
 
-    MOVE.L  D0,GCOMMAND_BannerStepLeft
+    MOVE.L  D0,_GCOMMAND_BannerStepLeft
     MOVE.L  -4(A5),(A7)
     MOVE.L  D6,-(A7)
     BSR.W   _GCOMMAND_ComputePresetIncrement
 
-    MOVE.L  D0,GCOMMAND_BannerStepTop
+    MOVE.L  D0,_GCOMMAND_BannerStepTop
     MOVE.L  -4(A5),(A7)
     MOVE.L  D5,-(A7)
     BSR.W   _GCOMMAND_ComputePresetIncrement
 
-    MOVE.L  D0,GCOMMAND_BannerStepRight
+    MOVE.L  D0,_GCOMMAND_BannerStepRight
     MOVE.L  -4(A5),(A7)
     MOVE.L  D4,-(A7)
     BSR.W   _GCOMMAND_ComputePresetIncrement
 
-    MOVE.L  D0,GCOMMAND_BannerStepBottom
+    MOVE.L  D0,_GCOMMAND_BannerStepBottom
     MOVEA.L AbsExecBase,A6
     JSR     _LVODisable(A6)
 
-    MOVE.W  #1,GCOMMAND_BannerRebuildPendingFlag
+    MOVE.W  #1,_GCOMMAND_BannerRebuildPendingFlag
     JSR     _LVOEnable(A6)
 
     MOVEM.L -20(A5),D4-D7
@@ -78,7 +78,7 @@ GCOMMAND_UpdateBannerBounds:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_RebuildBannerTablesFromBounds   (RebuildBannerTablesFromBounds)
+; FUNC: _GCOMMAND_RebuildBannerTablesFromBounds   (RebuildBannerTablesFromBounds)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -88,7 +88,7 @@ GCOMMAND_UpdateBannerBounds:
 ; CALLS:
 ;   _GCOMMAND_InitPresetWorkEntry, _GCOMMAND_TickPresetWorkEntries
 ; READS:
-;   GCOMMAND_BannerBoundLeft..GCOMMAND_BannerStepBottom, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, _GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3, _Global_UIBusyFlag
+;   _GCOMMAND_BannerBoundLeft.._GCOMMAND_BannerStepBottom, GCOMMAND_PresetValueTable..GCOMMAND_PresetWorkEntry3_ValueIndex, _GCOMMAND_PresetFallbackValue0..GCOMMAND_PresetFallbackValue3, _Global_UIBusyFlag
 ; WRITES:
 ;   _GCOMMAND_PresetWorkEntryTable..GCOMMAND_PresetWorkEntry3, _ESQ_CopperListBannerA, _ESQ_CopperListBannerB
 ; DESC:
@@ -99,7 +99,7 @@ GCOMMAND_UpdateBannerBounds:
 ;   The row loop runs 17 iterations (D7 = 0..16), using 32-byte row stride.
 ;   Per-row gradient words land at offsets +6/+10/+14/+18 in each 32-byte entry.
 ;------------------------------------------------------------------------------
-GCOMMAND_RebuildBannerTablesFromBounds:
+_GCOMMAND_RebuildBannerTablesFromBounds:
     LINK.W  A5,#-24
     MOVEM.L D2/D6-D7/A2-A3,-(A7)
     MOVE.L  #_ESQ_CopperListBannerA,-4(A5)
@@ -121,27 +121,27 @@ GCOMMAND_RebuildBannerTablesFromBounds:
 
 .seed_entries:
     MOVE.L  D0,D6
-    MOVE.L  GCOMMAND_BannerStepLeft,-(A7)
+    MOVE.L  _GCOMMAND_BannerStepLeft,-(A7)
     MOVE.L  D6,-(A7)
-    MOVE.L  GCOMMAND_BannerBoundLeft,-(A7)
+    MOVE.L  _GCOMMAND_BannerBoundLeft,-(A7)
     PEA     _GCOMMAND_PresetWorkEntryTable
     BSR.W   _GCOMMAND_InitPresetWorkEntry
 
-    MOVE.L  GCOMMAND_BannerStepTop,(A7)
+    MOVE.L  _GCOMMAND_BannerStepTop,(A7)
     MOVE.L  D6,-(A7)
-    MOVE.L  GCOMMAND_BannerBoundTop,-(A7)
+    MOVE.L  _GCOMMAND_BannerBoundTop,-(A7)
     PEA     GCOMMAND_PresetWorkEntry1
     BSR.W   _GCOMMAND_InitPresetWorkEntry
 
-    MOVE.L  GCOMMAND_BannerStepRight,(A7)
+    MOVE.L  _GCOMMAND_BannerStepRight,(A7)
     MOVE.L  D6,-(A7)
-    MOVE.L  GCOMMAND_BannerBoundRight,-(A7)
+    MOVE.L  _GCOMMAND_BannerBoundRight,-(A7)
     PEA     GCOMMAND_PresetWorkEntry2
     BSR.W   _GCOMMAND_InitPresetWorkEntry
 
-    MOVE.L  GCOMMAND_BannerStepBottom,(A7)
+    MOVE.L  _GCOMMAND_BannerStepBottom,(A7)
     MOVE.L  D6,-(A7)
-    MOVE.L  GCOMMAND_BannerBoundBottom,-(A7)
+    MOVE.L  _GCOMMAND_BannerBoundBottom,-(A7)
     PEA     GCOMMAND_PresetWorkEntry3
     BSR.W   _GCOMMAND_InitPresetWorkEntry
 
@@ -261,7 +261,7 @@ GCOMMAND_RebuildBannerTablesFromBounds:
     BRA.W   .row_loop
 
 .done:
-    CLR.W   GCOMMAND_BannerRebuildPendingFlag
+    CLR.W   _GCOMMAND_BannerRebuildPendingFlag
     MOVEM.L (A7)+,D2/D6-D7/A2-A3
     UNLK    A5
     RTS

@@ -11,9 +11,9 @@
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A7
 ; CALLS:
-;   _BRUSH_FindBrushByPredicate, GROUP_AA_JMPTBL_STRING_CompareN, _GROUP_AG_JMPTBL_STRING_CopyPadNul
+;   _BRUSH_FindBrushByPredicate, _GROUP_AA_JMPTBL_STRING_CompareN, _GROUP_AG_JMPTBL_STRING_CopyPadNul
 ; READS:
-;   BRUSH_LabelScratch, _BRUSH_SelectedNode, BRUSH_STR_ALIAS_CODE_00, BRUSH_STR_ALIAS_CODE_11, BRUSH_STR_ALIAS_CODE_DT, BRUSH_STR_FALLBACK_DITHER, _ESQIFF_BrushIniListHead
+;   _BRUSH_LabelScratch, _BRUSH_SelectedNode, _BRUSH_STR_ALIAS_CODE_00, _BRUSH_STR_ALIAS_CODE_11, _BRUSH_STR_ALIAS_CODE_DT, _BRUSH_STR_FALLBACK_DITHER, _ESQIFF_BrushIniListHead
 ; WRITES:
 ;   _BRUSH_ScriptPrimarySelection, _BRUSH_ScriptSecondarySelection, _BRUSH_SelectedNode
 ; DESC:
@@ -26,7 +26,7 @@ _BRUSH_SelectBrushByLabel:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A5),A3
     MOVEA.L A3,A0
-    LEA     BRUSH_LabelScratch,A1
+    LEA     _BRUSH_LabelScratch,A1
 
 .lab_0196:
     MOVE.B  (A0)+,(A1)+
@@ -35,18 +35,18 @@ _BRUSH_SelectBrushByLabel:
     MOVE.L  _ESQIFF_BrushIniListHead,-4(A5)
     CLR.L   _BRUSH_SelectedNode
     PEA     2.W
-    PEA     BRUSH_STR_ALIAS_CODE_00
+    PEA     _BRUSH_STR_ALIAS_CODE_00
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AA_JMPTBL_STRING_CompareN(PC)
+    JSR     _GROUP_AA_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
     BEQ.S   .lab_0197
 
     PEA     2.W
-    PEA     BRUSH_STR_ALIAS_CODE_11
+    PEA     _BRUSH_STR_ALIAS_CODE_11
     MOVE.L  A3,-(A7)
-    JSR     GROUP_AA_JMPTBL_STRING_CompareN(PC)
+    JSR     _GROUP_AA_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -62,7 +62,7 @@ _BRUSH_SelectBrushByLabel:
 
 .lab_0197:
     PEA     2.W
-    PEA     BRUSH_STR_ALIAS_CODE_DT
+    PEA     _BRUSH_STR_ALIAS_CODE_DT
     PEA     -7(A5)
     JSR     _GROUP_AG_JMPTBL_STRING_CopyPadNul(PC)
 
@@ -80,7 +80,7 @@ _BRUSH_SelectBrushByLabel:
     PEA     2.W
     PEA     -7(A5)
     MOVE.L  A0,-(A7)
-    JSR     GROUP_AA_JMPTBL_STRING_CompareN(PC)
+    JSR     _GROUP_AA_JMPTBL_STRING_CompareN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -98,7 +98,7 @@ _BRUSH_SelectBrushByLabel:
     BNE.S   .lab_019C
 
     PEA     _ESQIFF_BrushIniListHead
-    PEA     BRUSH_STR_FALLBACK_DITHER
+    PEA     _BRUSH_STR_FALLBACK_DITHER
     BSR.W   _BRUSH_FindBrushByPredicate
 
     ADDQ.W  #8,A7

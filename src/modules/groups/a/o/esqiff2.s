@@ -17,7 +17,7 @@
 ; READS:
 ;   _ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED, _ESQ_STR_B, CLOCK_MinuteEventBaseMinute, CLOCK_MinuteEventBaseOffset, _ESQ_STR_6, _ED_DiagVinModeChar, _LOCAVAIL_FilterModeFlag, _DST_BannerWindowPrimary, _ED_SavedScrollSpeedIndex, _ED_DiagnosticsScreenActive, _SCRIPT_RuntimeMode
 ; WRITES:
-;   CLOCK_MinuteEventBaseMinute, CLOCK_MinuteEventBaseOffset, _ESQ_STR_6, _ESQPARS2_StateIndex, SCRIPT_RuntimeModeDeferredFlag
+;   CLOCK_MinuteEventBaseMinute, CLOCK_MinuteEventBaseOffset, _ESQ_STR_6, _ESQPARS2_StateIndex, _SCRIPT_RuntimeModeDeferredFlag
 ; DESC:
 ;   Copies status payload bytes into globals, refreshes banner/status UI paths,
 ;   reseeds minute-event thresholds, and updates scroll-speed state/index.
@@ -54,7 +54,7 @@ ESQIFF2_ApplyIncomingStatusPacket:
     BEQ.S   .branch
 
     MOVEQ   #1,D0
-    MOVE.L  D0,SCRIPT_RuntimeModeDeferredFlag
+    MOVE.L  D0,_SCRIPT_RuntimeModeDeferredFlag
 
 .branch:
     MOVE.B  _ESQ_STR_6,D0

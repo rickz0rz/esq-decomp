@@ -15,7 +15,7 @@
 ; CALLS:
 ;   _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, _LVOCopyMem, _ESQPARS_ReplaceOwnedString, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable, _Global_PTR_WORK_BUFFER, _Global_REF_LONG_FILE_SCRATCH, _GCOMMAND_DigitalNicheEnabledFlag, AbsExecBase, Global_STR_GCOMMAND_C_1
+;   _GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable, _Global_PTR_WORK_BUFFER, _Global_REF_LONG_FILE_SCRATCH, _GCOMMAND_DigitalNicheEnabledFlag, AbsExecBase, _Global_STR_GCOMMAND_C_1
 ; WRITES:
 ;   _Global_PTR_WORK_BUFFER, _GCOMMAND_DigitalNicheListingsTemplatePtr, -8(A5)
 ; DESC:
@@ -26,7 +26,7 @@
 _GCOMMAND_LoadDefaultTable:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
-    PEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable
+    PEA     _GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable
     JSR     _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -55,7 +55,7 @@ _GCOMMAND_LoadDefaultTable:
     MOVE.L  D0,(A7)
     MOVE.L  -8(A5),-(A7)
     PEA     335.W
-    PEA     Global_STR_GCOMMAND_C_1
+    PEA     _Global_STR_GCOMMAND_C_1
     JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     20(A7),A7
@@ -68,7 +68,7 @@ _GCOMMAND_LoadDefaultTable:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_LoadCommandFile   (Load a command definition from disk (GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile) and copy it into the workspace.)
+; FUNC: GCOMMAND_LoadCommandFile   (Load a command definition from disk (_GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile) and copy it into the workspace.)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -76,13 +76,13 @@ _GCOMMAND_LoadDefaultTable:
 ; CLOBBERS:
 ;   D0/D7/A0/A1/A5
 ; CALLS:
-;   GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush
+;   _GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes, _GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush
 ; READS:
-;   MODE_NEWFILE, GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile, _GCOMMAND_DigitalNicheEnabledFlag
+;   MODE_NEWFILE, _GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile, _GCOMMAND_DigitalNicheEnabledFlag
 ; WRITES:
 ;   -40(A5)..-8(A5) request buffer locals
 ; DESC:
-;   Load a command definition from disk (GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile) and copy it into the workspace.
+;   Load a command definition from disk (_GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile) and copy it into the workspace.
 ; NOTES:
 ;   Builds a 32-byte request block from _GCOMMAND_DigitalNicheEnabledFlag and performs two read-style helper calls.
 ;------------------------------------------------------------------------------
@@ -90,8 +90,8 @@ GCOMMAND_LoadCommandFile:
     LINK.W  A5,#-40
     MOVE.L  D7,-(A7)
     PEA     MODE_NEWFILE.W
-    PEA     GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile
-    JSR     GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
+    PEA     _GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile
+    JSR     _GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7
@@ -111,7 +111,7 @@ GCOMMAND_LoadCommandFile:
     PEA     32.W
     PEA     -40(A5)
     MOVE.L  D7,-(A7)
-    JSR     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
     MOVEA.L -8(A5),A0
     MOVE.L  A0,-12(A5)
@@ -128,10 +128,10 @@ GCOMMAND_LoadCommandFile:
     MOVE.L  D0,(A7)
     MOVE.L  -12(A5),-(A7)
     MOVE.L  D7,-(A7)
-    JSR     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
     MOVE.L  D7,(A7)
-    JSR     GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(PC)
 
     LEA     20(A7),A7
 
@@ -152,7 +152,7 @@ GCOMMAND_LoadCommandFile:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GCOMMAND_LoadCommandFile, GROUP_AW_JMPTBL_STRING_CopyPadNul, _ESQPARS_ReplaceOwnedString, _FLIB2_LoadDigitalNicheDefaults, _LADFUNC_ParseHexDigit
+;   _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, GCOMMAND_LoadCommandFile, _GROUP_AW_JMPTBL_STRING_CopyPadNul, _ESQPARS_ReplaceOwnedString, _FLIB2_LoadDigitalNicheDefaults, _LADFUNC_ParseHexDigit
 ; READS:
 ;   GCOMMAND_NicheParseScratchSeedWord, _WDISP_CharClassTable, _GCOMMAND_DigitalNicheListingsTemplatePtr, return
 ; WRITES:
@@ -187,7 +187,7 @@ GCOMMAND_ParseCommandOptions:
     PEA     2.W
     MOVE.L  A3,-(A7)
     PEA     -12(A5)
-    JSR     GROUP_AW_JMPTBL_STRING_CopyPadNul(PC)
+    JSR     _GROUP_AW_JMPTBL_STRING_CopyPadNul(PC)
 
     CLR.B   -10(A5)
     PEA     -12(A5)

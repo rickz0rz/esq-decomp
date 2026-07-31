@@ -15,7 +15,7 @@
 ; READS:
 ;   _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER, _ED_AdRecordPtrTable
 ; WRITES:
-;   _ED_AdActiveFlag, _ED_ViewportOffset, _ED_AdDisplayResetFlag, ED_AdDisplayStateLatchBlockB, _ED_ActiveIndicatorCachedState, ED_AdDisplayStateLatchA
+;   _ED_AdActiveFlag, _ED_ViewportOffset, _ED_AdDisplayResetFlag, _ED_AdDisplayStateLatchBlockB, _ED_ActiveIndicatorCachedState, _ED_AdDisplayStateLatchA
 ; DESC:
 ;   Displays the current ad number and resets editing state for the ad.
 ; NOTES:
@@ -29,7 +29,7 @@ _ED_UpdateAdNumberDisplay:
     LINK.W  A5,#-40
 
     MOVE.L  _Global_REF_LONG_CURRENT_EDITING_AD_NUMBER,-(A7)
-    PEA     Global_STR_AD_NUMBER_FORMATTED
+    PEA     _Global_STR_AD_NUMBER_FORMATTED
     PEA     .adLabel(A5)
     JSR     _GROUP_AM_JMPTBL_WDISP_SPrintf(PC)
 
@@ -59,9 +59,9 @@ _ED_UpdateAdNumberDisplay:
     MOVE.L  D1,_ED_AdDisplayResetFlag
     MOVE.L  D0,_ED_ViewportOffset
     MOVEQ   #-1,D0
-    MOVE.L  D0,ED_AdDisplayStateLatchBlockB
+    MOVE.L  D0,_ED_AdDisplayStateLatchBlockB
     MOVE.L  D0,_ED_ActiveIndicatorCachedState
-    MOVE.L  D0,ED_AdDisplayStateLatchA
+    MOVE.L  D0,_ED_AdDisplayStateLatchA
     BSR.W   _ED_UpdateActiveInactiveIndicator
 
     UNLK    A5

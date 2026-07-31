@@ -1,4 +1,4 @@
-    XDEF    TEXTDISP_BuildEntryDetailLine
+    XDEF    _TEXTDISP_BuildEntryDetailLine
     XDEF    TEXTDISP_DrawHighlightFrame
     XDEF    TEXTDISP_FilterAndSelectEntry
     XDEF    _TEXTDISP_HandleScriptCommand
@@ -6,7 +6,7 @@
 
 
 ;------------------------------------------------------------------------------
-; FUNC: TEXTDISP_BuildEntryDetailLine   (Build formatted entry detail text)
+; FUNC: _TEXTDISP_BuildEntryDetailLine   (Build formatted entry detail text)
 ; ARGS:
 ;   stack +8: entryPtr (A3)
 ; RET:
@@ -14,7 +14,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A2
 ; CALLS:
-;   _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, TEXTDISP_BuildEntryShortName, _TEXTDISP_FormatEntryTimeForIndex,
+;   _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, _TEXTDISP_BuildEntryShortName, _TEXTDISP_FormatEntryTimeForIndex,
 ;   _STRING_AppendAtNull, _WDISP_SPrintf, _TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold,
 ;   _STR_FindCharPtr, _TEXTDISP_SkipControlCodes, _TEXTDISP_TrimTextToPixelWidth
 ; READS:
@@ -27,7 +27,7 @@
 ;   -524(A5) is the large text scratch buffer (~512 bytes before -12(A5) temp slots);
 ;   _WDISP_SPrintf("%s") depends on upstream trimming/selection to stay bounded.
 ;------------------------------------------------------------------------------
-TEXTDISP_BuildEntryDetailLine:
+_TEXTDISP_BuildEntryDetailLine:
     LINK.W  A5,#-540
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -71,7 +71,7 @@ TEXTDISP_BuildEntryDetailLine:
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-528(A5)
     MOVE.L  A0,-8(A5)
-    JSR     TEXTDISP_BuildEntryShortName(PC)
+    JSR     _TEXTDISP_BuildEntryShortName(PC)
 
     LEA     20(A7),A7
     LEA     -524(A5),A0
@@ -103,7 +103,7 @@ TEXTDISP_BuildEntryDetailLine:
     TST.B   (A0)
     BEQ.S   .select_entry_string
 
-    LEA     SCRIPT_AlignedPrefixEmptyF,A1
+    LEA     _SCRIPT_AlignedPrefixEmptyF,A1
     MOVEA.L -8(A5),A2
 
 .copy_prefix:
@@ -168,14 +168,14 @@ TEXTDISP_BuildEntryDetailLine:
 
 .mark_match_delimiters:
     MOVE.L  -12(A5),-(A7)
-    PEA     SCRIPT_AlignedStringFormat
+    PEA     _SCRIPT_AlignedStringFormat
     ; Copies selected/trimmed entry substring into the 512-byte work buffer.
     ; Budget note for -524(A5): format is align-prefix + `%s`; practical risk is
     ; low with normal entry text, but formatter-side bounds are not enforced.
     PEA     -524(A5)
     JSR     _WDISP_SPrintf(PC)
 
-    PEA     SCRIPT_StrAtSeparator
+    PEA     _SCRIPT_StrAtSeparator
     PEA     -524(A5)
     JSR     _TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
@@ -184,7 +184,7 @@ TEXTDISP_BuildEntryDetailLine:
     TST.L   D0
     BNE.S   .try_match_vs_dot
 
-    PEA     SCRIPT_StrVsDotSeparator
+    PEA     _SCRIPT_StrVsDotSeparator
     PEA     -524(A5)
     JSR     _TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
@@ -195,7 +195,7 @@ TEXTDISP_BuildEntryDetailLine:
     TST.L   D0
     BNE.S   .try_match_vs
 
-    PEA     SCRIPT_StrVsSeparator
+    PEA     _SCRIPT_StrVsSeparator
     PEA     -524(A5)
     JSR     _TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 
@@ -284,7 +284,7 @@ TEXTDISP_BuildEntryDetailLine:
     TST.B   (A0)
     BEQ.S   .copy_program_init
 
-    PEA     SCRIPT_AlignedPrefixEmptyG
+    PEA     _SCRIPT_AlignedPrefixEmptyG
     MOVE.L  -8(A5),-(A7)
     JSR     _STRING_AppendAtNull(PC)
 
@@ -325,7 +325,7 @@ TEXTDISP_BuildEntryDetailLine:
     TST.B   D1
     BEQ.S   .append_channel_word
 
-    PEA     Global_STR_ALIGNED_CHANNEL_2
+    PEA     _Global_STR_ALIGNED_CHANNEL_2
     MOVE.L  -8(A5),-(A7)
     JSR     _STRING_AppendAtNull(PC)
 
@@ -361,11 +361,11 @@ TEXTDISP_BuildEntryDetailLine:
 ; CALLS:
 ;   _UNKNOWN_JMPTBL_ESQ_WildcardMatch, _TEXTDISP_GetGroupEntryCount,
 ;   _TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode, _TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode, _TEXTDISP_ShouldOpenEditorForEntry,
-;   TEXTDISP_SetSelectionFields, TEXTDISP_BuildEntryDetailLine, _TEXTDISP_ResetSelectionState
+;   _TEXTDISP_SetSelectionFields, _TEXTDISP_BuildEntryDetailLine, _TEXTDISP_ResetSelectionState
 ; READS:
-;   TEXTDISP_FilterModeId/TEXTDISP_FilterCandidateCursor-235C, _TEXTDISP_CandidateIndexList
+;   _TEXTDISP_FilterModeId/_TEXTDISP_FilterCandidateCursor-235C, _TEXTDISP_CandidateIndexList
 ; WRITES:
-;   TEXTDISP_FilterModeId, TEXTDISP_FilterCandidateCursor-235C, _TEXTDISP_CandidateIndexList
+;   _TEXTDISP_FilterModeId, _TEXTDISP_FilterCandidateCursor-235C, _TEXTDISP_CandidateIndexList
 ; DESC:
 ;   Applies PPV/SBE/SPORTS filters, walks entries for matches, and updates
 ;   selection state when a match is found.
@@ -413,10 +413,10 @@ TEXTDISP_FilterAndSelectEntry:
     BRA.W   .default_mode_3
 
 .handle_mode_F:
-    CLR.W   TEXTDISP_FilterChannelSlotIndex
-    MOVE.B  #$1,TEXTDISP_FilterModeId
+    CLR.W   _TEXTDISP_FilterChannelSlotIndex
+    MOVE.B  #$1,_TEXTDISP_FilterModeId
     MOVE.L  -30(A5),-(A7)
-    PEA     SCRIPT_FilterTag_PPV
+    PEA     _SCRIPT_FilterTag_PPV
     JSR     _UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -424,7 +424,7 @@ TEXTDISP_FilterAndSelectEntry:
     BEQ.S   .set_match_flags
 
     MOVE.L  -30(A5),-(A7)
-    PEA     SCRIPT_FilterTag_SBE
+    PEA     _SCRIPT_FilterTag_SBE
     JSR     _UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -439,8 +439,8 @@ TEXTDISP_FilterAndSelectEntry:
 
 .after_match_flags:
     MOVE.L  -30(A5),-(A7)
-    PEA     SCRIPT_FilterTag_SPORTS
-    MOVE.W  D0,TEXTDISP_FilterPpvSbeMatchFlag
+    PEA     _SCRIPT_FilterTag_SPORTS
+    MOVE.W  D0,_TEXTDISP_FilterPpvSbeMatchFlag
     JSR     _UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -449,18 +449,18 @@ TEXTDISP_FilterAndSelectEntry:
     NEG.B   D1
     EXT.W   D1
     EXT.L   D1
-    MOVE.W  D1,TEXTDISP_FilterSportsMatchFlag
+    MOVE.W  D1,_TEXTDISP_FilterSportsMatchFlag
 
 .ensure_filter_ready:
     TST.L   -20(A5)
     BNE.W   .after_dispatch
 
-    MOVE.B  TEXTDISP_FilterModeId,D0
+    MOVE.B  _TEXTDISP_FilterModeId,D0
     MOVEQ   #3,D1
     CMP.B   D1,D0
     BEQ.W   .after_dispatch
 
-    TST.W   TEXTDISP_FilterChannelSlotIndex
+    TST.W   _TEXTDISP_FilterChannelSlotIndex
     BNE.W   .advance_cursor_set
 
     EXT.W   D0
@@ -473,13 +473,13 @@ TEXTDISP_FilterAndSelectEntry:
     MOVE.W  D0,D5
     MOVEQ   #0,D6
     MOVE.L  D6,D0
-    MOVE.W  D0,TEXTDISP_FilterMatchCount
+    MOVE.W  D0,_TEXTDISP_FilterMatchCount
 
 .scan_entries_loop:
     CMP.L   D5,D6
     BGE.W   .finish_match_scan
 
-    MOVE.B  TEXTDISP_FilterModeId,D0
+    MOVE.B  _TEXTDISP_FilterModeId,D0
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
@@ -492,14 +492,14 @@ TEXTDISP_FilterAndSelectEntry:
     BTST    #3,27(A0)
     BNE.S   .next_entry
 
-    TST.W   TEXTDISP_FilterPpvSbeMatchFlag
+    TST.W   _TEXTDISP_FilterPpvSbeMatchFlag
     BEQ.S   .check_flag_match
 
     BTST    #4,27(A0)
     BNE.S   .record_match
 
 .check_flag_match:
-    TST.W   TEXTDISP_FilterSportsMatchFlag
+    TST.W   _TEXTDISP_FilterSportsMatchFlag
     BEQ.S   .check_editor_allowed
 
     MOVE.L  D0,-(A7)
@@ -521,8 +521,8 @@ TEXTDISP_FilterAndSelectEntry:
     BNE.S   .next_entry
 
 .record_match:
-    MOVE.W  TEXTDISP_FilterMatchCount,D0
-    ADDQ.W  #1,TEXTDISP_FilterMatchCount
+    MOVE.W  _TEXTDISP_FilterMatchCount,D0
+    ADDQ.W  #1,_TEXTDISP_FilterMatchCount
     LEA     _TEXTDISP_CandidateIndexList,A0
     MOVEQ   #0,D1
     MOVE.W  D0,D1
@@ -535,12 +535,12 @@ TEXTDISP_FilterAndSelectEntry:
     BRA.W   .scan_entries_loop
 
 .finish_match_scan:
-    CMPI.W  #0,TEXTDISP_FilterMatchCount
+    CMPI.W  #0,_TEXTDISP_FilterMatchCount
     BLS.S   .no_matches
 
-    CLR.W   TEXTDISP_FilterCandidateCursor
+    CLR.W   _TEXTDISP_FilterCandidateCursor
     MOVEQ   #1,D0
-    CMP.B   TEXTDISP_FilterModeId,D0
+    CMP.B   _TEXTDISP_FilterModeId,D0
     BNE.S   .set_default_cursor
 
     MOVEQ   #0,D0
@@ -551,25 +551,25 @@ TEXTDISP_FilterAndSelectEntry:
     MOVEQ   #1,D0
 
 .store_cursor_base:
-    MOVE.W  D0,TEXTDISP_FilterChannelSlotIndex
+    MOVE.W  D0,_TEXTDISP_FilterChannelSlotIndex
     BRA.S   .advance_cursor_set
 
 .no_matches:
-    MOVE.W  #$31,TEXTDISP_FilterChannelSlotIndex
+    MOVE.W  #$31,_TEXTDISP_FilterChannelSlotIndex
 
 .advance_cursor_set:
     TST.L   -20(A5)
     BNE.W   .advance_mode
 
-    CMPI.W  #$31,TEXTDISP_FilterChannelSlotIndex
+    CMPI.W  #$31,_TEXTDISP_FilterChannelSlotIndex
     BCC.W   .advance_mode
 
 .cursor_loop:
     TST.L   -20(A5)
     BNE.W   .advance_channel_index
 
-    MOVE.W  TEXTDISP_FilterCandidateCursor,D0
-    CMP.W   TEXTDISP_FilterMatchCount,D0
+    MOVE.W  _TEXTDISP_FilterCandidateCursor,D0
+    CMP.W   _TEXTDISP_FilterMatchCount,D0
     BCC.W   .advance_channel_index
 
     LEA     _TEXTDISP_CandidateIndexList,A0
@@ -578,7 +578,7 @@ TEXTDISP_FilterAndSelectEntry:
     ADDA.L  D1,A0
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
-    MOVE.B  TEXTDISP_FilterModeId,D1
+    MOVE.B  _TEXTDISP_FilterModeId,D1
     EXT.W   D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
@@ -591,11 +591,11 @@ TEXTDISP_FilterAndSelectEntry:
     BEQ.W   .next_cursor_entry
 
     MOVEQ   #1,D1
-    CMP.B   TEXTDISP_FilterModeId,D1
+    CMP.B   _TEXTDISP_FilterModeId,D1
     BNE.W   .load_entry_for_cursor
 
     MOVE.W  _CLOCK_HalfHourSlotIndex,D1
-    MOVE.W  TEXTDISP_FilterChannelSlotIndex,D2
+    MOVE.W  _TEXTDISP_FilterChannelSlotIndex,D2
     CMP.W   D2,D1
     BNE.W   .load_entry_for_cursor
 
@@ -628,11 +628,11 @@ TEXTDISP_FilterAndSelectEntry:
 
     LEA     _TEXTDISP_CandidateIndexList,A0
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_FilterCandidateCursor,D0
+    MOVE.W  _TEXTDISP_FilterCandidateCursor,D0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
-    MOVE.B  TEXTDISP_FilterModeId,D1
+    MOVE.B  _TEXTDISP_FilterModeId,D1
     EXT.W   D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
@@ -657,7 +657,7 @@ TEXTDISP_FilterAndSelectEntry:
     BRA.S   .validate_entry
 
 .load_entry_for_cursor:
-    MOVE.W  TEXTDISP_FilterChannelSlotIndex,D0
+    MOVE.W  _TEXTDISP_FilterChannelSlotIndex,D0
     MOVE.L  D0,D1
     EXT.L   D1
     ASL.L   #2,D1
@@ -675,14 +675,14 @@ TEXTDISP_FilterAndSelectEntry:
 
     ADDQ.W  #4,A7
     MOVE.L  D0,-26(A5)
-    TST.W   TEXTDISP_FilterSportsMatchFlag
+    TST.W   _TEXTDISP_FilterSportsMatchFlag
     BEQ.S   .check_entry_name_match
 
     MOVE.W  -22(A5),D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(PC)
+    JSR     _TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(PC)
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -708,11 +708,11 @@ TEXTDISP_FilterAndSelectEntry:
 
     LEA     _TEXTDISP_CandidateIndexList,A0
     MOVEQ   #0,D0
-    MOVE.W  TEXTDISP_FilterCandidateCursor,D0
+    MOVE.W  _TEXTDISP_FilterCandidateCursor,D0
     ADDA.L  D0,A0
     MOVEQ   #0,D0
     MOVE.B  (A0),D0
-    MOVE.B  TEXTDISP_FilterModeId,D1
+    MOVE.B  _TEXTDISP_FilterModeId,D1
     EXT.W   D1
     EXT.L   D1
     MOVE.L  D1,-(A7)
@@ -734,12 +734,12 @@ TEXTDISP_FilterAndSelectEntry:
 
     MOVEQ   #1,D0
     MOVE.L  D0,-20(A5)
-    MOVE.B  TEXTDISP_FilterModeId,D0
+    MOVE.B  _TEXTDISP_FilterModeId,D0
     EXT.W   D0
     EXT.L   D0
     LEA     _TEXTDISP_CandidateIndexList,A0
     MOVEQ   #0,D1
-    MOVE.W  TEXTDISP_FilterCandidateCursor,D1
+    MOVE.W  _TEXTDISP_FilterCandidateCursor,D1
     ADDA.L  D1,A0
     MOVEQ   #0,D1
     MOVE.B  (A0),D1
@@ -749,31 +749,31 @@ TEXTDISP_FilterAndSelectEntry:
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   TEXTDISP_SetSelectionFields
+    BSR.W   _TEXTDISP_SetSelectionFields
 
     MOVE.L  A3,(A7)
-    BSR.W   TEXTDISP_BuildEntryDetailLine
+    BSR.W   _TEXTDISP_BuildEntryDetailLine
 
     LEA     16(A7),A7
 
 .next_cursor_entry:
-    ADDQ.W  #1,TEXTDISP_FilterCandidateCursor
+    ADDQ.W  #1,_TEXTDISP_FilterCandidateCursor
     BRA.W   .cursor_loop
 
 .advance_channel_index:
     TST.L   -20(A5)
     BNE.W   .advance_cursor_set
 
-    ADDQ.W  #1,TEXTDISP_FilterChannelSlotIndex
-    CLR.W   TEXTDISP_FilterCandidateCursor
+    ADDQ.W  #1,_TEXTDISP_FilterChannelSlotIndex
+    CLR.W   _TEXTDISP_FilterCandidateCursor
     BRA.W   .advance_cursor_set
 
 .advance_mode:
-    CMPI.W  #$30,TEXTDISP_FilterChannelSlotIndex
+    CMPI.W  #$30,_TEXTDISP_FilterChannelSlotIndex
     BLS.W   .ensure_filter_ready
 
-    CLR.W   TEXTDISP_FilterChannelSlotIndex
-    MOVE.B  TEXTDISP_FilterModeId,D0
+    CLR.W   _TEXTDISP_FilterChannelSlotIndex
+    MOVE.B  _TEXTDISP_FilterModeId,D0
     EXT.W   D0
     SUBQ.W  #1,D0
     BEQ.S   .set_mode_2
@@ -784,15 +784,15 @@ TEXTDISP_FilterAndSelectEntry:
     BRA.S   .set_mode_3
 
 .set_mode_2:
-    MOVE.B  #$2,TEXTDISP_FilterModeId
+    MOVE.B  #$2,_TEXTDISP_FilterModeId
     BRA.W   .ensure_filter_ready
 
 .set_mode_3:
-    MOVE.B  #$3,TEXTDISP_FilterModeId
+    MOVE.B  #$3,_TEXTDISP_FilterModeId
     BRA.W   .ensure_filter_ready
 
 .default_mode_3:
-    MOVE.B  #$3,TEXTDISP_FilterModeId
+    MOVE.B  #$3,_TEXTDISP_FilterModeId
 
 .after_dispatch:
     TST.L   -20(A5)
@@ -822,7 +822,7 @@ TEXTDISP_FilterAndSelectEntry:
 ; CALLS:
 ;   _TLIBA3_ClearViewModeRastPort, _TLIBA3_BuildDisplayContextForViewMode, _ESQ_SetCopperEffect_OnEnableHighlight,
 ;   _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition/0A45, _MATH_Mulu32, _MATH_DivS32,
-;   SCRIPT_BeginBannerCharTransition, TLIBA1_DrawFormattedTextBlock, _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition, _TEXTDISP_ResetSelectionState
+;   _SCRIPT_BeginBannerCharTransition, _TLIBA1_DrawFormattedTextBlock, _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition, _TEXTDISP_ResetSelectionState
 ; READS:
 ;   entry+220, _CONFIG_LRBN_FlagChar, _TEXTDISP_EntryTextBaseWidthPx
 ; WRITES:
@@ -924,7 +924,7 @@ TEXTDISP_DrawHighlightFrame:
     EXT.L   D0
     PEA     500.W
     MOVE.L  D0,-(A7)
-    JSR     SCRIPT_BeginBannerCharTransition(PC)
+    JSR     _SCRIPT_BeginBannerCharTransition(PC)
 
     ADDQ.W  #8,A7
 
@@ -974,7 +974,7 @@ TEXTDISP_DrawHighlightFrame:
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  -4(A5),-(A7)
-    JSR     TLIBA1_DrawFormattedTextBlock(PC)
+    JSR     _TLIBA1_DrawFormattedTextBlock(PC)
 
     PEA     3.W
     CLR.L   -(A7)
@@ -1052,7 +1052,7 @@ _TEXTDISP_HandleScriptCommand:
     PEA     TEXTDISP_CommandPrefixFormat
     ; 200-byte local target; source text comes from script argument pointer.
     ; Provenance: A3 is typically _SCRIPT_CommandTextPtr (legacy _SCRIPT_CommandTextPtr), populated from
-    ; SCRIPT_CTRL_CMD_BUFFER payload bytes in _SCRIPT_HandleBrushCommand.
+    ; _SCRIPT_CTRL_CMD_BUFFER payload bytes in _SCRIPT_HandleBrushCommand.
     ; Budget note for .commandScratchBuffer (200 bytes incl NUL):
     ; "xx%s" => 3 + len(arg), so payload must stay <= 197 bytes.
     ; CTRL packet path enforces _SCRIPT_CTRL_READ_INDEX <= 198 before dispatch.

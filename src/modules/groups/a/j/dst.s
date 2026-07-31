@@ -33,7 +33,7 @@ _DST_FreeBannerStruct:
     PEA     22.W
     MOVE.L  (A3),-(A7)
     PEA     773.W
-    PEA     Global_STR_DST_C_1
+    PEA     _Global_STR_DST_C_1
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -46,7 +46,7 @@ _DST_FreeBannerStruct:
     PEA     22.W
     MOVE.L  4(A3),-(A7)
     PEA     777.W
-    PEA     Global_STR_DST_C_2
+    PEA     _Global_STR_DST_C_2
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -56,7 +56,7 @@ _DST_FreeBannerStruct:
     PEA     18.W
     MOVE.L  A3,-(A7)
     PEA     779.W
-    PEA     Global_STR_DST_C_3
+    PEA     _Global_STR_DST_C_3
     JSR     _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7

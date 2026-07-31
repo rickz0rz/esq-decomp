@@ -1,9 +1,9 @@
-    XDEF    ESQFUNC_TrimTextToPixelWidthWordBoundary
+    XDEF    _ESQFUNC_TrimTextToPixelWidthWordBoundary
     XDEF    ESQFUNC_TrimTextToPixelWidthWordBoundary_Return
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQFUNC_TrimTextToPixelWidthWordBoundary   (Trim text length to fit pixel width at word boundary)
+; FUNC: _ESQFUNC_TrimTextToPixelWidthWordBoundary   (Trim text length to fit pixel width at word boundary)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Uses _WDISP_CharClassTable bit3 as boundary classifier.
 ;------------------------------------------------------------------------------
-ESQFUNC_TrimTextToPixelWidthWordBoundary:
+_ESQFUNC_TrimTextToPixelWidthWordBoundary:
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.L  24(A7),D7

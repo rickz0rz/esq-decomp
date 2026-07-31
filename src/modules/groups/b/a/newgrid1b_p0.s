@@ -1,9 +1,9 @@
-    XDEF    NEWGRID_UpdatePresetEntry
+    XDEF    _NEWGRID_UpdatePresetEntry
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_UpdatePresetEntry   (Update preset entry mapping)
+; FUNC: _NEWGRID_UpdatePresetEntry   (Update preset entry mapping)
 ; ARGS:
 ;   stack +8: A3 = dst pointer
 ;   stack +12: A2 = src pointer
@@ -24,7 +24,7 @@
 ; NOTES:
 ;   Uses lookup table _TEXTDISP_SecondaryEntryPtrTable and caches indices in _NEWGRID_SecondaryIndexCachePtr.
 ;------------------------------------------------------------------------------
-NEWGRID_UpdatePresetEntry:
+_NEWGRID_UpdatePresetEntry:
     LINK.W  A5,#-16
     MOVEM.L D4-D7/A2-A3/A6,-(A7)
 

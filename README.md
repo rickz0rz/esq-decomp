@@ -16,20 +16,20 @@ that broke it.
 Both byte gates pass on the current tree.
 
 ```
-assembly converted to C   49.0%   [####################....................]
-                                  94,992 of 193,864 application bytes
+assembly converted to C   75.3%   [##############################..........]
+                                  145,980 of 193,864 application bytes
 ```
 
 Count the bytes, not the functions. The easy targets are small, so a function
 count reads higher than the real progress. By function count the same work is
-59%, which flatters it.
+81%, which flatters it.
 
 Run `python3 tools/coverage.py` to regenerate every number in this section.
 
 | measure | value |
 |---|---|
-| application functions | 725 (193,864 bytes) |
-| restored to C | 425 (94,992 bytes, 49.0% by byte, 59% by count) |
+| application functions | 726 (193,864 bytes) |
+| restored to C | 591 (145,980 bytes, 75.3% by byte, 81% by count) |
 | byte-exact restorations | 24 |
 | source modules | 788, coalesced into 401 link units |
 | linked size | CODE 211,348 bytes, DATA 55,820 bytes |

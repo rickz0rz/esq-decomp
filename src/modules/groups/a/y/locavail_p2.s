@@ -19,9 +19,9 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D5/D6/D7
 ; CALLS:
-;   _GROUP_AS_JMPTBL_STR_FindCharPtr, _LOCAVAIL_ResetFilterStateStruct, _LOCAVAIL_CopyFilterStateStructRetainRefs, LOCAVAIL_AllocNodeArraysForState, _LOCAVAIL_FreeResourceChain, NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _NEWGRID_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_MEMORY_AllocateMemory
+;   _GROUP_AS_JMPTBL_STR_FindCharPtr, _LOCAVAIL_ResetFilterStateStruct, _LOCAVAIL_CopyFilterStateStructRetainRefs, _LOCAVAIL_AllocNodeArraysForState, _LOCAVAIL_FreeResourceChain, _NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _NEWGRID_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_MEMORY_AllocateMemory
 ; READS:
-;   Global_STR_LOCAVAIL_C_6, LOCAVAIL_TAG_FV, _WDISP_CharClassTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_14, branch_15, branch_16, branch_17, branch_5, e11, lab_0F2E, lab_0F2F, lab_0F31, lab_0F32, lab_0F33
+;   _Global_STR_LOCAVAIL_C_6, _LOCAVAIL_TAG_FV, _WDISP_CharClassTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_14, branch_15, branch_16, branch_17, branch_5, e11, lab_0F2E, lab_0F2F, lab_0F31, lab_0F32, lab_0F33
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -68,7 +68,7 @@ LOCAVAIL_ParseFilterStateFromBuffer:
     EXT.W   D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     LOCAVAIL_TAG_FV
+    PEA     _LOCAVAIL_TAG_FV
     JSR     _GROUP_AS_JMPTBL_STR_FindCharPtr(PC)
 
     ADDQ.W  #8,A7
@@ -93,11 +93,11 @@ LOCAVAIL_ParseFilterStateFromBuffer:
 .lab_0F1A:
     CLR.B   -51(A5,D7.L)
     PEA     -51(A5)
-    JSR     NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     MOVE.L  D0,-22(A5)
     PEA     -24(A5)
-    BSR.W   LOCAVAIL_AllocNodeArraysForState
+    BSR.W   _LOCAVAIL_AllocNodeArraysForState
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -140,7 +140,7 @@ LOCAVAIL_ParseFilterStateFromBuffer:
 .lab_0F1D:
     CLR.B   -51(A5,D6.L)
     PEA     -51(A5)
-    JSR     NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L -28(A5),A0
@@ -169,7 +169,7 @@ LOCAVAIL_ParseFilterStateFromBuffer:
 .branch_2:
     CLR.B   -51(A5,D6.L)
     PEA     -51(A5)
-    JSR     NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L -28(A5),A0
@@ -195,7 +195,7 @@ LOCAVAIL_ParseFilterStateFromBuffer:
 .branch_4:
     CLR.B   -51(A5,D6.L)
     PEA     -51(A5)
-    JSR     NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
+    JSR     _NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L -28(A5),A0
@@ -211,7 +211,7 @@ LOCAVAIL_ParseFilterStateFromBuffer:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     341.W
-    PEA     Global_STR_LOCAVAIL_C_6
+    PEA     _Global_STR_LOCAVAIL_C_6
     JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7

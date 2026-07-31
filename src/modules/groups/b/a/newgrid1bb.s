@@ -1,7 +1,7 @@
-    XDEF    NEWGRID_AddShowtimeBucketEntry
-    XDEF    NEWGRID_AppendShowtimeBuckets
+    XDEF    _NEWGRID_AddShowtimeBucketEntry
+    XDEF    _NEWGRID_AppendShowtimeBuckets
     XDEF    NEWGRID_BuildShowtimesText
-    XDEF    NEWGRID_HandleShowtimesState
+    XDEF    _NEWGRID_HandleShowtimesState
     XDEF    NEWGRID_ProcessShowtimesWorkflow
     XDEF    _NEWGRID_ResetShowtimeBuckets
 
@@ -19,7 +19,7 @@
 ; READS:
 ;   _NEWGRID_ShowtimeBucketEntryTable
 ; WRITES:
-;   NEWGRID_ShowtimeBucketCount, _NEWGRID_ShowtimeBucketEntryTable
+;   _NEWGRID_ShowtimeBucketCount, _NEWGRID_ShowtimeBucketEntryTable
 ; DESC:
 ;   Clears bucket count and reinitializes bucket records.
 ;------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ _NEWGRID_ResetShowtimeBuckets:
     LINK.W  A5,#-8
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D0
-    MOVE.L  D0,NEWGRID_ShowtimeBucketCount
+    MOVE.L  D0,_NEWGRID_ShowtimeBucketCount
     MOVE.L  D0,D7
 
 .init_loop:
@@ -63,7 +63,7 @@ _NEWGRID_ResetShowtimeBuckets:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_AddShowtimeBucketEntry   (Insert showtime bucket entry)
+; FUNC: _NEWGRID_AddShowtimeBucketEntry   (Insert showtime bucket entry)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -75,15 +75,15 @@ _NEWGRID_ResetShowtimeBuckets:
 ; CALLS:
 ;   _PARSEINI_JMPTBL_STR_FindCharPtr, _SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt, _PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString
 ; READS:
-;   _NEWGRID_ShowtimeBucketEntryTable, _NEWGRID_ShowtimeBucketPtrTable, NEWGRID_ShowtimeBucketCount
+;   _NEWGRID_ShowtimeBucketEntryTable, _NEWGRID_ShowtimeBucketPtrTable, _NEWGRID_ShowtimeBucketCount
 ; WRITES:
-;   _NEWGRID_ShowtimeBucketEntryTable, _NEWGRID_ShowtimeBucketPtrTable, NEWGRID_ShowtimeBucketCount
+;   _NEWGRID_ShowtimeBucketEntryTable, _NEWGRID_ShowtimeBucketPtrTable, _NEWGRID_ShowtimeBucketCount
 ; DESC:
 ;   Adds an entry into the sorted bucket list if capacity allows.
 ; NOTES:
 ;   Uses insertion-style shifting to keep buckets sorted.
 ;------------------------------------------------------------------------------
-NEWGRID_AddShowtimeBucketEntry:
+_NEWGRID_AddShowtimeBucketEntry:
     LINK.W  A5,#-28
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -104,7 +104,7 @@ NEWGRID_AddShowtimeBucketEntry:
     MOVE.L  D7,D0
     ASL.L   #8,D0
     ADD.L   D0,D6
-    MOVE.L  NEWGRID_ShowtimeBucketCount,D0
+    MOVE.L  _NEWGRID_ShowtimeBucketCount,D0
     MOVEQ   #10,D1
     CMP.L   D1,D0
     BGE.W   .return
@@ -125,7 +125,7 @@ NEWGRID_AddShowtimeBucketEntry:
     ADDQ.W  #8,A7
     MOVEA.L 24(A7),A0
     MOVE.L  D0,4(A0)
-    MOVE.L  NEWGRID_ShowtimeBucketCount,D5
+    MOVE.L  _NEWGRID_ShowtimeBucketCount,D5
 
 .find_insert_pos:
     TST.L   D5
@@ -155,7 +155,7 @@ NEWGRID_AddShowtimeBucketEntry:
     BEQ.S   .return
 
 .shift_needed:
-    MOVE.L  NEWGRID_ShowtimeBucketCount,D4
+    MOVE.L  _NEWGRID_ShowtimeBucketCount,D4
 
 .shift_loop:
     CMP.L   D5,D4
@@ -178,13 +178,13 @@ NEWGRID_AddShowtimeBucketEntry:
     ASL.L   #2,D0
     LEA     _NEWGRID_ShowtimeBucketPtrTable,A0
     ADDA.L  D0,A0
-    MOVE.L  NEWGRID_ShowtimeBucketCount,D0
+    MOVE.L  _NEWGRID_ShowtimeBucketCount,D0
     MOVE.L  D0,D1
     ASL.L   #3,D1
     LEA     _NEWGRID_ShowtimeBucketEntryTable,A1
     ADDA.L  D1,A1
     MOVE.L  A1,(A0)
-    ADDQ.L  #1,NEWGRID_ShowtimeBucketCount
+    ADDQ.L  #1,_NEWGRID_ShowtimeBucketCount
     MOVEQ   #1,D0
     MOVE.L  D0,-20(A5)
 
@@ -197,7 +197,7 @@ NEWGRID_AddShowtimeBucketEntry:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_AppendShowtimeBuckets   (Append showtime buckets to buffer)
+; FUNC: _NEWGRID_AppendShowtimeBuckets   (Append showtime buckets to buffer)
 ; ARGS:
 ;   stack +8: A3 = output buffer
 ; RET:
@@ -205,32 +205,32 @@ NEWGRID_AddShowtimeBucketEntry:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   PARSEINI_JMPTBL_STRING_AppendAtNull
+;   _PARSEINI_JMPTBL_STRING_AppendAtNull
 ; READS:
-;   _NEWGRID_ShowtimeBucketPtrTable, NEWGRID_ShowtimeBucketCount, NEWGRID_ShowtimeBucketSeparator
+;   _NEWGRID_ShowtimeBucketPtrTable, _NEWGRID_ShowtimeBucketCount, _NEWGRID_ShowtimeBucketSeparator
 ; WRITES:
 ;   output buffer contents
 ; DESC:
 ;   Appends each bucket’s data into the output buffer.
 ;------------------------------------------------------------------------------
-NEWGRID_AppendShowtimeBuckets:
+_NEWGRID_AppendShowtimeBuckets:
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 12(A7),A3
     MOVEA.L _NEWGRID_ShowtimeBucketPtrTable,A0
     MOVE.L  4(A0),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D7
 
 .append_loop:
-    CMP.L   NEWGRID_ShowtimeBucketCount,D7
+    CMP.L   _NEWGRID_ShowtimeBucketCount,D7
     BGE.S   .return
 
-    PEA     NEWGRID_ShowtimeBucketSeparator
+    PEA     _NEWGRID_ShowtimeBucketSeparator
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     MOVE.L  D7,D0
     ASL.L   #2,D0
@@ -239,7 +239,7 @@ NEWGRID_AppendShowtimeBuckets:
     MOVEA.L (A0),A1
     MOVE.L  4(A1),(A7)
     MOVE.L  A3,-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D7
@@ -262,13 +262,13 @@ NEWGRID_AppendShowtimeBuckets:
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, _TEXTDISP_FormatEntryTimeForIndex, NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, NEWGRID2_JMPTBL_ESQ_TestBit1Based, NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState, _NEWGRID2_JMPTBL_STR_SkipClass3Chars,
-;   _NEWGRID_ResetShowtimeBuckets, NEWGRID_AddShowtimeBucketEntry,
-;   NEWGRID_AppendShowtimeBuckets, PARSEINI_JMPTBL_STRING_AppendAtNull
+;   _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer, _TEXTDISP_FormatEntryTimeForIndex, _NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex, _NEWGRID2_JMPTBL_ESQ_TestBit1Based, _NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState, _NEWGRID2_JMPTBL_STR_SkipClass3Chars,
+;   _NEWGRID_ResetShowtimeBuckets, _NEWGRID_AddShowtimeBucketEntry,
+;   _NEWGRID_AppendShowtimeBuckets, _PARSEINI_JMPTBL_STRING_AppendAtNull
 ; READS:
 ;   _TEXTDISP_PrimaryGroupPresentFlag, _TEXTDISP_PrimaryGroupEntryCount, _GCOMMAND_PpvSelectionWindowMinutes, _GCOMMAND_PpvShowtimesRowSpan, _NEWGRID_ShowtimeBucketEntryTable..2339
 ; WRITES:
-;   output buffer contents, NEWGRID_ShowtimeBucketCount
+;   output buffer contents, _NEWGRID_ShowtimeBucketCount
 ; DESC:
 ;   Scans entries and builds a formatted showtimes string.
 ; NOTES:
@@ -406,7 +406,7 @@ NEWGRID_BuildShowtimesText:
     LEA     60(A3),A0
     MOVE.L  D0,24(A7)
     MOVEA.L A0,A1
-    LEA     Global_STR_SINGLE_SPACE_3,A0
+    LEA     _Global_STR_SINGLE_SPACE_3,A0
     MOVEQ   #1,D0
     JSR     _LVOTextLength(A6)
 
@@ -417,7 +417,7 @@ NEWGRID_BuildShowtimesText:
 .measure_comma_space:
     LEA     60(A3),A0
     MOVEA.L A0,A1
-    LEA     Global_STR_COMMA_AND_SINGLE_SPACE_1,A0
+    LEA     _Global_STR_COMMA_AND_SINGLE_SPACE_1,A0
     MOVEQ   #2,D0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
@@ -505,7 +505,7 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D0,-(A7)
     PEA     -98(A5)
     PEA     -94(A5)
-    BSR.W   NEWGRID_UpdatePresetEntry
+    BSR.W   _NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
     MOVE.L  D0,D7
@@ -532,7 +532,7 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D0,-(A7)
     MOVE.L  -98(A5),-(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(PC)
+    JSR     _NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(PC)
 
     MOVE.L  D0,D7
     MOVE.L  D7,D0
@@ -542,7 +542,7 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D0,-(A7)
     MOVE.L  -98(A5),-(A7)
     MOVE.L  -94(A5),-(A7)
-    JSR     NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(PC)
+    JSR     _NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(PC)
 
     LEA     28(A7),A7
     TST.L   D0
@@ -576,7 +576,7 @@ NEWGRID_BuildShowtimesText:
     EXT.L   D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _NEWGRID2_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D0
@@ -762,7 +762,7 @@ NEWGRID_BuildShowtimesText:
     TST.B   (A0)
     BNE.S   .append_entry_text
 
-    LEA     Global_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
+    LEA     _Global_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
     MOVEA.L 16(A5),A1
 
 .copy_showtimes_prefix:
@@ -777,11 +777,11 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D1,(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D0,-28(A5)
-    BSR.W   NEWGRID_AddShowtimeBucketEntry
+    BSR.W   _NEWGRID_AddShowtimeBucketEntry
 
     ADDQ.W  #8,A7
     LEA     60(A3),A0
-    LEA     Global_STR_SHOWTIMES_AND_SINGLE_SPACE,A1
+    LEA     _Global_STR_SHOWTIMES_AND_SINGLE_SPACE,A1
     MOVEA.L A1,A6
 
 .measure_showtimes_prefix:
@@ -792,7 +792,7 @@ NEWGRID_BuildShowtimesText:
     SUBA.L  A1,A6
     MOVEA.L A0,A1
     MOVE.L  A6,D0
-    LEA     Global_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
+    LEA     _Global_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
@@ -867,7 +867,7 @@ NEWGRID_BuildShowtimesText:
 .append_showtime_entry2:
     MOVE.L  D0,-(A7)
     MOVE.L  -28(A5),-(A7)
-    BSR.W   NEWGRID_AddShowtimeBucketEntry
+    BSR.W   _NEWGRID_AddShowtimeBucketEntry
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -907,7 +907,7 @@ NEWGRID_BuildShowtimesText:
     TST.B   (A0)
     BNE.S   .append_showing_at
 
-    LEA     Global_STR_SHOWING_AT_AND_SINGLE_SPACE,A0
+    LEA     _Global_STR_SHOWING_AT_AND_SINGLE_SPACE,A0
     MOVEA.L 16(A5),A1
 
 .copy_showing_at_prefix:
@@ -920,14 +920,14 @@ NEWGRID_BuildShowtimesText:
     MOVE.L  D0,(A7)
     MOVE.L  16(A5),-(A7)
     MOVE.L  D0,-28(A5)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     ADDQ.W  #8,A7
     BRA.S   .append_genre
 
 .append_showing_at:
     MOVE.L  A0,-(A7)
-    BSR.W   NEWGRID_AppendShowtimeBuckets
+    BSR.W   _NEWGRID_AppendShowtimeBuckets
 
     ADDQ.W  #4,A7
 
@@ -939,13 +939,13 @@ NEWGRID_BuildShowtimesText:
     TST.B   (A0)
     BEQ.S   .return
 
-    PEA     NEWGRID_ShowtimeGenreSpacer
+    PEA     _NEWGRID_ShowtimeGenreSpacer
     MOVE.L  16(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     MOVE.L  -62(A5),(A7)
     MOVE.L  16(A5),-(A7)
-    JSR     PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
+    JSR     _PARSEINI_JMPTBL_STRING_AppendAtNull(PC)
 
     LEA     12(A7),A7
 
@@ -957,7 +957,7 @@ NEWGRID_BuildShowtimesText:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: NEWGRID_HandleShowtimesState   (Execute one step of showtimes/detail grid state machine)
+; FUNC: _NEWGRID_HandleShowtimesState   (Execute one step of showtimes/detail grid state machine)
 ; ARGS:
 ;   stack +8: A3 = rastport
 ;   stack +12: A2 = entry state
@@ -975,7 +975,7 @@ NEWGRID_BuildShowtimesText:
 ; DESC:
 ;   State machine that draws showtimes/details in a grid view.
 ;------------------------------------------------------------------------------
-NEWGRID_HandleShowtimesState:
+_NEWGRID_HandleShowtimesState:
     LINK.W  A5,#-132
     MOVEM.L D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -1127,19 +1127,19 @@ NEWGRID_HandleShowtimesState:
 ;   stack +8: A3 = rastport
 ;   stack +14: D7 = row index
 ; RET:
-;   D0: state (NEWGRID_ShowtimesWorkflowState)
+;   D0: state (_NEWGRID_ShowtimesWorkflowState)
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
 ;   _NEWGRID_HandleGridEditorState, _NEWGRID_UpdateGridState,
-;   NEWGRID_HandleShowtimesState, _NEWGRID_InitSelectionWindow,
-;   NEWGRID_UpdateSelectionFromInput, NEWGRID_DrawGridMessageAlt,
+;   _NEWGRID_HandleShowtimesState, _NEWGRID_InitSelectionWindow,
+;   _NEWGRID_UpdateSelectionFromInput, _NEWGRID_DrawGridMessageAlt,
 ;   _NEWGRID_ClearEntryMarkerBits, _NEWGRID_ValidateSelectionCode,
 ;   _NEWGRID_GetGridModeIndex, _NEWGRID_ComputeColumnIndex
 ; READS:
-;   NEWGRID_ShowtimesWorkflowState/2038, NEWGRID_ShowtimesSelectionContextPtr, _GCOMMAND_DigitalPpvEnabledFlag, _GCOMMAND_PpvShowtimesWorkflowMode, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PpvEditorLayoutPen, _GCOMMAND_PpvEditorRowPen
+;   _NEWGRID_ShowtimesWorkflowState/2038, _NEWGRID_ShowtimesSelectionContextPtr, _GCOMMAND_DigitalPpvEnabledFlag, _GCOMMAND_PpvShowtimesWorkflowMode, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PpvEditorLayoutPen, _GCOMMAND_PpvEditorRowPen
 ; WRITES:
-;   NEWGRID_ShowtimesWorkflowState/2038
+;   _NEWGRID_ShowtimesWorkflowState/2038
 ; DESC:
 ;   Multi-state handler for showtimes selection and detail views.
 ; NOTES:
@@ -1154,7 +1154,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     MOVE.L  A3,D0
     BNE.W   .dispatch_workflow_state
 
-    MOVE.L  NEWGRID_ShowtimesWorkflowState,D0
+    MOVE.L  _NEWGRID_ShowtimesWorkflowState,D0
     SUBQ.L  #2,D0
     BEQ.S   .legacy_nullctx_editor_reset
 
@@ -1173,11 +1173,11 @@ NEWGRID_ProcessShowtimesWorkflow:
     BSR.W   _NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
     BRA.S   .legacy_nullctx_reinit_selection_and_clear
 
 .legacy_nullctx_route_by_editor_gate:
-    MOVE.L  NEWGRID_ShowtimesSelectionContextPtr,-(A7)
+    MOVE.L  _NEWGRID_ShowtimesSelectionContextPtr,-(A7)
     JSR     _NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
@@ -1191,29 +1191,29 @@ NEWGRID_ProcessShowtimesWorkflow:
     BSR.W   _NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
     BRA.S   .legacy_nullctx_reinit_selection_and_clear
 
 .legacy_nullctx_run_showtimes_state:
     CLR.L   -(A7)
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_HandleShowtimesState
+    BSR.W   _NEWGRID_HandleShowtimesState
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
 
 .legacy_nullctx_reinit_selection_and_clear:
     CLR.L   -(A7)
-    PEA     NEWGRID_ShowtimesSelectionContextPtr
+    PEA     _NEWGRID_ShowtimesSelectionContextPtr
     BSR.W   _NEWGRID_InitSelectionWindow
 
     ADDQ.W  #8,A7
     MOVEQ   #0,D0
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
     BRA.W   .return_state
 
 .dispatch_workflow_state:
-    MOVE.L  NEWGRID_ShowtimesWorkflowState,D0
+    MOVE.L  _NEWGRID_ShowtimesWorkflowState,D0
     CMPI.L  #$8,D0
     BCC.W   .clear_workflow_state
 
@@ -1236,28 +1236,28 @@ NEWGRID_ProcessShowtimesWorkflow:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    PEA     NEWGRID_ShowtimesSelectionContextPtr
+    PEA     _NEWGRID_ShowtimesSelectionContextPtr
     BSR.W   _NEWGRID_InitSelectionWindow
 
-    PEA     NEWGRID_ShowtimesSelectionContextPtr
-    MOVE.L  NEWGRID_ShowtimesWorkflowState,-(A7)
-    BSR.W   NEWGRID_UpdateSelectionFromInput
+    PEA     _NEWGRID_ShowtimesSelectionContextPtr
+    MOVE.L  _NEWGRID_ShowtimesWorkflowState,-(A7)
+    BSR.W   _NEWGRID_UpdateSelectionFromInput
 
     LEA     16(A7),A7
     TST.L   D0
     BEQ.W   .return_state
 
     MOVEQ   #1,D0
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
 
 .case_state1:
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_DrawGridMessageAlt
+    BSR.W   _NEWGRID_DrawGridMessageAlt
 
     ADDQ.W  #4,A7
-    CLR.L   NEWGRID_ShowtimesColumnAdjust
+    CLR.L   _NEWGRID_ShowtimesColumnAdjust
     MOVEQ   #2,D0
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
     BRA.W   .return_state
 
 .case_state2:
@@ -1278,60 +1278,60 @@ NEWGRID_ProcessShowtimesWorkflow:
     BSR.W   _NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
     SUBQ.L  #5,D0
     BNE.S   .case2_done
 
     MOVEQ   #2,D0
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
     BRA.W   .return_state
 
 .case2_done:
     MOVEQ   #3,D0
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
     BRA.W   .return_state
 
 .case2_force_state3:
     MOVEQ   #3,D0
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
 
 .case_state3_or4:
-    PEA     NEWGRID_ShowtimesSelectionContextPtr
-    MOVE.L  NEWGRID_ShowtimesWorkflowState,-(A7)
-    BSR.W   NEWGRID_UpdateSelectionFromInput
+    PEA     _NEWGRID_ShowtimesSelectionContextPtr
+    MOVE.L  _NEWGRID_ShowtimesWorkflowState,-(A7)
+    BSR.W   _NEWGRID_UpdateSelectionFromInput
 
     ADDQ.W  #8,A7
     MOVEQ   #1,D6
 
 .case_state5:
-    TST.L   NEWGRID_ShowtimesSelectionContextPtr
+    TST.L   _NEWGRID_ShowtimesSelectionContextPtr
     BEQ.W   .case5_no_entry
 
-    MOVE.L  NEWGRID_ShowtimesSelectionContextPtr,-(A7)
+    MOVE.L  _NEWGRID_ShowtimesSelectionContextPtr,-(A7)
     JSR     _NEWGRID_ShouldOpenEditor(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
     BEQ.S   .case5_update
 
-    MOVE.W  NEWGRID_ShowtimesWorkflowArgWord,D0
+    MOVE.W  _NEWGRID_ShowtimesWorkflowArgWord,D0
     EXT.L   D0
     MOVE.L  D0,-(A7)
-    MOVE.L  NEWGRID_ShowtimesWorkflowArgLong,-(A7)
+    MOVE.L  _NEWGRID_ShowtimesWorkflowArgLong,-(A7)
     MOVE.L  A3,-(A7)
     BSR.W   _NEWGRID_UpdateGridState
 
     LEA     12(A7),A7
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
     BRA.S   .case5_post
 
 .case5_update:
-    PEA     NEWGRID_ShowtimesSelectionContextPtr
+    PEA     _NEWGRID_ShowtimesSelectionContextPtr
     MOVE.L  A3,-(A7)
-    BSR.W   NEWGRID_HandleShowtimesState
+    BSR.W   _NEWGRID_HandleShowtimesState
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
 
 .case5_post:
     MOVE.B  _GCOMMAND_DigitalPpvEnabledFlag,D0
@@ -1342,7 +1342,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     TST.L   D6
     BEQ.S   .update_column_adjust
 
-    CMPI.L  #$1,NEWGRID_ShowtimesColumnAdjust
+    CMPI.L  #$1,_NEWGRID_ShowtimesColumnAdjust
     BGE.S   .update_column_adjust
 
     PEA     53.W
@@ -1352,19 +1352,19 @@ NEWGRID_ProcessShowtimesWorkflow:
     BSR.W   _NEWGRID_GetGridModeIndex
 
     ADDQ.W  #8,A7
-    MOVE.L  D0,NEWGRID_ShowtimesColumnAdjust
+    MOVE.L  D0,_NEWGRID_ShowtimesColumnAdjust
 
 .update_column_adjust:
     MOVE.L  A3,-(A7)
     BSR.W   _NEWGRID_ComputeColumnIndex
 
     ADDQ.W  #4,A7
-    SUB.L   D0,NEWGRID_ShowtimesColumnAdjust
+    SUB.L   D0,_NEWGRID_ShowtimesColumnAdjust
     BRA.S   .return_state
 
 .case5_no_entry:
     MOVEQ   #7,D0
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
 
 .case_state6:
     MOVE.B  _GCOMMAND_PpvShowtimesWorkflowMode,D0
@@ -1384,28 +1384,28 @@ NEWGRID_ProcessShowtimesWorkflow:
     BSR.W   _NEWGRID_HandleGridEditorState
 
     LEA     16(A7),A7
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
     SUBQ.L  #5,D0
     BNE.S   .case6_done
 
     MOVEQ   #7,D0
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
     BRA.S   .return_state
 
 .case6_done:
     MOVEQ   #0,D0
-    MOVE.L  D0,NEWGRID_ShowtimesWorkflowState
+    MOVE.L  D0,_NEWGRID_ShowtimesWorkflowState
     BRA.S   .return_state
 
 .case6_clear_state:
-    CLR.L   NEWGRID_ShowtimesWorkflowState
+    CLR.L   _NEWGRID_ShowtimesWorkflowState
     BRA.S   .return_state
 
 .clear_workflow_state:
-    CLR.L   NEWGRID_ShowtimesWorkflowState
+    CLR.L   _NEWGRID_ShowtimesWorkflowState
 
 .return_state:
-    TST.L   NEWGRID_ShowtimesWorkflowState
+    TST.L   _NEWGRID_ShowtimesWorkflowState
     BNE.S   .maybe_clear_markers
 
     MOVE.L  D7,D0
@@ -1416,7 +1416,7 @@ NEWGRID_ProcessShowtimesWorkflow:
     ADDQ.W  #4,A7
 
 .maybe_clear_markers:
-    MOVE.L  NEWGRID_ShowtimesWorkflowState,D0
+    MOVE.L  _NEWGRID_ShowtimesWorkflowState,D0
     MOVEM.L (A7)+,D6-D7/A3
     UNLK    A5
     RTS

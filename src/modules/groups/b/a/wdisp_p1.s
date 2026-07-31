@@ -271,7 +271,7 @@ _WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQFUNC_TrimTextToPixelWidthWordBoundary
+;   _ESQFUNC_TrimTextToPixelWidthWordBoundary
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -282,7 +282,7 @@ _WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary:
-    JMP     ESQFUNC_TrimTextToPixelWidthWordBoundary
+    JMP     _ESQFUNC_TrimTextToPixelWidthWordBoundary
 
 ;------------------------------------------------------------------------------
 ; FUNC: WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock   (Routine at WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock)

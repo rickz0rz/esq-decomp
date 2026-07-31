@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold, _LVOCopyMem
 ; READS:
-;   AbsExecBase, Global_STR_CLOSED_CAPTIONED
+;   AbsExecBase, _Global_STR_CLOSED_CAPTIONED
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -27,7 +27,7 @@ _ESQSHARED_CompressClosedCaptionedTag:
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 8(A5),A3
 
-    PEA     Global_STR_CLOSED_CAPTIONED
+    PEA     _Global_STR_CLOSED_CAPTIONED
     MOVE.L  A3,-(A7)
     JSR     _GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(PC)
 

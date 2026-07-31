@@ -1,11 +1,11 @@
-    XDEF    SCRIPT_ApplyPendingBannerTarget
+    XDEF    _SCRIPT_ApplyPendingBannerTarget
     XDEF    SCRIPT_UpdateCtrlStateMachine
-    XDEF    SCRIPT_UpdateRuntimeModeForPlaybackCursor
+    XDEF    _SCRIPT_UpdateRuntimeModeForPlaybackCursor
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ApplyPendingBannerTarget   (ApplyPendingBannerTarget)
+; FUNC: _SCRIPT_ApplyPendingBannerTarget   (ApplyPendingBannerTarget)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -13,7 +13,7 @@
 ; CLOBBERS:
 ;   A7/D0/D1/D2/D7
 ; CALLS:
-;   _SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar, SCRIPT_BeginBannerCharTransition
+;   _SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar, _SCRIPT_BeginBannerCharTransition
 ; READS:
 ;   _CONFIG_BannerCopperHeadByte, _SCRIPT_PendingBannerTargetChar, _SCRIPT_PendingBannerSpeedMs, _SCRIPT_ReadModeActiveLatch
 ; WRITES:
@@ -23,7 +23,7 @@
 ; NOTES:
 ;   A pending value of -2 is normalized to -1 (no deferred target).
 ;------------------------------------------------------------------------------
-SCRIPT_ApplyPendingBannerTarget:
+_SCRIPT_ApplyPendingBannerTarget:
     MOVEM.L D2/D7,-(A7)
     JSR     _SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(PC)
 
@@ -48,7 +48,7 @@ SCRIPT_ApplyPendingBannerTarget:
     MOVE.W  D1,D2
     MOVE.L  D2,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   SCRIPT_BeginBannerCharTransition
+    BSR.W   _SCRIPT_BeginBannerCharTransition
 
     ADDQ.W  #8,A7
     MOVE.W  #(-1),_SCRIPT_PendingBannerTargetChar
@@ -65,7 +65,7 @@ SCRIPT_ApplyPendingBannerTarget:
     MOVE.W  D1,D2
     MOVE.L  D2,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   SCRIPT_BeginBannerCharTransition
+    BSR.W   _SCRIPT_BeginBannerCharTransition
 
     ADDQ.W  #8,A7
     MOVE.W  #(-1),_SCRIPT_PendingBannerTargetChar
@@ -85,7 +85,7 @@ SCRIPT_ApplyPendingBannerTarget:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_UpdateRuntimeModeForPlaybackCursor   (UpdateRuntimeModeForPlaybackCursor)
+; FUNC: _SCRIPT_UpdateRuntimeModeForPlaybackCursor   (UpdateRuntimeModeForPlaybackCursor)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -93,18 +93,18 @@ SCRIPT_ApplyPendingBannerTarget:
 ; CLOBBERS:
 ;   A7/D0/D1/D7
 ; CALLS:
-;   _SCRIPT_UpdateSerialShadowFromCtrlByte, _SCRIPT_ClearSearchTextsAndChannels, SCRIPT_BeginBannerCharTransition, _SCRIPT_DeassertCtrlLineNow, _TEXTDISP_SetRastForMode, _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
+;   _SCRIPT_UpdateSerialShadowFromCtrlByte, _SCRIPT_ClearSearchTextsAndChannels, _SCRIPT_BeginBannerCharTransition, _SCRIPT_DeassertCtrlLineNow, _TEXTDISP_SetRastForMode, _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight
 ; READS:
 ;   _CONFIG_BannerCopperHeadByte, _CONFIG_RuntimeMode12BannerJumpEnabledFlag, _CONFIG_MsnRuntimeModeSelectorChar_LRBN, _CONFIG_MSN_FlagChar, _SCRIPT_RuntimeMode
 ; WRITES:
-;   SCRIPT_CtrlHandshakeRetryCount, SCRIPT_RuntimeModeDispatchLatch, _SCRIPT_RuntimeMode, _TEXTDISP_CurrentMatchIndex
+;   _SCRIPT_CtrlHandshakeRetryCount, _SCRIPT_RuntimeModeDispatchLatch, _SCRIPT_RuntimeMode, _TEXTDISP_CurrentMatchIndex
 ; DESC:
 ;   Handles runtime-mode transitions around playback cursor commands and
 ;   updates the serial shadow byte according to current mode/flags.
 ; NOTES:
 ;   Returns 1 when it handled the mode transition and caller should stop.
 ;------------------------------------------------------------------------------
-SCRIPT_UpdateRuntimeModeForPlaybackCursor:
+_SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     MOVE.L  D7,-(A7)
 
     MOVE.W  _SCRIPT_RuntimeMode,D0
@@ -121,15 +121,15 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     EXT.L   D0
     PEA     1000.W
     MOVE.L  D0,-(A7)
-    BSR.W   SCRIPT_BeginBannerCharTransition
+    BSR.W   _SCRIPT_BeginBannerCharTransition
 
     ADDQ.W  #8,A7
 
 .runtime_mode_enter_mode2:
-    CLR.W   SCRIPT_CtrlHandshakeRetryCount
+    CLR.W   _SCRIPT_CtrlHandshakeRetryCount
     MOVE.W  #(-1),_TEXTDISP_CurrentMatchIndex
     MOVE.W  #2,_SCRIPT_RuntimeMode
-    MOVE.W  #1,SCRIPT_RuntimeModeDispatchLatch
+    MOVE.W  #1,_SCRIPT_RuntimeModeDispatchLatch
     JSR     _WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(PC)
 
     CLR.L   -(A7)
@@ -201,7 +201,7 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
     JSR     _SCRIPT_DeassertCtrlLineNow(PC)
 
     MOVEQ   #0,D0
-    MOVE.W  D0,SCRIPT_RuntimeModeDispatchLatch
+    MOVE.W  D0,_SCRIPT_RuntimeModeDispatchLatch
 
 .runtime_mode_clear_to_zero:
     MOVEQ   #0,D0
@@ -224,9 +224,9 @@ SCRIPT_UpdateRuntimeModeForPlaybackCursor:
 ; CALLS:
 ;   _SCRIPT_DeassertCtrlLineNow, _TEXTDISP_ResetSelectionAndRefresh, _STR_FindCharPtr, _SCRIPT_ReadHandshakeBit3Flag
 ; READS:
-;   _SCRIPT_RuntimeMode, _SCRIPT_CtrlHandshakeStage, SCRIPT_CtrlHandshakeRetryCount, _ED_DiagVinModeChar, _Global_UIBusyFlag
+;   _SCRIPT_RuntimeMode, _SCRIPT_CtrlHandshakeStage, _SCRIPT_CtrlHandshakeRetryCount, _ED_DiagVinModeChar, _Global_UIBusyFlag
 ; WRITES:
-;   _SCRIPT_RuntimeMode, _SCRIPT_CtrlHandshakeStage, SCRIPT_CtrlHandshakeRetryCount
+;   _SCRIPT_RuntimeMode, _SCRIPT_CtrlHandshakeStage, _SCRIPT_CtrlHandshakeRetryCount
 ; DESC:
 ;   Advances a small control state machine and triggers follow-up actions when
 ;   counters hit thresholds.
@@ -244,15 +244,15 @@ SCRIPT_UpdateCtrlStateMachine:
     SUBQ.W  #1,D0
     BNE.S   .check_state_two
 
-    MOVE.W  SCRIPT_CtrlHandshakeRetryCount,D0
+    MOVE.W  _SCRIPT_CtrlHandshakeRetryCount,D0
     MOVE.L  D0,D1
     ADDQ.W  #1,D1
-    MOVE.W  D1,SCRIPT_CtrlHandshakeRetryCount
+    MOVE.W  D1,_SCRIPT_CtrlHandshakeRetryCount
     MOVEQ   #3,D0
     CMP.W   D0,D1
     BLT.S   .return_status
 
-    CLR.W   SCRIPT_CtrlHandshakeRetryCount
+    CLR.W   _SCRIPT_CtrlHandshakeRetryCount
     MOVE.W  D0,_SCRIPT_RuntimeMode
     JSR     _SCRIPT_DeassertCtrlLineNow(PC)
 
@@ -266,7 +266,7 @@ SCRIPT_UpdateCtrlStateMachine:
     BNE.S   .check_banner_active
 
     MOVEQ   #0,D0
-    MOVE.W  D0,SCRIPT_CtrlHandshakeRetryCount
+    MOVE.W  D0,_SCRIPT_CtrlHandshakeRetryCount
     BRA.S   .return_status
 
 .check_banner_active:
@@ -277,7 +277,7 @@ SCRIPT_UpdateCtrlStateMachine:
     BRA.S   .return_status
 
 .reset_state:
-    CLR.W   SCRIPT_CtrlHandshakeRetryCount
+    CLR.W   _SCRIPT_CtrlHandshakeRetryCount
 
 .return_status:
     RTS
@@ -288,7 +288,7 @@ SCRIPT_UpdateCtrlStateMachine:
     MOVEQ   #0,D0
     MOVE.B  _ED_DiagVinModeChar,D0
     MOVE.L  D0,-(A7)
-    PEA     SCRIPT_Tag_YL
+    PEA     _SCRIPT_Tag_YL
     ; strchr-style membership test against "YL" mode-gate chars.
     JSR     _STR_FindCharPtr(PC)
 

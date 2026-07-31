@@ -1,12 +1,12 @@
-    XDEF    CLEANUP_DrawBannerSpacerSegment
-    XDEF    CLEANUP_DrawDateBannerSegment
+    XDEF    _CLEANUP_DrawBannerSpacerSegment
+    XDEF    _CLEANUP_DrawDateBannerSegment
     XDEF    CLEANUP_DrawDateTimeBannerRow
-    XDEF    CLEANUP_DrawTimeBannerSegment
-    XDEF    RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY
+    XDEF    _CLEANUP_DrawTimeBannerSegment
+    XDEF    _RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY
 
 
 ;------------------------------------------------------------------------------
-; FUNC: RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY   (Routine at RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY)
+; FUNC: _RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY   (Routine at _RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -24,9 +24,9 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY:
+_RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY:
 ;------------------------------------------------------------------------------
-; FUNC: RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY   (RenderShortMonthShortDowDay)
+; FUNC: _RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY   (RenderShortMonthShortDowDay)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -171,7 +171,7 @@ RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: CLEANUP_DrawDateBannerSegment   (DrawDateBannerSegmentuncertain)
+; FUNC: _CLEANUP_DrawDateBannerSegment   (DrawDateBannerSegmentuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -179,7 +179,7 @@ RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY:
 ; CLOBBERS:
 ;   D0-D3/A0-A1/A5-A6
 ; CALLS:
-;   _LVOSetAPen, _LVORectFill, RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY,
+;   _LVOSetAPen, _LVORectFill, _RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY,
 ;   _BEVEL_DrawBevelFrameWithTopRight
 ; READS:
 ;   _Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY, _Global_REF_696_400_BITMAP
@@ -190,7 +190,7 @@ RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY:
 ; NOTES:
 ;   - Temporarily swaps the rastport bitmap to _Global_REF_696_400_BITMAP.
 ;------------------------------------------------------------------------------
-CLEANUP_DrawDateBannerSegment:
+_CLEANUP_DrawDateBannerSegment:
     LINK.W  A5,#-4
     MOVEM.L D2-D3,-(A7)
 
@@ -218,7 +218,7 @@ CLEANUP_DrawDateBannerSegment:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVORectFill(A6)
 
-    BSR.W   RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY
+    BSR.W   _RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY
 
     PEA     67.W
     PEA     255.W
@@ -237,7 +237,7 @@ CLEANUP_DrawDateBannerSegment:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: CLEANUP_DrawBannerSpacerSegment   (DrawBannerSpacerSegmentuncertain)
+; FUNC: _CLEANUP_DrawBannerSpacerSegment   (DrawBannerSpacerSegmentuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -253,7 +253,7 @@ CLEANUP_DrawDateBannerSegment:
 ; DESC:
 ;   Clears/draws the middle banner segment (no text).
 ;------------------------------------------------------------------------------
-CLEANUP_DrawBannerSpacerSegment:
+_CLEANUP_DrawBannerSpacerSegment:
     LINK.W  A5,#-4
     MOVEM.L D2-D3,-(A7)
 
@@ -294,7 +294,7 @@ CLEANUP_DrawBannerSpacerSegment:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: CLEANUP_DrawTimeBannerSegment   (DrawTimeBannerSegmentuncertain)
+; FUNC: _CLEANUP_DrawTimeBannerSegment   (DrawTimeBannerSegmentuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -310,7 +310,7 @@ CLEANUP_DrawBannerSpacerSegment:
 ; DESC:
 ;   Draws the right banner segment containing the time string.
 ;------------------------------------------------------------------------------
-CLEANUP_DrawTimeBannerSegment:
+_CLEANUP_DrawTimeBannerSegment:
     LINK.W  A5,#-4
     MOVEM.L D2-D3,-(A7)
 
@@ -361,8 +361,8 @@ CLEANUP_DrawTimeBannerSegment:
 ; CLOBBERS:
 ;   D0-D3/A0-A1/A5-A6
 ; CALLS:
-;   _LVOSetAPen, _LVORectFill, CLEANUP_DrawDateBannerSegment,
-;   CLEANUP_DrawBannerSpacerSegment, CLEANUP_DrawTimeBannerSegment
+;   _LVOSetAPen, _LVORectFill, _CLEANUP_DrawDateBannerSegment,
+;   _CLEANUP_DrawBannerSpacerSegment, _CLEANUP_DrawTimeBannerSegment
 ; READS:
 ;   _Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY, _Global_REF_696_400_BITMAP
 ; WRITES:
@@ -395,11 +395,11 @@ CLEANUP_DrawDateTimeBannerRow:
     MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVORectFill(A6)
 
-    BSR.W   CLEANUP_DrawDateBannerSegment
+    BSR.W   _CLEANUP_DrawDateBannerSegment
 
-    BSR.W   CLEANUP_DrawBannerSpacerSegment
+    BSR.W   _CLEANUP_DrawBannerSpacerSegment
 
-    BSR.W   CLEANUP_DrawTimeBannerSegment
+    BSR.W   _CLEANUP_DrawTimeBannerSegment
 
     MOVEA.L _Global_REF_RASTPORT_1,A0
     MOVE.L  -4(A5),4(A0)

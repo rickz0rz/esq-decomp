@@ -1,5 +1,5 @@
     XDEF    _ESQSHARED_ReplaceTvRatingToken
-    XDEF    ESQSHARED_UpdateMatchingEntriesByTitle
+    XDEF    _ESQSHARED_UpdateMatchingEntriesByTitle
     XDEF    ESQSHARED_UpdateMatchingEntriesByTitle_Return
 
 
@@ -105,7 +105,7 @@ _ESQSHARED_ReplaceTvRatingToken:
     RTS
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQSHARED_UpdateMatchingEntriesByTitle   (Apply compact payload to title-matched entries)
+; FUNC: _ESQSHARED_UpdateMatchingEntriesByTitle   (Apply compact payload to title-matched entries)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +6: arg_2 (via 10(A5))
@@ -132,9 +132,9 @@ _ESQSHARED_ReplaceTvRatingToken:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D2/D3/D4/D5/D6/D7
 ; CALLS:
-;   ESQIFF_JMPTBL_MATH_Mulu32, _ESQIFF_JMPTBL_MEMORY_AllocateMemory, _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, ESQSHARED_JMPTBL_DST_BuildBannerTimeWord, ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString, ESQSHARED_JMPTBL_ESQ_SetBit1Based, ESQSHARED_JMPTBL_ESQ_TestBit1Based, _ESQSHARED_JMPTBL_ESQ_WildcardMatch, _GROUP_AR_JMPTBL_STRING_AppendAtNull, _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AW_JMPTBL_WDISP_SPrintf, _ESQPARS_ReplaceOwnedString, _ESQSHARED_ApplyProgramTitleTextFilters, NEWGRID_JMPTBL_MATH_DivS32
+;   _ESQIFF_JMPTBL_MATH_Mulu32, _ESQIFF_JMPTBL_MEMORY_AllocateMemory, _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, _ESQSHARED_JMPTBL_DST_BuildBannerTimeWord, _ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString, _ESQSHARED_JMPTBL_ESQ_SetBit1Based, _ESQSHARED_JMPTBL_ESQ_TestBit1Based, _ESQSHARED_JMPTBL_ESQ_WildcardMatch, _GROUP_AR_JMPTBL_STRING_AppendAtNull, _GROUP_AS_JMPTBL_STR_FindCharPtr, _GROUP_AW_JMPTBL_WDISP_SPrintf, _ESQPARS_ReplaceOwnedString, _ESQSHARED_ApplyProgramTitleTextFilters, _NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
-;   Global_STR_ESQPARS2_C_1, Global_STR_ESQPARS2_C_2, ESQSHARED_UpdateMatchingEntriesByTitle_Return, _CLOCK_FormatVariantCode, ESQPARS2_DurationFmt_DecimalWithSpace, ESQPARS2_DurationFmt_OpenParenHours, ESQPARS2_DurationFmt_OpenParenMinutes, ESQPARS2_DurationFmt_CloseParen, SCRIPT_StrHoursPluralSuffix, SCRIPT_StrHourSingularSuffix, SCRIPT_StrMinutesSuffix, _WDISP_CharClassTable, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryTitlePtrTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_21, lab_0C5F, lab_0C6F
+;   _Global_STR_ESQPARS2_C_1, _Global_STR_ESQPARS2_C_2, ESQSHARED_UpdateMatchingEntriesByTitle_Return, _CLOCK_FormatVariantCode, _ESQPARS2_DurationFmt_DecimalWithSpace, _ESQPARS2_DurationFmt_OpenParenHours, _ESQPARS2_DurationFmt_OpenParenMinutes, _ESQPARS2_DurationFmt_CloseParen, _SCRIPT_StrHoursPluralSuffix, _SCRIPT_StrHourSingularSuffix, _SCRIPT_StrMinutesSuffix, _WDISP_CharClassTable, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupPresentFlag, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupCode, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTable, _TEXTDISP_PrimaryTitlePtrTable, _TEXTDISP_SecondaryTitlePtrTable, MEMF_CLEAR, MEMF_PUBLIC, branch, branch_21, lab_0C5F, lab_0C6F
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -144,7 +144,7 @@ _ESQSHARED_ReplaceTvRatingToken:
 ; NOTES:
 ;   Slot index D6 is validated to 1..48, with bit6 selecting set-bit behavior.
 ;------------------------------------------------------------------------------
-ESQSHARED_UpdateMatchingEntriesByTitle:
+_ESQSHARED_UpdateMatchingEntriesByTitle:
     LINK.W  A5,#-76
     MOVEM.L D2-D7/A2-A3/A6,-(A7)
 
@@ -249,7 +249,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     ESQSHARED_JMPTBL_ESQ_TestBit1Based(PC)
+    JSR     _ESQSHARED_JMPTBL_ESQ_TestBit1Based(PC)
 
     ADDQ.W  #8,A7
     MOVE.W  D0,-12(A5)
@@ -269,7 +269,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.B  D6,D0
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     ESQSHARED_JMPTBL_ESQ_SetBit1Based(PC)
+    JSR     _ESQSHARED_JMPTBL_ESQ_SetBit1Based(PC)
 
     ADDQ.W  #8,A7
 
@@ -347,7 +347,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     PEA     50.W
     PEA     720.W
-    PEA     Global_STR_ESQPARS2_C_1
+    PEA     _Global_STR_ESQPARS2_C_1
     MOVE.L  D0,-42(A5)
     MOVE.L  D0,-38(A5)
     MOVE.L  A1,-70(A5)
@@ -377,7 +377,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     SUB.L   D1,D0
     MOVEQ   #10,D1
     MOVE.L  D0,-42(A5)
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     MOVE.B  -2(A0),D1
     EXT.W   D1
@@ -391,14 +391,14 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     BLE.S   .branch_2
 
     MOVE.L  D0,-(A7)
-    PEA     ESQPARS2_DurationFmt_DecimalWithSpace
+    PEA     _ESQPARS2_DurationFmt_DecimalWithSpace
     PEA     -52(A5)
-    JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
     MOVE.L  -38(A5),(A7)
-    PEA     ESQPARS2_DurationFmt_OpenParenHours
+    PEA     _ESQPARS2_DurationFmt_OpenParenHours
     PEA     -62(A5)
-    JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
     PEA     -62(A5)
     MOVE.L  -66(A5),-(A7)
@@ -409,7 +409,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     CMP.L   -38(A5),D0
     BNE.S   .branch_1
 
-    PEA     SCRIPT_StrHourSingularSuffix
+    PEA     _SCRIPT_StrHourSingularSuffix
     MOVE.L  -66(A5),-(A7)
     JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -417,7 +417,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     BRA.S   .branch_3
 
 .branch_1:
-    PEA     SCRIPT_StrHoursPluralSuffix
+    PEA     _SCRIPT_StrHoursPluralSuffix
     MOVE.L  -66(A5),-(A7)
     JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -426,9 +426,9 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
 
 .branch_2:
     MOVE.L  D0,-(A7)
-    PEA     ESQPARS2_DurationFmt_OpenParenMinutes
+    PEA     _ESQPARS2_DurationFmt_OpenParenMinutes
     PEA     -52(A5)
-    JSR     GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
+    JSR     _GROUP_AW_JMPTBL_WDISP_SPrintf(PC)
 
     LEA     12(A7),A7
 
@@ -441,7 +441,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.L  -66(A5),-(A7)
     JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
-    PEA     SCRIPT_StrMinutesSuffix
+    PEA     _SCRIPT_StrMinutesSuffix
     MOVE.L  -66(A5),-(A7)
     JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -460,7 +460,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVEA.L -66(A5),A1
     MOVE.L  A0,D0
     CLR.B   -1(A1,D0.L)
-    PEA     ESQPARS2_DurationFmt_CloseParen
+    PEA     _ESQPARS2_DurationFmt_CloseParen
     MOVE.L  A1,-(A7)
     JSR     _GROUP_AR_JMPTBL_STRING_AppendAtNull(PC)
 
@@ -481,7 +481,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     PEA     50.W
     MOVE.L  -70(A5),-(A7)
     PEA     765.W
-    PEA     Global_STR_ESQPARS2_C_2
+    PEA     _Global_STR_ESQPARS2_C_2
     JSR     _ESQIFF_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7
@@ -542,7 +542,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVEQ   #48,D2
     SUB.L   D2,D1
     MOVEQ   #10,D0
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     BRA.S   .branch_9
 
@@ -587,7 +587,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVEQ   #48,D1
     SUB.L   D1,D0
     MOVEQ   #10,D1
-    JSR     ESQIFF_JMPTBL_MATH_Mulu32(PC)
+    JSR     _ESQIFF_JMPTBL_MATH_Mulu32(PC)
 
     BRA.S   .branch_13
 
@@ -648,7 +648,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.W  -22(A5),D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #48,D0
     ADD.L   D0,D1
@@ -673,7 +673,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     EXT.L   D1
     MOVE.L  D1,D0
     MOVEQ   #10,D1
-    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #48,D1
     ADD.L   D1,D0
@@ -681,7 +681,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.W  -24(A5),D0
     EXT.L   D0
     MOVEQ   #10,D1
-    JSR     NEWGRID_JMPTBL_MATH_DivS32(PC)
+    JSR     _NEWGRID_JMPTBL_MATH_DivS32(PC)
 
     MOVEQ   #48,D0
     ADD.L   D0,D1
@@ -702,14 +702,14 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
     MOVE.L  D2,-(A7)
     MOVE.L  D0,-(A7)
     MOVE.L  D1,44(A7)
-    JSR     ESQSHARED_JMPTBL_DST_BuildBannerTimeWord(PC)
+    JSR     _ESQSHARED_JMPTBL_DST_BuildBannerTimeWord(PC)
 
     EXT.L   D0
     MOVE.L  D0,(A7)
     MOVEA.L -8(A5),A0
     MOVE.L  44(A7),D1
     MOVE.L  56(A0,D1.L),-(A7)
-    JSR     ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString(PC)
+    JSR     _ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D0
@@ -747,7 +747,7 @@ ESQSHARED_UpdateMatchingEntriesByTitle:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Shared return tail for ESQSHARED_UpdateMatchingEntriesByTitle.
+;   Shared return tail for _ESQSHARED_UpdateMatchingEntriesByTitle.
 ; NOTES:
 ;   Restores D2-D7/A2-A3/A6 and frame state.
 ;------------------------------------------------------------------------------

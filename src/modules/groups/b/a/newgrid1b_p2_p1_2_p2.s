@@ -12,7 +12,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   NEWGRID_UpdatePresetEntry, _NEWGRID_DrawGridEntry,
+;   _NEWGRID_UpdatePresetEntry, _NEWGRID_DrawGridEntry,
 ;   _NEWGRID_DrawGridFrameVariant2, _NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams, NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex, _NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer, _NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount
 ; READS:
 ;   _GCOMMAND_MplexDetailLayoutPen, _GCOMMAND_MplexDetailLayoutFlag, _GCOMMAND_MplexDetailInitialLineIndex
@@ -56,7 +56,7 @@ _NEWGRID_HandleDetailGridState:
     MOVE.L  D0,-(A7)
     PEA     -8(A5)
     PEA     -4(A5)
-    BSR.W   NEWGRID_UpdatePresetEntry
+    BSR.W   _NEWGRID_UpdatePresetEntry
 
     LEA     16(A7),A7
     MOVE.L  D0,D6

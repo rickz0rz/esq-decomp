@@ -106,3 +106,54 @@ The lesson generalizes past this bug: **a screening rule that removes work is
 worth auditing as carefully as the work it removes.** Nothing fails when a
 filter is too aggressive. The targets simply never appear, and the ceiling looks
 like a fact about the program.
+
+## A seventh class, found on 2026-07-31: the process exit stub
+
+`ESQ_ShutdownAndReturn` (76 bytes, `modules/groups/_main/a/a.s`) appears in
+`worklist.py` as an ordinary cross-unit target. It is not one, and no C compiler
+can emit it. Its last three instructions are:
+
+```
+2E6CFDA8    MOVEA.L Global_SavedStackPointer(A4),A7
+4CDF7F7E    MOVEM.L (A7)+,D1-D6/A0-A6
+4E75        RTS
+```
+
+Three things there are outside the language at once. The function **replaces the
+stack pointer** with a value a different function saved. It then **pops thirteen
+registers it never pushed** -- they were pushed by the startup code, not by this
+routine, so the MOVEM is one half of a save/restore pair whose other half lives
+in another function. And the `RTS` therefore returns to the startup code's
+caller, not to this function's caller. A C function must balance its own stack
+and return to whoever called it; this one is written to do neither.
+
+It reads its globals through `A4` as well, and calls `_LVOexecPrivate1`, but
+those are not what blocks it. The stack discipline is.
+
+**Scope: exactly one function.** Every unrestored function was scanned for a
+load of A7 from memory (`MOVEA.L <ea>,A7`, opcodes `2e6c`/`2e78`/`2e79`):
+
+```sh
+python3 - <<'PY'
+import sys, subprocess, re
+sys.path.insert(0, 'tools'); import coverage
+for f in coverage.survey():
+    if f['status'] is not None: continue
+    out = subprocess.run([sys.executable, 'tools/refbytes.py', f['name']],
+                         capture_output=True, text=True).stdout
+    m = re.search(r'^bytes: (\S+)', out, re.M)
+    if m and any(op in m.group(1) for op in ('2e6c', '2e78', '2e79')):
+        print(f['size'], f['name'])
+PY
+```
+
+That returns three names. Two are false positives -- `TLIBA1_FormatClockFormatEntry`
+and `LOCAVAIL_ComputeFilterOffsetForEntry` contain the byte pair inside a longer
+instruction and only ever adjust A7 with `LEA`/`ADDQ`. Check the disassembly, not
+the byte string. `ESQ_ShutdownAndReturn` is the only real one.
+
+So this class costs 76 bytes and moves the ceiling by 0.04%. It is recorded
+because the alternative is that the next reader spends an afternoon on it, which
+is the same reason every other row here exists. It is **not** yet screened by
+`coverage.py`; it is small enough that a detector would risk more false
+positives than it saves work.

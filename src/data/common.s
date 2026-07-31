@@ -165,7 +165,7 @@ _CLOCK_HalfHourSlotLookup:
 ; TYPE: pointer fields
 ; PURPOSE: Shared heads used for parsed brush descriptor chains, pending CTASKS handoff nodes, and weather-status brush lists.
 ; USED BY: PARSEINI_*, ESQIFF_*, ESQFUNC_*, _CTASKS_IFFTaskCleanup, WDISP_*
-; NOTES: Most entries are transient handoff pointers consumed by BRUSH_PopulateBrushList or task cleanup.
+; NOTES: Most entries are transient handoff pointers consumed by _BRUSH_PopulateBrushList or task cleanup.
 ;------------------------------------------------------------------------------
 _PARSEINI_ParsedDescriptorListHead:
     DC.L    0
@@ -195,7 +195,7 @@ _ESQIFF_GAdsBrushListCount:
     DC.L    0
 _ESQIFF_LogoBrushListCount:
     DC.L    0
-; Non-zero while BRUSH_PopulateBrushList is mutating the brush list.
+; Non-zero while _BRUSH_PopulateBrushList is mutating the brush list.
 _BRUSH_LoadInProgressFlag:
     DC.L    0
 ; Tracks which cleanup alert message (if any) should be shown after brush loads.

@@ -1,7 +1,7 @@
     XDEF    _GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode
     XDEF    _GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode
     XDEF    _GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString
-    XDEF    GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
+    XDEF    _GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit
     XDEF    _GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray
     XDEF    _GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap
     XDEF    _GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray
@@ -98,7 +98,7 @@ _GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode:
     JMP     _ESQDISP_GetEntryPointerByMode
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit   (Routine at GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit)
+; FUNC: _GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit   (Routine at _GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -116,7 +116,7 @@ _GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit:
+_GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit:
     JMP     _LADFUNC_ParseHexDigit
 
 ;------------------------------------------------------------------------------
@@ -172,7 +172,7 @@ _GROUP_AE_JMPTBL_WDISP_SPrintf:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SCRIPT_AllocateBufferArray
+;   _SCRIPT_AllocateBufferArray
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -183,7 +183,7 @@ _GROUP_AE_JMPTBL_WDISP_SPrintf:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray:
-    JMP     SCRIPT_AllocateBufferArray
+    JMP     _SCRIPT_AllocateBufferArray
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset   (Routine at _GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset)

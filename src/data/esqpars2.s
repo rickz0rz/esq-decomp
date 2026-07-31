@@ -1,25 +1,25 @@
-    XDEF    Global_ESQPARS2_C_1
-    XDEF    Global_ESQPARS2_C_2
-    XDEF    Global_ESQPARS2_C_3
-    XDEF    Global_ESQPARS2_C_4
-    XDEF    Global_STR_CLOSED_CAPTIONED
+    XDEF    _Global_ESQPARS2_C_1
+    XDEF    _Global_ESQPARS2_C_2
+    XDEF    _Global_ESQPARS2_C_3
+    XDEF    _Global_ESQPARS2_C_4
+    XDEF    _Global_STR_CLOSED_CAPTIONED
     XDEF    _Global_STR_IN_STEREO
     XDEF    _Global_TBL_MOVIE_RATINGS
     XDEF    _ESQPARS2_MovieRatingTokenGlyphMap
     XDEF    _Global_TBL_TV_PROGRAM_RATINGS
     XDEF    _ESQPARS2_TvRatingTokenGlyphMap
-    XDEF    Global_STR_ESQPARS2_C_1
-    XDEF    ESQPARS2_DurationFmt_DecimalWithSpace
-    XDEF    ESQPARS2_DurationFmt_OpenParenHours
-    XDEF    ESQPARS2_DurationFmt_OpenParenMinutes
-    XDEF    ESQPARS2_DurationFmt_CloseParen
-    XDEF    Global_STR_ESQPARS2_C_2
+    XDEF    _Global_STR_ESQPARS2_C_1
+    XDEF    _ESQPARS2_DurationFmt_DecimalWithSpace
+    XDEF    _ESQPARS2_DurationFmt_OpenParenHours
+    XDEF    _ESQPARS2_DurationFmt_OpenParenMinutes
+    XDEF    _ESQPARS2_DurationFmt_CloseParen
+    XDEF    _Global_STR_ESQPARS2_C_2
     XDEF    _Global_LONG_PATCH_VERSION_NUMBER
     XDEF    _ESQPARS2_BannerSnapshotPlane0DstPtr
     XDEF    ESQPARS2_BannerSnapshotPlane0DstPtrLo
-    XDEF    ESQPARS2_BannerSnapshotPlane1DstPtr
+    XDEF    _ESQPARS2_BannerSnapshotPlane1DstPtr
     XDEF    ESQPARS2_BannerSnapshotPlane1DstPtrLo
-    XDEF    ESQPARS2_BannerSnapshotPlane2DstPtr
+    XDEF    _ESQPARS2_BannerSnapshotPlane2DstPtr
     XDEF    ESQPARS2_BannerSnapshotPlane2DstPtrLo
     XDEF    _ESQPARS2_SnapshotLivePlane0Base
     XDEF    _ESQPARS2_SnapshotLivePlane1Base
@@ -63,15 +63,15 @@
     XDEF    ESQPARS2_LogLineTerminator
 ; ========== ESQPARS2.c ==========
 
-Global_ESQPARS2_C_1:
+_Global_ESQPARS2_C_1:
     NStr    "ESQPARS2.c"
-Global_ESQPARS2_C_2:
+_Global_ESQPARS2_C_2:
     NStr    "ESQPARS2.c"
-Global_ESQPARS2_C_3:
+_Global_ESQPARS2_C_3:
     NStr    "ESQPARS2.c"
-Global_ESQPARS2_C_4:
+_Global_ESQPARS2_C_4:
     NStr    "ESQPARS2.c"
-Global_STR_CLOSED_CAPTIONED:
+_Global_STR_CLOSED_CAPTIONED:
     NStr    "(CC)"
 _Global_STR_IN_STEREO:
     NStr    "In Stereo"
@@ -146,17 +146,17 @@ _ESQPARS2_TvRatingTokenGlyphMap:
     DC.B    $9A
     DC.B    0       ; Table terminator
 
-Global_STR_ESQPARS2_C_1:
+_Global_STR_ESQPARS2_C_1:
     NStr    "ESQPARS2.c"
-ESQPARS2_DurationFmt_DecimalWithSpace:
+_ESQPARS2_DurationFmt_DecimalWithSpace:
     NStr    "%d "
-ESQPARS2_DurationFmt_OpenParenHours:
+_ESQPARS2_DurationFmt_OpenParenHours:
     NStr    "(%d "
-ESQPARS2_DurationFmt_OpenParenMinutes:
+_ESQPARS2_DurationFmt_OpenParenMinutes:
     NStr    "(%d "
-ESQPARS2_DurationFmt_CloseParen:
+_ESQPARS2_DurationFmt_CloseParen:
     NStr    ")"
-Global_STR_ESQPARS2_C_2:
+_Global_STR_ESQPARS2_C_2:
     NStr    "ESQPARS2.c"
     DS.W    1
 _Global_LONG_PATCH_VERSION_NUMBER:
@@ -169,19 +169,19 @@ _Global_LONG_PATCH_VERSION_NUMBER:
 ; NOTES:
 ;   Layout is contiguous longwords:
 ;     plane0 ptr = _ESQPARS2_BannerSnapshotPlane0DstPtr/ESQPARS2_BannerSnapshotPlane0DstPtrLo
-;     plane1 ptr = ESQPARS2_BannerSnapshotPlane1DstPtr/ESQPARS2_BannerSnapshotPlane1DstPtrLo
-;     plane2 ptr = ESQPARS2_BannerSnapshotPlane2DstPtr/ESQPARS2_BannerSnapshotPlane2DstPtrLo
+;     plane1 ptr = _ESQPARS2_BannerSnapshotPlane1DstPtr/ESQPARS2_BannerSnapshotPlane1DstPtrLo
+;     plane2 ptr = _ESQPARS2_BannerSnapshotPlane2DstPtr/ESQPARS2_BannerSnapshotPlane2DstPtrLo
 ;   Code often accesses this block as a u32[] via post-increment addressing.
 ;------------------------------------------------------------------------------
 _ESQPARS2_BannerSnapshotPlane0DstPtr:
     DS.W    1
 ESQPARS2_BannerSnapshotPlane0DstPtrLo:
     DS.W    1
-ESQPARS2_BannerSnapshotPlane1DstPtr:
+_ESQPARS2_BannerSnapshotPlane1DstPtr:
     DS.W    1
 ESQPARS2_BannerSnapshotPlane1DstPtrLo:
     DS.W    1
-ESQPARS2_BannerSnapshotPlane2DstPtr:
+_ESQPARS2_BannerSnapshotPlane2DstPtr:
     DS.W    1
 ESQPARS2_BannerSnapshotPlane2DstPtrLo:
     DS.W    1

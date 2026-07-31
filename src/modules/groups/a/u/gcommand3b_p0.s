@@ -1,6 +1,6 @@
     XDEF    GCOMMAND_ExpandPresetBlock
     XDEF    _GCOMMAND_InitPresetTableFromPalette
-    XDEF    GCOMMAND_SetPresetEntry
+    XDEF    _GCOMMAND_SetPresetEntry
     XDEF    GCOMMAND_ValidatePresetTable
     XDEF    GCOMMAND_ExpandPresetBlock_Return
     XDEF    GCOMMAND_InitPresetTableFromPalette_Return
@@ -78,7 +78,7 @@
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_SetPresetEntry   (Update the preset table entry for row D7 with the supplied value D6.)
+; FUNC: _GCOMMAND_SetPresetEntry   (Update the preset table entry for row D7 with the supplied value D6.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -98,7 +98,7 @@
 ;------------------------------------------------------------------------------
 
 ; Update the preset table entry for row D7 with the supplied value D6.
-GCOMMAND_SetPresetEntry:
+_GCOMMAND_SetPresetEntry:
     MOVEM.L D6-D7,-(A7)
     MOVE.L  12(A7),D7
     MOVE.L  16(A7),D6
@@ -147,7 +147,7 @@ GCOMMAND_SetPresetEntry_Return:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GCOMMAND_ExpandPresetBlock   (Decode a nibble-packed preset block into the preset table via GCOMMAND_SetPresetEntry.)
+; FUNC: GCOMMAND_ExpandPresetBlock   (Decode a nibble-packed preset block into the preset table via _GCOMMAND_SetPresetEntry.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -161,7 +161,7 @@ GCOMMAND_SetPresetEntry_Return:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Decode a nibble-packed preset block into the preset table via GCOMMAND_SetPresetEntry.
+;   Decode a nibble-packed preset block into the preset table via _GCOMMAND_SetPresetEntry.
 ; NOTES:
 ;   Treats high/low nibbles as decimal digits per byte to build row values.
 ;------------------------------------------------------------------------------
@@ -208,7 +208,7 @@ GCOMMAND_ExpandPresetBlock:
     MOVE.W  D5,D0
     MOVE.L  D0,-(A7)
     MOVE.L  D7,-(A7)
-    BSR.W   GCOMMAND_SetPresetEntry
+    BSR.W   _GCOMMAND_SetPresetEntry
 
     ADDQ.W  #8,A7
     ADDQ.L  #1,D7
@@ -391,17 +391,17 @@ GCOMMAND_ValidatePresetTable_Return:
 ; CALLS:
 ;   _NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
-;   GCOMMAND_PresetSeedPackedWordTable
+;   _GCOMMAND_PresetSeedPackedWordTable
 ; WRITES:
 ;   [presetTable]
 ; DESC:
-;   Fills preset table entries using seed words in GCOMMAND_PresetSeedPackedWordTable.
+;   Fills preset table entries using seed words in _GCOMMAND_PresetSeedPackedWordTable.
 ; NOTES:
 ;   Table layout used here is:
 ;     presetTable + (row*2)                      = rowCount (initialized to 16)
 ;     presetTable + 32 + (row*128) + (col*2)     = value word
 ;   with row in 0..15 and col in 0..15 for this initializer pass.
-;   Source lookup uses GCOMMAND_PresetSeedPackedWordTable with base index (row*62)+col.
+;   Source lookup uses _GCOMMAND_PresetSeedPackedWordTable with base index (row*62)+col.
 ;   The destination table can be either _GCOMMAND_DefaultPresetTable or
 ;   _GCOMMAND_GradientPresetTable (parse-time staging path).
 ;------------------------------------------------------------------------------
@@ -441,7 +441,7 @@ _GCOMMAND_InitPresetTableFromPalette:
     MOVEQ   #62,D1
     JSR     _NEWGRID_JMPTBL_MATH_Mulu32(PC)
 
-    LEA     GCOMMAND_PresetSeedPackedWordTable,A1
+    LEA     _GCOMMAND_PresetSeedPackedWordTable,A1
     ADDA.L  D0,A1
     MOVE.L  16(A7),D0
     ADDA.L  D0,A1

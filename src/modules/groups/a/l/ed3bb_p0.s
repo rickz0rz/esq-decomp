@@ -1,10 +1,10 @@
     XDEF    _ED_DrawESCMenuHelpText
-    XDEF    ED_DrawEscMainMenuText
+    XDEF    _ED_DrawEscMainMenuText
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ED_DrawEscMainMenuText   (Draw ESC main menu textuncertain)
+; FUNC: _ED_DrawEscMainMenuText   (Draw ESC main menu textuncertain)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Calls _ED_DrawMenuSelectionHighlight to draw the selection highlight.
 ;------------------------------------------------------------------------------
-ED_DrawEscMainMenuText:
+_ED_DrawEscMainMenuText:
     PEA     6.W
     BSR.W   _ED_DrawMenuSelectionHighlight
 
@@ -35,38 +35,38 @@ ED_DrawEscMainMenuText:
     MOVEQ   #0,D0
     JSR     _LVOSetDrMd(A6)
 
-    PEA     Global_STR_EDIT_ADS
+    PEA     _Global_STR_EDIT_ADS
     PEA     90.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_EDIT_ATTRIBUTES
+    PEA     _Global_STR_EDIT_ATTRIBUTES
     PEA     120.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_CHANGE_SCROLL_SPEED
+    PEA     _Global_STR_CHANGE_SCROLL_SPEED
     PEA     150.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_DIAGNOSTIC_MODE
+    PEA     _Global_STR_DIAGNOSTIC_MODE
     PEA     180.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
     LEA     68(A7),A7
-    PEA     Global_STR_SPECIAL_FUNCTIONS
+    PEA     _Global_STR_SPECIAL_FUNCTIONS
     PEA     210.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_VERSIONS_SCREEN
+    PEA     _Global_STR_VERSIONS_SCREEN
     PEA     240.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
@@ -91,7 +91,7 @@ ED_DrawEscMainMenuText:
 ; CLOBBERS:
 ;   D0/A1/A6 uncertain
 ; CALLS:
-;   _ED_DrawHelpPanels, _DISPLIB_DisplayTextAtPosition, ED_DrawEscMainMenuText,
+;   _ED_DrawHelpPanels, _DISPLIB_DisplayTextAtPosition, _ED_DrawEscMainMenuText,
 ;   _LVOSetDrMd, _LVOSetAPen
 ; READS:
 ;   _Global_REF_RASTPORT_1
@@ -115,19 +115,19 @@ _ED_DrawESCMenuHelpText:
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    PEA     Global_STR_PUSH_ESC_TO_RESUME
+    PEA     _Global_STR_PUSH_ESC_TO_RESUME
     PEA     330.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_1
+    PEA     _Global_STR_PUSH_RETURN_TO_ENTER_SELECTION_1
     PEA     360.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
     JSR     _DISPLIB_DisplayTextAtPosition(PC)
 
-    PEA     Global_STR_PUSH_ANY_KEY_TO_SELECT_1
+    PEA     _Global_STR_PUSH_ANY_KEY_TO_SELECT_1
     PEA     390.W
     PEA     40.W
     MOVE.L  _Global_REF_RASTPORT_1,-(A7)
@@ -139,7 +139,7 @@ _ED_DrawESCMenuHelpText:
     JSR     _LVOSetDrMd(A6)
 
     CLR.L   _ED_EditCursorOffset
-    BSR.W   ED_DrawEscMainMenuText
+    BSR.W   _ED_DrawEscMainMenuText
 
     LEA     52(A7),A7
     RTS

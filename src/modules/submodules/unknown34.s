@@ -1,6 +1,6 @@
     XDEF    DOS_ReadByIndex
     XDEF    LIST_InitHeader
-    XDEF    MEM_Move
+    XDEF    _MEM_Move
 
 ;------------------------------------------------------------------------------
 ; FUNC: DOS_ReadByIndex   (Read using a handle index.)
@@ -92,7 +92,7 @@ LIST_InitHeader:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: MEM_Move   (Overlap-safe byte copy.)
+; FUNC: _MEM_Move   (Overlap-safe byte copy.)
 ; ARGS:
 ;   stack +4:  A0 = source
 ;   stack +8:  A1 = destination
@@ -104,7 +104,7 @@ LIST_InitHeader:
 ; DESC:
 ;   Copies D0 bytes from A0 to A1, handling overlap (memmove).
 ;------------------------------------------------------------------------------
-MEM_Move:
+_MEM_Move:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
     MOVE.L  12(A7),D0

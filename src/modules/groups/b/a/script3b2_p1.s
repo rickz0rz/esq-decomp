@@ -1,8 +1,8 @@
-    XDEF    SCRIPT_ProcessCtrlContextPlaybackTick
+    XDEF    _SCRIPT_ProcessCtrlContextPlaybackTick
 
 
 ;------------------------------------------------------------------------------
-; FUNC: SCRIPT_ProcessCtrlContextPlaybackTick   (ProcessCtrlContextPlaybackTick)
+; FUNC: _SCRIPT_ProcessCtrlContextPlaybackTick   (ProcessCtrlContextPlaybackTick)
 ; ARGS:
 ;   stack +12: ctxPtr (A3)
 ; RET:
@@ -10,35 +10,35 @@
 ; CLOBBERS:
 ;   A3/A7/D0/D1/D2
 ; CALLS:
-;   SCRIPT_ApplyPendingBannerTarget, SCRIPT_UpdateRuntimeModeForPlaybackCursor, _SCRIPT_DispatchPlaybackCursorCommand, _SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
+;   _SCRIPT_ApplyPendingBannerTarget, _SCRIPT_UpdateRuntimeModeForPlaybackCursor, _SCRIPT_DispatchPlaybackCursorCommand, _SCRIPT_LoadCtrlContextSnapshot, _SCRIPT_SaveCtrlContextSnapshot, _SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine
 ; READS:
-;   _CONFIG_MSN_FlagChar, SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, _LOCAVAIL_PrimaryFilterState, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _TEXTDISP_CurrentMatchIndex
+;   _CONFIG_MSN_FlagChar, _SCRIPT_RuntimeModeDispatchLatch, _SCRIPT_RuntimeModeDeferredFlag, _LOCAVAIL_PrimaryFilterState, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _TEXTDISP_CurrentMatchIndex
 ; WRITES:
-;   SCRIPT_RuntimeModeDispatchLatch, SCRIPT_RuntimeModeDeferredFlag, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _TEXTDISP_CurrentMatchIndexSaved
+;   _SCRIPT_RuntimeModeDispatchLatch, _SCRIPT_RuntimeModeDeferredFlag, _SCRIPT_RuntimeMode, _SCRIPT_PlaybackCursor, _TEXTDISP_CurrentMatchIndexSaved
 ; DESC:
 ;   Loads context state, applies mode/cursor gating, runs playback-command
 ;   dispatch, then saves the updated state back into the context snapshot.
 ; NOTES:
 ;   Playback cursor dispatch is only attempted for cursor values 1..15.
 ;------------------------------------------------------------------------------
-SCRIPT_ProcessCtrlContextPlaybackTick:
+_SCRIPT_ProcessCtrlContextPlaybackTick:
     MOVEM.L D2/A3,-(A7)
     MOVEA.L 12(A7),A3
     PEA     _LOCAVAIL_PrimaryFilterState
     MOVE.L  A3,-(A7)
-    JSR     SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine(PC)
+    JSR     _SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine(PC)
 
     MOVE.L  A3,(A7)
     BSR.W   _SCRIPT_LoadCtrlContextSnapshot
 
     ADDQ.W  #8,A7
-    TST.L   SCRIPT_RuntimeModeDeferredFlag
+    TST.L   _SCRIPT_RuntimeModeDeferredFlag
     BEQ.S   .playback_tick_apply_pending_mode_change
 
     MOVEQ   #3,D0
     MOVE.W  D0,_SCRIPT_RuntimeMode
     MOVEQ   #0,D0
-    MOVE.L  D0,SCRIPT_RuntimeModeDeferredFlag
+    MOVE.L  D0,_SCRIPT_RuntimeModeDeferredFlag
 
 .playback_tick_apply_pending_mode_change:
     MOVE.B  _CONFIG_MSN_FlagChar,D0
@@ -62,7 +62,7 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     SUBQ.W  #2,D0
     BNE.S   .playback_tick_maybe_dispatch_cursor
 
-    TST.W   SCRIPT_RuntimeModeDispatchLatch
+    TST.W   _SCRIPT_RuntimeModeDispatchLatch
     BEQ.S   .playback_tick_clear_runtime_latch
 
     MOVE.L  _SCRIPT_PlaybackCursor,D0
@@ -79,7 +79,7 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     CMP.L   D1,D0
     BGT.S   .return
 
-    BSR.W   SCRIPT_UpdateRuntimeModeForPlaybackCursor
+    BSR.W   _SCRIPT_UpdateRuntimeModeForPlaybackCursor
 
     TST.W   D0
     BNE.S   .return
@@ -88,7 +88,7 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     CMP.L   _SCRIPT_PlaybackCursor,D0
     BEQ.S   .playback_tick_dispatch_cursor
 
-    BSR.W   SCRIPT_ApplyPendingBannerTarget
+    BSR.W   _SCRIPT_ApplyPendingBannerTarget
 
 .playback_tick_dispatch_cursor:
     PEA     _SCRIPT_PlaybackCursor
@@ -98,7 +98,7 @@ SCRIPT_ProcessCtrlContextPlaybackTick:
     BRA.S   .return
 
 .playback_tick_clear_runtime_latch:
-    CLR.W   SCRIPT_RuntimeModeDispatchLatch
+    CLR.W   _SCRIPT_RuntimeModeDispatchLatch
 
 .return:
     MOVE.W  _TEXTDISP_CurrentMatchIndex,_TEXTDISP_CurrentMatchIndexSaved

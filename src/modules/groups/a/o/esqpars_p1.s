@@ -12,17 +12,17 @@
     XDEF    ESQPARS_JMPTBL_DST_UpdateBannerQueue
     XDEF    ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte
     XDEF    ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds
-    XDEF    ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile
-    XDEF    ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile
+    XDEF    _ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile
+    XDEF    _ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile
     XDEF    _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache
     XDEF    ESQPARS_JMPTBL_PARSEINI_HandleFontCommand
-    XDEF    ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals
+    XDEF    _ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals
     XDEF    _ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt
     XDEF    ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord
     XDEF    _ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile
     XDEF    _ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte
     XDEF    ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine
-    XDEF    ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries
+    XDEF    _ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries
     XDEF    ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal
     XDEF    ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay
     XDEF    ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList
@@ -38,7 +38,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DISKIO2_FlushDataFilesIfNeeded
+;   _DISKIO2_FlushDataFilesIfNeeded
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -49,7 +49,7 @@
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded:
-    JMP     DISKIO2_FlushDataFilesIfNeeded
+    JMP     _DISKIO2_FlushDataFilesIfNeeded
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache   (Jump-table forwarder)
@@ -82,7 +82,7 @@ _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DATETIME_SavePairToFile
+;   _DATETIME_SavePairToFile
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -93,7 +93,7 @@ _ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQPARS_JMPTBL_DATETIME_SavePairToFile:
-    JMP     DATETIME_SavePairToFile
+    JMP     _DATETIME_SavePairToFile
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList   (Jump-table forwarder)
@@ -170,7 +170,7 @@ ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DST_HandleBannerCommand32_33
+;   _DST_HandleBannerCommand32_33
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -181,7 +181,7 @@ ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_DST_HandleBannerCommand32_33:
-    JMP     DST_HandleBannerCommand32_33
+    JMP     _DST_HandleBannerCommand32_33
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds   (Jump-table forwarder)
@@ -228,7 +228,7 @@ ESQPARS_JMPTBL_PARSEINI_HandleFontCommand:
     JMP     PARSEINI_HandleFontCommand
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries   (Jump-table forwarder)
+; FUNC: _ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -236,7 +236,7 @@ ESQPARS_JMPTBL_PARSEINI_HandleFontCommand:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   TEXTDISP_ApplySourceConfigAllEntries
+;   _TEXTDISP_ApplySourceConfigAllEntries
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -246,8 +246,8 @@ ESQPARS_JMPTBL_PARSEINI_HandleFontCommand:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries:
-    JMP     TEXTDISP_ApplySourceConfigAllEntries
+_ESQPARS_JMPTBL_TEXTDISP_ApplySourceConfigAllEntries:
+    JMP     _TEXTDISP_ApplySourceConfigAllEntries
 
 ;!======
 
@@ -302,7 +302,7 @@ ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine:
     JMP     _SCRIPT_ResetCtrlContextAndClearStatusLine
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals   (Jump-table forwarder)
+; FUNC: _ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -320,11 +320,11 @@ ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals:
+_ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals:
     JMP     PARSEINI_WriteRtcFromGlobals
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile   (Jump-table forwarder)
+; FUNC: _ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -342,7 +342,7 @@ ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
+_ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile:
     BRA.W   _LOCAVAIL_SaveAvailabilityDataFile
 
 ;------------------------------------------------------------------------------
@@ -368,7 +368,7 @@ _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition:
     JMP     _DISPLIB_DisplayTextAtPosition
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile   (Jump-table forwarder)
+; FUNC: _ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile   (Jump-table forwarder)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -386,7 +386,7 @@ _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition:
 ; NOTES:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
-ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile:
+_ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile:
     BRA.W   _LADFUNC_SaveTextAdsToFile
 
 ;------------------------------------------------------------------------------
@@ -496,7 +496,7 @@ ESQPARS_JMPTBL_COI_FreeEntryResources:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DST_UpdateBannerQueue
+;   _DST_UpdateBannerQueue
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -507,7 +507,7 @@ ESQPARS_JMPTBL_COI_FreeEntryResources:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 ESQPARS_JMPTBL_DST_UpdateBannerQueue:
-    JMP     DST_UpdateBannerQueue
+    JMP     _DST_UpdateBannerQueue
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord   (Jump-table forwarder)

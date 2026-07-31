@@ -327,7 +327,7 @@ FORMAT_ParseFormatSpec:
     MOVE.L  D0,-(A7)
     MOVE.L  A1,-(A7)
     MOVE.L  A0,-(A7)
-    JSR     MEM_Move(PC)
+    JSR     _MEM_Move(PC)
 
     LEA     12(A7),A7
     MOVEQ   #0,D0

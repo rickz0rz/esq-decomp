@@ -21,6 +21,7 @@
 # shows every colour bin overlapping the known-good build.
 modules/groups/a/a/bevel_bevel_drawbevelframewithtop.s                 c/bevel_draw_bevel_frame_with_top.c
 modules/groups/a/a/bevel_p1.s                                          c/bevel_draw_bevel_frame_with_top_right.c
+modules/groups/a/a/bevel_p0.s                                          c/bevel_draw_beveled_frame.c
 modules/groups/a/a/bevel_bevel_drawhorizontalbevel.s                   c/bevel_draw_horizontal_bevel.c
 modules/groups/a/a/bevel_bevel_drawverticalbevel.s                     c/bevel_draw_vertical_bevel.c
 modules/groups/a/a/bevel_bevel_drawverticalbevelpair.s                 c/bevel_draw_vertical_bevel_pair.c
@@ -34,6 +35,8 @@ modules/groups/a/a/brush_brush_loadcolortextfont.s                     c/brush_l
 modules/groups/a/a/brush_brush_normalizebrushnames.s                   c/brush_normalize_brush_names.c
 modules/groups/a/a/brush_p3_brush_planemaskforindex.s                  c/brush_plane_mask_for_index.c
 modules/groups/a/a/brush_brush_popbrushhead.s                          c/brush_pop_brush_head.c
+modules/groups/a/a/brush_p2.s                                          c/brush_populate_brush_list.c
+modules/groups/a/a/brush_p3_p1.s                                       c/brush_select_brush_by_label.c
 modules/groups/a/a/brush_p0_brush_streamfontchunk.s                    c/brush_stream_font_chunk.c
 modules/groups/a/b/cleanup_p0.s                                        c/cleanup_clear_aud1_interrupt_vector.c
 modules/groups/a/b/cleanup_cleanup_clearrbfinterruptandserial.s        c/cleanup_clear_rbf_interrupt_and_serial.c
@@ -43,6 +46,7 @@ modules/groups/a/c/cleanup2_cleanup_drawclockformatframe.s             c/cleanup
 modules/groups/a/c/cleanup2_p1_2_cleanup_drawclockformatlist.s         c/cleanup_draw_clock_format_list.c
 modules/groups/a/c/cleanup2_p1_cleanup_drawgridtimebanner.s            c/cleanup_draw_grid_time_banner.c
 modules/groups/a/e/cleanup4_cleanup_drawinsetrectframe.s               c/cleanup_draw_inset_rect_frame.c
+modules/groups/a/c/cleanup2_p1_2.s                                     c/cleanup_format_clock_format_entry.c
 modules/groups/a/e/cleanup4_p1_cleanup_parsealignedlistingblock.s      c/cleanup_parse_aligned_listing_block.c
 modules/groups/a/c/cleanup2_cleanup_processalerts.s                    c/cleanup_process_alerts.c
 modules/groups/a/b/cleanup_p1_cleanup_releasedisplayresources.s        c/cleanup_release_display_resources.c
@@ -62,16 +66,20 @@ modules/groups/a/f/ctasks_ctasks_ifftaskcleanup.s                      c/ctasks_
 modules/groups/a/f/ctasks_ctasks_startclosetaskprocess.s               c/ctasks_start_close_task_process.c
 modules/groups/a/f/ctasks_ctasks_startifftaskprocess.s                 c/ctasks_start_iff_task_process.c
 modules/groups/a/j/dst2_datetime_adjustmonthindex.s                    c/datetime_adjust_month_index.c
+modules/groups/a/j/disptext2_p0_p0.s                                   c/datetime_build_from_base_day.c
 modules/groups/a/j/disptext2_datetime_buildfromglobals.s               c/datetime_build_from_globals.c
 modules/groups/a/j/disptext2_p1.s                                      c/datetime_classify_value_in_range.c
+modules/groups/a/j/disptext2_p2.s                                      c/datetime_copy_pair_and_recalc.c
 modules/groups/a/j/disptext2_p2_datetime_formatpairtostream.s          c/datetime_format_pair_to_stream.c
 modules/groups/a/j/dst2_datetime_isleapyear.s                          c/datetime_is_leap_year.c
 modules/groups/a/j/dst2_datetime_normalizemonthrange.s                 c/datetime_normalize_month_range.c
 modules/groups/a/j/disptext2_p0_datetime_normalizestructtoseconds.s    c/datetime_normalize_struct_to_seconds.c
 modules/groups/a/j/disptext2_p2_datetime_parsestring.s                 c/datetime_parse_string.c
+modules/groups/a/j/disptext2_p2_p1.s                                   c/datetime_save_pair_to_file.c
 modules/groups/a/j/disptext2_datetime_secondstostruct.s                c/datetime_seconds_to_struct.c
 modules/groups/a/j/disptext2_datetime_updateselectionfield.s           c/datetime_update_selection_field.c
 modules/groups/a/h/diskio2_diskio2_copyandsanitizeslotstring.s         c/diskio2_copy_and_sanitize_slot_string.c
+modules/groups/a/h/diskio2_p2.s                                        c/diskio2_flush_data_files_if_needed.c
 modules/groups/a/h/diskio2_p1_diskio2_handleinteractivefiletransfer.s  c/diskio2_handle_interactive_file_transfer.c
 modules/groups/a/h/diskio2_diskio2_loadcurdaydatafile.s                c/diskio2_load_cur_day_data_file.c
 modules/groups/a/h/diskio2_diskio2_loadnxtdaydatafile.s                c/diskio2_load_nxt_day_data_file.c
@@ -88,13 +96,17 @@ modules/groups/a/g/diskio_p3.s                                         c/diskio_
 modules/groups/a/g/diskio_diskio_drawtransfererrormessageifdiagnostics.s c/diskio_draw_transfer_error_message_if_diagnostics.c
 modules/groups/a/g/diskio_diskio_forceuirefreshifidle.s                c/diskio_force_ui_refresh_if_idle.c
 modules/groups/a/g/diskio_diskio_getfilesizefromhandle.s               c/diskio_get_filesize_from_handle.c
+modules/groups/a/g/diskio_p2.s                                         c/diskio_load_file_to_work_buffer.c
+modules/groups/a/g/diskio.s                                            c/diskio_open_file_with_buffer.c
 modules/groups/a/g/diskio_p5_diskio_parseconfigbuffer.s                c/diskio_parse_config_buffer.c
 modules/groups/a/g/diskio_diskio_parselongfromworkbuffer.s             c/diskio_parse_long_from_work_buffer.c
 modules/groups/a/g/diskio_diskio_probedrivesandassignpaths.s           c/diskio_probe_drives_and_assign_paths.c
 modules/groups/a/g/diskio_diskio_querydiskusagepercentandsetbuffersize.s c/diskio_query_disk_usage_percent.c
+modules/groups/a/g/diskio_p4.s                                         c/diskio_query_volume_soft_error_count.c
 modules/groups/a/g/diskio_diskio_resetctrlinputstateifidle.s           c/diskio_reset_ctrl_input_state_if_idle.c
 modules/groups/a/g/diskio_diskio_writebufferedbytes_diskio_writebufferedbytes.s c/diskio_write_buffered_bytes.c
 modules/groups/a/g/diskio_p4_diskio_writebytestooutputhandleguarded.s  c/diskio_write_bytes_to_output_handle_guarded.c
+modules/groups/a/g/diskio_p1.s                                         c/diskio_write_decimal_field.c
 modules/groups/a/i/displibb_p0.s                                       c/displib_commit_current_line_pen_and_advance.c
 modules/groups/a/i/displib_displib_displaytextatposition.s             c/displib_display_text_at_position.c
 modules/groups/a/i/displib_displib_normalizevaluebystep.s              c/displib_normalize_value_by_step.c
@@ -103,6 +115,7 @@ modules/groups/a/i/displibb_displib_resettextbufferandlinetables.s     c/displib
 modules/groups/a/i/disptext_disptext_appendtobuffer.s                  c/disptext_append_to_buffer.c
 modules/groups/a/i/disptext_disptext_buildlayoutforsource.s            c/disptext_build_layout_for_source.c
 modules/groups/a/i/disptext_p0_disptext_buildlinepointertable.s        c/disptext_build_line_pointer_table.c
+modules/groups/a/i/disptextb.s                                         c/disptext_compute_visible_line_count.c
 modules/groups/a/i/disptext_disptext_finalizelinetable.s               c/disptext_finalize_line_table.c
 modules/groups/a/i/disptextb_disptext_gettotallinecount.s              c/disptext_get_total_line_count.c
 modules/groups/a/i/disptextb_disptext_hasmultiplelines.s               c/disptext_has_multiple_lines.c
@@ -111,13 +124,19 @@ modules/groups/a/i/disptextb_disptext_islastlineselected.s             c/disptex
 modules/groups/a/i/disptext_disptextsetcurrentlineindex.s              c/disptext_set_current_line_index.c
 modules/groups/a/i/disptext_disptext_setlayoutparams.s                 c/disptext_set_layout_params.c
 modules/groups/a/j/dst2_dst_addtimeoffset.s                            c/dst_add_time_offset.c
+modules/groups/a/j/dst_p1.s                                            c/dst_allocate_banner_struct.c
 modules/groups/a/j/dst2_p1_dst_buildbannertimeword.s                   c/dst_build_banner_time_word.c
+modules/groups/a/j/dst2_p1_p1.s                                        c/dst_compute_banner_index.c
 modules/groups/a/j/dst2_dst_formatbannerdatetime.s                     c/dst_format_banner_date_time.c
 modules/groups/a/j/dst_dst_freebannerpair.s                            c/dst_free_banner_pair.c
+modules/groups/a/j/dst.s                                               c/dst_free_banner_struct.c
+modules/groups/a/j/dst2.s                                              c/dst_handle_banner_command32_33.c  SHORTINT
+modules/groups/a/j/dst_p2.s                                            c/dst_load_banner_pair_from_files.c
 modules/groups/a/j/dst2_dst_normalizedayofyear.s                       c/dst_normalize_day_of_year.c
 modules/groups/a/j/dst_dst_rebuildbannerpair.s                         c/dst_rebuild_banner_pair.c
 modules/groups/a/j/dst2_dst_refreshbannerbuffer.s                      c/dst_refresh_banner_buffer.c
 modules/groups/a/j/dst2_dst_tickbannercounters.s                       c/dst_tick_banner_counters.c
+modules/groups/a/j/dst2_p1_2.s                                         c/dst_update_banner_queue.c
 modules/groups/a/j/dst2_dst_writertcfromglobals.s                      c/dst_write_rtc_from_globals.c
 modules/groups/a/k/ed1_ed1clearescmenumode.s                           c/ed1_clear_esc_menu_mode.c
 modules/groups/a/k/ed1_ed1_drawdiagnosticsscreen.s                     c/ed1_draw_diagnostics_screen.c
@@ -136,6 +155,7 @@ modules/groups/a/l/ed3bbbb_ed_commitcurrentadedits.s                   c/ed_comm
 modules/groups/a/l/ed3bbb_eddecrementadnumber.s                        c/ed_decrement_ad_number.c
 modules/groups/a/l/ed3bb_ed_drawbottomhelpbarbackground.s              c/ed_draw_bottom_help_bar_background.c
 modules/groups/a/l/ed3bb_ed_drawcurrentcolorindicator.s                c/ed_draw_current_color_indicator.c
+modules/groups/a/l/ed3bb_p3.s                                          c/ed_draw_cursor_char.c
 modules/groups/a/l/ed3bb_p1_ed_drawdiagnosticmodehelptext.s            c/ed_draw_diagnostic_mode_help_text.c
 modules/groups/a/l/ed3bb_p0_ed_drawdiagnosticmodetext.s                c/ed_draw_diagnostic_mode_text.c
 modules/groups/a/l/ed3bb_ed_drawdiagnosticregistervalues.s             c/ed_draw_diagnostic_register_values.c
@@ -162,6 +182,7 @@ modules/groups/a/l/ed3bb_ed_redrawcursorchar.s                         c/ed_redr
 modules/groups/a/k/ed_ed_saveeverythingtodisk.s                        c/ed_save_everything_to_disk.c
 modules/groups/a/k/ed_ed_saveprevuedatatodisk.s                        c/ed_save_prevue_data_to_disk.c
 modules/groups/a/l/ed3bbbb_ed_updateactiveinactiveindicator.s          c/ed_update_active_inactive_indicator.c
+modules/groups/a/l/ed3bbbb.s                                           c/ed_update_ad_number_display.c
 modules/groups/a/l/ed3bb_p3_ed_updatecursorposfromindex.s              c/ed_update_cursor_pos_from_index.c
 modules/groups/a/a/app2_esq_calcdayofyearfrommonthday.s                c/esq_calc_day_of_year_from_month_day.c
 modules/groups/a/a/app_esq_capturectrlbit4streambufferbyte.s           c/esq_capture_ctrl_bit4_stream_buffer_byte.c
@@ -187,6 +208,7 @@ modules/groups/a/a/app2_p0.s                                           c/esq_set
 modules/groups/a/a/app3.s                                              c/esq_supervisor_cold_reboot.c
 modules/groups/a/a/app2_esq_terminateaftersecondquote.s                c/esq_terminate_after_second_quote.c
 modules/groups/a/a/app2_esq_testbit1based.s                            c/esq_test_bit_1based.c
+modules/groups/a/a/app2_p5.s                                           c/esq_tick_clock_and_flag_events.c
 modules/groups/a/a/app3_esqtryromwritetest.s                           c/esq_try_rom_write_test.c
 modules/groups/a/a/app2_esq_wildcardmatch.s                            c/esq_wildcard_match.c
 modules/groups/a/n/esqdisp_esqdisp_allocatehighlightbitmaps_esqdisp_allocatehighlightbitmaps.s c/esqdisp_allocate_highlight_bitmaps.c
@@ -209,6 +231,7 @@ modules/groups/a/n/esqfunc_esqfunc_freelinetextbuffers.s               c/esqfunc
 modules/groups/a/n/esqfunc_esqfunc_rebuildpwbrushlistfromtagtable.s    c/esqfunc_rebuild_pw_brush_list_from_tag_table.c
 modules/groups/a/n/esqfunc_esqfunc_serviceuitickifrunning.s            c/esqfunc_service_ui_tick_if_running.c
 modules/groups/a/n/esqfunc_esqfunc_updatediskwarningandrefreshtick.s   c/esqfunc_update_disk_warning_and_refresh_tick.c
+modules/groups/a/n/esqfunc_p3.s                                        c/esqfunc_update_refresh_mode_state.c
 modules/groups/a/n/esqfunc_esqfunc_waitforclockchangeandserviceui.s    c/esqfunc_wait_for_clock_change_and_service_ui.c
 modules/groups/a/o/esqiff2_esqiff2_clearlineheadtailbymode.s           c/esqiff2_clear_line_head_tail_by_mode.c
 modules/groups/a/o/esqiff2_esqiff2_padentriestomaxtitlewidth_esqiff2_padentriestomaxtitlewidth.s c/esqiff2_pad_entries_to_max_title_width.c
@@ -234,9 +257,12 @@ modules/groups/a/q/esqshared4_esqshared4_loaddefaultpalettetocopper_noop.s c/esq
 modules/groups/a/q/esqshared4_esqshared4_resetbannercolorsweepstate.s  c/esqshared4_reset_banner_color_sweep_state.c
 modules/groups/a/q/esqshared4_esqshared4_snapshotdisplaybufferbases.s  c/esqshared4_snapshot_display_buffer_bases.c
 modules/groups/a/p/esqshared_esqshared_applyprogramtitletextfilters.s  c/esqshared_apply_program_title_text_filters.c
+modules/groups/a/p/esqshared_p2.s                                      c/esqshared_compress_closed_captioned_tag.c
+modules/groups/a/p/esqshared_p1.s                                      c/esqshared_create_group_entry_and_title.c
 modules/groups/a/p/esqshared_esqshared_initentrydefaults.s             c/esqshared_init_entry_defaults.c
 modules/groups/a/p/esqshared_esqshared_matchselectioncodewithoptionalsuffix.s c/esqshared_match_selection_code_with_optional_suffix.c
 modules/groups/a/p/esqshared_p2_esqshared_normalizeinstereotag.s       c/esqshared_normalize_in_stereo_tag.c
+modules/groups/a/p/esqshared.s                                         c/esqshared_parse_compact_entry_record.c
 modules/groups/a/p/esqshared_esqshared_replacemovieratingtoken.s       c/esqshared_replace_movie_rating_token.c
 modules/groups/a/s/flib2_flib2_loaddigitalmplexdefaults.s              c/flib2_load_digital_mplex_defaults.c
 modules/groups/a/s/flib2_flib2_loaddigitalnichedefaults.s              c/flib2_load_digital_niche_defaults.c
@@ -244,6 +270,7 @@ modules/groups/a/s/flib2_flib2_loaddigitalppvdefaults.s                c/flib2_l
 modules/groups/a/s/flib2_flib2_resetandloadlistingtemplates.s          c/flib2_reset_and_load_listing_templates.c
 modules/groups/a/u/gcommand3b_p4_gcommand_addbannertablebytedelta.s    c/gcommand_add_banner_table_byte_delta.c
 modules/groups/a/u/gcommand3_p1.s                                      c/gcommand_apply_highlight_flag.c  SHORTINT
+modules/groups/a/u/gcommand3b_p3_p1_p1.s                               c/gcommand_build_banner_tables.c
 modules/groups/a/u/gcommand3b_gcommand_computepresetincrement.s        c/gcommand_compute_preset_increment.c
 modules/groups/a/u/gcommand3b_gcommand_consumebannerqueueentry.s       c/gcommand_consume_banner_queue_entry.c
 modules/groups/a/t/gcommand2_gcommand_copygfxtoworkifavailable.s       c/gcommand_copy_gfx_to_work_if_available.c
@@ -253,17 +280,20 @@ modules/groups/a/u/gcommand3_gcommandenablehighlight.s                 c/gcomman
 modules/groups/a/t/gcommand2.s                                         c/gcommand_find_path_separator.c
 modules/groups/a/u/gcommand3b_p2_gcommand_getbannerchar.s              c/gcommand_get_banner_char.c
 modules/groups/a/u/gcommand3b_gcommand_initpresetdefaults.s            c/gcommand_init_preset_defaults.c
+modules/groups/a/u/gcommand3b_p1_p1.s                                  c/gcommand_init_preset_work_entry.c
 modules/groups/a/s/gcommand_gcommand_loadmplexfile.s                   c/gcommand_load_mplex_file.c
 modules/groups/a/s/gcommand_gcommand_loadmplextemplate.s               c/gcommand_load_mplex_template.c
 modules/groups/a/s/gcommand_gcommand_loadppvtemplate.s                 c/gcommand_load_ppv_template.c
 modules/groups/a/u/gcommand3b_gcommand_loadpresetworkentries.s         c/gcommand_load_preset_work_entries.c
 modules/groups/a/u/gcommand3_gcommand_mapkeycodetopreset.s             c/gcommand_map_keycode_to_preset.c
+modules/groups/a/s/gcommand_p2.s                                       c/gcommand_parse_ppv_command.c
 modules/groups/a/v/gcommand5.s                                         c/gcommand_process_ctrl_command.c
 modules/groups/a/u/gcommand3b_gcommand_resetbannerfadestate.s          c/gcommand_reset_banner_fade_state.c
 modules/groups/a/u/gcommand3b_p3_gcommand_resethighlightmessages.s     c/gcommand_reset_highlight_messages.c
 modules/groups/a/u/gcommand3b_p1_gcommand_resetpresetworktables.s      c/gcommand_reset_preset_work_tables.c
 modules/groups/a/u/gcommand4.s                                         c/gcommand_save_brush_result.c
 modules/groups/a/u/gcommand3b_p2_gcommand_tickpresetworkentries.s      c/gcommand_tick_preset_work_entries.c
+modules/groups/b/a/script3.s                                           c/generate_grid_date_string.c
 modules/groups/a/v/kybd.s                                              c/kybd_initialize_input_devices.c
 modules/groups/a/x/ladfunc2_ladfunc2_emitescapedchartoscratch.s        c/ladfunc2_emit_escaped_char_to_scratch.c
 modules/groups/a/x/ladfunc2_ladfunc2_emitescapedstringtoscratch.s      c/ladfunc2_emit_escaped_string_to_scratch.c
@@ -278,9 +308,11 @@ modules/groups/a/w/ladfunc_ladfunc_parsehexdigit.s                     c/ladfunc
 modules/groups/a/w/ladfunc_ladfunc_setpackedpenhighnibble.s            c/ladfunc_set_packed_pen_high_nibble.c
 modules/groups/a/w/ladfunc_ladfunc_setpackedpenlownibble.s             c/ladfunc_set_packed_pen_low_nibble.c
 modules/groups/a/w/ladfunc_ladfunc_updatehighlightstate.s              c/ladfunc_update_highlight_state.c
+modules/groups/a/y/locavail_p1.s                                       c/locavail_alloc_node_arrays_for_state.c
 modules/groups/a/y/locavail_locavail_copyfilterstatestructretainrefs.s c/locavail_copy_filter_state_struct_retain_refs.c
 modules/groups/a/y/locavail_locavail_freenodeatpointer.s               c/locavail_free_node_at_pointer.c
 modules/groups/a/y/locavail_locavail_freenoderecord.s                  c/locavail_free_node_record.c
+modules/groups/a/y/locavail_p0.s                                       c/locavail_free_resource_chain.c
 modules/groups/a/y/locavail_locavail_getfilterwindowhalfspan.s         c/locavail_get_filter_window_half_span.c
 modules/groups/a/y/locavail_locavail_getnodedurationbyindex.s          c/locavail_get_node_duration_by_index.c
 modules/groups/a/y/locavail_locavail_rebuildfilterstatefromcurrentgroup.s c/locavail_rebuild_filter_state_from_current_group.c
@@ -288,11 +320,14 @@ modules/groups/a/y/locavail_locavail_resetfiltercursorstate.s          c/locavai
 modules/groups/a/y/locavail_locavail_resetfilterstatestruct.s          c/locavail_reset_filter_state_struct.c
 modules/groups/a/y/locavail_locavail_setfiltermodeandresetstate.s      c/locavail_set_filter_mode_and_reset_state.c
 modules/groups/a/y/locavail_locavail_syncsecondaryfilterforcurrentgroup.s c/locavail_sync_secondary_filter.c
+modules/groups/a/y/locavail_p4.s                                       c/locavail_update_filter_state_machine.c
 modules/groups/b/a/newgrid2_newgrid2_dispatchoperationdefault.s        c/newgrid2_dispatch_operation_default.c
+modules/groups/b/a/newgrid2_p1.s                                       c/newgrid2_ensure_buffers_allocated.c
 modules/groups/b/a/newgrid2_newgrid2_freebuffersifallocated.s          c/newgrid2_free_buffers_if_allocated.c
 modules/groups/b/a/newgrid1_newgrid_apply24hourformatting.s            c/newgrid_apply_24_hour_formatting.c
 modules/groups/b/a/newgrid1b_p2_newgrid_clearentrymarkerbits.s         c/newgrid_clear_entry_marker_bits.c
 modules/groups/b/a/newgrid_newgrid_clearhighlightarea.s                c/newgrid_clear_highlight_area.c
+modules/groups/b/a/newgrid1_p1.s                                       c/newgrid_compute_column_index.c
 modules/groups/b/a/newgrid_p1_newgrid_drawclockformatheader.s          c/newgrid_draw_clock_format_header.c
 modules/groups/b/a/newgrid_newgrid_drawdatebanner.s                    c/newgrid_draw_date_banner.c
 modules/groups/b/a/newgrid1b_newgrid_drawentryflagbadge.s              c/newgrid_draw_entry_flag_badge.c
@@ -313,6 +348,7 @@ modules/groups/b/a/newgrid1b_p2_p1_2_newgrid_handlealtgridstate.s      c/newgrid
 modules/groups/b/a/newgrid1b_p2_newgrid_initselectionwindow.s          c/newgrid_init_selection_window.c
 modules/groups/b/a/newgrid1b_newgridinitshowtimebuckets.s              c/newgrid_init_showtime_buckets.c
 modules/groups/b/a/newgrid_newgrid_isgridreadyforinput.s               c/newgrid_is_grid_ready_for_input.c
+modules/groups/b/a/newgrid_p1_p0.s                                     c/newgrid_map_selection_to_mode.c
 modules/groups/b/a/newgrid1b_p2_newgrid_processschedulestate.s         c/newgrid_process_schedule_state.c  SHORTINT
 modules/groups/b/a/newgrid1b_p2_newgrid_processsecondarystate.s        c/newgrid_process_secondary_state.c
 modules/groups/b/a/newgrid1b_newgrid_rebuildindexcache.s               c/newgrid_rebuild_index_cache.c
@@ -323,6 +359,7 @@ modules/groups/b/a/newgrid_newgrid_shutdowngridresources.s             c/newgrid
 modules/groups/b/a/newgrid1bb_newgrid_testmodeflagactive.s             c/newgrid_test_mode_flag_active.c
 modules/groups/a/z/locavail2_override_intuition_funcs.s                c/override_intuition_funcs.c
 modules/groups/b/a/p_type_p_type_allocateentry.s                       c/p_type_allocate_entry.c
+modules/groups/b/a/p_typeb.s                                           c/p_type_clone_entry.c
 modules/groups/b/a/p_typebb_p_type_consumeprimarytypeifpresent.s       c/p_type_consume_primary_type_if_present.c
 modules/groups/b/a/p_typeb_p_type_ensuresecondarylist.s                c/p_type_ensure_secondary_list.c
 modules/groups/b/a/p_type_p_type_freeentry.s                           c/p_type_free_entry.c
@@ -332,13 +369,17 @@ modules/groups/b/a/p_type_ptyperesetlistsandloadpromoids.s             c/p_type_
 modules/groups/b/a/parseini2_parseini_adjusthoursto24hrformat.s        c/parseini_adjust_hours_to_24hr_format.c
 modules/groups/b/a/parseini3_p1.s                                      c/parseini_check_ctrl_h_change.c
 modules/groups/b/a/parseini3_parseini_computehtcmaxvalues.s            c/parseini_compute_htc_max_values.c
+modules/groups/b/a/parseini_p1.s                                       c/parseini_load_weather_message_strings.c
 modules/groups/b/a/parseini_parseini_loadweatherstrings.s              c/parseini_load_weather_strings.c
+modules/groups/b/a/parseini3_p0.s                                      c/parseini_monitor_clock_change.c
 modules/groups/b/a/parseini_parseini_parsecolortable.s                 c/parseini_parse_color_table.c
 modules/groups/b/a/parseini_parseini_parsehexvaluefromstring.s         c/parseini_parse_hex_value_from_string.c
 modules/groups/b/a/parseini.s                                          c/parseini_parse_ini_buffer_and_dispatch.c
 modules/groups/b/a/parseini_p1_2_parseini_parserangekeyvalue.s         c/parseini_parse_range_key_value.c
+modules/groups/b/a/parseini_p1_2_p0.s                                  c/parseini_process_weather_blocks.c
 modules/groups/b/a/parseini3_parseini_updatectrlhdeltamax.s            c/parseini_update_ctrl_h_delta_max.c
 modules/groups/b/a/parseini3_parseini_writeerrorlogentry.s             c/parseini_write_error_log_entry.c
+modules/groups/b/a/script.s                                            c/script_allocate_buffer_array.c
 modules/groups/b/a/script2_script_assertctrlline.s                     c/script_assert_ctrl_line.c
 modules/groups/b/a/script2_script_assertctrllineifenabled.s            c/script_assert_ctrl_line_if_enabled.c
 modules/groups/b/a/script2_p1.s                                        c/script_assert_ctrl_line_now.c
@@ -355,9 +396,11 @@ modules/groups/b/a/script2_script_esq_capturectrlbit4streambufferbyte.s c/script
 modules/groups/b/a/script4b_script_getbannercharorfallback.s           c/script_get_banner_char_or_fallback.c
 modules/groups/b/a/script2_script_getctrllineflag.s                    c/script_get_ctrl_line_flag.c
 modules/groups/b/a/script3b2_script_handlebrushcommand.s               c/script_handle_brush_command.c
+modules/groups/b/a/script3b2.s                                         c/script_handle_serial_ctrl_cmd.c
 modules/groups/b/a/script3_scriptinitctrlcontext.s                     c/script_init_ctrl_context.c
 modules/groups/b/a/script2_script_pollhandshakeandapplytimeout.s       c/script_poll_handshake_and_apply_timeout.c
 modules/groups/b/a/script3_script_primebannertransitionfromhexcode.s   c/script_prime_banner_transition_from_hex_code.c
+modules/groups/b/a/script3b2_p1.s                                      c/script_process_ctrl_context_playback_tick.c
 modules/groups/b/a/script2_script_readhandshakebit3flag.s              c/script_read_handshake_bit3_flag.c
 modules/groups/b/a/script2_script_readhandshakebit5mask.s              c/script_read_handshake_bit5_mask.c
 modules/groups/b/a/script2_script_readnextrbfbyte.s                    c/script_read_next_rbf_byte.c
@@ -366,6 +409,7 @@ modules/groups/b/a/script3b_script_resetctrlcontextandclearstatusline.s c/script
 modules/groups/b/a/script3b_script_savectrlcontextsnapshot.s           c/script_save_ctrl_context_snapshot.c
 modules/groups/b/a/script3b2_script_selectplaybackcursorfromsearchtext.s c/script_select_playback_cursor_from_search_text.c
 modules/groups/b/a/script3b_p0_p1_script_setctrlcontextmode.s          c/script_set_ctrl_context_mode.c
+modules/groups/b/a/script4b_p0_p0.s                                    c/script_setup_highlight_effect.c  SHORTINT
 modules/groups/b/a/script3b_script_splitandnormalizesearchbuffer.s     c/script_split_and_normalize_search_buffer.c
 modules/groups/b/a/script3_p1_script_updatebannerchartransition.s      c/script_update_banner_char_transition.c
 modules/groups/b/a/script2_script_updateserialshadowfromctrlbyte.s     c/script_update_serial_shadow_from_ctrl_byte.c
@@ -379,8 +423,10 @@ modules/groups/b/a/textdisp3_p1_textdisp_buildchannellabel.s           c/textdis
 modules/groups/b/a/textdisp3_p1_textdisp_buildmatchindexlist.s         c/textdisp_build_match_index_list.c
 modules/groups/b/a/textdisp_textdisp_buildnowshowingstatusline.s       c/textdisp_build_now_showing_status_line.c
 modules/groups/b/a/textdisp3_p1_textdisp_computetimeoffset.s           c/textdisp_compute_time_offset.c
+modules/groups/b/a/textdisp3_p1_p2.s                                   c/textdisp_draw_channel_banner.c
 modules/groups/b/a/textdisp3_textdisp_findaliasindexbyname.s           c/textdisp_find_alias_index_by_name.c
 modules/groups/b/a/textdisp3_p1.s                                      c/textdisp_find_control_token.c
+modules/groups/b/a/textdisp3.s                                         c/textdisp_find_entry_index_by_wildcard.c
 modules/groups/b/a/textdisp3_p1_p1_textdisp_findentrymatchindex.s      c/textdisp_find_entry_match_index.c  SHORTINT
 modules/groups/b/a/textdisp3_p1_textdisp_findquotedspan.s              c/textdisp_find_quoted_span.c
 modules/groups/b/a/textdisp3_p1_textdisp_formatentrytime.s             c/textdisp_format_entry_time.c
@@ -391,6 +437,7 @@ modules/groups/b/a/textdisp2_textdisp_resetselectionandrefresh.s       c/textdis
 modules/groups/b/a/textdisp_textdisp_resetselectionstate.s             c/textdisp_reset_selection_state.c
 modules/groups/b/a/textdisp_textdisp_setentrytextfields.s              c/textdisp_set_entry_text_fields.c
 modules/groups/b/a/textdisp2_p0_textdisp_setrastformode.s              c/textdisp_set_rast_for_mode.c
+modules/groups/b/a/textdisp_p1.s                                       c/textdisp_set_selection_fields.c
 modules/groups/b/a/textdisp_textdisp_skipcontrolcodes.s                c/textdisp_skip_control_codes.c
 modules/groups/b/a/textdisp3_p1_p5_textdisp_trimtexttopixelwidth.s     c/textdisp_trim_text_to_pixel_width.c
 modules/groups/b/a/tliba1_tliba1_parsestylecodechar.s                  c/tliba1_parse_style_code_char.c
@@ -398,6 +445,7 @@ modules/groups/b/a/tliba2_tliba2_findlastcharinstring.s                c/tliba2_
 modules/groups/b/a/tliba2_tliba2_parseentrytimewindow.s                c/tliba2_parse_entry_time_window.c
 modules/groups/b/a/tliba2_p0_tliba2_resolveentrywindowandslotcount.s   c/tliba2_resolve_entry_window_and_slot_count.c
 modules/groups/b/a/tliba2_tliba2_resolveentrywindowwithdefaultrange.s  c/tliba2_resolve_entry_window_with_default_range.c
+modules/groups/b/a/tliba3_p3.s                                         c/tliba3_build_display_context_for_view_mode.c
 modules/groups/b/a/tliba3_tliba3_clearviewmoderastport.s               c/tliba3_clear_view_mode_rast_port.c
 modules/groups/b/a/tliba3_p1_tliba3_drawinnerframeborder.s             c/tliba3_draw_inner_frame_border.c
 modules/groups/b/a/tliba3_p1_tliba3_drawouterframeborder.s             c/tliba3_draw_outer_frame_border.c
@@ -409,4 +457,5 @@ modules/groups/b/a/tliba3_tliba3_initpatterntable.s                    c/tliba3_
 modules/groups/b/a/tliba3_tliba3_initruntimeentry.s                    c/tliba3_init_runtime_entry.c
 modules/groups/b/a/tliba3_tliba3_selectnextviewmode.s                  c/tliba3_select_next_view_mode.c
 modules/groups/b/a/tliba2_p1.s                                         c/tliba_find_first_wildcard_match_index.c
+modules/groups/b/a/wdisp_p0.s                                          c/wdisp_draw_weather_status_summary.c
 modules/groups/b/a/wdisp_wdisp_handleweatherstatuscommand.s            c/wdisp_handle_weather_status_command.c

@@ -14,7 +14,7 @@
 ; READS:
 ;   (none)
 ; WRITES:
-;   _HIGHLIGHT_CopperEffectSeed, _HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, ESQ_CopperEffectListA, ESQ_CopperEffectListB
+;   _HIGHLIGHT_CopperEffectSeed, _HIGHLIGHT_CopperEffectParamA, _HIGHLIGHT_CopperEffectParamB, _ESQ_CopperEffectListA, _ESQ_CopperEffectListB
 ; DESC:
 ;   Loads a default effect parameter pair (0/$3F) and updates copper tables.
 ; NOTES:

@@ -19,7 +19,7 @@
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   _GROUP_AS_JMPTBL_STR_FindCharPtr, GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask, LOCAVAIL_MapFilterTokenCharToClass, _NEWGRID_JMPTBL_MATH_Mulu32
+;   _GROUP_AS_JMPTBL_STR_FindCharPtr, _GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask, LOCAVAIL_MapFilterTokenCharToClass, _NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
 ;   LOCAVAIL_ComputeFilterOffsetForEntry_Return, _ESQIFF_GAdsBrushListCount, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _LOCAVAIL_FilterStep, _LOCAVAIL_FilterPrevClassId, LOCAVAIL_STR_YYLLZ_FilterGateCheck, _WDISP_HighlightActive, lab_0F3E, lab_0F43, lab_0F4B
 ; WRITES:
@@ -170,7 +170,7 @@ LOCAVAIL_ComputeFilterOffsetForEntry:
     TST.L   D0
     BEQ.S   .lab_0F45
 
-    JSR     GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(PC)
+    JSR     _GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(PC)
 
     TST.B   D0
     BNE.S   .lab_0F4B
@@ -259,7 +259,7 @@ LOCAVAIL_ComputeFilterOffsetForEntry_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A6/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes, GROUP_AY_JMPTBL_DISKIO_WriteDecimalField, _NEWGRID_JMPTBL_MATH_Mulu32
+;   _GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer, _GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush, _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes, GROUP_AY_JMPTBL_DISKIO_WriteDecimalField, _NEWGRID_JMPTBL_MATH_Mulu32
 ; READS:
 ;   LOCAVAIL_TAG_UVGTI, LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Save, LOCAVAIL_STR_LA_VER_1_COLON_CURDAY, LOCAVAIL_STR_LA_VER_1_COLON_NXTDAY, MODE_NEWFILE, lab_0F4E, lab_0F4F, lab_0F52, lab_0F54, lab_0F54_0008, lab_0F5A, lab_0F5B
 ; WRITES:
@@ -284,7 +284,7 @@ _LOCAVAIL_SaveAvailabilityDataFile:
     DBF     D0,.lab_0F4E
     PEA     MODE_NEWFILE.W
     PEA     LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Save
-    JSR     GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D4
@@ -315,7 +315,7 @@ _LOCAVAIL_SaveAvailabilityDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  D4,-(A7)
-    JSR     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
     MOVEQ   #0,D0
     MOVEA.L -4(A5),A0
@@ -347,7 +347,7 @@ _LOCAVAIL_SaveAvailabilityDataFile:
     MOVE.L  D0,(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  D4,-(A7)
-    JSR     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
     LEA     28(A7),A7
     MOVEQ   #0,D7
@@ -455,7 +455,7 @@ _LOCAVAIL_SaveAvailabilityDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  A0,-(A7)
     MOVE.L  D4,-(A7)
-    JSR     GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(PC)
 
     LEA     12(A7),A7
     ADDQ.L  #1,D7
@@ -475,7 +475,7 @@ _LOCAVAIL_SaveAvailabilityDataFile:
     BNE.W   .lab_0F4F
 
     MOVE.L  D4,-(A7)
-    JSR     GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(PC)
 
     ADDQ.W  #4,A7
     BRA.S   LOCAVAIL_SaveAvailabilityDataFile_Return
@@ -526,9 +526,9 @@ LOCAVAIL_SaveAvailabilityDataFile_Return:
 ; CLOBBERS:
 ;   A0/A1/A2/A3/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer, GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer, GROUP_AY_JMPTBL_STRING_CompareNoCaseN, _LOCAVAIL_ResetFilterStateStruct, _LOCAVAIL_CopyFilterStateStructRetainRefs, LOCAVAIL_AllocNodeArraysForState, _LOCAVAIL_FreeResourceChain, _NEWGRID_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
+;   _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, _GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer, _GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer, _GROUP_AY_JMPTBL_STRING_CompareNoCaseN, _LOCAVAIL_ResetFilterStateStruct, _LOCAVAIL_CopyFilterStateStructRetainRefs, _LOCAVAIL_AllocNodeArraysForState, _LOCAVAIL_FreeResourceChain, _NEWGRID_JMPTBL_MATH_Mulu32, _NEWGRID_JMPTBL_MEMORY_AllocateMemory, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   _Global_REF_LONG_FILE_SCRATCH, Global_STR_LOCAVAIL_C_7, Global_STR_LOCAVAIL_C_8, LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load, LOCAVAIL_STR_LA_VER, _Global_PTR_WORK_BUFFER, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, MEMF_CLEAR, MEMF_PUBLIC, e11, ffff, lab_0F5E, lab_0F5F, lab_0F60, lab_0F67, lab_0F68, lab_0F69, lab_0F6A, lab_0F6B, lab_0F6C, lab_0F6D, lab_0F6E, lab_0F73, lab_0F74
+;   _Global_REF_LONG_FILE_SCRATCH, _Global_STR_LOCAVAIL_C_7, _Global_STR_LOCAVAIL_C_8, _LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load, _LOCAVAIL_STR_LA_VER, _Global_PTR_WORK_BUFFER, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, MEMF_CLEAR, MEMF_PUBLIC, e11, ffff, lab_0F5E, lab_0F5F, lab_0F60, lab_0F67, lab_0F68, lab_0F69, lab_0F6A, lab_0F6B, lab_0F6C, lab_0F6D, lab_0F6E, lab_0F73, lab_0F74
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -544,7 +544,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     MOVEQ   #1,D5
     CLR.L   -48(A5)
     MOVEQ   #0,D4
-    PEA     LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load
+    PEA     _LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load
     JSR     _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(PC)
 
     ADDQ.W  #4,A7
@@ -561,7 +561,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     MOVE.B  _TEXTDISP_SecondaryGroupCode,(A2)
     MOVE.L  _Global_REF_LONG_FILE_SCRATCH,D4
     MOVE.L  _Global_PTR_WORK_BUFFER,-48(A5)
-    JSR     GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     ADDQ.W  #4,A7
     MOVEA.W #$ffff,A0
@@ -579,9 +579,9 @@ LOCAVAIL_LoadAvailabilityDataFile:
     BEQ.W   .lab_0F73
 
     PEA     6.W
-    PEA     LOCAVAIL_STR_LA_VER
+    PEA     _LOCAVAIL_STR_LA_VER
     MOVE.L  -44(A5),-(A7)
-    JSR     GROUP_AY_JMPTBL_STRING_CompareNoCaseN(PC)
+    JSR     _GROUP_AY_JMPTBL_STRING_CompareNoCaseN(PC)
 
     LEA     12(A7),A7
     TST.L   D0
@@ -590,20 +590,20 @@ LOCAVAIL_LoadAvailabilityDataFile:
     PEA     -24(A5)
     BSR.W   _LOCAVAIL_ResetFilterStateStruct
 
-    JSR     GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.B  D0,-24(A5)
-    JSR     GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVE.L  D0,-22(A5)
-    JSR     GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     MOVEA.L D0,A0
     MOVE.B  (A0),D1
     MOVE.B  D1,-18(A5)
     PEA     -24(A5)
     MOVE.L  D0,-44(A5)
-    BSR.W   LOCAVAIL_AllocNodeArraysForState
+    BSR.W   _LOCAVAIL_AllocNodeArraysForState
 
     ADDQ.W  #8,A7
     TST.L   D0
@@ -625,7 +625,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     MOVEA.L -4(A5),A0
     ADDA.L  D0,A0
     MOVE.L  A0,-28(A5)
-    JSR     GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVEA.L -28(A5),A0
     MOVE.B  D0,(A0)
@@ -637,7 +637,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     CMP.B   D1,D0
     BCC.W   .lab_0F6B
 
-    JSR     GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVEA.L -28(A5),A0
     MOVE.W  D0,2(A0)
@@ -647,7 +647,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     CMPI.W  #$e11,D0
     BGE.W   .lab_0F6A
 
-    JSR     GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(PC)
 
     MOVEA.L -28(A5),A0
     MOVE.W  D0,4(A0)
@@ -662,7 +662,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     MOVE.L  #(MEMF_PUBLIC+MEMF_CLEAR),-(A7)
     MOVE.L  D0,-(A7)
     PEA     786.W
-    PEA     Global_STR_LOCAVAIL_C_7
+    PEA     _Global_STR_LOCAVAIL_C_7
     JSR     _NEWGRID_JMPTBL_MEMORY_AllocateMemory(PC)
 
     LEA     16(A7),A7
@@ -670,7 +670,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     MOVE.L  D0,6(A0)
     BEQ.W   .lab_0F68
 
-    JSR     GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     MOVEA.W #$ffff,A0
     MOVE.L  D0,-44(A5)
@@ -824,7 +824,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     ADDQ.W  #4,A7
 
 .lab_0F72:
-    JSR     GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(PC)
+    JSR     _GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(PC)
 
     MOVEA.W #$ffff,A0
     MOVE.L  D0,-44(A5)
@@ -840,7 +840,7 @@ LOCAVAIL_LoadAvailabilityDataFile:
     MOVE.L  D0,-(A7)
     MOVE.L  -48(A5),-(A7)
     PEA     897.W
-    PEA     Global_STR_LOCAVAIL_C_8
+    PEA     _Global_STR_LOCAVAIL_C_8
     JSR     _NEWGRID_JMPTBL_MEMORY_DeallocateMemory(PC)
 
     LEA     16(A7),A7

@@ -144,9 +144,9 @@ DISPTEXT_RenderCurrentLine:
     BEQ.S   .draw_plain
 
     MOVEQ   #0,D0
-    MOVE.B  DISPTEXT_InsetNibbleSecondary,D0
+    MOVE.B  _DISPTEXT_InsetNibbleSecondary,D0
     MOVEQ   #0,D1
-    MOVE.B  DISPTEXT_InsetNibblePrimary,D1
+    MOVE.B  _DISPTEXT_InsetNibblePrimary,D1
     MOVE.L  -6(A5),-(A7)
     MOVE.L  D1,-(A7)
     MOVE.L  D0,-(A7)
