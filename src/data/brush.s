@@ -47,7 +47,7 @@ _Global_STR_BRUSH_C_9:
 ; TYPE: cstring
 ; PURPOSE: Signature used to validate brush asset files before ILBM decode.
 ; USED BY: _BRUSH_LoadBrushAsset
-; NOTES: Compared with STRING_CompareN using length 4.
+; NOTES: Compared with _STRING_CompareN using length 4.
 ;------------------------------------------------------------------------------
 _BRUSH_STR_IFF_FORM:
     NStr    "FORM"

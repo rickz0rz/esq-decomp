@@ -34,7 +34,7 @@ _GROUP_AA_JMPTBL_STRING_CompareNoCase:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRING_CompareN
+;   _STRING_CompareN
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -45,7 +45,7 @@ _GROUP_AA_JMPTBL_STRING_CompareNoCase:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AA_JMPTBL_STRING_CompareN:
-    JMP     STRING_CompareN
+    JMP     _STRING_CompareN
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator   (Routine at _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator)

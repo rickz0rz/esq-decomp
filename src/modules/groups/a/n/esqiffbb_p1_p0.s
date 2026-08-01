@@ -158,7 +158,7 @@ _ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRING_CompareN
+;   _STRING_CompareN
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -169,7 +169,7 @@ _ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQIFF_JMPTBL_STRING_CompareN:
-    JMP     STRING_CompareN
+    JMP     _STRING_CompareN
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQIFF_JMPTBL_ESQ_NoOp   (Jump-table forwarder)

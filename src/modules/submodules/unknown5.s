@@ -1,5 +1,5 @@
-    XDEF    STRING_AppendN
-    XDEF    STRING_CompareN
+    XDEF    _STRING_AppendN
+    XDEF    _STRING_CompareN
     XDEF    _STRING_CompareNoCase
     XDEF    _STRING_CompareNoCaseN
     XDEF    _STRING_CopyPadNul
@@ -134,7 +134,7 @@ _STRING_CopyPadNul:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: STRING_CompareN   (Byte-wise compare up to length.)
+; FUNC: _STRING_CompareN   (Byte-wise compare up to length.)
 ; ARGS:
 ;   stack +4: A3 = string A
 ;   stack +8: A2 = string B
@@ -146,7 +146,7 @@ _STRING_CopyPadNul:
 ; DESC:
 ;   Compares strings byte-wise up to D7 bytes or NUL.
 ;------------------------------------------------------------------------------
-STRING_CompareN:
+_STRING_CompareN:
     MOVEM.L D6-D7/A2-A3,-(A7)
 
     SetOffsetForStack 4
@@ -208,7 +208,7 @@ STRING_CompareN:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: STRING_AppendN   (Append up to N bytes of src to dst.)
+; FUNC: _STRING_AppendN   (Append up to N bytes of src to dst.)
 ; ARGS:
 ;   stack +4: A3 = destination string
 ;   stack +8: A2 = source string
@@ -222,7 +222,7 @@ STRING_CompareN:
 ; NOTES:
 ;   Does not verify available space in destination.
 ;------------------------------------------------------------------------------
-STRING_AppendN:
+_STRING_AppendN:
     LINK.W  A5,#-8
     MOVEM.L D6-D7/A2-A3,-(A7)
 

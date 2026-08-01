@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   _HANDLE_CloseAllAndReturnWithCode, STRING_AppendN, _BUFFER_FlushAllAndCloseWithCode,
+;   _HANDLE_CloseAllAndReturnWithCode, _STRING_AppendN, _BUFFER_FlushAllAndCloseWithCode,
 ;   UNKNOWN29_JMPTBL_ESQ_MainInitAndRun
 ; READS:
 ;   Global_ArgCount, Global_ArgvStorage, Global_SavedMsg, Global_DefaultHandleFlags
@@ -154,7 +154,7 @@ ESQ_ParseCommandLineAndRun:
     PEA     40.W
     MOVE.L  4(A0),-(A7)
     PEA     Global_ConsoleNameBuffer(A4)
-    JSR     STRING_AppendN(PC)
+    JSR     _STRING_AppendN(PC)
 
     LEA     12(A7),A7
     MOVEA.L Global_DosLibrary(A4),A6

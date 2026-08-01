@@ -117,3 +117,4 @@ modules/submodules/unknown18.s                                         c/lib_dos
 modules/submodules/unknown31.s                                         c/lib_buffer_ensure_allocated.c
 modules/submodules/unknown16.s                                         c/lib_buffer_flush_all_and_close_with_code.c
 modules/submodules/unknown32.s                                         c/lib_handle_close_all_and_return_with_code.c
+modules/submodules/unknown5.s                                          c/lib_string_compare_and_copy.c

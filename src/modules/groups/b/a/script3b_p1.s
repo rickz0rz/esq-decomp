@@ -91,7 +91,7 @@ _SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRING_CompareN
+;   _STRING_CompareN
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -102,7 +102,7 @@ _SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _SCRIPT3_JMPTBL_STRING_CompareN:
-    BRA.W   STRING_CompareN
+    BRA.W   _STRING_CompareN
 
 ;------------------------------------------------------------------------------
 ; FUNC: _SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh   (JumpStub)

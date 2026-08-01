@@ -401,12 +401,12 @@ _NEWGRID2_JMPTBL_STR_SkipClass3Chars:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   STRING_AppendN
+;   _STRING_AppendN
 ; DESC:
-;   Jump table entry that forwards to STRING_AppendN.
+;   Jump table entry that forwards to _STRING_AppendN.
 ;------------------------------------------------------------------------------
 _NEWGRID2_JMPTBL_STRING_AppendN:
-    JMP     STRING_AppendN
+    JMP     _STRING_AppendN
 
 ;------------------------------------------------------------------------------
 ; FUNC: _NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow   (Jump stub)
