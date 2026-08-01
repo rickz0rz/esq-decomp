@@ -119,7 +119,7 @@ Global_GraphicsLibraryBase_A4    = -22440
 
     ; These values should be equal.
     PRINTV 22492
-    PRINTV ESQFUNC_VideoInsertionStateString_StopPtr
+    PRINTV _ESQFUNC_VideoInsertionStateString_StopPtr
 Global_HandleTableBase           = 22492
 
 Global_HandleEntry0_Flags        = Global_HandleTableBase+Struct_HandleEntry__Flags
@@ -1140,14 +1140,17 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "data/ctasks.s"
     include "data/diskio.s"
     include "data/diskio2.s"
+    include "data/diskio2_p1.s"
     include "data/displib.s"
     include "data/disptext.s"
     include "data/dst.s"
     include "data/ed2.s"
+    include "data/ed2_p1.s"
     include "data/esq.s"
     include "data/esq_p1.s"
     include "data/esqdisp.s"
     include "data/esqfunc.s"
+    include "data/esqfunc_p1.s"
     include "data/esqiff.s"
     include "data/esqpars.s"
     include "data/esqpars2.s"

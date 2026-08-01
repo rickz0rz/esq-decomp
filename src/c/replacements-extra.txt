@@ -56,3 +56,6 @@ data/common.s                                                   c/data_common.c
 data/esqiff.s                                                   c/data_esqiff.c
 data/esq.s                                                             c/data_esq.c
 data/esq_p1.s                                                          c/data_esq_p1.c
+data/diskio2_p1.s                                               c/data_diskio2_p1.c
+data/ed2_p1.s                                                   c/data_ed2_p1.c
+data/esqfunc_p1.s                                               c/data_esqfunc_p1.c

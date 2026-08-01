@@ -65,10 +65,20 @@ class Unsupported(Exception):
 
 
 def _split_operands(s):
-    """Split a DC operand list on commas that are not inside a string."""
-    out, cur, q = [], '', None
-    for ch in s:
+    """Split a DC operand list on commas that are not inside a string.
+
+    vasm escapes a quote by DOUBLING it, so a doubled pair inside a quoted
+    operand is one literal quote, not a close followed by an open. Reading it
+    the other way split data/diskio.s into the wrong number of operands.
+    """
+    out, cur, q, i = [], '', None, 0
+    while i < len(s):
+        ch = s[i]
         if q:
+            if ch == q and i + 1 < len(s) and s[i + 1] == q:
+                cur += ch + ch
+                i += 2
+                continue
             cur += ch
             if ch == q:
                 q = None
@@ -80,9 +90,35 @@ def _split_operands(s):
             cur = ''
         else:
             cur += ch
+        i += 1
     if cur.strip():
         out.append(cur.strip())
     return out
+
+
+def _strip_comment(line):
+    """Drop the trailing `;` comment, but NOT one inside a quoted string.
+
+    Splitting on the first `;` truncated every operand that contains one --
+    `NStr2 " ; "` became `NStr2 " ` and the parser reported the wrong operand
+    count. data/parseini.s and data/diskio.s both have them.
+    """
+    q = None
+    for i, ch in enumerate(line):
+        if q:
+            if ch == q:
+                q = None
+        elif ch in '"\'':
+            q = ch
+        elif ch == ';':
+            return line[:i]
+    return line
+
+
+def _text_of(tok):
+    """The bytes of a quoted operand, undoubling vasm's escaped quotes."""
+    q = tok[0]
+    return tok[1:-1].replace(q + q, q).encode('latin-1')
 
 
 def _value(tok):
@@ -116,7 +152,7 @@ def parse(path):
         off += size
 
     for raw in open(os.path.join(ROOT, 'src', path)):
-        line = raw.split(';')[0].rstrip()
+        line = _strip_comment(raw).rstrip()
         if not line.strip():
             continue
         m = re.match(r'^([A-Za-z_][\w]*):\s*$', line)
@@ -156,11 +192,13 @@ def parse(path):
             n = 1 if mnem in ('NSTR', 'STR') else int(mnem[4:])
             parts = _split_operands(rest)
             if len(parts) != n:
-                raise Unsupported('%s with %d operands' % (mnem, len(parts)))
+                raise Unsupported('%s with %d operands: %r' % (mnem, len(parts), body))
             text = b''
             for p in parts:
-                if p.startswith('"') and p.endswith('"'):
-                    text += p[1:-1].encode('latin-1')
+                if len(p) >= 2 and p[0] == p[-1] and p[0] in '"\'' and len(p) != 3:
+                    text += _text_of(p)
+                elif len(p) == 3 and p[0] == p[-1] == '"':
+                    text += _text_of(p)
                 else:
                     v = _value(p)          # a byte value, e.g. TextLineFeed
                     if not isinstance(v, int):
@@ -176,10 +214,14 @@ def parse(path):
         if mnem in ('DC.B', 'DC.W', 'DC.L'):
             width = {'DC.B': 1, 'DC.W': 2, 'DC.L': 4}[mnem]
             for tok in _split_operands(rest):
-                if tok.startswith('"') and tok.endswith('"'):
+                # vasm accepts either quote. A single-quoted literal of more than
+                # one character is a BYTE STRING in a DC.B, not a number --
+                # data/wdisp.s has DC.B '?/' and reading it as a value would have
+                # emitted one byte where the assembler emits two.
+                if len(tok) > 2 and tok[0] == tok[-1] and tok[0] in '"\'':
                     if width != 1:
                         raise Unsupported('string in %s' % mnem)
-                    for ch in tok[1:-1].encode('latin-1'):
+                    for ch in _text_of(tok):
                         emit('b', ch, 1)
                     continue
                 v = _value(tok)
@@ -299,6 +341,11 @@ def to_c(path, spans, total):
                 and kinds - {'l'}:
             fields, vals, o = [], [], 0
             for k, v in items:
+                if k == 's':                       # an inline string beside a pointer
+                    fields.append('    unsigned char f%d[%d];' % (o, len(v)))
+                    vals.append('{ ' + ', '.join('0x%02x' % b for b in v) + ' }')
+                    o += len(v)
+                    continue
                 ctype, w = {'b': ('unsigned char', 1), 'w': ('unsigned short', 2),
                             'l': ('long', 4), 'pad': ('unsigned char', 1)}[k]
                 if k == 'l' and isinstance(v, str):
