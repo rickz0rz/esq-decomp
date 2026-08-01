@@ -383,7 +383,7 @@ _WDISP_SPrintf:
 ; CLOBBERS:
 ;   A0/A2/A3/A4/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   DOS_OpenWithErrorState, DOS_OpenNewFileIfMissing, DOS_DeleteAndRecreateFile, DOS_CloseWithSignalCheck
+;   _DOS_OpenWithErrorState, DOS_OpenNewFileIfMissing, DOS_DeleteAndRecreateFile, _DOS_CloseWithSignalCheck
 ; READS:
 ;   Global_HandleTableCount(A4), Global_HandleTableBase(A4) (table), Global_HandleTableFlags(A4) (flags), Global_AppErrorCode(A4)
 ; WRITES:
@@ -507,7 +507,7 @@ HANDLE_OpenEntryWithFlags:
 
     PEA     1005.W
     MOVE.L  A3,-(A7)
-    JSR     DOS_OpenWithErrorState(PC)
+    JSR     _DOS_OpenWithErrorState(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D4
@@ -544,11 +544,11 @@ HANDLE_OpenEntryWithFlags:
     BMI.S   .check_ioerr
 
     MOVE.L  D4,-(A7)
-    JSR     DOS_CloseWithSignalCheck(PC)
+    JSR     _DOS_CloseWithSignalCheck(PC)
 
     PEA     1005.W
     MOVE.L  A3,-(A7)
-    JSR     DOS_OpenWithErrorState(PC)
+    JSR     _DOS_OpenWithErrorState(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D4
@@ -557,7 +557,7 @@ HANDLE_OpenEntryWithFlags:
 .simple_open:
     PEA     1005.W
     MOVE.L  A3,-(A7)
-    JSR     DOS_OpenWithErrorState(PC)
+    JSR     _DOS_OpenWithErrorState(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D4

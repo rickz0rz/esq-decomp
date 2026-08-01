@@ -36,6 +36,10 @@ sys.path.insert(0, os.path.join(ROOT, 'tools'))
 
 A4_BASE_LABEL = '_Global_REF_LONG_FILE_SCRATCH'
 
+# Names the esq-*.h headers already declare, with types of their own.
+LIB_BASES = {'DOSBase', 'GfxBase', 'SysBase', 'IntuitionBase',
+             'DiskfontBase', 'UtilityBase'}
+
 
 def equates():
     """Every `NAME = expr` in Prevue.asm, evaluated to a fixed point."""
@@ -144,7 +148,12 @@ def emit_header(eq, at, spans, base, used):
         addr = base + eq[s]
         labs = at.get(addr)
         if labs:
-            defs.append((s, None, labs[0], 0))
+            # A library base has TWO labels: _DOSBase, which esq-dos.h already
+            # declares as a struct pointer, and Global_REF_DOS_LIBRARY_2. Naming
+            # the first here is "Error 72: conflict with previous declaration"
+            # for any file that includes both headers, so prefer the alias.
+            pick = next((l for l in labs if l.lstrip('_') not in LIB_BASES), labs[0])
+            defs.append((s, None, pick, 0))
             continue
         encl = [(o, n, l, p) for o, n, l, p in spans if o <= addr < o + n]
         if not encl:

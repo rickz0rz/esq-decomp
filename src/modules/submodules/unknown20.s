@@ -1,7 +1,7 @@
-    XDEF    DOS_OpenWithErrorState
+    XDEF    _DOS_OpenWithErrorState
 
 ;------------------------------------------------------------------------------
-; FUNC: DOS_OpenWithErrorState   (Open wrapper that tracks IoErr/AppErrorCode.)
+; FUNC: _DOS_OpenWithErrorState   (Open wrapper that tracks IoErr/AppErrorCode.)
 ; ARGS:
 ;   stack +20: A3 = path string
 ;   stack +24: D7 = open mode
@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   D0-D7/A3/A6
 ; CALLS:
-;   SIGNAL_PollAndDispatch (signal callback), _LVOOpen, _LVOIoErr
+;   _SIGNAL_PollAndDispatch (signal callback), _LVOOpen, _LVOIoErr
 ; READS:
 ;   Global_SignalCallbackPtr
 ; WRITES:
@@ -19,7 +19,7 @@
 ;   Optionally calls a signal callback, then performs DOS Open.
 ;   On error, captures IoErr and sets AppErrorCode to 2.
 ;------------------------------------------------------------------------------
-DOS_OpenWithErrorState:
+_DOS_OpenWithErrorState:
     MOVEM.L D2/D6-D7/A3,-(A7)
 
     MOVEA.L 20(A7),A3
@@ -28,7 +28,7 @@ DOS_OpenWithErrorState:
     TST.L   Global_SignalCallbackPtr(A4)
     BEQ.S   .after_signal_callback
 
-    JSR     SIGNAL_PollAndDispatch(PC)
+    JSR     _SIGNAL_PollAndDispatch(PC)
 
 .after_signal_callback:
     CLR.L   Global_DosIoErr(A4)

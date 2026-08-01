@@ -106,3 +106,7 @@ modules/submodules/unknown9.s                                          c/lib_for
 modules/submodules/unknown4.s                                          c/lib_string_to_upper_in_place.c
 modules/submodules/unknown39.s                                         c/lib_graphics_blt_bitmap_rastport.c
 modules/submodules/unknown23.s                                         c/lib_handle_get_entry_by_index.c
+modules/submodules/unknown20.s                                         c/lib_dos_open_with_error_state.c
+modules/submodules/unknown11.s                                         c/lib_dos_seek_by_index.c
+modules/submodules/unknown26.s                                         c/lib_dos_write_by_index.c
+modules/submodules/unknown37.s                                         c/lib_handle_close_by_index.c

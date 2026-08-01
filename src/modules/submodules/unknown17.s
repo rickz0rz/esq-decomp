@@ -1,7 +1,7 @@
-    XDEF    DOS_WriteWithErrorState
+    XDEF    _DOS_WriteWithErrorState
 
 ;------------------------------------------------------------------------------
-; FUNC: DOS_WriteWithErrorState   (Write wrapper that tracks IoErr/AppErrorCode.)
+; FUNC: _DOS_WriteWithErrorState   (Write wrapper that tracks IoErr/AppErrorCode.)
 ; ARGS:
 ;   stack +28: D7 = file handle
 ;   stack +32: A3 = buffer pointer
@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   D0-D7/A3/A6
 ; CALLS:
-;   SIGNAL_PollAndDispatch (signal callback), _LVOWrite, _LVOIoErr
+;   _SIGNAL_PollAndDispatch (signal callback), _LVOWrite, _LVOIoErr
 ; READS:
 ;   Global_SignalCallbackPtr
 ; WRITES:
@@ -20,7 +20,7 @@
 ;   Optionally calls a signal callback, then performs DOS Write.
 ;   On error, captures IoErr and sets AppErrorCode to 5.
 ;------------------------------------------------------------------------------
-DOS_WriteWithErrorState:
+_DOS_WriteWithErrorState:
     MOVEM.L D2-D3/D5-D7/A3,-(A7)
 
     MOVE.L  28(A7),D7
@@ -30,7 +30,7 @@ DOS_WriteWithErrorState:
     TST.L   Global_SignalCallbackPtr(A4)
     BEQ.S   .after_signal_callback
 
-    JSR     SIGNAL_PollAndDispatch(PC)
+    JSR     _SIGNAL_PollAndDispatch(PC)
 
 .after_signal_callback:
     CLR.L   Global_DosIoErr(A4)

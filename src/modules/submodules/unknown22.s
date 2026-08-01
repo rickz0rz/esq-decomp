@@ -1,5 +1,5 @@
     XDEF    ALLOCATE_AllocAndInitializeIOStdReq
-    XDEF    DOS_CloseWithSignalCheck
+    XDEF    _DOS_CloseWithSignalCheck
     XDEF    _MATH_DivS32
     XDEF    MATH_DivU32
     XDEF    _MATH_Mulu32
@@ -9,7 +9,7 @@
     XDEF    __CXM33
 
 ;------------------------------------------------------------------------------
-; FUNC: DOS_CloseWithSignalCheck   (Close a DOS handle, with signal callback.)
+; FUNC: _DOS_CloseWithSignalCheck   (Close a DOS handle, with signal callback.)
 ; ARGS:
 ;   stack +8: D7 = handle
 ; RET:
@@ -17,17 +17,17 @@
 ; CLOBBERS:
 ;   D0-D1/D7/A6
 ; CALLS:
-;   SIGNAL_PollAndDispatch (signal callback), _LVOClose
+;   _SIGNAL_PollAndDispatch (signal callback), _LVOClose
 ; READS:
 ;   Global_SignalCallbackPtr
 ;------------------------------------------------------------------------------
-DOS_CloseWithSignalCheck:
+_DOS_CloseWithSignalCheck:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
     TST.L   Global_SignalCallbackPtr(A4)
     BEQ.S   .after_signal_callback
 
-    JSR     SIGNAL_PollAndDispatch(PC)
+    JSR     _SIGNAL_PollAndDispatch(PC)
 
 .after_signal_callback:
     MOVE.L  D7,D1

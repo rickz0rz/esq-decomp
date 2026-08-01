@@ -88,7 +88,7 @@ IOSTDREQ_CleanupSignalAndMsgport:
 ; CLOBBERS:
 ;   D0-D2/D7/A3/A6
 ; CALLS:
-;   SIGNAL_PollAndDispatch, _LVOLock, _LVOUnLock, _LVOOpen, _LVOIoErr
+;   _SIGNAL_PollAndDispatch, _LVOLock, _LVOUnLock, _LVOOpen, _LVOIoErr
 ; READS:
 ;   Global_SignalCallbackPtr
 ; WRITES:
@@ -103,7 +103,7 @@ DOS_OpenNewFileIfMissing:
     TST.L   Global_SignalCallbackPtr(A4)
     BEQ.S   .after_signal
 
-    JSR     SIGNAL_PollAndDispatch(PC)
+    JSR     _SIGNAL_PollAndDispatch(PC)
 
 .after_signal:
     CLR.L   Global_DosIoErr(A4)
@@ -158,7 +158,7 @@ DOS_OpenNewFileIfMissing:
 ; CLOBBERS:
 ;   D0-D2/D7/A3/A6
 ; CALLS:
-;   SIGNAL_PollAndDispatch, _LVOLock, _LVOUnLock, _LVODeleteFile, _LVOOpen, _LVOIoErr
+;   _SIGNAL_PollAndDispatch, _LVOLock, _LVOUnLock, _LVODeleteFile, _LVOOpen, _LVOIoErr
 ; READS:
 ;   Global_SignalCallbackPtr
 ; WRITES:
@@ -174,7 +174,7 @@ DOS_DeleteAndRecreateFile:
     TST.L   Global_SignalCallbackPtr(A4)
     BEQ.S   .delete_if_exists
 
-    JSR     SIGNAL_PollAndDispatch(PC)
+    JSR     _SIGNAL_PollAndDispatch(PC)
 
 .delete_if_exists:
     CLR.L   Global_DosIoErr(A4)                            ; Clear the long at Global_DosIoErr(A4)

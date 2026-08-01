@@ -24,7 +24,7 @@ Struct_UNKNOWN36_Request__Handler   = Struct_PreallocHandleNode__HandleIndex
 ; CLOBBERS:
 ;   A3/A7/D0/D6/D7
 ; CALLS:
-;   STREAM_BufferedPutcOrFlush, ALLOC_InsertFreeBlock, HANDLE_CloseByIndex
+;   STREAM_BufferedPutcOrFlush, ALLOC_InsertFreeBlock, _HANDLE_CloseByIndex
 ; READS:
 ;   Struct_UNKNOWN36_Request__Arg16, Struct_UNKNOWN36_Request__Arg20, Struct_UNKNOWN36_Request__FlagByte, Struct_UNKNOWN36_Request__Flags, Struct_UNKNOWN36_Request__Handler
 ; WRITES:
@@ -71,7 +71,7 @@ UNKNOWN36_FinalizeRequest:
     CLR.L   Struct_UNKNOWN36_Request__Flags(A3) ; clears overlaid open/mode/state bytes too
     ; Invoke handler at 28(A3).
     MOVE.L  Struct_UNKNOWN36_Request__Handler(A3),-(A7)
-    JSR     HANDLE_CloseByIndex(PC)
+    JSR     _HANDLE_CloseByIndex(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,D6

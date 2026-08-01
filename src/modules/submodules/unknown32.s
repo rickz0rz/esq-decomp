@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
-;   DOS_CloseWithSignalCheck (close handle), ESQ_ReturnWithStackCode
+;   _DOS_CloseWithSignalCheck (close handle), ESQ_ReturnWithStackCode
 ; READS:
 ;   Global_HandleTableCount, Global_HandleTableBase
 ; DESC:
@@ -47,7 +47,7 @@ HANDLE_CloseAllAndReturnWithCode:
     ASL.L   #3,D0
     LEA     Global_HandleTableBase(A4),A0
     MOVE.L  Struct_HandleEntry__Ptr(A0,D0.L),-(A7)
-    JSR     DOS_CloseWithSignalCheck(PC)
+    JSR     _DOS_CloseWithSignalCheck(PC)
 
     ADDQ.W  #4,A7
 

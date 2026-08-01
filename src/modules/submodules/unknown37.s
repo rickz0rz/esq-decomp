@@ -1,7 +1,7 @@
-    XDEF    HANDLE_CloseByIndex
+    XDEF    _HANDLE_CloseByIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: HANDLE_CloseByIndex   (Close and clear handle entry by index.)
+; FUNC: _HANDLE_CloseByIndex   (Close and clear handle entry by index.)
 ; ARGS:
 ;   stack +12: D7 = handle index
 ; RET:
@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0/D7/A3
 ; CALLS:
-;   _HANDLE_GetEntryByIndex (_HANDLE_GetEntryByIndex), DOS_CloseWithSignalCheck (close)
+;   _HANDLE_GetEntryByIndex (_HANDLE_GetEntryByIndex), _DOS_CloseWithSignalCheck (close)
 ; READS:
 ;   Global_DosIoErr, handle entry flags at 3(A3)
 ; WRITES:
@@ -17,7 +17,7 @@
 ; DESC:
 ;   Closes a handle unless flagged as non-closable, then clears its entry.
 ;------------------------------------------------------------------------------
-HANDLE_CloseByIndex:
+_HANDLE_CloseByIndex:
     MOVEM.L D7/A3,-(A7)
 
     MOVE.L  12(A7),D7
@@ -42,7 +42,7 @@ HANDLE_CloseByIndex:
 
 .do_close:
     MOVE.L  4(A3),-(A7)
-    JSR     DOS_CloseWithSignalCheck(PC)
+    JSR     _DOS_CloseWithSignalCheck(PC)
 
     ADDQ.W  #4,A7
     MOVEQ   #0,D0

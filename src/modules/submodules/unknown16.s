@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0/D6-D7/A3
 ; CALLS:
-;   DOS_WriteByIndex (write by handle index), HANDLE_CloseAllAndReturnWithCode (close handles/return)
+;   _DOS_WriteByIndex (write by handle index), HANDLE_CloseAllAndReturnWithCode (close handles/return)
 ; READS:
 ;   Global_PreallocHandleNode0 (buffered output list head)
 ; DESC:
@@ -44,7 +44,7 @@ BUFFER_FlushAllAndCloseWithCode:
     MOVE.L  D6,-(A7)
     MOVE.L  Struct_PreallocHandleNode__BufferBase(A3),-(A7)
     MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
-    JSR     DOS_WriteByIndex(PC)
+    JSR     _DOS_WriteByIndex(PC)
 
     LEA     12(A7),A7
 

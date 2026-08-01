@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   D0-D7/A3/A6
 ; CALLS:
-;   SIGNAL_PollAndDispatch (signal callback), _LVORead, _LVOIoErr
+;   _SIGNAL_PollAndDispatch (signal callback), _LVORead, _LVOIoErr
 ; READS:
 ;   Global_SignalCallbackPtr
 ; WRITES:
@@ -30,7 +30,7 @@ DOS_ReadWithErrorState:
     TST.L   Global_SignalCallbackPtr(A4)
     BEQ.S   .after_signal_callback
 
-    JSR     SIGNAL_PollAndDispatch(PC)
+    JSR     _SIGNAL_PollAndDispatch(PC)
 
 .after_signal_callback:
     CLR.L   Global_DosIoErr(A4)

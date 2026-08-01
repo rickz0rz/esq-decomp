@@ -1,7 +1,7 @@
-    XDEF    SIGNAL_PollAndDispatch
+    XDEF    _SIGNAL_PollAndDispatch
 
 ;------------------------------------------------------------------------------
-; FUNC: SIGNAL_PollAndDispatch   (Poll Ctrl-C/D break signals and invoke callback.)
+; FUNC: _SIGNAL_PollAndDispatch   (Poll Ctrl-C/D break signals and invoke callback.)
 ; ARGS:
 ;   none
 ; RET:
@@ -18,7 +18,7 @@
 ;   Checks for signals 0x3000; if present, calls the registered callback.
 ;   If callback returns non-zero, clears it and calls HANDLE_CloseAllAndReturnWithCode with code 20.
 ;------------------------------------------------------------------------------
-SIGNAL_PollAndDispatch:
+_SIGNAL_PollAndDispatch:
     MOVE.L  D7,-(A7)
 
     MOVEQ   #0,D0
@@ -56,7 +56,7 @@ SIGNAL_PollAndDispatch:
 ;!======
 
     ; Unreachable code?
-    BSR.S   SIGNAL_PollAndDispatch
+    BSR.S   _SIGNAL_PollAndDispatch
     RTS
 
     ; Alignment?

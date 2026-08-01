@@ -75,9 +75,9 @@ extern unsigned char PREALLOC_DefaultHandleFlagsSeed[];
 #define Global_DosIoErr_A4_ADDR  ((void *)(BUFFER_5929_LONGWORDS + 24))
 
 /* Global_DosLibrary is its own symbol. */
-extern unsigned char DOSBase[];
-#define Global_DosLibrary_A4       (*(long *)DOSBase)
-#define Global_DosLibrary_A4_ADDR  ((void *)DOSBase)
+extern unsigned char Global_REF_DOS_LIBRARY_2[];
+#define Global_DosLibrary_A4       (*(long *)Global_REF_DOS_LIBRARY_2)
+#define Global_DosLibrary_A4_ADDR  ((void *)Global_REF_DOS_LIBRARY_2)
 
 #define Global_ExitHookPtr_A4       (*(long *)(BUFFER_5929_LONGWORDS + 44))
 #define Global_ExitHookPtr_A4_ADDR  ((void *)(BUFFER_5929_LONGWORDS + 44))
@@ -95,9 +95,9 @@ extern unsigned char DOSBase[];
 #define Global_FormatCallbackByteCount_A4_ADDR  ((void *)(FORMAT_ScratchBuffer + 848))
 
 /* Global_GraphicsLibraryBase_A4 is its own symbol. */
-extern unsigned char GfxBase[];
-#define Global_GraphicsLibraryBase_A4_A4       (*(long *)GfxBase)
-#define Global_GraphicsLibraryBase_A4_A4_ADDR  ((void *)GfxBase)
+extern unsigned char Global_REF_GRAPHICS_LIBRARY[];
+#define Global_GraphicsLibraryBase_A4_A4       (*(long *)Global_REF_GRAPHICS_LIBRARY)
+#define Global_GraphicsLibraryBase_A4_A4_ADDR  ((void *)Global_REF_GRAPHICS_LIBRARY)
 
 #define Global_HandleEntry0_Flags_A4       (*(long *)(FORMAT_ScratchBuffer + 516))
 #define Global_HandleEntry0_Flags_A4_ADDR  ((void *)(FORMAT_ScratchBuffer + 516))

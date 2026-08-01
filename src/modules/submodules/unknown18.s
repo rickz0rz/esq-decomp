@@ -1,7 +1,7 @@
-    XDEF    DOS_SeekWithErrorState
+    XDEF    _DOS_SeekWithErrorState
 
 ;------------------------------------------------------------------------------
-; FUNC: DOS_SeekWithErrorState   (Seek wrapper that tracks IoErr/AppErrorCode.)
+; FUNC: _DOS_SeekWithErrorState   (Seek wrapper that tracks IoErr/AppErrorCode.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0-D7/A6
 ; CALLS:
-;   SIGNAL_PollAndDispatch (signal callback), _LVOSeek, _LVOIoErr
+;   _SIGNAL_PollAndDispatch (signal callback), _LVOSeek, _LVOIoErr
 ; READS:
 ;   Global_SignalCallbackPtr
 ; WRITES:
@@ -20,7 +20,7 @@
 ; NOTES:
 ;   Returns adjusted position based on mode (see D5 handling).
 ;------------------------------------------------------------------------------
-DOS_SeekWithErrorState:
+_DOS_SeekWithErrorState:
     MOVEM.L D2-D7,-(A7)
 
     MOVE.L  28(A7),D7
@@ -30,7 +30,7 @@ DOS_SeekWithErrorState:
     TST.L   Global_SignalCallbackPtr(A4)
     BEQ.S   .after_signal_callback
 
-    JSR     SIGNAL_PollAndDispatch(PC)
+    JSR     _SIGNAL_PollAndDispatch(PC)
 
 .after_signal_callback:
     CLR.L   Global_DosIoErr(A4)

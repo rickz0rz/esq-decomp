@@ -259,7 +259,7 @@ STREAM_BufferedWriteString:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   BUFFER_EnsureAllocated, DOS_WriteByIndex, DOS_SeekByIndex, DOS_ReadByIndex, STREAM_BufferedGetc
+;   BUFFER_EnsureAllocated, _DOS_WriteByIndex, _DOS_SeekByIndex, DOS_ReadByIndex, STREAM_BufferedGetc
 ; READS:
 ;   Struct_PreallocHandleNode__BufferCursor/WriteRemaining/BufferBase/BufferCapacity/OpenFlags/ModeFlags/StateFlags/HandleIndex,
 ;   Global_DosIoErr(A4)
@@ -389,7 +389,7 @@ STREAM_BufferedPutcOrFlush:
     PEA     DOS_MovepWordReadCallback(PC)
     MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
     MOVE.L  D1,-16(A5)
-    JSR     DOS_WriteByIndex(PC)
+    JSR     _DOS_WriteByIndex(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
@@ -401,7 +401,7 @@ STREAM_BufferedPutcOrFlush:
     PEA     -1(A5)
     MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
     MOVE.L  D1,-16(A5)
-    JSR     DOS_WriteByIndex(PC)
+    JSR     _DOS_WriteByIndex(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
@@ -465,7 +465,7 @@ STREAM_BufferedPutcOrFlush:
     PEA     2.W
     CLR.L   -(A7)
     MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
-    JSR     DOS_SeekByIndex(PC)
+    JSR     _DOS_SeekByIndex(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,-20(A5)
@@ -479,7 +479,7 @@ STREAM_BufferedPutcOrFlush:
     CLR.L   -(A7)
     MOVE.L  -20(A5),-(A7)
     MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
-    JSR     DOS_SeekByIndex(PC)
+    JSR     _DOS_SeekByIndex(PC)
 
     PEA     1.W
     PEA     -3(A5)
@@ -499,7 +499,7 @@ STREAM_BufferedPutcOrFlush:
     MOVE.L  -16(A5),-(A7)
     MOVE.L  Struct_PreallocHandleNode__BufferBase(A3),-(A7)
     MOVE.L  Struct_PreallocHandleNode__HandleIndex(A3),-(A7)
-    JSR     DOS_WriteByIndex(PC)
+    JSR     _DOS_WriteByIndex(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5
@@ -615,7 +615,7 @@ STREAM_BufferedPutcOrFlush:
 ; DESC:
 ;   Tiny helper used as a callback to read a word via MOVEP.
 ; NOTES:
-;   Used by translated newline path so DOS_WriteByIndex can fetch a 2-byte word.
+;   Used by translated newline path so _DOS_WriteByIndex can fetch a 2-byte word.
 ;   Followed by padding word.
 ;------------------------------------------------------------------------------
 DOS_MovepWordReadCallback:

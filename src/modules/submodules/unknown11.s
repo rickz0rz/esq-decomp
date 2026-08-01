@@ -1,7 +1,7 @@
-    XDEF    DOS_SeekByIndex
+    XDEF    _DOS_SeekByIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: DOS_SeekByIndex   (Seek using a handle index.)
+; FUNC: _DOS_SeekByIndex   (Seek using a handle index.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -9,13 +9,13 @@
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   _HANDLE_GetEntryByIndex (_HANDLE_GetEntryByIndex), DOS_SeekWithErrorState (seek)
+;   _HANDLE_GetEntryByIndex (_HANDLE_GetEntryByIndex), _DOS_SeekWithErrorState (seek)
 ; READS:
 ;   Global_DosIoErr
 ; DESC:
 ;   Resolves a handle index to its entry, then performs a seek on the handle.
 ;------------------------------------------------------------------------------
-DOS_SeekByIndex:
+_DOS_SeekByIndex:
     MOVEM.L D4-D7/A3,-(A7)
     MOVE.L  24(A7),D7
     MOVE.L  28(A7),D6
@@ -35,7 +35,7 @@ DOS_SeekByIndex:
     MOVE.L  D5,-(A7)
     MOVE.L  D6,-(A7)
     MOVE.L  4(A3),-(A7)
-    JSR     DOS_SeekWithErrorState(PC)
+    JSR     _DOS_SeekWithErrorState(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D4
