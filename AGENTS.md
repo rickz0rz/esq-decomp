@@ -998,7 +998,7 @@ far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
 BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
 278-entry parent, also clean and additionally proven on all six ESC-menu items.
 
-`src/c/replacements-all.txt` is the one to grow. It stands at **642 entries**
+`src/c/replacements-all.txt` is the one to grow. It stands at **686 entries**
 after the push-to-the-ceiling run, with 28 restorations held out as unsafe to
 link. It went 440 -> 464 from new restorations and 464 -> 614 from SPLITTING
 modules, which is the cheaper lever of the two and was sitting unused. **That size is NOT yet proven.** The last size proven end to end is

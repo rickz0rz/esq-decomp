@@ -31,7 +31,9 @@ Run `python3 tools/coverage.py` to regenerate every number in this section.
 | application functions | 732 (194,408 bytes) |
 | restored to C | 701 (190,358 bytes, 97.9% by byte, 96% by count) |
 | byte-exact restorations | 29 |
-| source modules | 981, coalesced into 494 link units |
+| source modules | 1,014, coalesced into 527 link units |
+| assembly remaining | 26,122 of 267,168 bytes (9.8%) |
+| DATA section in C | 54,968 of 55,820 bytes (98.5%) |
 | linked size | CODE 211,348 bytes, DATA 55,820 bytes |
 
 A restoration is **exact** when the compiler emits the original bytes. It is
