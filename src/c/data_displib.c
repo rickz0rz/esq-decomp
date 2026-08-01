@@ -11,10 +11,11 @@
  * `repl` -- so a manifest line naming a path under data/ already links a C object
  * at that module's position. No build change was needed to try this.
  *
- * `NStr` IS STRING PLUS NUL PLUS EVEN ALIGNMENT (`DC.B \1,0` then `CNOP 0,2`),
- * which is exactly what a C string literal in an array of unspecified size
- * emits. "DISPLIB.c" is 9 characters, so both spellings occupy 10 bytes and the
- * next symbol starts on an even address either way.
+ * `NStr` IS STRING PLUS NUL PLUS EVEN ALIGNMENT (`DC.B \1,0` then `CNOP 0,2`).
+ * "DISPLIB.c" is 9 characters plus a NUL, which is already even, so this module
+ * needs no padding. The sizes are written out anyway, because SAS/C 6.51 does
+ * NOT word-align consecutive char arrays and an ODD string with no explicit size
+ * silently loses its pad byte -- see data_flib.c, which lost six that way.
  *
  * THE UNINITIALISED LONG IS WRITTEN `= 0` ON PURPOSE. `DS.L 1` inside a loaded
  * DATA hunk contributes four zero bytes to the image. A C global with no
@@ -36,8 +37,8 @@
  * 2,218 symbols, and none of them is here.
  */
 
-char Global_STR_DISPLIB_C_1[] = "DISPLIB.c";
-char Global_STR_DISPLIB_C_2[] = "DISPLIB.c";
+char Global_STR_DISPLIB_C_1[10] = "DISPLIB.c";
+char Global_STR_DISPLIB_C_2[10] = "DISPLIB.c";
 
 /* Per-line horizontal pixel offset for inline markers. `DS.L 1` in the original;
  * see the note above on why the zero is written out. */

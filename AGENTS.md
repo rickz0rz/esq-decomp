@@ -1571,9 +1571,15 @@ Four rules, and the last two are the ones that will bite:
 1. **Declare it in `src/c/replacements-extra.txt`.** `gen_all_manifest.py` only
    walks `src/modules`, so no data module can ever appear in its generated rows.
 
-2. **`NStr` is string + NUL + even alignment** (`DC.B \1,0` then `CNOP 0,2`),
-   which is exactly what `char X[] = "..."` emits. The two spellings agree byte
-   for byte, padding included.
+2. **Give every array an EXPLICIT SIZE: the string, plus the NUL, rounded up to
+   even.** `NStr` ends in `CNOP 0,2`, and **SAS/C 6.51 does NOT word-align
+   consecutive char arrays**, so `char X[] = "..."` on an odd-length string
+   silently drops the pad byte and shifts every symbol after it. `data/flib.s`
+   compiled to 148 bytes against 154 that way.
+
+   **Compare the OFFSETS, not the total.** `data/esqpars.s` came out at exactly
+   the right 92 bytes with two symbols in the wrong place, because the padding it
+   lost and the object's longword rounding cancelled.
 
 3. **Write `= 0` on an uninitialised symbol.** `DS.L 1` inside a loaded DATA hunk
    contributes four ZERO BYTES to the image. A C global with no initialiser is a
@@ -1589,7 +1595,31 @@ Four rules, and the last two are the ones that will bite:
    symbols; they are listed in the section above and none of them is in
    `displib.s`. Convert the modules that hold them last.
 
-31 data modules remain, 10,926 lines. The path is proven; the rest is volume.
+5. **ONLY convert a module whose content is a multiple of 4 bytes.** This is the
+   alignment rule from the code side, and on the data side it is not a cost, it
+   is a HARD LIMIT. A hunk object is longword-sized, so a data module of any
+   other length gains padding, the DATA hunk GROWS, and every symbol after it
+   moves.
+
+   `data/flib.s` is 154 bytes. Converting it grew hunk1 from 55,820 to 55,824 and
+   the display froze within seconds -- measured twice, 3 of 10 distinct frames
+   and 2 illegal/exception lines against 1 for a healthy build. Its C is
+   byte-correct and is kept, marked `DO-NOT-LINK`, in `src/c/data_flib.c`.
+   `displib` (24) and `esqpars` (92) change the DATA hunk size by nothing and
+   run.
+
+   On the CODE side the same padding is inert: it sits between functions and is
+   never executed. On the data side there is nothing inert about it -- it is
+   inserted INTO the address space the program reads.
+
+   The evidence does not say which symbol minds the shift.
+   `data_adjacency_audit.py` cannot answer it either, because it skips any symbol
+   the code only ever takes the ADDRESS of. To convert an odd-sized module,
+   bisect first: insert 4 bytes of padding at successive points in the assembly
+   DATA section and find what stops working.
+
+31 data modules remain, 10,926 lines. Two are converted. The path is proven, and
+the multiple-of-4 rule decides which module is next.
 
 ## Merging beats splitting when a module will not cut
 

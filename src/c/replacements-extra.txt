@@ -34,9 +34,16 @@ modules/groups/a/a/app_get_bit_3_of_ciab_pra_into_d1.s                 c/get_bit
 modules/groups/a/a/app_p1.s                                            c/esq_capture_ctrl_bit4_stream.c
 modules/groups/a/a/app_get_bit_4_of_ciab_pra_into_d1.s                 c/get_bit4_of_ciab_pra.c
 
-# THE FIRST DATA MODULE IN C. gen_all_manifest.py only walks src/modules, so no
-# data module can ever appear in the generated rows -- a data replacement has to
-# be declared here. gen_units.py needs no change: it runs the replacement map
-# over the data group as well as the code group.
-# 24 bytes, byte-exact against the assembly it replaces.
+# DATA MODULES IN C. gen_all_manifest.py only walks src/modules, so no data
+# module can ever appear in the generated rows -- a data replacement has to be
+# declared here. gen_units.py needs no change: it runs the replacement map over
+# the data group as well as the code group.
+#
+# ONLY A MODULE WHOSE CONTENT IS A MULTIPLE OF 4 BYTES MAY GO HERE. A hunk object
+# is longword-sized, so a data module of any other length gains padding, the DATA
+# hunk grows, and everything after it MOVES. displib (24) and esqpars (92) leave
+# the hunk byte-identical and run. flib (154) grew it by 4 and the display froze
+# within seconds, twice, reproducibly -- src/c/data_flib.c is written, verified
+# byte-correct in isolation, and deliberately NOT listed.
 data/displib.s                                                         c/data_displib.c
+data/esqpars.s                                                         c/data_esqpars.c
