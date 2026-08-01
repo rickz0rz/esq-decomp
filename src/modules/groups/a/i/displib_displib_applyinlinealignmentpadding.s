@@ -15,7 +15,7 @@
 ; CALLS:
 ;   _GROUP_AG_JMPTBL_MATH_DivS32, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _GROUP_AI_JMPTBL_STRING_AppendAtNull, _LVOTextLength
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _Global_STR_DISPLIB_C_1, _Global_STR_DISPLIB_C_2, DISPLIB_ApplyInlineAlignmentPadding_Return, _DISPLIB_STR_InlineAlignPadCharCenter, _DISPLIB_STR_InlineAlignPadCharRight, MEMF_PUBLIC
+;   _Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _Global_STR_DISPLIB_C_1, _Global_STR_DISPLIB_C_2, DISPLIB_ApplyInlineAlignmentPadding_Return, _DISPLIB_STR_InlineAlignPadCharCenter, _DISPLIB_STR_InlineAlignPadCharRight, MEMF_PUBLIC
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -41,7 +41,7 @@ _DISPLIB_ApplyInlineAlignmentPadding:
     MOVEA.L A3,A0
     MOVE.L  D5,D0
     MOVEA.L _Global_REF_RASTPORT_1,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  #624,D1

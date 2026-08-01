@@ -25,7 +25,7 @@ _NEWGRID_DrawTopBorderLine:
 
     MOVEA.L _NEWGRID_HeaderRastPortPtr,A1
     MOVEQ   #7,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     ; Draw a filled rect from 0,0 to 695,1

@@ -23,14 +23,14 @@
 _ED_RedrawCursorChar:
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #5,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     BSR.W   _ED_DrawCursorChar
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     RTS

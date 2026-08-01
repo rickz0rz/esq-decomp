@@ -80,7 +80,7 @@ _NEWGRID_DrawStatusMessage:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVE.L  _GCOMMAND_MplexMessageTextPen,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     60(A3),A0
@@ -104,7 +104,7 @@ _NEWGRID_DrawStatusMessage:
     MOVEA.L A0,A1
     MOVE.L  D6,D0
     LEA     -132(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.W  _NEWGRID_ColumnWidthPx,D1
@@ -129,7 +129,7 @@ _NEWGRID_DrawStatusMessage:
     MOVE.L  A0,16(A7)
     MOVE.L  D6,D0
     LEA     -132(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  24(A7),D1

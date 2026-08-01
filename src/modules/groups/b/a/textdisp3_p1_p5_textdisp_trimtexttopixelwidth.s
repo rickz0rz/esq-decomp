@@ -40,7 +40,7 @@ _TEXTDISP_TrimTextToPixelWidth:
     SUBA.L  A0,A2
     MOVE.L  A0,-4(A5)
     MOVE.L  A2,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D5
@@ -79,7 +79,7 @@ _TEXTDISP_TrimTextToPixelWidth:
     MOVEA.L A0,A1
     MOVEA.L -4(A5),A0
     MOVE.L  28(A7),D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D5
@@ -93,7 +93,7 @@ _TEXTDISP_TrimTextToPixelWidth:
     MOVEA.L A0,A1
     MOVEA.L -4(A5),A0
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     ADD.L   D0,D6
@@ -120,7 +120,7 @@ _TEXTDISP_TrimTextToPixelWidth:
     MOVEA.L A0,A1
     MOVE.L  A2,D0
     MOVEA.L -4(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D5

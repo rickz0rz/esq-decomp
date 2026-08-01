@@ -61,7 +61,7 @@ _NEWGRID_DrawWrappedText:
     ; Get the width of a single space
     LEA     _Global_STR_SINGLE_SPACE,A0
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,-8(A5)
@@ -106,7 +106,7 @@ _NEWGRID_DrawWrappedText:
     MOVE.L  A1,20(A7)
     MOVEA.L A3,A1
     MOVE.L  20(A7),D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D5,D1
@@ -162,7 +162,7 @@ _NEWGRID_DrawWrappedText:
 
     MOVEA.L A3,A1
     LEA     -74(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D5,D1
@@ -183,7 +183,7 @@ _NEWGRID_DrawWrappedText:
 
     MOVEA.L A3,A1
     LEA     -74(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .return_trimmed_ptr:
@@ -214,7 +214,7 @@ _NEWGRID_DrawWrappedText:
     MOVEA.L A3,A1
     LEA     _NEWGRID_WrapReturnSpacer,A0
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .draw_space:

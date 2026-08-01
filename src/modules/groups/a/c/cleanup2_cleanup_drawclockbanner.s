@@ -16,7 +16,7 @@
 ;   _Global_UIBusyFlag, _Global_REF_STR_USE_24_HR_CLOCK, _Global_WORD_CURRENT_HOUR,
 ;   _CLOCK_CurrentAmPmFlag, _Global_WORD_CURRENT_MINUTE, _Global_WORD_CURRENT_SECOND,
 ;   _Global_STR_EXTRA_TIME_FORMAT, _Global_STR_GRID_TIME_FORMAT,
-;   _NEWGRID_MainRastPortPtr, _NEWGRID_ColumnStartXPx, Global_REF_GRAPHICS_LIBRARY
+;   _NEWGRID_MainRastPortPtr, _NEWGRID_ColumnStartXPx, _Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   Stack buffer at -10(A5)
 ; DESC:
@@ -77,7 +77,7 @@ _CLEANUP_DrawClockBanner:
 .draw_banner:
     MOVEA.L _NEWGRID_MainRastPortPtr,A1
     MOVEQ   #7,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L _NEWGRID_MainRastPortPtr,A1
@@ -130,7 +130,7 @@ _CLEANUP_DrawClockBanner:
     ADD.L   D0,D1
     SUBQ.L  #1,D1
     MOVEQ   #44,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVEA.L _NEWGRID_MainRastPortPtr,A1

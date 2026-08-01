@@ -19,7 +19,7 @@
 ; READS:
 ;   _LOCAVAIL_PrimaryFilterState, _LOCAVAIL_SecondaryFilterState, _ESQIFF_BrushIniListHead, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _ESQFUNC_PwBrushListHead, _ESQIFF_RecordBufferPtr,
 ;   _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort, _ESQDISP_HighlightBitmapTable, _WDISP_HighlightRasterHeightPx, _WDISP_WeatherStatusTextPtr, _WDISP_WeatherStatusOverlayTextPtr, _ESQ_ProcessWindowPtrBackup,
-;   _WDISP_ExecBaseHookPtr, Global_REF_GRAPHICS_LIBRARY, _Global_REF_INTUITION_LIBRARY,
+;   _WDISP_ExecBaseHookPtr, _Global_REF_GRAPHICS_LIBRARY, _Global_REF_INTUITION_LIBRARY,
 ;   _Global_REF_BACKED_UP_INTUITION_AUTOREQUEST, _Global_REF_BACKED_UP_INTUITION_DISPLAYALERT,
 ;   AbsExecBase, _Global_STR_CLEANUP_C_13, _Global_STR_CLEANUP_C_14, _Global_STR_CLEANUP_C_15,
 ;   _Global_STR_CLEANUP_C_16
@@ -96,7 +96,7 @@ _CLEANUP_ShutdownSystem:
 
     JSR     _GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers(PC)
 
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A0
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A0
     MOVE.L  38(A0),COP1LCH
     JSR     _GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources(PC)
 

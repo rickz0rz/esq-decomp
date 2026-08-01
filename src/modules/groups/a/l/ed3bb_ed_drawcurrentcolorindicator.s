@@ -40,7 +40,7 @@ _ED_DrawCurrentColorIndicator:
     MOVEQ   #0,D0
     MOVE.B  D6,D0
     MOVEA.L _Global_REF_RASTPORT_1,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
@@ -61,7 +61,7 @@ _ED_DrawCurrentColorIndicator:
     MOVE.B  D0,D1
     MOVE.L  D1,D0
     MOVEA.L _Global_REF_RASTPORT_1,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
@@ -84,7 +84,7 @@ _ED_DrawCurrentColorIndicator:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1

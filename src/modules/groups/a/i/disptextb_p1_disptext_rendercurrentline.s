@@ -68,7 +68,7 @@ _DISPTEXT_RenderCurrentLine:
     ADDA.L  D2,A0
     MOVEA.L A3,A1
     MOVE.L  (A0),D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L A3,A1
@@ -118,7 +118,7 @@ _DISPTEXT_RenderCurrentLine:
     MOVEA.L A3,A1
     MOVE.L  D7,D0
     MOVE.L  D6,D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVEA.L A3,A1

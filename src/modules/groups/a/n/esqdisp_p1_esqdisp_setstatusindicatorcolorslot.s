@@ -15,7 +15,7 @@
 ; CALLS:
 ;   _LVOReadPixel, _LVORectFill, _LVOSetAPen
 ; READS:
-;   _Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _ESQDISP_StatusIndicatorDeferredApplyFlag, _ESQDISP_StatusIndicatorColorCache
+;   _Global_REF_696_400_BITMAP, _Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _ESQDISP_StatusIndicatorDeferredApplyFlag, _ESQDISP_StatusIndicatorColorCache
 ; WRITES:
 ;   _ESQDISP_StatusIndicatorColorCache, status-indicator rectangle in _Global_REF_RASTPORT_1
 ; DESC:
@@ -113,7 +113,7 @@ _ESQDISP_SetStatusIndicatorColorSlot:
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVE.L  #655,D0
     MOVEQ   #55,D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOReadPixel(A6)
 
     MOVE.L  D0,D7
@@ -121,7 +121,7 @@ _ESQDISP_SetStatusIndicatorColorSlot:
 .set_pen_and_fill_indicator:
     MOVE.L  D7,D0
     MOVEA.L _Global_REF_RASTPORT_1,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  D4,D0

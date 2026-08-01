@@ -16,7 +16,7 @@
 ; CALLS:
 ;   _ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex, _ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition, _GCOMMAND_SeedBannerFromPrefs, _GROUP_AM_JMPTBL_WDISP_SPrintf, _LVODisable, _LVOEnable, _LVORectFill, _LVOSetAPen, _LVOSetDrMd
 ; READS:
-;   AbsExecBase, _BRUSH_SnapshotDepth, _BRUSH_SnapshotHeader, _BRUSH_SnapshotWidth, _Global_STR_PLEASE_STANDBY_2, _Global_REF_696_400_BITMAP, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _Global_STR_ATTENTION_SYSTEM_ENGINEER_2, _Global_STR_FILE_PERCENT_S, _Global_STR_FILE_WIDTH_COLORS_FORMATTED, _Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL, _Global_STR_REPORT_ERROR_CODE_FORMATTED, ESQIFF2_ShowAttentionOverlay_Return, _ED_DiagnosticsScreenActive, _Global_UIBusyFlag, lab_0B28, lab_0B29_0008, lab_0B29_000C, lab_0B29_0010, lab_0B29_0014, lab_0B29_0018
+;   AbsExecBase, _BRUSH_SnapshotDepth, _BRUSH_SnapshotHeader, _BRUSH_SnapshotWidth, _Global_STR_PLEASE_STANDBY_2, _Global_REF_696_400_BITMAP, _Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _Global_STR_ATTENTION_SYSTEM_ENGINEER_2, _Global_STR_FILE_PERCENT_S, _Global_STR_FILE_WIDTH_COLORS_FORMATTED, _Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL, _Global_STR_REPORT_ERROR_CODE_FORMATTED, ESQIFF2_ShowAttentionOverlay_Return, _ED_DiagnosticsScreenActive, _Global_UIBusyFlag, lab_0B28, lab_0B29_0008, lab_0B29_000C, lab_0B29_0010, lab_0B29_0014, lab_0B29_0018
 ; WRITES:
 ;   _COI_AttentionOverlayBusyFlag, _ESQPARS2_ReadModeFlags, _ED_DiagnosticsScreenActive
 ; DESC:
@@ -95,7 +95,7 @@ _ESQIFF2_ShowAttentionOverlay:
     CLR.W   _ED_DiagnosticsScreenActive
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
@@ -189,7 +189,7 @@ _ESQIFF2_ShowAttentionOverlay:
     EXT.W   D0
     EXT.L   D0
     MOVEA.L _Global_REF_RASTPORT_1,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A0

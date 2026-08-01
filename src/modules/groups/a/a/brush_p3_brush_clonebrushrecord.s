@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit
 ; READS:
-;   AbsExecBase, _BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, Global_REF_GRAPHICS_LIBRARY, _Global_STR_BRUSH_C_17, _Global_STR_BRUSH_C_18, MEMF_CLEAR, MEMF_PUBLIC
+;   AbsExecBase, _BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, _Global_REF_GRAPHICS_LIBRARY, _Global_STR_BRUSH_C_17, _Global_STR_BRUSH_C_18, MEMF_CLEAR, MEMF_PUBLIC
 ; WRITES:
 ;   _BRUSH_PendingAlertCode
 ; DESC:
@@ -68,7 +68,7 @@ _BRUSH_CloneBrushRecord:
     MOVEQ   #0,D2
     MOVE.W  178(A0),D2
     MOVEA.L A1,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
     MOVEA.L -8(A5),A0
@@ -205,7 +205,7 @@ _BRUSH_CloneBrushRecord:
     BNE.S   .return
 
     LEA     36(A0),A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
     MOVEA.L -8(A5),A0

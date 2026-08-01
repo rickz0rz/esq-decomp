@@ -26,7 +26,7 @@
 ; CALLS:
 ;   _ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate, _ESQIFF_JMPTBL_BRUSH_SelectBrushSlot, _ESQIFF_JMPTBL_MATH_DivS32, _ESQIFF_JMPTBL_MATH_Mulu32, _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, _ESQFUNC_TrimTextToPixelWidthWordBoundary, _ESQPARS_ReplaceOwnedString, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, _Global_STR_ESQIFF_C_1, _WDISP_WeatherStatusOverlayTextPtr, _ESQFUNC_PwBrushListHead, _ESQFUNC_STR_I5, _WDISP_WeatherStatusBrushIndex
+;   _Global_HANDLE_PREVUEC_FONT, _Global_REF_GRAPHICS_LIBRARY, _Global_STR_ESQIFF_C_1, _WDISP_WeatherStatusOverlayTextPtr, _ESQFUNC_PwBrushListHead, _ESQFUNC_STR_I5, _WDISP_WeatherStatusBrushIndex
 ; WRITES:
 ;   weather-overlay working copy buffer, selected brush flags (+356/+360) ??
 ; DESC:
@@ -115,7 +115,7 @@ _ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     LEA     36(A3),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     LEA     36(A3),A0
@@ -243,7 +243,7 @@ _ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  D0,-60(A5)
     MOVEA.L A0,A1
     MOVEA.L -8(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  -56(A5),D1
@@ -297,7 +297,7 @@ _ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     MOVE.L  D0,-60(A5)
     MOVEA.L A0,A1
     MOVEA.L -8(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  -56(A5),D1
@@ -356,7 +356,7 @@ _ESQIFF_DrawWeatherStatusOverlayIntoBrush:
     EXT.W   D0
     EXT.L   D0
     MOVEA.L A0,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     LEA     36(A3),A0

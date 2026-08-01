@@ -145,7 +145,7 @@ _TEXTDISP_DrawHighlightFrame:
     MOVE.W  D0,-14(A5)
     MOVEA.L -4(A5),A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVE.W  #1,_TEXTDISP_LinePenOverrideEnabledFlag

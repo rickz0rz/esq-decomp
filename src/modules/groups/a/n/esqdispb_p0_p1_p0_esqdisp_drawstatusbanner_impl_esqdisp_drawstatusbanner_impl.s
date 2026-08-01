@@ -17,7 +17,7 @@ _ESQDISP_DrawStatusBanner:
 ; CALLS:
 ;   _ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange, _ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex, _ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup, _ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList, _ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState, _ESQIFF_JMPTBL_MATH_Mulu32, _ESQDISP_PropagatePrimaryTitleMetadataToSecondary, _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _ESQ_STR_B, _ESQ_STR_E, _ESQDISP_StatusBannerClampGateFlag, _ESQDISP_LastPrimaryCountdownValue, _ESQDISP_SecondaryPersistArmGateFlag, _ESQDISP_SecondaryPropagationDoneFlag, _WDISP_StatusDayEntry0, _WDISP_StatusDayEntry1, _WDISP_StatusDayEntry2, _WDISP_StatusDayEntry3, _CLOCK_DaySlotIndex, _CLOCK_CacheMonthIndex0, _CLOCK_CacheDayIndex0, _CLOCK_CacheYear, _DST_PrimaryCountdown, _WDISP_BannerSlotCursor, _CLOCK_HalfHourSlotIndex, _CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
+;   _Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _ESQ_STR_B, _ESQ_STR_E, _ESQDISP_StatusBannerClampGateFlag, _ESQDISP_LastPrimaryCountdownValue, _ESQDISP_SecondaryPersistArmGateFlag, _ESQDISP_SecondaryPropagationDoneFlag, _WDISP_StatusDayEntry0, _WDISP_StatusDayEntry1, _WDISP_StatusDayEntry2, _WDISP_StatusDayEntry3, _CLOCK_DaySlotIndex, _CLOCK_CacheMonthIndex0, _CLOCK_CacheDayIndex0, _CLOCK_CacheYear, _DST_PrimaryCountdown, _WDISP_BannerSlotCursor, _CLOCK_HalfHourSlotIndex, _CLOCK_CurrentDayOfYear, lab_0942, lab_0943, lab_0944
 ; WRITES:
 ;   _BANNER_ResetPendingFlag, _ESQDISP_SecondaryPersistRequestFlag, _ESQDISP_LastPrimaryCountdownValue, _ESQDISP_SecondaryPersistArmGateFlag, _ESQDISP_SecondaryPropagationDoneFlag, _TLIBA1_StatusBannerPropagateGuard, _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, _CLOCK_HalfHourSlotIndex
 ; DESC:
@@ -34,7 +34,7 @@ _ESQDISP_DrawStatusBanner_Impl:
     MOVEQ   #0,D5
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     PEA     _CLOCK_DaySlotIndex

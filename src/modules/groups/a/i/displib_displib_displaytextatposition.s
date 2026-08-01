@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _LVOMove, _LVOText
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY
+;   _Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -38,7 +38,7 @@ _DISPLIB_DisplayTextAtPosition:
     MOVEA.L A3,A1   ; RastPort
     MOVE.L  D7,D0   ; X (short)
     MOVE.L  D6,D1   ; Y (short)
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVEA.L A2,A0

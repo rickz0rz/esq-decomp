@@ -14,7 +14,7 @@
 ; CALLS:
 ;   _TLIBA3_DrawCenteredWrappedTextLines, _TLIBA3_DrawViewModeGuides, _MATH_Mulu32, _WDISP_SPrintf, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast
 ; READS:
-;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, _TLIBA1_FMT_VIEWMODE_PCT_LD, _TLIBA3_VmArrayRuntimeTable
+;   _Global_HANDLE_PREVUEC_FONT, _Global_REF_GRAPHICS_LIBRARY, _TLIBA1_FMT_VIEWMODE_PCT_LD, _TLIBA3_VmArrayRuntimeTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -44,7 +44,7 @@ _TLIBA3_DrawViewModeOverlay:
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     MOVE.L  D7,D0

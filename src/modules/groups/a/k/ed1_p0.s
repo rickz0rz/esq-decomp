@@ -80,7 +80,7 @@ _ED1_EnterEscMenu:
     MOVE.B  D0,_ED_SavedDiagGraphModeChar
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEA.L _Global_HANDLE_H26F_FONT,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     LEA     _Global_REF_696_400_BITMAP,A0
@@ -89,7 +89,7 @@ _ED1_EnterEscMenu:
     MOVEQ   #3,D0
     MOVE.L  #696,D1
     MOVE.L  #509,D2
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
@@ -180,7 +180,7 @@ _ED1_EnterEscMenu:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #3,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
@@ -213,7 +213,7 @@ _ED1_EnterEscMenu:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1

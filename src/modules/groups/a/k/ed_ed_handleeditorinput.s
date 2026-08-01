@@ -488,7 +488,7 @@ _ED_HandleEditorInput:
 .case_toggle_line_page_mode:
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
@@ -519,7 +519,7 @@ _ED_HandleEditorInput:
     LEA     16(A7),A7
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetBPen(A6)
 
     BRA.W   .finalize_update

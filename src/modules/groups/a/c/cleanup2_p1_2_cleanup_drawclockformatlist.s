@@ -15,7 +15,7 @@
 ;   _GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds, _LVOSetAPen, _LVORectFill, _GROUP_AG_JMPTBL_MATH_Mulu32, _BEVEL_DrawBevelFrameWithTopRight,
 ;   _CLEANUP_FormatClockFormatEntry, _LVOTextLength, _LVOMove, _LVOText
 ; READS:
-;   _NEWGRID_ColumnStartXPx, _NEWGRID_ColumnWidthPx, _NEWGRID_MainRastPortPtr, Global_REF_GRAPHICS_LIBRARY
+;   _NEWGRID_ColumnStartXPx, _NEWGRID_ColumnWidthPx, _NEWGRID_MainRastPortPtr, _Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   Stack text buffer at -89(A5)
 ; DESC:
@@ -39,7 +39,7 @@ _CLEANUP_DrawClockFormatList:
 
     MOVEA.L _NEWGRID_MainRastPortPtr,A1
     MOVEQ   #7,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
@@ -141,7 +141,7 @@ _CLEANUP_DrawClockFormatList:
     MOVE.L  D1,20(A7)
     MOVE.L  A1,D0
     MOVEA.L _NEWGRID_MainRastPortPtr,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  24(A7),D1
@@ -263,7 +263,7 @@ _CLEANUP_DrawClockFormatList:
     MOVE.L  D1,48(A7)
     MOVE.L  A1,D0
     MOVEA.L _NEWGRID_MainRastPortPtr,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  52(A7),D1

@@ -26,7 +26,7 @@ _ED_DrawHelpPanels:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1

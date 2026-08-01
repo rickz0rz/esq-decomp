@@ -35,7 +35,7 @@ _ED_RedrawAllRows:
     MOVE.B  D0,D1
     MOVE.L  D1,D0
     MOVEA.L _Global_REF_RASTPORT_1,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  _ED_TextLimit,D0
@@ -117,7 +117,7 @@ _ED_RedrawRow:
 .row_done:
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1

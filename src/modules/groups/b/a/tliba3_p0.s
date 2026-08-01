@@ -19,7 +19,7 @@
 ; CALLS:
 ;   _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition, _LVOSetAPen, _LVOSetBPen, _LVOSetDrMd, _LVOTextLength
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, LAB_181F
+;   _Global_REF_GRAPHICS_LIBRARY, LAB_181F
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -44,7 +44,7 @@ _TLIBA3_DrawCenteredWrappedTextLines:
     MOVEA.L A3,A1
 
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEA.L A3,A1
@@ -78,7 +78,7 @@ _TLIBA3_DrawCenteredWrappedTextLines:
 
     MOVEA.L A3,A1
     MOVEA.L A2,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D5,D1
@@ -141,7 +141,7 @@ _TLIBA3_DrawCenteredWrappedTextLines:
     EXT.W   D0
     EXT.L   D0
     MOVEA.L A3,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.B  -17(A5),D0

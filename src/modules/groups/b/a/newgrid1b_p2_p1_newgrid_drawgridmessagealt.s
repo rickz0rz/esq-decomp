@@ -61,7 +61,7 @@ _NEWGRID_DrawGridMessageAlt:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVE.L  _GCOMMAND_PpvMessageTextPen,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     60(A3),A0
@@ -85,7 +85,7 @@ _NEWGRID_DrawGridMessageAlt:
     MOVEA.L A0,A1
     MOVE.L  D7,D0
     MOVEA.L _GCOMMAND_PPVPeriodTemplatePtr,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.W  _NEWGRID_ColumnWidthPx,D1
@@ -110,7 +110,7 @@ _NEWGRID_DrawGridMessageAlt:
     MOVE.L  A0,12(A7)
     MOVE.L  D7,D0
     MOVEA.L _GCOMMAND_PPVPeriodTemplatePtr,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  20(A7),D1

@@ -138,7 +138,7 @@ _ED_HandleEditAttributesMenu:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #4,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     PEA     _ED2_STR_NUMBER_TOO_BIG
@@ -150,7 +150,7 @@ _ED_HandleEditAttributesMenu:
     LEA     16(A7),A7
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     BRA.W   .return
@@ -161,7 +161,7 @@ _ED_HandleEditAttributesMenu:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #4,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     PEA     _ED2_STR_NUMBER_TOO_SMALL
@@ -173,7 +173,7 @@ _ED_HandleEditAttributesMenu:
     LEA     16(A7),A7
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     BRA.W   .return
@@ -201,7 +201,7 @@ _ED_HandleEditAttributesMenu:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
@@ -229,7 +229,7 @@ _ED_HandleEditAttributesMenu:
     LEA     52(A7),A7
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     BRA.S   .return

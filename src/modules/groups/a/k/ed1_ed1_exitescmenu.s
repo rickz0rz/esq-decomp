@@ -33,7 +33,7 @@ _ED1_ExitEscMenu:
     MOVEQ   #3,D0
     MOVE.L  #696,D1
     MOVE.L  #400,D2
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1          ; rastport

@@ -17,7 +17,7 @@
 ;   _WDISP_BannerRowScratchRasterTable0, _WDISP_DisplayContextPlanePointer0, _WDISP_BannerWorkRasterPtr, _Global_HANDLE_PREVUE_FONT,
 ;   _Global_HANDLE_TOPAZ_FONT, _Global_HANDLE_H26F_FONT, _Global_HANDLE_PREVUEC_FONT,
 ;   _Global_REF_UTILITY_LIBRARY, _Global_REF_DISKFONT_LIBRARY,
-;   _Global_REF_DOS_LIBRARY, _Global_REF_INTUITION_LIBRARY, Global_REF_GRAPHICS_LIBRARY,
+;   _Global_REF_DOS_LIBRARY, _Global_REF_INTUITION_LIBRARY, _Global_REF_GRAPHICS_LIBRARY,
 ;   _Global_STR_CLEANUP_C_6, _Global_STR_CLEANUP_C_7, _Global_STR_CLEANUP_C_8,
 ;   _Global_STR_CLEANUP_C_9, _Global_STR_CLEANUP_C_10, _Global_STR_CLEANUP_C_11,
 ;   _Global_STR_CLEANUP_C_12
@@ -149,7 +149,7 @@ _CLEANUP_ReleaseDisplayResources:
     BEQ.S   .closeTopazFont
 
     MOVEA.L _Global_HANDLE_PREVUE_FONT,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOCloseFont(A6)
 
 .closeTopazFont:
@@ -157,7 +157,7 @@ _CLEANUP_ReleaseDisplayResources:
     BEQ.S   .closeH26fFont
 
     MOVEA.L _Global_HANDLE_TOPAZ_FONT,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOCloseFont(A6)
 
 .closeH26fFont:
@@ -165,7 +165,7 @@ _CLEANUP_ReleaseDisplayResources:
     BEQ.S   .closePrevueCFont
 
     MOVEA.L _Global_HANDLE_H26F_FONT,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOCloseFont(A6)
 
 .closePrevueCFont:
@@ -173,7 +173,7 @@ _CLEANUP_ReleaseDisplayResources:
     BEQ.S   .closeUtilityLibrary
 
     MOVEA.L _Global_HANDLE_PREVUEC_FONT,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOCloseFont(A6)
 
 .closeUtilityLibrary:
@@ -195,7 +195,7 @@ _CLEANUP_ReleaseDisplayResources:
     MOVEA.L _Global_REF_INTUITION_LIBRARY,A1
     JSR     _LVOCloseLibrary(A6)
 
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A1
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A1
     JSR     _LVOCloseLibrary(A6)
 
     MOVE.L  (A7)+,D7

@@ -20,7 +20,7 @@
 ; CALLS:
 ;   _MEMORY_AllocateMemory, _MEMORY_DeallocateMemory, _SCRIPT_DrawInsetTextWithFrame, _STR_FindCharPtr, _LVOMove, _LVOText
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _Global_STR_TLIBA1_C_1, _Global_STR_TLIBA1_C_2, MEMF_CLEAR, MEMF_PUBLIC, if_eq_1768, if_ne_1763, return_176B
+;   _Global_REF_GRAPHICS_LIBRARY, _Global_STR_TLIBA1_C_1, _Global_STR_TLIBA1_C_2, MEMF_CLEAR, MEMF_PUBLIC, if_eq_1768, if_ne_1763, return_176B
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -85,7 +85,7 @@ _TLIBA1_DrawTextWithInsetSegments:
     MOVEA.L A3,A1
     MOVE.L  D7,D0
     MOVE.L  D6,D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     TST.L   -8(A5)
@@ -133,7 +133,7 @@ _TLIBA1_DrawTextWithInsetSegments:
     MOVEA.L A3,A1
     MOVE.L  A0,D0
     MOVEA.L -4(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .if_eq_1767:
@@ -174,7 +174,7 @@ _TLIBA1_DrawTextWithInsetSegments:
     MOVEA.L A3,A1
     MOVE.L  A0,D0
     MOVEA.L -12(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .if_eq_176A:

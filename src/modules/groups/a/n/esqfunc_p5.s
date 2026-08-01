@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _LVOTextLength
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _WDISP_CharClassTable
+;   _Global_REF_GRAPHICS_LIBRARY, _WDISP_CharClassTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -44,7 +44,7 @@ _ESQFUNC_TrimTextToPixelWidthWordBoundary:
     MOVEA.L A3,A1
     MOVEA.L A2,A0
     MOVE.L  D6,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     CMP.L   D7,D0

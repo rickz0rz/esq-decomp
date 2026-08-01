@@ -21,7 +21,7 @@
 ; CALLS:
 ;   _LVOAllocRaster
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY
+;   _Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -37,7 +37,7 @@ GRAPHICS_AllocRaster:
 
     MOVE.L  D7,D0       ; Width
     MOVE.L  D6,D1       ; Height
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOAllocRaster(A6)
 
     MOVEM.L (A7)+,D6-D7
@@ -58,7 +58,7 @@ GRAPHICS_AllocRaster:
 ; CALLS:
 ;   _LVOFreeRaster
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY
+;   _Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -77,7 +77,7 @@ GRAPHICS_FreeRaster:
     MOVEA.L A3,A0
     MOVE.L  D7,D0
     MOVE.L  D6,D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOFreeRaster(A6)
 
     MOVEM.L (A7)+,D6-D7/A3

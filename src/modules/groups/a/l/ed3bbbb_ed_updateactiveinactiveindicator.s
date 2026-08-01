@@ -50,7 +50,7 @@ _ED_UpdateActiveInactiveIndicator:
 .draw_indicator:
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #2,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  D7,D0
@@ -90,7 +90,7 @@ _ED_UpdateActiveInactiveIndicator:
 .after_indicator_update:
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1

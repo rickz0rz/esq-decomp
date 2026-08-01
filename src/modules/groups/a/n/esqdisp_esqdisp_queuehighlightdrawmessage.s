@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode, _LVOInitRastPort, _LVOPutMsg, _LVOSetDrMd, _LVOSetFont
 ; READS:
-;   AbsExecBase, _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort
+;   AbsExecBase, _Global_HANDLE_PREVUEC_FONT, _Global_REF_GRAPHICS_LIBRARY, _ESQ_HighlightMsgPort, _ESQ_HighlightReplyPort
 ; WRITES:
 ;   highlight message header/rastport fields at A3, message flags via A3+112 target
 ; DESC:
@@ -46,14 +46,14 @@ _ESQDISP_QueueHighlightDrawMessage:
     ADDQ.W  #8,A7
     LEA     60(A3),A0
     MOVEA.L A0,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
     MOVE.L  A2,64(A3)
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     LEA     60(A3),A0

@@ -166,7 +166,7 @@ _NEWGRID_DrawGridCellText:
 
     MOVEA.L A3,A1
     MOVE.L  _GCOMMAND_NicheTextPen,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     BRA.S   .pen_set
@@ -174,7 +174,7 @@ _NEWGRID_DrawGridCellText:
 .use_alt_pen:
     MOVEA.L A3,A1
     MOVEQ   #3,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
 .pen_set:
@@ -221,7 +221,7 @@ _NEWGRID_DrawGridCellText:
     MOVEA.L A3,A1
     MOVEA.L A2,A0
     MOVE.L  D6,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     TST.L   D0
@@ -297,7 +297,7 @@ _NEWGRID_DrawGridCellText:
     MOVEA.L A3,A1
     MOVE.L  D6,D0
     MOVEA.L 16(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     TST.L   D0

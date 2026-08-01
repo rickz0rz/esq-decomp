@@ -82,7 +82,7 @@ _NEWGRID_DrawEmptyGridMessage:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVEQ   #3,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     60(A3),A0
@@ -110,7 +110,7 @@ _NEWGRID_DrawEmptyGridMessage:
     MOVE.L  A0,20(A7)
     MOVEA.L A2,A0
     MOVE.L  A6,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  28(A7),D1

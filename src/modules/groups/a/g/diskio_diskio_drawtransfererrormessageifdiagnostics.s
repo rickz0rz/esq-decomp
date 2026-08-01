@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _DISPLIB_DisplayTextAtPosition, _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _CTASKS_TerminationReasonPtrTable, _ED_DiagnosticsScreenActive
+;   _Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _CTASKS_TerminationReasonPtrTable, _ED_DiagnosticsScreenActive
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -28,7 +28,7 @@ _DISKIO_DrawTransferErrorMessageIfDiagnostics:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #4,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.L  D7,D0
@@ -46,7 +46,7 @@ _DISKIO_DrawTransferErrorMessageIfDiagnostics:
     LEA     16(A7),A7
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
 .return:

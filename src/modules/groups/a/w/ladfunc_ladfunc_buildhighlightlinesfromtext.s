@@ -148,7 +148,7 @@ _LADFUNC_BuildHighlightLinesFromText:
     MOVEA.L _Global_REF_RASTPORT_1,A1
     LEA     -7(A5),A0
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     SUB.L   D0,D7

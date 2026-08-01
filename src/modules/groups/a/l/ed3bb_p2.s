@@ -28,7 +28,7 @@ _ED_DrawAreYouSurePrompt:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
@@ -44,7 +44,7 @@ _ED_DrawAreYouSurePrompt:
     LEA     20(A7),A7
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     RTS

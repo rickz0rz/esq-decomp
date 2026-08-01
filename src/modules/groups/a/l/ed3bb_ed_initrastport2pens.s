@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _LVOSetDrMd, _LVOSetAPen, _LVOSetBPen
 ; READS:
-;   _WDISP_DisplayContextBase, _ED_Rastport2PenModeSelector, Global_REF_GRAPHICS_LIBRARY
+;   _WDISP_DisplayContextBase, _ED_Rastport2PenModeSelector, _Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -28,7 +28,7 @@ _ED_InitRastport2Pens:
     MOVE.L  A0,-4(A5)
     MOVEA.L A0,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEA.L -4(A5),A1

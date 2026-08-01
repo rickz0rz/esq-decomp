@@ -39,7 +39,7 @@ _DISPTEXT_MeasureCurrentLineLength:
     MOVE.W  (A1),D0
     MOVEA.L A3,A1
     MOVEA.L (A0),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVEA.L (A7)+,A3

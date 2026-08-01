@@ -14,8 +14,8 @@
 ;   _LVOSizeWindow, _LVORemakeDisplay, _LVOFreeMem,
 ;   _GROUP_MAIN_B_JMPTBL_MATH_Mulu32, _GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString, _GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode
 ; READS:
-;   _Global_REF_INTUITION_LIBRARY, Global_REF_GRAPHICS_LIBRARY, Global_STR_TOPAZ_FONT,
-;   ESQIFF_SecondaryLineHeadPtr_HiWord, ESQ_TopazGuardRastPortAnchor,
+;   _Global_REF_INTUITION_LIBRARY, _Global_REF_GRAPHICS_LIBRARY, _Global_STR_TOPAZ_FONT,
+;   _ESQIFF_SecondaryLineHeadPtr_HiWord, _ESQ_TopazGuardRastPortAnchor,
 ;   _Global_STR_PLEASE_STANDBY_1, _Global_STR_ATTENTION_SYSTEM_ENGINEER_1,
 ;   _Global_STR_REPORT_CODE_ER003
 ; WRITES:
@@ -60,17 +60,17 @@ _ESQ_CheckTopazFontGuard:
 
     ADDQ.W  #4,A7
 
-    ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
+    ; Trampoline to _ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
     ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
     ; Set the primary pen to 2
     MOVEA.L A0,A1
     MOVEQ   #2,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
-    ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
+    ; Trampoline to _ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
     ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
@@ -83,7 +83,7 @@ _ESQ_CheckTopazFontGuard:
     NOT.B   D3
     JSR     _LVORectFill(A6)
 
-    ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
+    ; Trampoline to _ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
     ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
@@ -92,7 +92,7 @@ _ESQ_CheckTopazFontGuard:
     MOVEQ   #1,D0
     JSR     _LVOSetAPen(A6)
 
-    ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
+    ; Trampoline to _ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
     ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
@@ -102,7 +102,7 @@ _ESQ_CheckTopazFontGuard:
     MOVEQ   #100,D1
     JSR     _LVOMove(A6)
 
-    ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
+    ; Trampoline to _ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
     ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
@@ -113,7 +113,7 @@ _ESQ_CheckTopazFontGuard:
     ; -1 to remove null padding
     JSR     _LVOText(A6)
 
-    ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
+    ; Trampoline to _ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
     ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
@@ -123,7 +123,7 @@ _ESQ_CheckTopazFontGuard:
     MOVEQ   #113,D1
     JSR     _LVOMove(A6)
 
-    ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
+    ; Trampoline to _ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
     ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
@@ -133,7 +133,7 @@ _ESQ_CheckTopazFontGuard:
     MOVEQ   #26,D0
     JSR     _LVOText(A6)
 
-    ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
+    ; Trampoline to _ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
     ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
 
@@ -143,7 +143,7 @@ _ESQ_CheckTopazFontGuard:
     MOVEQ   #126,D1
     JSR     _LVOMove(A6)
 
-    ; Trampoline to ESQ_TopazGuardRastPortAnchor in A0
+    ; Trampoline to _ESQ_TopazGuardRastPortAnchor in A0
     MOVEA.L .strTopazFont1(A5),A0
     ADDA.W  #Offset_TopazGuardRastPortAnchor_FromTopazFont,A0
     ; Draw "Report Code ER003 to TV Guide Technical Services." text

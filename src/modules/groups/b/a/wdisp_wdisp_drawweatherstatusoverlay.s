@@ -39,7 +39,7 @@
 ; CALLS:
 ;   _MATH_DivS32, _MATH_Mulu32, _MEMORY_DeallocateMemory, _ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString, _WDISP_JMPTBL_BRUSH_FindBrushByPredicate, _WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, _WDISP_JMPTBL_BRUSH_SelectBrushSlot, _WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOSetFont, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   AbsExecBase, _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, _Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE, _Global_STR_WDISP_C, _WDISP_WeatherStatusTextPtr, _WDISP_WeatherStatusOverlayTextPtr, _ESQFUNC_PwBrushListHead, _ESQFUNC_STR_I5, _ESQFUNC_WeatherBrushPredicateNames, _P_TYPE_WeatherCurrentMsgPtr, _WDISP_WeatherStatusCountdown, _WDISP_PaletteTriplesRBase, _WDISP_WeatherStatusBrushIndex, _WDISP_WeatherStatusDigitChar, _WDISP_AccumulatorRowTable
+;   AbsExecBase, _Global_HANDLE_PREVUEC_FONT, _Global_REF_GRAPHICS_LIBRARY, _Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE, _Global_STR_WDISP_C, _WDISP_WeatherStatusTextPtr, _WDISP_WeatherStatusOverlayTextPtr, _ESQFUNC_PwBrushListHead, _ESQFUNC_STR_I5, _ESQFUNC_WeatherBrushPredicateNames, _P_TYPE_WeatherCurrentMsgPtr, _WDISP_WeatherStatusCountdown, _WDISP_PaletteTriplesRBase, _WDISP_WeatherStatusBrushIndex, _WDISP_WeatherStatusDigitChar, _WDISP_AccumulatorRowTable
 ; WRITES:
 ;   _WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
 ; DESC:
@@ -167,7 +167,7 @@ _WDISP_DrawWeatherStatusOverlay:
 .overlay_clamp_line_count:
     MOVEA.L A3,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
     MOVEA.L A3,A1
@@ -316,7 +316,7 @@ _WDISP_DrawWeatherStatusOverlay:
 
     MOVEA.L A3,A1
     MOVE.L  -204(A5),D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D7,D1
@@ -398,7 +398,7 @@ _WDISP_DrawWeatherStatusOverlay:
     MOVE.L  D1,-200(A5)
     MOVEA.L A3,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L A3,A1
@@ -449,7 +449,7 @@ _WDISP_DrawWeatherStatusOverlay:
     MOVE.L  D0,-204(A5)
     MOVEA.L A3,A1
     MOVEA.L -12(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  -200(A5),D1
@@ -499,7 +499,7 @@ _WDISP_DrawWeatherStatusOverlay:
     MOVE.L  D0,-204(A5)
     MOVEA.L A3,A1
     MOVEA.L -12(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  -200(A5),D1
@@ -575,7 +575,7 @@ _WDISP_DrawWeatherStatusOverlay:
     MOVE.L  A0,-204(A5)
     MOVEA.L A3,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L A3,A1

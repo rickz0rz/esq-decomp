@@ -37,7 +37,7 @@ _ED_DrawAdEditingScreen:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
@@ -70,7 +70,7 @@ _ED_DrawAdEditingScreen:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #8,D0
@@ -108,7 +108,7 @@ _ED_DrawAdEditingScreen:
     LEA     76(A7),A7
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1

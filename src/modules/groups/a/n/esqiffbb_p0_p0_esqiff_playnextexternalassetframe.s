@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode, _ESQIFF_JMPTBL_BRUSH_PopBrushHead, _ESQIFF_JMPTBL_ESQ_NoOp, _ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode, _ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled, _ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner, _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight, _ESQDISP_ProcessGridMessagesIfIdle, _ESQIFF_RestoreBasePaletteTriples, _ESQIFF_RunCopperRiseTransition, _ESQIFF_RunCopperDropTransition, _ESQIFF_SetApenToBrightestPaletteIndex, _ESQIFF_ShowExternalAssetWithCopperFx, _ESQIFF_ServiceExternalAssetSourceState, _LVOForbid, _LVOPermit, _LVOSetAPen, _LVOSetDrMd, _LVOSetRast
 ; READS:
-;   AbsExecBase, Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_2, _TEXTDISP_DeferredActionCountdown, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryGroupEntryCount, _WDISP_AccumulatorCaptureActive, _ESQIFF_ExternalAssetStateTable, _ESQIFF_ExternalAssetPathCommaFlag
+;   AbsExecBase, _Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_2, _TEXTDISP_DeferredActionCountdown, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, _TEXTDISP_PrimaryGroupEntryCount, _WDISP_AccumulatorCaptureActive, _ESQIFF_ExternalAssetStateTable, _ESQIFF_ExternalAssetPathCommaFlag
 ; WRITES:
 ;   _ESQIFF_GAdsBrushListCount, _ESQIFF_LogoBrushListCount, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _WDISP_DisplayContextBase, _WDISP_AccumulatorCaptureActive, _TEXTDISP_CurrentMatchIndex
 ; DESC:
@@ -76,7 +76,7 @@ _ESQIFF_PlayNextExternalAssetFrame:
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #2,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
     JSR     _ESQDISP_ProcessGridMessagesIfIdle(PC)
@@ -127,7 +127,7 @@ _ESQIFF_PlayNextExternalAssetFrame:
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     BSR.W   _ESQIFF_SetApenToBrightestPaletteIndex
@@ -142,7 +142,7 @@ _ESQIFF_PlayNextExternalAssetFrame:
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
 .pop_rendered_asset_head:
@@ -150,7 +150,7 @@ _ESQIFF_PlayNextExternalAssetFrame:
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L AbsExecBase,A6

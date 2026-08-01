@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _TLIBA3_InitRuntimeEntry
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, c300, c304
+;   _Global_REF_GRAPHICS_LIBRARY, c300, c304
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -24,7 +24,7 @@
 _TLIBA3_InitRuntimeEntries:
     MOVE.L  D7,-(A7)
 
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A0
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A0
     MOVE.W  206(A0),D0
     MOVE.L  D0,D7
     ANDI.W  #2,D7

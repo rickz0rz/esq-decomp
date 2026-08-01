@@ -130,7 +130,7 @@ _NEWGRID_DrawShowtimesPrompt:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVEQ   #6,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
@@ -172,7 +172,7 @@ _NEWGRID_DrawShowtimesPrompt:
     LEA     60(A3),A0
     MOVEA.L A0,A1
     MOVEQ   #3,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     60(A3),A0
@@ -201,7 +201,7 @@ _NEWGRID_DrawShowtimesPrompt:
     MOVE.L  A0,96(A7)
     MOVEA.L A6,A0
     MOVE.L  96(A7),D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  88(A7),D1
@@ -250,7 +250,7 @@ _NEWGRID_DrawShowtimesPrompt:
     MOVEA.L A0,A1
     MOVE.L  A6,D0
     LEA     -136(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
     MOVEQ   #17,D0

@@ -54,3 +54,5 @@ data/cleanup.s                                                  c/data_cleanup.c
 data/clock.s                                                    c/data_clock.c
 data/common.s                                                   c/data_common.c
 data/esqiff.s                                                   c/data_esqiff.c
+data/esq.s                                                             c/data_esq.c
+data/esq_p1.s                                                          c/data_esq_p1.c

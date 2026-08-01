@@ -141,7 +141,7 @@ _PARSEINI_HandleFontCommand:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEA.L _Global_HANDLE_H26F_FONT,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     BRA.W   .return
@@ -160,7 +160,7 @@ _PARSEINI_HandleFontCommand:
 
     MOVEA.L A0,A1
     MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
@@ -195,7 +195,7 @@ _PARSEINI_HandleFontCommand:
     ADDA.L  D0,A0
     LEA     60(A0),A1
     MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     ADDQ.L  #1,D6

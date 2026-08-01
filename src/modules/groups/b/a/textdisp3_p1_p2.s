@@ -66,7 +66,7 @@ _TEXTDISP_DrawChannelBanner:
 
     MOVEA.L _Global_REF_RASTPORT_2,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     BRA.S   .init_rect
@@ -76,7 +76,7 @@ _TEXTDISP_DrawChannelBanner:
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
 .init_rect:
@@ -114,7 +114,7 @@ _TEXTDISP_DrawChannelBanner:
 
     MOVEA.L _Global_REF_RASTPORT_2,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     BRA.S   .return
@@ -124,7 +124,7 @@ _TEXTDISP_DrawChannelBanner:
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
 .return:

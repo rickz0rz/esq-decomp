@@ -67,7 +67,7 @@ _ESQSHARED4_InitializeBannerCopperSystem:
 ; READS:
 ;   _ESQPARS2_BannerSnapshotPlane0DstPtr, ESQPARS2_BannerRowOffsetResetPtrPlane0, ESQPARS2_BannerColorThreshold, _ESQPARS2_BannerColorBaseValue, _ESQSHARED_BannerRowScratchRasterBase0, _ESQSHARED_BannerRowScratchRasterBase1, _ESQSHARED_BannerRowScratchRasterBase2
 ; WRITES:
-;   ESQ_BannerPlane0SnapshotScratchPtrHiWord, ESQ_BannerPlane0SnapshotScratchPtrLoWord, ESQ_BannerPlane1SnapshotScratchPtrHiWord, ESQ_BannerPlane1SnapshotScratchPtrLoWord, ESQ_BannerPlane2SnapshotScratchPtrHiWord, ESQ_BannerPlane2SnapshotScratchPtrLoWord, ESQ_BannerSnapshotPlane0DstPtrHiWord, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerSnapshotPlane1DstPtrHiWord, ESQ_BannerSnapshotPlane1DstPtrLoWord, ESQ_BannerSnapshotPlane2DstPtrHiWord, ESQ_BannerSnapshotPlane2DstPtrLoWord, ESQ_BannerPlane0DstPtrReset_HiWord, ESQ_BannerPlane0DstPtrReset_LoWord, ESQ_BannerPlane1DstPtrReset_HiWord, ESQ_BannerPlane1DstPtrReset_LoWord, ESQ_BannerPlane2DstPtrReset_HiWord, ESQ_BannerPlane2DstPtrReset_LoWord, ESQ_BannerPlane0ScratchPtrAlt_HiWord, ESQ_BannerPlane0ScratchPtrAlt_LoWord, ESQ_BannerPlane1ScratchPtrAlt_HiWord, ESQ_BannerPlane1ScratchPtrAlt_LoWord, ESQ_BannerPlane2ScratchPtrAlt_HiWord, ESQ_BannerPlane2ScratchPtrAlt_LoWord, ESQ_BannerSweepSrcPlane0Ptr_HiWord, ESQ_BannerSweepSrcPlane0Ptr_LoWord, ESQ_BannerSweepSrcPlane1Ptr_HiWord, ESQ_BannerSweepSrcPlane1Ptr_LoWord, ESQ_BannerSweepSrcPlane2Ptr_HiWord, ESQ_BannerSweepSrcPlane2Ptr_LoWord, ESQ_BannerSweepSrcPlane0PtrReset_HiWord, ESQ_BannerSweepSrcPlane0PtrReset_LoWord, ESQ_BannerSweepSrcPlane1PtrReset_HiWord, ESQ_BannerSweepSrcPlane1PtrReset_LoWord, ESQ_BannerSweepSrcPlane2PtrReset_HiWord, ESQ_BannerSweepSrcPlane2PtrReset_LoWord, ESQPARS2_BannerRowOffsetResetPtrPlane1, ESQPARS2_BannerRowOffsetResetPtrPlane2Table
+;   _ESQ_BannerPlane0SnapshotScratchPtrHiWord, _ESQ_BannerPlane0SnapshotScratchPtrLoWord, _ESQ_BannerPlane1SnapshotScratchPtrHiWord, _ESQ_BannerPlane1SnapshotScratchPtrLoWord, _ESQ_BannerPlane2SnapshotScratchPtrHiWord, _ESQ_BannerPlane2SnapshotScratchPtrLoWord, _ESQ_BannerSnapshotPlane0DstPtrHiWord, _ESQ_BannerSnapshotPlane0DstPtrLoWord, _ESQ_BannerSnapshotPlane1DstPtrHiWord, _ESQ_BannerSnapshotPlane1DstPtrLoWord, _ESQ_BannerSnapshotPlane2DstPtrHiWord, _ESQ_BannerSnapshotPlane2DstPtrLoWord, _ESQ_BannerPlane0DstPtrReset_HiWord, _ESQ_BannerPlane0DstPtrReset_LoWord, _ESQ_BannerPlane1DstPtrReset_HiWord, _ESQ_BannerPlane1DstPtrReset_LoWord, _ESQ_BannerPlane2DstPtrReset_HiWord, _ESQ_BannerPlane2DstPtrReset_LoWord, _ESQ_BannerPlane0ScratchPtrAlt_HiWord, _ESQ_BannerPlane0ScratchPtrAlt_LoWord, _ESQ_BannerPlane1ScratchPtrAlt_HiWord, _ESQ_BannerPlane1ScratchPtrAlt_LoWord, _ESQ_BannerPlane2ScratchPtrAlt_HiWord, _ESQ_BannerPlane2ScratchPtrAlt_LoWord, _ESQ_BannerSweepSrcPlane0Ptr_HiWord, _ESQ_BannerSweepSrcPlane0Ptr_LoWord, _ESQ_BannerSweepSrcPlane1Ptr_HiWord, _ESQ_BannerSweepSrcPlane1Ptr_LoWord, _ESQ_BannerSweepSrcPlane2Ptr_HiWord, _ESQ_BannerSweepSrcPlane2Ptr_LoWord, _ESQ_BannerSweepSrcPlane0PtrReset_HiWord, _ESQ_BannerSweepSrcPlane0PtrReset_LoWord, _ESQ_BannerSweepSrcPlane1PtrReset_HiWord, _ESQ_BannerSweepSrcPlane1PtrReset_LoWord, _ESQ_BannerSweepSrcPlane2PtrReset_HiWord, _ESQ_BannerSweepSrcPlane2PtrReset_LoWord, ESQPARS2_BannerRowOffsetResetPtrPlane1, ESQPARS2_BannerRowOffsetResetPtrPlane2Table
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -80,15 +80,15 @@ ESQSHARED4_SetupBannerPlanePointerWords:
     MOVEA.L (A3),A2
     LEA     2992(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_BannerPlane0SnapshotScratchPtrLoWord
+    MOVE.W  D0,_ESQ_BannerPlane0SnapshotScratchPtrLoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_BannerPlane0SnapshotScratchPtrHiWord
+    MOVE.W  D0,_ESQ_BannerPlane0SnapshotScratchPtrHiWord
     MOVEA.L (A3),A2
     LEA     3080(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_BannerPlane0ScratchPtrAlt_LoWord
+    MOVE.W  D0,_ESQ_BannerPlane0ScratchPtrAlt_LoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_BannerPlane0ScratchPtrAlt_HiWord
+    MOVE.W  D0,_ESQ_BannerPlane0ScratchPtrAlt_HiWord
     LEA     ESQPARS2_BannerRowOffsetResetPtrPlane0,A4
     LEA     _ESQPARS2_BannerSnapshotPlane0DstPtr,A1
     MOVEA.L (A3),A2
@@ -96,81 +96,81 @@ ESQSHARED4_SetupBannerPlanePointerWords:
     MOVE.L  A2,(A1)+
     MOVE.L  A2,(A4)+
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_BannerSnapshotPlane0DstPtrLoWord
-    MOVE.W  D0,ESQ_BannerPlane0DstPtrReset_LoWord
+    MOVE.W  D0,_ESQ_BannerSnapshotPlane0DstPtrLoWord
+    MOVE.W  D0,_ESQ_BannerPlane0DstPtrReset_LoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_BannerSnapshotPlane0DstPtrHiWord
-    MOVE.W  D0,ESQ_BannerPlane0DstPtrReset_HiWord
+    MOVE.W  D0,_ESQ_BannerSnapshotPlane0DstPtrHiWord
+    MOVE.W  D0,_ESQ_BannerPlane0DstPtrReset_HiWord
     MOVEA.L (A3),A2
     LEA     6072(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_BannerSweepSrcPlane0Ptr_LoWord
-    MOVE.W  D0,ESQ_BannerSweepSrcPlane0PtrReset_LoWord
+    MOVE.W  D0,_ESQ_BannerSweepSrcPlane0Ptr_LoWord
+    MOVE.W  D0,_ESQ_BannerSweepSrcPlane0PtrReset_LoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_BannerSweepSrcPlane0Ptr_HiWord
-    MOVE.W  D0,ESQ_BannerSweepSrcPlane0PtrReset_HiWord
+    MOVE.W  D0,_ESQ_BannerSweepSrcPlane0Ptr_HiWord
+    MOVE.W  D0,_ESQ_BannerSweepSrcPlane0PtrReset_HiWord
     LEA     _ESQSHARED_BannerRowScratchRasterBase1,A3
     MOVEA.L (A3),A2
     LEA     2992(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_BannerPlane1SnapshotScratchPtrLoWord
+    MOVE.W  D0,_ESQ_BannerPlane1SnapshotScratchPtrLoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_BannerPlane1SnapshotScratchPtrHiWord
+    MOVE.W  D0,_ESQ_BannerPlane1SnapshotScratchPtrHiWord
     MOVEA.L (A3),A2
     LEA     3080(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_BannerPlane1ScratchPtrAlt_LoWord
+    MOVE.W  D0,_ESQ_BannerPlane1ScratchPtrAlt_LoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_BannerPlane1ScratchPtrAlt_HiWord
+    MOVE.W  D0,_ESQ_BannerPlane1ScratchPtrAlt_HiWord
     MOVEA.L (A3),A2
     LEA     GCOMMAND_BannerRowByteOffsetResetValueDefault(A2),A2
     MOVE.L  A2,(A1)+
     MOVE.L  A2,ESQPARS2_BannerRowOffsetResetPtrPlane1
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_BannerSnapshotPlane1DstPtrLoWord
-    MOVE.W  D0,ESQ_BannerPlane1DstPtrReset_LoWord
+    MOVE.W  D0,_ESQ_BannerSnapshotPlane1DstPtrLoWord
+    MOVE.W  D0,_ESQ_BannerPlane1DstPtrReset_LoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_BannerSnapshotPlane1DstPtrHiWord
-    MOVE.W  D0,ESQ_BannerPlane1DstPtrReset_HiWord
+    MOVE.W  D0,_ESQ_BannerSnapshotPlane1DstPtrHiWord
+    MOVE.W  D0,_ESQ_BannerPlane1DstPtrReset_HiWord
     MOVEA.L (A3),A2
     LEA     6072(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_BannerSweepSrcPlane1Ptr_LoWord
-    MOVE.W  D0,ESQ_BannerSweepSrcPlane1PtrReset_LoWord
+    MOVE.W  D0,_ESQ_BannerSweepSrcPlane1Ptr_LoWord
+    MOVE.W  D0,_ESQ_BannerSweepSrcPlane1PtrReset_LoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_BannerSweepSrcPlane1Ptr_HiWord
-    MOVE.W  D0,ESQ_BannerSweepSrcPlane1PtrReset_HiWord
+    MOVE.W  D0,_ESQ_BannerSweepSrcPlane1Ptr_HiWord
+    MOVE.W  D0,_ESQ_BannerSweepSrcPlane1PtrReset_HiWord
     LEA     _ESQSHARED_BannerRowScratchRasterBase2,A3
     MOVEA.L (A3),A2
     LEA     2992(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_BannerPlane2SnapshotScratchPtrLoWord
+    MOVE.W  D0,_ESQ_BannerPlane2SnapshotScratchPtrLoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_BannerPlane2SnapshotScratchPtrHiWord
+    MOVE.W  D0,_ESQ_BannerPlane2SnapshotScratchPtrHiWord
     MOVEA.L (A3),A2
     LEA     3080(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_BannerPlane2ScratchPtrAlt_LoWord
+    MOVE.W  D0,_ESQ_BannerPlane2ScratchPtrAlt_LoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_BannerPlane2ScratchPtrAlt_HiWord
+    MOVE.W  D0,_ESQ_BannerPlane2ScratchPtrAlt_HiWord
     MOVEA.L (A3),A2
     LEA     GCOMMAND_BannerRowByteOffsetResetValueDefault(A2),A2
     MOVE.L  A2,(A1)
     MOVE.L  A2,ESQPARS2_BannerRowOffsetResetPtrPlane2Table
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_BannerSnapshotPlane2DstPtrLoWord
-    MOVE.W  D0,ESQ_BannerPlane2DstPtrReset_LoWord
+    MOVE.W  D0,_ESQ_BannerSnapshotPlane2DstPtrLoWord
+    MOVE.W  D0,_ESQ_BannerPlane2DstPtrReset_LoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_BannerSnapshotPlane2DstPtrHiWord
-    MOVE.W  D0,ESQ_BannerPlane2DstPtrReset_HiWord
+    MOVE.W  D0,_ESQ_BannerSnapshotPlane2DstPtrHiWord
+    MOVE.W  D0,_ESQ_BannerPlane2DstPtrReset_HiWord
     MOVEA.L (A3),A2
     LEA     6072(A2),A2
     MOVE.L  A2,D0
-    MOVE.W  D0,ESQ_BannerSweepSrcPlane2Ptr_LoWord
-    MOVE.W  D0,ESQ_BannerSweepSrcPlane2PtrReset_LoWord
+    MOVE.W  D0,_ESQ_BannerSweepSrcPlane2Ptr_LoWord
+    MOVE.W  D0,_ESQ_BannerSweepSrcPlane2PtrReset_LoWord
     SWAP    D0
-    MOVE.W  D0,ESQ_BannerSweepSrcPlane2Ptr_HiWord
-    MOVE.W  D0,ESQ_BannerSweepSrcPlane2PtrReset_HiWord
+    MOVE.W  D0,_ESQ_BannerSweepSrcPlane2Ptr_HiWord
+    MOVE.W  D0,_ESQ_BannerSweepSrcPlane2PtrReset_HiWord
     MOVE.W  ESQPARS2_BannerColorThreshold,D0
     BSR.W   _ESQSHARED4_SetBannerColorBaseAndLimit
 

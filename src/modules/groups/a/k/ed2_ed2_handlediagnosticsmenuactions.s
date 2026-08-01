@@ -22,7 +22,7 @@
 ; READS:
 ;   _Global_REF_RASTPORT_1, _ED_DiagTextModeChar, _ED2_TAG_NRLS, _ED2_STR_NYYLLZ, _ED2_TAG_NYLRS, _ED2_STR_SILENCE, _ED2_STR_LEFT, _ED2_STR_RIGHT, _ED2_STR_BACKGROUND, _ED2_STR_EXT_DOT_VIDEO_ONLY, _ED2_STR_COMPUTER_ONLY, _ED2_STR_OVERLAY_EXT_DOT_VIDEO, _ED2_STR_NEGATIVE_VIDEO, _ED2_STR_VIDEO_SWITCH, _ED2_STR_OPEN, _ED2_STR_CLOSED, _ED2_STR_START_TAPE_VIDEO, _ED2_STR_STOP, _ED_DiagScrollSpeedChar, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _ED_DiagAvailMemMask, _ED_DiagnosticsViewMode, _ED_StateRingIndex, _ED_StateRingTable, case_adjust_1bc4, case_adjust_1dd6, case_adjust_1dd7, case_assert_ctrl_line, case_clear_error_counters, case_copper_all_off, case_copper_all_on, case_copper_default, case_copper_on_highlight, case_cycle_1dcd_digit, case_deassert_ctrl_line, case_default_help, case_increment_226a, case_refresh_rastport_1, case_set_1df1_bit0, case_set_1df1_bit1, case_set_1df1_bit2, case_show_ciab_bit5, case_toggle_1df0_low3, case_toggle_226a, case_transition_0, case_transition_1, case_transition_2, case_transition_3, return
 ; WRITES:
-;   _DATACErrs, _Global_WORD_MAX_VALUE, _ED_DiagTextModeChar, _ED_DiagScrollSpeedChar, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _ED_DiagAvailMemMask, ED_DiagAvailMemPresetBits, _ED_BlockOffset, _ED_LastKeyCode, _ED_TextLimit, _ED_DiagnosticsScreenActive, _ED_DiagnosticsViewMode, _CTRL_HDeltaMax, _ESQIFF_ParseAttemptCount, _ESQIFF_LineErrorCount, _SCRIPT_CtrlCmdCount, _SCRIPT_CtrlCmdChecksumErrorCount, _SCRIPT_CtrlCmdLengthErrorCount
+;   _DATACErrs, _Global_WORD_MAX_VALUE, _ED_DiagTextModeChar, _ED_DiagScrollSpeedChar, _ED_DiagGraphModeChar, _ED_DiagVinModeChar, _ED_DiagAvailMemMask, _ED_DiagAvailMemPresetBits, _ED_BlockOffset, _ED_LastKeyCode, _ED_TextLimit, _ED_DiagnosticsScreenActive, _ED_DiagnosticsViewMode, _CTRL_HDeltaMax, _ESQIFF_ParseAttemptCount, _ESQIFF_LineErrorCount, _SCRIPT_CtrlCmdCount, _SCRIPT_CtrlCmdChecksumErrorCount, _SCRIPT_CtrlCmdLengthErrorCount
 ; DESC:
 ;   Handles diagnostic/special menu selections, toggling flags, counters, and
 ;   invoking test patterns or copper effects.
@@ -128,13 +128,13 @@ _ED2_HandleDiagnosticsMenuActions:
 .case_set_1df1_bit0:
     MOVEQ   #-8,D0
     AND.L   D0,_ED_DiagAvailMemMask
-    BSET    #0,ED_DiagAvailMemPresetBits
+    BSET    #0,_ED_DiagAvailMemPresetBits
     BRA.W   .return
 
 .case_set_1df1_bit1:
     MOVEQ   #-8,D0
     AND.L   D0,_ED_DiagAvailMemMask
-    BSET    #1,ED_DiagAvailMemPresetBits
+    BSET    #1,_ED_DiagAvailMemPresetBits
     BRA.W   .return
 
 .case_refresh_rastport_1:
@@ -147,7 +147,7 @@ _ED2_HandleDiagnosticsMenuActions:
 .case_set_1df1_bit2:
     MOVEQ   #-8,D0
     AND.L   D0,_ED_DiagAvailMemMask
-    BSET    #2,ED_DiagAvailMemPresetBits
+    BSET    #2,_ED_DiagAvailMemPresetBits
     BRA.W   .return
 
 .case_clear_error_counters:

@@ -27,7 +27,7 @@
 ; CALLS:
 ;   _ESQ_NoOp
 ; READS:
-;   ESQSHARED4_ApplyBannerColorStep, _ESQ_CopperListBannerA, ESQ_BannerSweepWaitRowA, ESQ_BannerSweepWaitStartProgramA, ESQ_BannerSweepWaitEndProgramA, _ESQ_CopperListBannerB, ESQ_BannerSweepWaitRowB, ESQ_BannerSweepWaitStartProgramB, ESQ_BannerSweepWaitEndProgramB, ESQPARS2_BannerColorThreshold, _ESQPARS2_BannerColorBaseValue, f6, ff, lab_0CA9, lab_0CAA, lab_0CAB
+;   ESQSHARED4_ApplyBannerColorStep, _ESQ_CopperListBannerA, _ESQ_BannerSweepWaitRowA, _ESQ_BannerSweepWaitStartProgramA, _ESQ_BannerSweepWaitEndProgramA, _ESQ_CopperListBannerB, _ESQ_BannerSweepWaitRowB, _ESQ_BannerSweepWaitStartProgramB, _ESQ_BannerSweepWaitEndProgramB, ESQPARS2_BannerColorThreshold, _ESQPARS2_BannerColorBaseValue, f6, ff, lab_0CA9, lab_0CAA, lab_0CAB
 ; WRITES:
 ;   _ESQPARS2_BannerSweepEntryGuardCounter, _ESQPARS2_BannerColorStepCounter, ESQPARS2_BannerColorThreshold
 ; DESC:
@@ -39,20 +39,20 @@ ESQSHARED4_SetBannerCopperColorAndThreshold:
     MOVE.B  D0,(A4)
     LEA     _ESQ_CopperListBannerB,A4
     MOVE.B  D0,(A4)
-    LEA     ESQ_BannerSweepWaitRowA,A4
+    LEA     _ESQ_BannerSweepWaitRowA,A4
     ADDI.B  #$1,D0
     MOVE.B  D0,(A4)
-    LEA     ESQ_BannerSweepWaitRowB,A4
+    LEA     _ESQ_BannerSweepWaitRowB,A4
     MOVE.B  D0,(A4)
     ADDI.B  #$11,D0
-    LEA     ESQ_BannerSweepWaitStartProgramA,A4
+    LEA     _ESQ_BannerSweepWaitStartProgramA,A4
     MOVE.B  D0,(A4)
-    LEA     ESQ_BannerSweepWaitStartProgramB,A4
+    LEA     _ESQ_BannerSweepWaitStartProgramB,A4
     MOVE.B  D0,(A4)
     ADDQ.W  #1,D0
-    LEA     ESQ_BannerSweepWaitEndProgramA,A4
+    LEA     _ESQ_BannerSweepWaitEndProgramA,A4
     MOVE.B  D0,(A4)
-    LEA     ESQ_BannerSweepWaitEndProgramB,A4
+    LEA     _ESQ_BannerSweepWaitEndProgramB,A4
     MOVE.B  D0,(A4)
     ANDI.W  #$ff,D0
     MOVE.W  D0,ESQPARS2_BannerColorThreshold
@@ -127,7 +127,7 @@ _ESQSHARED4_ResetBannerColorToStart:
 ; CALLS:
 ;   _ESQ_NoOp, _ESQSHARED4_BindAndClearBannerWorkRaster, ESQSHARED4_SetBannerCopperColorAndThreshold
 ; READS:
-;   _ESQ_CopperListBannerA, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerPlane0DstPtrReset_LoWord, ESQ_BannerSweepSrcPlane0Ptr_LoWord, ESQ_BannerSweepSrcPlane0PtrReset_LoWord, ESQPARS2_BannerColorThreshold, _ESQPARS2_BannerColorBaseValue, f6, lab_0CAE, lab_0CAF, lab_0CB0
+;   _ESQ_CopperListBannerA, _ESQ_BannerSnapshotPlane0DstPtrLoWord, _ESQ_BannerPlane0DstPtrReset_LoWord, _ESQ_BannerSweepSrcPlane0Ptr_LoWord, _ESQ_BannerSweepSrcPlane0PtrReset_LoWord, ESQPARS2_BannerColorThreshold, _ESQPARS2_BannerColorBaseValue, f6, lab_0CAE, lab_0CAF, lab_0CB0
 ; WRITES:
 ;   _ESQ_BannerColorClampValueA, _ESQ_BannerColorClampValueB, ESQPARS2_BannerSweepDelayCounter, _ESQPARS2_BannerColorStepCounter, ESQPARS2_BannerColorClampThreshold
 ; DESC:
@@ -197,8 +197,8 @@ ESQSHARED4_ApplyBannerColorStep:
 ;!======
 
     MOVEM.L D0-D1/A2,-(A7)
-    MOVE.W  ESQ_BannerPlane0DstPtrReset_LoWord,D0
-    MOVE.W  ESQ_BannerSnapshotPlane0DstPtrLoWord,D1
+    MOVE.W  _ESQ_BannerPlane0DstPtrReset_LoWord,D0
+    MOVE.W  _ESQ_BannerSnapshotPlane0DstPtrLoWord,D1
     CMP.W   D0,D1
     BEQ.S   .lab_0CB1
 
@@ -211,8 +211,8 @@ ESQSHARED4_ApplyBannerColorStep:
     MOVE.W  #$8a,ESQPARS2_BannerColorClampThreshold
 
 .lab_0CB2:
-    MOVE.W  ESQ_BannerSweepSrcPlane0PtrReset_LoWord,D0
-    MOVE.W  ESQ_BannerSweepSrcPlane0Ptr_LoWord,D1
+    MOVE.W  _ESQ_BannerSweepSrcPlane0PtrReset_LoWord,D0
+    MOVE.W  _ESQ_BannerSweepSrcPlane0Ptr_LoWord,D1
     CMP.W   D0,D1
     BEQ.S   .lab_0CB3
 

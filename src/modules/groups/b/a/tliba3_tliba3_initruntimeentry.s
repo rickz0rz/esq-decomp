@@ -18,7 +18,7 @@
 ; CALLS:
 ;   _MATH_Mulu32, _LVOInitBitMap
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, LAB_1854, _WDISP_DisplayContextPlanePointer0, _TLIBA3_VmArrayRuntimeTable
+;   _Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, LAB_1854, _WDISP_DisplayContextPlanePointer0, _TLIBA3_VmArrayRuntimeTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -78,7 +78,7 @@ _TLIBA3_InitRuntimeEntry:
     MOVEQ   #0,D2
     MOVE.W  D4,D2
     MOVEA.L A1,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
     CLR.L   -4(A5)

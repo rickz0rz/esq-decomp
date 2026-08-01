@@ -55,7 +55,7 @@ _DISPTEXT_LayoutAndAppendToBuffer:
     MOVEA.L A3,A1
     MOVEA.L 28(A7),A0
     MOVEA.L (A0),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  _DISPTEXT_LineWidthPx,D1
@@ -89,7 +89,7 @@ _DISPTEXT_LayoutAndAppendToBuffer:
     MOVEA.L A3,A1
     LEA     _DISPTEXT_STR_SINGLE_SPACE_PREFIX_2,A0
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D6

@@ -35,7 +35,7 @@
 ;   _Global_PTR_STR_BUILD_ID, _Global_LONG_BUILD_NUMBER, _Global_LONG_PATCH_VERSION_NUMBER
 ; WRITES:
 ;   _ESQ_SelectCodeBuffer, _Global_WORD_SELECT_CODE_IS_RAVESC,
-;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_DISKFONT_LIBRARY, _Global_REF_DOS_LIBRARY,
+;   _Global_REF_GRAPHICS_LIBRARY, _Global_REF_DISKFONT_LIBRARY, _Global_REF_DOS_LIBRARY,
 ;   _Global_REF_INTUITION_LIBRARY, _Global_REF_UTILITY_LIBRARY, _Global_REF_BATTCLOCK_RESOURCE,
 ;   _Global_HANDLE_TOPAZ_FONT, _Global_HANDLE_PREVUEC_FONT, _Global_HANDLE_H26F_FONT,
 ;   _Global_HANDLE_PREVUE_FONT, _Global_REF_RASTPORT_1, _Global_REF_RASTPORT_2,
@@ -133,7 +133,7 @@ _ESQ_MainInitAndRun:
     LEA     _Global_STR_GRAPHICS_LIBRARY,A1
     JSR     _LVOOpenLibrary(A6)
 
-    MOVE.L  D0,Global_REF_GRAPHICS_LIBRARY
+    MOVE.L  D0,_Global_REF_GRAPHICS_LIBRARY
     TST.L   D0
     BNE.S   .loadDiskfontLibrary
 
@@ -185,7 +185,7 @@ _ESQ_MainInitAndRun:
     ADDQ.W  #4,A7
 
 .loadUtilityLibraryAndBattclockResource:
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A0
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A0
     MOVE.W  20(A0),D0   ; Read address 20 in the library struct for Graphics.Library which is the lib_Version
     MOVEQ   #37,D1      ; Compare it to 37 ...
     CMP.W   D1,D0       ; CMP.W -> subtract D1 from D0 and store CCR conditions
@@ -218,7 +218,7 @@ _ESQ_MainInitAndRun:
 
     ; Open the "topaz.font" file.
     LEA     _Global_STRUCT_TEXTATTR_TOPAZ_FONT,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOOpenFont(A6)
 
     MOVE.L  D0,_Global_HANDLE_TOPAZ_FONT
@@ -277,7 +277,7 @@ _ESQ_MainInitAndRun:
 
     MOVE.L  D0,_Global_REF_RASTPORT_1  ; D0 is the allocated memory, storing its reference in _Global_REF_RASTPORT_1
     MOVEA.L D0,A1                   ; Store the address of D0 into A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)    ; In the memory we have, initialize a RastPort struct
 
     MOVEA.L _Global_REF_RASTPORT_1,A0
@@ -285,7 +285,7 @@ _ESQ_MainInitAndRun:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     MOVEQ   #68,D0
@@ -314,7 +314,7 @@ _ESQ_MainInitAndRun:
 
     MOVE.L  D0,_Global_REF_RASTPORT_2
     MOVEA.L D0,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
     MOVEA.L _Global_REF_RASTPORT_2,A0
@@ -322,7 +322,7 @@ _ESQ_MainInitAndRun:
 
     MOVEA.L _Global_REF_RASTPORT_2,A1
     MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     MOVEQ   #0,D5
@@ -349,7 +349,7 @@ _ESQ_MainInitAndRun:
     MOVE.L  #352,D1         ; width: 352 into D1
     MOVEQ   #120,D2         ; height: 120 into D2
     ADD.L   D2,D2           ; ...becomes 240 into D2
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
     MOVEQ   #0,D5
@@ -384,7 +384,7 @@ _ESQ_MainInitAndRun:
     MOVEA.L (A0),A1         ; memBlock
     MOVE.L  #10560,D0       ; byte count
     MOVEQ   #0,D1           ; flags
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
@@ -481,7 +481,7 @@ _ESQ_MainInitAndRun:
     JSR     _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(PC)
 
     CLR.W   _WDISP_HighlightBufferMode
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A0
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A0
     MOVE.W  20(A0),D0
     MOVEQ   #34,D1
     CMP.W   D1,D0
@@ -658,7 +658,7 @@ _ESQ_MainInitAndRun:
     MOVEQ   #3,D0       ; 3 bitplanes
     MOVE.L  #696,D1     ; 696 w
     MOVE.L  #400,D2     ; 400 h
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
     LEA     _Global_REF_696_241_BITMAP,A0
@@ -699,7 +699,7 @@ _ESQ_MainInitAndRun:
     MOVEA.L (A0),A1
     MOVE.L  #$aef8,D0
     MOVEQ   #0,D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
@@ -763,7 +763,7 @@ _ESQ_MainInitAndRun:
     MOVEA.L (A0),A1
     MOVE.L  #$52d8,D0
     MOVEQ   #0,D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
@@ -791,7 +791,7 @@ _ESQ_MainInitAndRun:
     MOVEQ   #3,D0
     MOVE.L  #696,D1
     MOVEQ   #2,D2
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
     MOVEQ   #0,D5
@@ -827,7 +827,7 @@ _ESQ_MainInitAndRun:
     MOVEQ   #88,D0
     ADD.L   D0,D0
     MOVEQ   #0,D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOBltClear(A6)
 
     ADDQ.W  #1,D5
@@ -924,7 +924,7 @@ _ESQ_MainInitAndRun:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     ; Draw a rect from 0,0 to 695,399
@@ -940,7 +940,7 @@ _ESQ_MainInitAndRun:
     MOVEA.L _Global_REF_RASTPORT_1,A1
 
     MOVEQ   #7,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     ; Draw a rectangle from 0,0 to 120,120
@@ -956,7 +956,7 @@ _ESQ_MainInitAndRun:
 
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A1

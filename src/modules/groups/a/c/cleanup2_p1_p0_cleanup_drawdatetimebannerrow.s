@@ -13,7 +13,7 @@
 ;   _LVOSetAPen, _LVORectFill, _CLEANUP_DrawDateBannerSegment,
 ;   _CLEANUP_DrawBannerSpacerSegment, _CLEANUP_DrawTimeBannerSegment
 ; READS:
-;   _Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY, _Global_REF_696_400_BITMAP
+;   _Global_REF_RASTPORT_1, _Global_REF_GRAPHICS_LIBRARY, _Global_REF_696_400_BITMAP
 ; WRITES:
 ;   RastPort BitMap (temporary swap)
 ; DESC:
@@ -28,7 +28,7 @@ _CLEANUP_DrawDateTimeBannerRow:
     MOVE.L  #_Global_REF_696_400_BITMAP,4(A0)
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A0
@@ -41,7 +41,7 @@ _CLEANUP_DrawDateTimeBannerRow:
     MOVEQ   #34,D1
     MOVE.L  #695,D2
     MOVEQ   #67,D3
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVORectFill(A6)
 
     BSR.W   _CLEANUP_DrawDateBannerSegment

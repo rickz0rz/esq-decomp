@@ -16,7 +16,7 @@
 ; CALLS:
 ;   _LVOSetAPen
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_2, _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, _WDISP_PaletteTriplesGBase, _WDISP_PaletteTriplesBBase, _WDISP_PaletteDepthLog2
+;   _Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_2, _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase, _WDISP_PaletteTriplesGBase, _WDISP_PaletteTriplesBBase, _WDISP_PaletteDepthLog2
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -90,7 +90,7 @@ _ESQIFF_SetApenToBrightestPaletteIndex:
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVE.L  -14(A5),D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEM.L (A7)+,D2/D4-D7

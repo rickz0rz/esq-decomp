@@ -36,7 +36,7 @@
 ; CALLS:
 ;   _LVOAllocMem, _LVOCloseFont, _LVOForbid, _LVOFreeMem, _LVOOpenDiskFont, _LVOPermit
 ; READS:
-;   AbsExecBase, DesiredMemoryAvailability, _Global_HANDLE_TOPAZ_FONT, _Global_REF_DISKFONT_LIBRARY, Global_REF_GRAPHICS_LIBRARY
+;   AbsExecBase, DesiredMemoryAvailability, _Global_HANDLE_TOPAZ_FONT, _Global_REF_DISKFONT_LIBRARY, _Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -61,7 +61,7 @@ _PARSEINI_TestMemoryAndOpenTopazFont:
     BEQ.S   .testDesiredMemoryAvailability
 
     MOVEA.L A0,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOCloseFont(A6)
 
 .testDesiredMemoryAvailability:

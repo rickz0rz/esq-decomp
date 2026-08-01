@@ -24,7 +24,7 @@
 ; CALLS:
 ;   _BITMAP_ProcessIlbmImage, _ESQ_PackBitsDecode, _GROUP_AA_JMPTBL_STRING_CompareN, _GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster, _GROUP_AG_JMPTBL_MATH_DivS32, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit, _LVORead, _LVOSeek
 ; READS:
-;   AbsExecBase, _BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, Global_REF_DOS_LIBRARY_2, Global_REF_GRAPHICS_LIBRARY, _Global_STR_BRUSH_C_10, _Global_STR_BRUSH_C_11, _Global_STR_BRUSH_C_12, _Global_STR_BRUSH_C_13, _Global_STR_BRUSH_C_14, _Global_STR_BRUSH_C_15, _Global_STR_BRUSH_C_16, _BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
+;   AbsExecBase, _BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, Global_REF_DOS_LIBRARY_2, _Global_REF_GRAPHICS_LIBRARY, _Global_STR_BRUSH_C_10, _Global_STR_BRUSH_C_11, _Global_STR_BRUSH_C_12, _Global_STR_BRUSH_C_13, _Global_STR_BRUSH_C_14, _Global_STR_BRUSH_C_15, _Global_STR_BRUSH_C_16, _BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
 ; WRITES:
 ;   _BRUSH_PendingAlertCode, _BRUSH_SnapshotDepth, _BRUSH_SnapshotWidth
 ; DESC:
@@ -221,7 +221,7 @@ _BRUSH_LoadBrushAsset:
     MOVEQ   #0,D2
     MOVE.W  178(A0),D2
     MOVEA.L A1,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
     MOVEA.L -16(A5),A0
@@ -361,7 +361,7 @@ _BRUSH_LoadBrushAsset:
     BNE.W   .loadasset_cleanup_partial_alloc
 
     LEA     36(A0),A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
     MOVEA.L -16(A5),A0

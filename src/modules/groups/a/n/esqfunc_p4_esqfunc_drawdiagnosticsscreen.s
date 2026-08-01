@@ -16,7 +16,7 @@
 ;   _ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax
 ; READS:
 ;   _ESQFUNC_VideoInsertionStateStrings, _SCRIPT_CtrlHandshakeStage, _ESQFUNC_STR_CLOSED_ENABLED/1EB9, _ESQFUNC_TAG_CLOSED/1EBB, _ESQFUNC_STR_CLOSED_ON_AIR/1EBD,
-;   _Global_HANDLE_TOPAZ_FONT, Global_REF_GRAPHICS_LIBRARY, _WDISP_DisplayContextBase
+;   _Global_HANDLE_TOPAZ_FONT, _Global_REF_GRAPHICS_LIBRARY, _WDISP_DisplayContextBase
 ; WRITES:
 ;   _ESQ_CopperStatusDigitsA/1E27/1E28/1E29/1E2A, _ESQ_CopperStatusDigitsB/1E56/1E57 (status fields),
 ;   _ESQ_CopperStatusDigitsA/1E27/1E28/1E29/1E2A (cleared/initialized), stack buffers
@@ -55,7 +55,7 @@ _ESQFUNC_DrawDiagnosticsScreen:
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEA.L _Global_HANDLE_TOPAZ_FONT,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     JSR     _ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask(PC)
@@ -371,7 +371,7 @@ _ESQFUNC_DrawDiagnosticsScreen:
     ADDA.W  #(Offset_RastPort2_FromDisplayContextBase+2),A0
     MOVEA.L A0,A1
     MOVEA.L _Global_HANDLE_PREVUEC_FONT,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     MOVEM.L -188(A5),D2-D7

@@ -1,4 +1,4 @@
-    XDEF    Global_REF_GRAPHICS_LIBRARY
+    XDEF    _Global_REF_GRAPHICS_LIBRARY
     XDEF    _Global_REF_INTUITION_LIBRARY
     XDEF    _Global_REF_UTILITY_LIBRARY
     XDEF    _Global_REF_BATTCLOCK_RESOURCE
@@ -53,7 +53,7 @@
     XDEF    _ESQDISP_StatusIndicatorDeferredApplyFlag
     XDEF    _CLEANUP_DiagOverlayAutoRefreshFlag
     XDEF    _ED_DiagAvailMemMask
-    XDEF    ED_DiagAvailMemPresetBits
+    XDEF    _ED_DiagAvailMemPresetBits
     XDEF    _ESQDISP_GridMessagePumpBlockFlag
     XDEF    _SCRIPT_StatusRefreshHoldFlag
     XDEF    _TEXTDISP_TickSuspendFlag
@@ -114,92 +114,46 @@
     XDEF    _ESQ_BannerWorkRasterPtrA_HiWord
     XDEF    _ESQ_BannerWorkRasterPtrA_LoWord
     XDEF    _ESQ_BannerPaletteWordsA
-    XDEF    ESQ_BannerSweepWaitRowA
-    XDEF    ESQ_BannerPlane0SnapshotScratchPtrHiWord
-    XDEF    ESQ_BannerPlane0SnapshotScratchPtrLoWord
-    XDEF    ESQ_BannerPlane1SnapshotScratchPtrHiWord
-    XDEF    ESQ_BannerPlane1SnapshotScratchPtrLoWord
-    XDEF    ESQ_BannerPlane2SnapshotScratchPtrHiWord
-    XDEF    ESQ_BannerPlane2SnapshotScratchPtrLoWord
+    XDEF    _ESQ_BannerSweepWaitRowA
+    XDEF    _ESQ_BannerPlane0SnapshotScratchPtrHiWord
+    XDEF    _ESQ_BannerPlane0SnapshotScratchPtrLoWord
+    XDEF    _ESQ_BannerPlane1SnapshotScratchPtrHiWord
+    XDEF    _ESQ_BannerPlane1SnapshotScratchPtrLoWord
+    XDEF    _ESQ_BannerPlane2SnapshotScratchPtrHiWord
+    XDEF    _ESQ_BannerPlane2SnapshotScratchPtrLoWord
     XDEF    _ESQ_BannerColorSweepProgramA
-    XDEF    ESQ_BannerSweepWaitStartProgramA
+    XDEF    _ESQ_BannerSweepWaitStartProgramA
     XDEF    _ESQ_BannerWorkRasterPtrMirrorA_HiWord
     XDEF    _ESQ_BannerWorkRasterPtrMirrorA_LoWord
-    XDEF    ESQ_BannerSweepWaitEndProgramA
-    XDEF    ESQ_BannerSnapshotPlane0DstPtrHiWord
-    XDEF    ESQ_BannerSnapshotPlane0DstPtrLoWord
-    XDEF    ESQ_BannerSnapshotPlane1DstPtrHiWord
-    XDEF    ESQ_BannerSnapshotPlane1DstPtrLoWord
-    XDEF    ESQ_BannerSnapshotPlane2DstPtrHiWord
-    XDEF    ESQ_BannerSnapshotPlane2DstPtrLoWord
+    XDEF    _ESQ_BannerSweepWaitEndProgramA
+    XDEF    _ESQ_BannerSnapshotPlane0DstPtrHiWord
+    XDEF    _ESQ_BannerSnapshotPlane0DstPtrLoWord
+    XDEF    _ESQ_BannerSnapshotPlane1DstPtrHiWord
+    XDEF    _ESQ_BannerSnapshotPlane1DstPtrLoWord
+    XDEF    _ESQ_BannerSnapshotPlane2DstPtrHiWord
+    XDEF    _ESQ_BannerSnapshotPlane2DstPtrLoWord
     XDEF    _ESQ_CopperEffectJumpTargetA_HiWord
     XDEF    _ESQ_CopperEffectJumpTargetA_LoWord
     XDEF    _ESQ_BannerColorSweepProgramA_AnchorColorWord
     XDEF    _ESQ_BannerColorSweepProgramA_TailColorWord
     XDEF    _ESQ_BannerColorClampValueA
     XDEF    _ESQ_BannerColorClampWaitRowA
-    XDEF    ESQ_BannerPlane0DstPtrReset_HiWord
-    XDEF    ESQ_BannerPlane0DstPtrReset_LoWord
-    XDEF    ESQ_BannerPlane1DstPtrReset_HiWord
-    XDEF    ESQ_BannerPlane1DstPtrReset_LoWord
-    XDEF    ESQ_BannerPlane2DstPtrReset_HiWord
-    XDEF    ESQ_BannerPlane2DstPtrReset_LoWord
+    XDEF    _ESQ_BannerPlane0DstPtrReset_HiWord
+    XDEF    _ESQ_BannerPlane0DstPtrReset_LoWord
+    XDEF    _ESQ_BannerPlane1DstPtrReset_HiWord
+    XDEF    _ESQ_BannerPlane1DstPtrReset_LoWord
+    XDEF    _ESQ_BannerPlane2DstPtrReset_HiWord
+    XDEF    _ESQ_BannerPlane2DstPtrReset_LoWord
     XDEF    _ESQ_CopperEffectSwitchWaitWordA
     XDEF    _ESQ_CopperBannerTailListA
     XDEF    _ESQ_BannerWorkRasterPtrTailA_HiWord
     XDEF    _ESQ_CopperBannerRasterPointerListA
-    XDEF    _ESQ_CopperEffectListB
-    XDEF    _ESQ_CopperEffectListA_PtrHiWord
-    XDEF    _ESQ_CopperEffectListA_PtrLoWord
-    XDEF    _ESQ_CopperEffectTemplateRowsSet1
-    XDEF    _ESQ_CopperStatusDigitsB
-    XDEF    _ESQ_CopperStatusDigitsB_ColorRegistersA
-    XDEF    _ESQ_CopperStatusDigitsB_TailColorWord
-    XDEF    _ESQ_CopperListBannerB
-    XDEF    _ESQ_BannerWorkRasterPtrB_HiWord
-    XDEF    _ESQ_BannerWorkRasterPtrB_LoWord
-    XDEF    _ESQ_BannerPaletteWordsB
-    XDEF    ESQ_BannerSweepWaitRowB
-    XDEF    ESQ_BannerPlane0ScratchPtrAlt_HiWord
-    XDEF    ESQ_BannerPlane0ScratchPtrAlt_LoWord
-    XDEF    ESQ_BannerPlane1ScratchPtrAlt_HiWord
-    XDEF    ESQ_BannerPlane1ScratchPtrAlt_LoWord
-    XDEF    ESQ_BannerPlane2ScratchPtrAlt_HiWord
-    XDEF    ESQ_BannerPlane2ScratchPtrAlt_LoWord
-    XDEF    _ESQ_BannerColorSweepProgramB
-    XDEF    ESQ_BannerSweepWaitStartProgramB
-    XDEF    _ESQ_BannerWorkRasterPtrMirrorB_HiWord
-    XDEF    _ESQ_BannerWorkRasterPtrMirrorB_LoWord
-    XDEF    ESQ_BannerSweepWaitEndProgramB
-    XDEF    ESQ_BannerSweepSrcPlane0Ptr_HiWord
-    XDEF    ESQ_BannerSweepSrcPlane0Ptr_LoWord
-    XDEF    ESQ_BannerSweepSrcPlane1Ptr_HiWord
-    XDEF    ESQ_BannerSweepSrcPlane1Ptr_LoWord
-    XDEF    ESQ_BannerSweepSrcPlane2Ptr_HiWord
-    XDEF    ESQ_BannerSweepSrcPlane2Ptr_LoWord
-    XDEF    _ESQ_CopperEffectJumpTargetB_HiWord
-    XDEF    _ESQ_CopperEffectJumpTargetB_LoWord
-    XDEF    _ESQ_BannerColorSweepProgramB_AnchorColorWord
-    XDEF    _ESQ_BannerColorSweepProgramB_TailColorWord
-    XDEF    _ESQ_BannerColorClampValueB
-    XDEF    _ESQ_BannerColorClampWaitRowB
-    XDEF    ESQ_BannerSweepSrcPlane0PtrReset_HiWord
-    XDEF    ESQ_BannerSweepSrcPlane0PtrReset_LoWord
-    XDEF    ESQ_BannerSweepSrcPlane1PtrReset_HiWord
-    XDEF    ESQ_BannerSweepSrcPlane1PtrReset_LoWord
-    XDEF    ESQ_BannerSweepSrcPlane2PtrReset_HiWord
-    XDEF    ESQ_BannerSweepSrcPlane2PtrReset_LoWord
-    XDEF    _ESQ_CopperEffectSwitchWaitWordB
-    XDEF    _ESQ_CopperBannerTailListB
-    XDEF    _ESQ_BannerWorkRasterPtrTailB_HiWord
-    XDEF    _ESQ_CopperBannerRasterPointerListB
-    XDEF    _Global_PTR_AUD1_DMA
     XDEF    _GfxBase
     XDEF    _IntuitionBase
 ; ========== ESQ.c ==========
 
 _GfxBase:
-Global_REF_GRAPHICS_LIBRARY:
+_Global_REF_GRAPHICS_LIBRARY:
     DC.L    0
 ; `_IntuitionBase` is the name the SAS/C intuition pragma qualifies its calls
 ; with, the same arrangement _GfxBase, _DOSBase and _DiskfontBase already use.
@@ -212,34 +166,34 @@ _Global_REF_UTILITY_LIBRARY:
 _Global_REF_BATTCLOCK_RESOURCE:
     DC.L    0
 
-Global_STR_PREVUEC_FONT:
+_Global_STR_PREVUEC_FONT:
     NStr    "PrevueC.font"          ; 14 bytes
 _Global_STRUCT_TEXTATTR_PREVUEC_FONT:
-    DC.L    Global_STR_PREVUEC_FONT
+    DC.L    _Global_STR_PREVUEC_FONT
     DC.W    25      ; Size 25 font
     DC.B    $40     ; Style
     DC.B    $20     ; Flags
 
-Global_STR_H26F_FONT:
+_Global_STR_H26F_FONT:
     NStr    "h26f.font"             ; 10 bytes
 _Global_STRUCT_TEXTATTR_H26F_FONT:
-    DC.L    Global_STR_H26F_FONT
+    DC.L    _Global_STR_H26F_FONT
     DC.W    26      ; Size 26 font
     DC.B    0       ; Style: 0
     DC.B    0       ; Flags: 0
 
-Global_STR_TOPAZ_FONT:
+_Global_STR_TOPAZ_FONT:
     NStr    "topaz.font"            ; 12 bytes
 _Global_STRUCT_TEXTATTR_TOPAZ_FONT:
-    DC.L    Global_STR_TOPAZ_FONT
+    DC.L    _Global_STR_TOPAZ_FONT
     DC.W    8      ; Size 8 font
     DC.B    0      ; Style: 0
     DC.B    1      ; Flags: 1
 
-Global_STR_PREVUE_FONT:
+_Global_STR_PREVUE_FONT:
     NStr    "Prevue.font"           ; 12 bytes
 _Global_STRUCT_TEXTATTR_PREVUE_FONT:
-    DC.L    Global_STR_PREVUE_FONT
+    DC.L    _Global_STR_PREVUE_FONT
     DC.W    13      ; Size 13 font
     DC.B    $40     ; Style
     DC.B    $20     ; Flags
@@ -326,8 +280,8 @@ _ESQ_SecondarySlotModeFlagChar:
 
 _ESQ_STR_Y:
     DC.B    "Y"
-    assert ESQ_STR_Y_Length==ESQ_ReservedFlagChar0-_ESQ_STR_Y,"ESQ_STR_Y_Length in data-lengths.s is out of sync with the data layout"
-ESQ_ReservedFlagChar0:
+    assert ESQ_STR_Y_Length==_ESQ_ReservedFlagChar0-_ESQ_STR_Y,"ESQ_STR_Y_Length in data-lengths.s is out of sync with the data layout"
+_ESQ_ReservedFlagChar0:
     DC.B    "N"
 _ESQ_AlertType4ModeFlagChar:
     DC.B    "N"
@@ -355,7 +309,7 @@ _ED_DiagVinModeChar:
 ;------------------------------------------------------------------------------
 _CLOCK_FormatVariantCode:
     DC.B    0
-ESQ_TopazGuardRastPortAnchor:
+_ESQ_TopazGuardRastPortAnchor:
     DC.W    0
 ;------------------------------------------------------------------------------
 ; SYM: _WDISP_WeatherStatusTextPtr   (weather/status text pointer)
@@ -429,7 +383,7 @@ _GCOMMAND_PresetFallbackValue2:
 _GCOMMAND_PresetFallbackValue3:
     ; First byte doubles as fallback value #3 for banner rebuild.
     DC.B    $0c
-GCOMMAND_PresetFallbackTemplateTable:
+_GCOMMAND_PresetFallbackTemplateTable:
     DC.L    $0c0c0000,$000c0c00,$05010201,$060a0505
     DC.L    $05000003,$00080007,$00070007,$07000c00
     DC.L    $0c000c00,$0c0c0c00,$0000000c
@@ -460,7 +414,7 @@ _Global_HANDLE_TOPAZ_FONT:
 ;------------------------------------------------------------------------------
 _ESQIFF_SecondaryLineHeadPtr:
     DC.W    0
-ESQIFF_SecondaryLineHeadPtr_HiWord:
+_ESQIFF_SecondaryLineHeadPtr_HiWord:
     DC.W    0
 ;------------------------------------------------------------------------------
 ; SYM: _ESQIFF_SecondaryLineTailPtr   (secondary line tail text pointer)
@@ -513,13 +467,13 @@ _ED_DiagAvailMemMask:
     DC.W    0
     DC.B    0
 ;------------------------------------------------------------------------------
-; SYM: ED_DiagAvailMemPresetBits   (diagnostics memory-view preset selector bits)
+; SYM: _ED_DiagAvailMemPresetBits   (diagnostics memory-view preset selector bits)
 ; TYPE: u8 (bitfield)
 ; PURPOSE: Stores menu-selected preset bits for diagnostics memory display mode.
 ; USED BY: ED2 diagnostics menu handlers
 ; NOTES: Bits 0..2 are set by dedicated menu cases.
 ;------------------------------------------------------------------------------
-ED_DiagAvailMemPresetBits:
+_ED_DiagAvailMemPresetBits:
     DC.B    0
 ;------------------------------------------------------------------------------
 ; SYM: _ESQDISP_GridMessagePumpBlockFlag/_SCRIPT_StatusRefreshHoldFlag/_TEXTDISP_TickSuspendFlag/_ESQPARS_PersistOnNextBoxOffFlag
@@ -620,10 +574,10 @@ _ESQ_TAG_GRANADA:
     NStr    "GRANADA"
 _Global_LONG_BUILD_NUMBER:
     DC.L    21
-Global_STR_BUILD_ID:
+_Global_STR_BUILD_ID:
     NStr    "JGT"   ; build id string
 _Global_PTR_STR_BUILD_ID:
-    DC.L    Global_STR_BUILD_ID
+    DC.L    _Global_STR_BUILD_ID
 ;------------------------------------------------------------------------------
 ; SYM: _ESQ_CopperEffectListA/_ESQ_CopperEffectListB   (paired copper effect lists)
 ; TYPE: u32[]/u32[]
@@ -711,20 +665,20 @@ _ESQ_BannerPaletteWordsA:
     DC.L    $00030182,$00030184,$03330186,$0cc00188
     DC.L    $0512018a,$016a018c,$0555018e
     DC.W    $0003
-ESQ_BannerSweepWaitRowA:
+_ESQ_BannerSweepWaitRowA:
     DC.L    $00dffffe
     DC.W    $00e0
-ESQ_BannerPlane0SnapshotScratchPtrHiWord:
+_ESQ_BannerPlane0SnapshotScratchPtrHiWord:
     DC.L    $000000e2
-ESQ_BannerPlane0SnapshotScratchPtrLoWord:
+_ESQ_BannerPlane0SnapshotScratchPtrLoWord:
     DC.L    $000000e4
-ESQ_BannerPlane1SnapshotScratchPtrHiWord:
+_ESQ_BannerPlane1SnapshotScratchPtrHiWord:
     DC.L    $000000e6
-ESQ_BannerPlane1SnapshotScratchPtrLoWord:
+_ESQ_BannerPlane1SnapshotScratchPtrLoWord:
     DC.L    $000000e8
-ESQ_BannerPlane2SnapshotScratchPtrHiWord:
+_ESQ_BannerPlane2SnapshotScratchPtrHiWord:
     DC.L    $000000ea
-ESQ_BannerPlane2SnapshotScratchPtrLoWord:
+_ESQ_BannerPlane2SnapshotScratchPtrLoWord:
     DC.L    $00000182
 ;------------------------------------------------------------------------------
 ; SYM: _ESQ_BannerColorSweepProgramA.._ESQ_CopperEffectSwitchWaitWordA   (banner copper color-sweep cluster A ??)
@@ -759,27 +713,27 @@ _ESQ_BannerColorSweepProgramA:
     DC.L    $000f80d5,$80fe0188,$0512018a,$016a018c
     DC.L    $0555018e
     DC.W    $0003
-ESQ_BannerSweepWaitStartProgramA:
+_ESQ_BannerSweepWaitStartProgramA:
     DC.L    $00d9fffe,$01009306,$01820003
     DC.W    $00e0
 _ESQ_BannerWorkRasterPtrMirrorA_HiWord:
     DC.L    $000000e2
 _ESQ_BannerWorkRasterPtrMirrorA_LoWord:
     DC.W    0
-ESQ_BannerSweepWaitEndProgramA:
+_ESQ_BannerSweepWaitEndProgramA:
     DC.L    $00dffffe
     DC.W    $00e0
-ESQ_BannerSnapshotPlane0DstPtrHiWord:
+_ESQ_BannerSnapshotPlane0DstPtrHiWord:
     DC.L    $000000e2
-ESQ_BannerSnapshotPlane0DstPtrLoWord:
+_ESQ_BannerSnapshotPlane0DstPtrLoWord:
     DC.L    $000000e4
-ESQ_BannerSnapshotPlane1DstPtrHiWord:
+_ESQ_BannerSnapshotPlane1DstPtrHiWord:
     DC.L    $000000e6
-ESQ_BannerSnapshotPlane1DstPtrLoWord:
+_ESQ_BannerSnapshotPlane1DstPtrLoWord:
     DC.L    $000000e8
-ESQ_BannerSnapshotPlane2DstPtrHiWord:
+_ESQ_BannerSnapshotPlane2DstPtrHiWord:
     DC.L    $000000ea
-ESQ_BannerSnapshotPlane2DstPtrLoWord:
+_ESQ_BannerSnapshotPlane2DstPtrLoWord:
     DC.L    $00000100,$b3060084
 _ESQ_CopperEffectJumpTargetA_HiWord:
     DC.L    $00000086
@@ -794,17 +748,17 @@ _ESQ_BannerColorClampValueA:
 _ESQ_BannerColorClampWaitRowA:
     DC.B    $d9
     DC.L    $fffe0180,$00f000e0
-ESQ_BannerPlane0DstPtrReset_HiWord:
+_ESQ_BannerPlane0DstPtrReset_HiWord:
     DC.L    $000000e2
-ESQ_BannerPlane0DstPtrReset_LoWord:
+_ESQ_BannerPlane0DstPtrReset_LoWord:
     DC.L    $000000e4
-ESQ_BannerPlane1DstPtrReset_HiWord:
+_ESQ_BannerPlane1DstPtrReset_HiWord:
     DC.L    $000000e6
-ESQ_BannerPlane1DstPtrReset_LoWord:
+_ESQ_BannerPlane1DstPtrReset_LoWord:
     DC.L    $000000e8
-ESQ_BannerPlane2DstPtrReset_HiWord:
+_ESQ_BannerPlane2DstPtrReset_HiWord:
     DC.L    $000000ea
-ESQ_BannerPlane2DstPtrReset_LoWord:
+_ESQ_BannerPlane2DstPtrReset_LoWord:
     DC.W    0
 _ESQ_CopperEffectSwitchWaitWordA:
     DC.L    $009c8010
@@ -1090,434 +1044,3 @@ _ESQ_CopperBannerRasterPointerListA:
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff
     DC.W    $fffe
-_ESQ_CopperEffectListB:
-    DC.L    $055bfffe,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$065bfffe,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $0100c306,$0100c306,$0100c306,$0100c306
-    DC.L    $03d9fffe
-    DC.W    $0080
-_ESQ_CopperEffectListA_PtrHiWord:
-    DC.L    $00000082
-_ESQ_CopperEffectListA_PtrLoWord:
-    DC.W    0
-;------------------------------------------------------------------------------
-; SYM: _ESQ_CopperEffectTemplateRowsSet1   (copper effect list A body template ??)
-; TYPE: u32[] + tail word
-; PURPOSE: Backing storage for effect-list A command payload words.
-; USED BY: ESQSHARED4 banner/copper setup and update paths
-; NOTES:
-;   Mirrors _ESQ_CopperEffectTemplateRowsSet0 for the alternate effect list.
-;------------------------------------------------------------------------------
-_ESQ_CopperEffectTemplateRowsSet1:
-    DS.L    19
-    DC.W    $0180
-;------------------------------------------------------------------------------
-; SYM: _ESQ_CopperStatusDigitsB   (copper status digit list B)
-; TYPE: u32[]
-; PURPOSE: Alternate status-digit copperlist template.
-; USED BY: APP2_*, ESQFUNC_*, ESQSHARED4_*
-; NOTES: Mirrors _ESQ_CopperStatusDigitsA structure with companion data set.
-;------------------------------------------------------------------------------
-_ESQ_CopperStatusDigitsB:
-    DC.L    $00030182
-_ESQ_CopperStatusDigitsB_ColorRegistersA:
-    DC.L    $0aaa0184,$03330186,$05550188,$0512018a
-    DC.L    $016a018c,$0cc0018e
-_ESQ_CopperStatusDigitsB_TailColorWord:
-    DC.W    $0003
-;------------------------------------------------------------------------------
-; SYM: _ESQ_CopperListBannerB   (banner copper list B)
-; TYPE: u32[]
-; PURPOSE: Copper command template for banner/digital overlay variant B.
-; USED BY: GCOMMAND3_*, APP2_*, ESQSHARED4_*
-; NOTES: Companion to _ESQ_CopperListBannerA.
-;------------------------------------------------------------------------------
-_ESQ_CopperListBannerB:
-    DC.L    $00d9fffe,$00920030,$009400d8,$008e1769
-    DC.L    $0090ffc5,$01080058,$010a0058,$01009306
-    DC.L    $01020000,$01820003
-    DC.W    $00e0
-;------------------------------------------------------------------------------
-; SYM: _ESQ_BannerWorkRasterPtrB_HiWord.._ESQ_BannerWorkRasterPtrTailB_HiWord   (banner copper color-sweep cluster B ??)
-; TYPE: u32/u16 mixed command templates
-; PURPOSE: Runtime-patched copper command words used by banner color sweep (B path).
-; USED BY: _ESQSHARED4_InitializeBannerCopperSystem, ESQSHARED4_ApplyBannerColorStep
-; NOTES:
-;   Companion set to cluster A above; many entries are structural mirrors.
-;   Retain anonymous per-entry labels until row/register mapping is fully traced.
-;------------------------------------------------------------------------------
-_ESQ_BannerWorkRasterPtrB_HiWord:
-    DC.L    $000000e2
-_ESQ_BannerWorkRasterPtrB_LoWord:
-    DC.L    $00000180
-_ESQ_BannerPaletteWordsB:
-    DC.L    $00030182,$00030184,$03330186,$0cc00188
-    DC.L    $0512018a,$016a018c,$0555018e
-    DC.W    $0003
-ESQ_BannerSweepWaitRowB:
-    DC.L    $00dffffe
-    DC.W    $00e0
-ESQ_BannerPlane0ScratchPtrAlt_HiWord:
-    DC.L    $000000e2
-ESQ_BannerPlane0ScratchPtrAlt_LoWord:
-    DC.L    $000000e4
-ESQ_BannerPlane1ScratchPtrAlt_HiWord:
-    DC.L    $000000e6
-ESQ_BannerPlane1ScratchPtrAlt_LoWord:
-    DC.L    $000000e8
-ESQ_BannerPlane2ScratchPtrAlt_HiWord:
-    DC.L    $000000ea
-ESQ_BannerPlane2ScratchPtrAlt_LoWord:
-    DC.L    $00000182
-_ESQ_BannerColorSweepProgramB:
-    DC.L    $0aaa018e,$03330100,$b30680d5,$80fe0188
-    DC.L    $0100018a,$0000018c,$0000018e,$000180d5
-    DC.L    $80fe0188,$0200018a,$0011018c,$0111018e
-    DC.L    $000280d5,$80fe0188,$0300018a,$0022018c
-    DC.L    $0222018e,$000380d5,$80fe0188,$0400018a
-    DC.L    $0033018c,$0333018e,$000480d5,$80fe0188
-    DC.L    $0500018a,$0044018c,$0444018e,$000580d5
-    DC.L    $80fe0188,$0600018a,$0055018c,$0555018e
-    DC.L    $000680d5,$80fe0188,$0700018a,$0066018c
-    DC.L    $0666018e,$000780d5,$80fe0188,$0800018a
-    DC.L    $0077018c,$0777018e,$000880d5,$80fe0188
-    DC.L    $0900018a,$0088018c,$0888018e,$000980d5
-    DC.L    $80fe0188,$0a00018a,$0099018c,$0999018e
-    DC.L    $000a00d5,$80fe0188,$0b00018a,$00aa018c
-    DC.L    $0aaa018e,$000b80d5,$80fe0188,$0c00018a
-    DC.L    $00bb018c,$0bbb018e,$000c80d5,$80fe0188
-    DC.L    $0d00018a,$00cc018c,$0ccc018e,$000d80d5
-    DC.L    $80fe0188,$0e00018a,$00dd018c,$0ddd018e
-    DC.L    $000e80d5,$80fe0188,$0f00018a,$00ee018c
-    DC.L    $0eee018e,$000f80d5,$80fe0188,$0512018a
-    DC.L    $016a018c,$0555018e
-    DC.W    $0003
-ESQ_BannerSweepWaitStartProgramB:
-    DC.L    $00d9fffe,$01009306,$01820003
-    DC.W    $00e0
-_ESQ_BannerWorkRasterPtrMirrorB_HiWord:
-    DC.L    $000000e2
-_ESQ_BannerWorkRasterPtrMirrorB_LoWord:
-    DC.W    0
-ESQ_BannerSweepWaitEndProgramB:
-    DC.L    $00dffffe
-    DC.W    $00e0
-ESQ_BannerSweepSrcPlane0Ptr_HiWord:
-    DC.L    $000000e2
-ESQ_BannerSweepSrcPlane0Ptr_LoWord:
-    DC.L    $000000e4
-ESQ_BannerSweepSrcPlane1Ptr_HiWord:
-    DC.L    $000000e6
-ESQ_BannerSweepSrcPlane1Ptr_LoWord:
-    DC.L    $000000e8
-ESQ_BannerSweepSrcPlane2Ptr_HiWord:
-    DC.L    $000000ea
-ESQ_BannerSweepSrcPlane2Ptr_LoWord:
-    DC.L    $00000100,$b3060084
-_ESQ_CopperEffectJumpTargetB_HiWord:
-    DC.L    $00000086
-_ESQ_CopperEffectJumpTargetB_LoWord:
-    DC.L    $00000182
-_ESQ_BannerColorSweepProgramB_AnchorColorWord:
-    DC.L    $0aaa018e
-_ESQ_BannerColorSweepProgramB_TailColorWord:
-    DC.W    $0003
-_ESQ_BannerColorClampValueB:
-    DC.B    0
-_ESQ_BannerColorClampWaitRowB:
-    DC.B    $d9
-    DC.L    $fffe0180,$00f000e0
-ESQ_BannerSweepSrcPlane0PtrReset_HiWord:
-    DC.L    $000000e2
-ESQ_BannerSweepSrcPlane0PtrReset_LoWord:
-    DC.L    $000000e4
-ESQ_BannerSweepSrcPlane1PtrReset_HiWord:
-    DC.L    $000000e6
-ESQ_BannerSweepSrcPlane1PtrReset_LoWord:
-    DC.L    $000000e8
-ESQ_BannerSweepSrcPlane2PtrReset_HiWord:
-    DC.L    $000000ea
-ESQ_BannerSweepSrcPlane2PtrReset_LoWord:
-    DC.W    0
-_ESQ_CopperEffectSwitchWaitWordB:
-    DC.L    $009c8010
-_ESQ_CopperBannerTailListB:
-    DC.L    $00d9fffe,$0180016a,$01009306,$01820003
-    DC.W    $00e0
-_ESQ_BannerWorkRasterPtrTailB_HiWord:
-    DC.L    $000000e2
-_ESQ_CopperBannerRasterPointerListB:
-    DC.L    $0000ffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
-    DC.L    $fffeffff
-    DC.W    $fffe
-_Global_PTR_AUD1_DMA:
-    DC.L    76

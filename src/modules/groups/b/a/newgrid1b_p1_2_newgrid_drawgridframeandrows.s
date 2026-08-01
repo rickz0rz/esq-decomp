@@ -45,7 +45,7 @@ _NEWGRID_DrawGridFrameAndRows:
     BSR.W   _NEWGRID_SetRowColor
 
     MOVEA.L 40(A7),A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     60(A3),A0

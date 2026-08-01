@@ -290,10 +290,32 @@ def to_c(path, spans, total):
                 v -= 0x10000
             out.append('%s %s = %d;' % (ctype, cname, v))
             continue
-        # any relocation -> an array of long with casts
+        # a relocation beside NARROWER data -> an anonymous struct, one field per
+        # item at its own width. This is the AmigaOS TextAttr shape: a STRPTR, a
+        # UWORD and two UBYTEs. An array of long cannot express it and a byte
+        # array would lose the relocation, so the linker could not patch the
+        # pointer and the font name would be a wild address.
+        if 'l' in kinds and any(isinstance(v, str) for k, v in items if k == 'l') \
+                and kinds - {'l'}:
+            fields, vals, o = [], [], 0
+            for k, v in items:
+                ctype, w = {'b': ('unsigned char', 1), 'w': ('unsigned short', 2),
+                            'l': ('long', 4), 'pad': ('unsigned char', 1)}[k]
+                if k == 'l' and isinstance(v, str):
+                    ctype = 'char *'
+                    vals.append(v.lstrip('_'))
+                elif k == 'pad':
+                    vals.append('0')
+                else:
+                    vals.append(str(v))
+                fields.append('    %s f%d;' % (ctype, o))
+                o += w
+            out.append('struct %s_t {' % cname)
+            out.extend(fields)
+            out.append('} %s = { %s };' % (cname, ', '.join(vals)))
+            continue
+        # a pure pointer/long table -> an array of long with casts
         if 'l' in kinds and any(isinstance(v, str) for k, v in items if k == 'l'):
-            if kinds - {'l'}:
-                raise Unsupported('%s mixes pointers with non-long data' % label)
             vals = []
             for _, v in items:
                 vals.append('(long)%s' % v.lstrip('_') if isinstance(v, str)

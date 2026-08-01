@@ -41,7 +41,7 @@
 ;   _CLEANUP_AlignedStatusClockEntryBuffer, _CLEANUP_AlignedStatusMatchIndex, _CLEANUP_AlignedStatusClockEntryIndex, _TEXTDISP_BannerCharFallback-_TEXTDISP_BannerSelectedValidFlag, _TEXTDISP_ChannelLabelReadyFlag,
 ;   _TEXTDISP_PrimaryTitlePtrTable, _CLEANUP_AlignedStatusEntryCycleTable, _SCRIPT_StrChannelLabel_TuesdaysFridays, _TEXTDISP_ActiveGroupId, _TEXTDISP_CenterAlignToken, _TEXTDISP_LeftAlignToken,
 ;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_PrimaryGroupCode, _CLOCK_CurrentDayOfYear, _ESQIFF_PrimaryLineHeadPtr, _ESQIFF_PrimaryLineTailPtr,
-;   _Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY,
+;   _Global_REF_RASTPORT_2, _Global_REF_GRAPHICS_LIBRARY,
 ;   _Global_STR_ALIGNED_NOW_SHOWING, _Global_STR_ALIGNED_NEXT_SHOWING,
 ;   _Global_STR_ALIGNED_TODAY_AT, _Global_STR_ALIGNED_TONIGHT_AT,
 ;   _Global_STR_ALIGNED_TOMORROW_AT
@@ -391,7 +391,7 @@ _CLEANUP_RenderAlignedStatusScreen:
     SUBQ.L  #1,D2
     MOVEA.L A0,A1
     MOVE.L  D2,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
     TST.W   D7
@@ -464,7 +464,7 @@ _CLEANUP_RenderAlignedStatusScreen:
 
     MOVEA.L _Global_REF_RASTPORT_2,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
 .maybe_clear_rastport_secondary:
@@ -472,7 +472,7 @@ _CLEANUP_RenderAlignedStatusScreen:
 
     MOVEA.L _Global_REF_RASTPORT_2,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVE.W  _TEXTDISP_CurrentMatchIndex,_TEXTDISP_CurrentMatchIndexSaved
@@ -892,7 +892,7 @@ _CLEANUP_RenderAlignedStatusScreen:
 
     MOVEA.L _Global_REF_RASTPORT_2,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVE.W  #1,_TEXTDISP_LinePenOverrideEnabledFlag
@@ -909,7 +909,7 @@ _CLEANUP_RenderAlignedStatusScreen:
 
     MOVEA.L _Global_REF_RASTPORT_2,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     PEA     2.W
@@ -919,7 +919,7 @@ _CLEANUP_RenderAlignedStatusScreen:
 
     MOVEA.L D0,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     PEA     2.W
@@ -947,7 +947,7 @@ _CLEANUP_RenderAlignedStatusScreen:
     MOVEQ   #0,D0
     MOVE.L  56(A7),D1
     MOVE.L  #703,D2
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVORectFill(A6)
 
     JSR     _ESQ_SetCopperEffect_OnEnableHighlight(PC)

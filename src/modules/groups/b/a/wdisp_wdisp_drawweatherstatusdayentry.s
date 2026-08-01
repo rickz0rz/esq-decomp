@@ -32,7 +32,7 @@
 ; CALLS:
 ;   _MATH_DivS32, _MATH_Mulu32, _STRING_AppendAtNull, _WDISP_JMPTBL_BRUSH_FindBrushByPredicate, _WDISP_JMPTBL_BRUSH_PlaneMaskForIndex, _WDISP_JMPTBL_BRUSH_SelectBrushSlot, _WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples, _WDISP_JMPTBL_NEWGRID_DrawWrappedText, _WDISP_SPrintf, _LVOCopyMem, _LVOMove, _LVOSetAPen, _LVOSetDrMd, _LVOText, _LVOTextLength
 ; READS:
-;   AbsExecBase, _Global_HANDLE_PREVUEC_FONT, _Global_JMPTBL_DAYS_OF_WEEK, Global_REF_GRAPHICS_LIBRARY, _Global_STR_PERCENT_D, _Global_STR_PERCENT_D_SLASH, _ESQFUNC_PwBrushListHead, _ESQFUNC_STR_I5, _P_TYPE_WeatherForecastMsgPtr, _WDISP_StatusDayEntry0, _WDISP_STR_UNKNOWN_NUM_WITH_SLASH, _WDISP_STR_UNKNOWN_NUM, _WDISP_CharClassTable, _CLOCK_CurrentDayOfWeekIndex, _WDISP_PaletteTriplesRBase, _WDISP_AccumulatorRowTable
+;   AbsExecBase, _Global_HANDLE_PREVUEC_FONT, _Global_JMPTBL_DAYS_OF_WEEK, _Global_REF_GRAPHICS_LIBRARY, _Global_STR_PERCENT_D, _Global_STR_PERCENT_D_SLASH, _ESQFUNC_PwBrushListHead, _ESQFUNC_STR_I5, _P_TYPE_WeatherForecastMsgPtr, _WDISP_StatusDayEntry0, _WDISP_STR_UNKNOWN_NUM_WITH_SLASH, _WDISP_STR_UNKNOWN_NUM, _WDISP_CharClassTable, _CLOCK_CurrentDayOfWeekIndex, _WDISP_PaletteTriplesRBase, _WDISP_AccumulatorRowTable
 ; WRITES:
 ;   _WDISP_AccumulatorCaptureActive, _WDISP_AccumulatorFlushPending
 ; DESC:
@@ -314,7 +314,7 @@ _WDISP_DrawWeatherStatusDayEntry:
     ADDQ.W  #8,A7
     MOVEA.L A3,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L A3,A1
@@ -368,7 +368,7 @@ _WDISP_DrawWeatherStatusDayEntry:
     MOVE.L  #$8c,-64(A5)
     MOVEA.L A3,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L A3,A1
@@ -426,7 +426,7 @@ _WDISP_DrawWeatherStatusDayEntry:
     MOVEA.L A3,A1
     MOVE.L  A0,D0
     MOVEA.L -54(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  -4(A5),D1
@@ -474,7 +474,7 @@ _WDISP_DrawWeatherStatusDayEntry:
     MOVEA.L A3,A1
     MOVE.L  A0,D0
     MOVEA.L -54(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  -4(A5),D1
@@ -538,7 +538,7 @@ _WDISP_DrawWeatherStatusDayEntry:
     MOVE.L  A1,-50(A5)
     MOVEA.L A3,A1
     MOVE.L  -50(A5),D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  -4(A5),D1

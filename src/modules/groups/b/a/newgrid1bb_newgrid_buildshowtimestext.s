@@ -150,7 +150,7 @@ _NEWGRID_BuildShowtimesText:
     SUBA.L  -62(A5),A0
     MOVE.L  A0,D0
     MOVEA.L -62(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     LEA     60(A3),A0
@@ -169,7 +169,7 @@ _NEWGRID_BuildShowtimesText:
     MOVEA.L A0,A1
     LEA     _Global_STR_COMMA_AND_SINGLE_SPACE_1,A0
     MOVEQ   #2,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,-20(A5)
@@ -543,7 +543,7 @@ _NEWGRID_BuildShowtimesText:
     MOVEA.L A0,A1
     MOVE.L  A6,D0
     LEA     _Global_STR_SHOWTIMES_AND_SINGLE_SPACE,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     SUB.L   D0,-16(A5)
@@ -590,7 +590,7 @@ _NEWGRID_BuildShowtimesText:
     MOVEA.L A0,A1
     MOVEA.L D0,A0
     MOVE.L  28(A7),D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  -20(A5),D1
@@ -637,7 +637,7 @@ _NEWGRID_BuildShowtimesText:
     MOVEA.L A0,A1
     MOVEA.L -28(A5),A0
     MOVE.L  28(A7),D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  -20(A5),D1

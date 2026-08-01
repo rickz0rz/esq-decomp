@@ -35,7 +35,7 @@ _ED_DrawCursorChar:
     MOVE.B  D0,D1
     MOVE.L  D1,D0
     MOVEA.L _Global_REF_RASTPORT_1,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     LEA     _ED_EditBufferLive,A0
@@ -49,7 +49,7 @@ _ED_DrawCursorChar:
     MOVE.B  D0,D1
     MOVE.L  D1,D0
     MOVEA.L _Global_REF_RASTPORT_1,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetBPen(A6)
 
     MOVE.L  _ED_EditCursorOffset,(A7)
@@ -71,7 +71,7 @@ _ED_DrawCursorChar:
     MOVE.L  D0,D1
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVE.L  0(A7),D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     LEA     _ED_EditBufferScratch,A0

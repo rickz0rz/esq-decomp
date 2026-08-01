@@ -15,7 +15,7 @@
 ;   _LVOMove, _LVOText, _GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat, _GROUP_AE_JMPTBL_WDISP_SPrintf,
 ;   _GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort
 ; READS:
-;   _CLOCK_CurrentDayOfWeekIndex, _Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY,
+;   _CLOCK_CurrentDayOfWeekIndex, _Global_REF_RASTPORT_1, _Global_REF_GRAPHICS_LIBRARY,
 ;   _Global_REF_STR_USE_24_HR_CLOCK, _Global_WORD_CURRENT_HOUR, _CLOCK_CurrentAmPmFlag,
 ;   _Global_WORD_CURRENT_MINUTE, _Global_WORD_CURRENT_SECOND,
 ;   _Global_STR_GRID_TIME_FORMAT_DUPLICATE, _Global_STR_12_44_44_SINGLE_SPACE,
@@ -39,7 +39,7 @@ _CLEANUP_DrawGridTimeBanner:
     ADDQ.W  #8,A7
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #7,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A0
@@ -49,7 +49,7 @@ _CLEANUP_DrawGridTimeBanner:
     MOVE.W  D0,32(A0)
     MOVEA.L A0,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEQ   #0,D0
@@ -100,7 +100,7 @@ _CLEANUP_DrawGridTimeBanner:
     MOVEA.L _Global_REF_RASTPORT_1,A1
     LEA     _Global_STR_12_44_44_SINGLE_SPACE,A0
     MOVEQ   #9,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D6

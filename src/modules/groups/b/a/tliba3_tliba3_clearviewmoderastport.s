@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _MATH_Mulu32, _LVOSetRast
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _TLIBA3_VmArrayRuntimeTable
+;   _Global_REF_GRAPHICS_LIBRARY, _TLIBA3_VmArrayRuntimeTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -34,7 +34,7 @@ _TLIBA3_ClearViewModeRastPort:
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVE.L  D6,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
     MOVEM.L (A7)+,D6-D7

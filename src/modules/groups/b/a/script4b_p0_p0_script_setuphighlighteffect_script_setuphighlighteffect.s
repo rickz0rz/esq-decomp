@@ -145,7 +145,7 @@ _SCRIPT_SetupHighlightEffect:
     ADDA.L  D0,A1
     CLR.B   (A1)
     MOVEA.L -4(A5),A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     TST.B   _CLOCK_AlignedInsetRenderGateFlag
@@ -231,7 +231,7 @@ _SCRIPT_SetupHighlightEffect:
 
     MOVEA.L -4(A5),A1
     MOVEA.L -170(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .mark_done:
@@ -246,7 +246,7 @@ _SCRIPT_SetupHighlightEffect:
 
     MOVEA.L -4(A5),A1
     MOVEA.L -170(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .after_color_flush:
@@ -263,7 +263,7 @@ _SCRIPT_SetupHighlightEffect:
 
 .apply_pen_change:
     MOVEA.L -4(A5),A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L -166(A5),A0
@@ -279,7 +279,7 @@ _SCRIPT_SetupHighlightEffect:
 
     MOVEA.L -4(A5),A1
     MOVEA.L -170(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
 .after_skip_flush:

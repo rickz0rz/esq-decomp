@@ -47,14 +47,14 @@ _NEWGRID_InitGridResources:
     BEQ.W   .return_init_status
 
     MOVEA.L D0,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
     MOVEA.L _NEWGRID_MainRastPortPtr,A0
     MOVE.L  #_Global_REF_696_400_BITMAP,4(A0)
     MOVEA.L _NEWGRID_MainRastPortPtr,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEA.L _NEWGRID_MainRastPortPtr,A1
@@ -73,14 +73,14 @@ _NEWGRID_InitGridResources:
     BEQ.W   .return_init_status
 
     MOVEA.L D0,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitRastPort(A6)
 
     MOVEA.L _NEWGRID_HeaderRastPortPtr,A0
     MOVE.L  #_WDISP_BannerGridBitmapStruct,4(A0)
     MOVEA.L _NEWGRID_HeaderRastPortPtr,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     MOVEA.L _NEWGRID_HeaderRastPortPtr,A1
@@ -92,7 +92,7 @@ _NEWGRID_InitGridResources:
     MOVEQ   #8,D0
     MOVEA.L _NEWGRID_MainRastPortPtr,A1
     LEA     _Global_STR_44_44_44,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.W  D0,_NEWGRID_SampleTimeTextWidthPx

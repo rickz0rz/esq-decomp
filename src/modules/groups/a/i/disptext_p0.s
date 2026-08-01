@@ -33,7 +33,7 @@ _DISPTEXT_BuildLineWithWidth:
     MOVEA.L A3,A1
     LEA     _DISPTEXT_STR_SINGLE_SPACE_MEASURE,A0
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVEA.L 16(A5),A0
@@ -87,7 +87,7 @@ _DISPTEXT_BuildLineWithWidth:
     MOVE.L  A1,D6
     MOVEA.L A3,A1
     MOVE.L  D6,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D5
@@ -135,7 +135,7 @@ _DISPTEXT_BuildLineWithWidth:
     MOVEA.L A3,A1
     MOVE.L  D6,D0
     LEA     -73(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,D5

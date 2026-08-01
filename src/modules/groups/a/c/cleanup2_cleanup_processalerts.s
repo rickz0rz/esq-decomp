@@ -25,7 +25,7 @@
 ;   _CLEANUP_AlertCooldownTicks, _LOCAVAIL_FilterStep, _LOCAVAIL_FilterCooldownTicks, _CLOCK_DaySlotIndex, _CLOCK_CurrentDayOfWeekIndex,
 ;   _TEXTDISP_DeferredActionDelayTicks, _BRUSH_PendingAlertCode, _WDISP_WeatherStatusCountdown, _CLEANUP_BannerTickCounter,
 ;   _TLIBA1_DayEntryModeCounter, _DST_BannerWindowPrimary, _ESQ_AlertType235ModeFlagChar, _ESQ_AlertType4ModeFlagChar, _ED_MenuStateId, _CLOCK_HalfHourSlotIndex,
-;   _Global_REF_RASTPORT_1, Global_REF_GRAPHICS_LIBRARY
+;   _Global_REF_RASTPORT_1, _Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   _CLEANUP_AlertProcessingFlag, _CLEANUP_AlertCooldownTicks, _LOCAVAIL_FilterStep,
 ;   _LOCAVAIL_FilterCooldownTicks, _CLEANUP_PendingAlertFlag, _TEXTDISP_DeferredActionDelayTicks, _BRUSH_PendingAlertCode, _WDISP_WeatherStatusCountdown,
@@ -306,7 +306,7 @@ _CLEANUP_ProcessAlerts:
 .draw_banner:
     MOVEA.L _Global_REF_RASTPORT_1,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     TST.W   _Global_UIBusyFlag

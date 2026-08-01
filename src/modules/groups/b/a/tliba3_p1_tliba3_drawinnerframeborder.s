@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _LVODraw, _LVOMove
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY
+;   _Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -27,7 +27,7 @@ _TLIBA3_DrawInnerFrameBorder:
     MOVEA.L A3,A1
     MOVEQ   #0,D0
     MOVE.L  D0,D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVEA.L 4(A3),A0

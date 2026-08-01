@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _LADFUNC_GetPackedPenLowNibble, _LADFUNC_GetPackedPenHighNibble, _LVOSetAPen, _LVOSetBPen, _GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY
+;   _Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   (none)
 ; DESC:
@@ -37,7 +37,7 @@ _LADFUNC_DisplayTextPackedPens:
     MOVE.B  D0,D1
     MOVEA.L A3,A1
     MOVE.L  D1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0
@@ -49,7 +49,7 @@ _LADFUNC_DisplayTextPackedPens:
     MOVE.B  D0,D1
     MOVEA.L A3,A1
     MOVE.L  D1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetBPen(A6)
 
     MOVE.L  A2,(A7)
@@ -106,7 +106,7 @@ _LADFUNC_DrawEntryLineWithAttrs:
     MOVEA.L A3,A1
     LEA     _Global_STR_SINGLE_SPACE_1,A0
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D0,-26(A5)

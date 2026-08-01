@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _MATH_Mulu32, _LVOSetFont
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _TLIBA3_VmArrayRuntimeTable
+;   _Global_REF_GRAPHICS_LIBRARY, _TLIBA3_VmArrayRuntimeTable
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -40,7 +40,7 @@ _TLIBA3_SetFontForAllViewModes:
     ADDA.L  D0,A0
     LEA     10(A0),A1
     MOVEA.L A3,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     ADDQ.L  #1,D7

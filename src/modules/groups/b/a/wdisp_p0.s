@@ -14,7 +14,7 @@
 ; CALLS:
 ;   _WDISP_DrawWeatherStatusDayEntry, _LVOMove, _LVOSetRast, _LVOText, _LVOTextLength
 ; READS:
-;   _Global_HANDLE_PREVUEC_FONT, Global_REF_GRAPHICS_LIBRARY, _P_TYPE_WeatherForecastMsgPtr, _SCRIPT_PtrNoForecastWeatherData, _TLIBA1_DayEntryModeCounter, _WDISP_WeatherStatusDigitChar, return
+;   _Global_HANDLE_PREVUEC_FONT, _Global_REF_GRAPHICS_LIBRARY, _P_TYPE_WeatherForecastMsgPtr, _SCRIPT_PtrNoForecastWeatherData, _TLIBA1_DayEntryModeCounter, _WDISP_WeatherStatusDigitChar, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -33,7 +33,7 @@ _WDISP_DrawWeatherStatusSummary:
 
     MOVEA.L A3,A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
     MOVE.B  _TLIBA1_DayEntryModeCounter,D0
@@ -87,7 +87,7 @@ _WDISP_DrawWeatherStatusSummary:
     MOVEA.L A3,A1
     MOVE.L  D5,D0
     MOVEA.L -4(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     MOVE.L  D7,D1

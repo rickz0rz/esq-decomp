@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _WDISP_JMPTBL_ESQIFF_RunCopperDropTransition, _TLIBA3_BuildDisplayContextForViewMode, _LVOSetRast
 ; READS:
-;   _WDISP_PaletteTriplesRBase-2297, _Global_REF_RASTPORT_2, Global_REF_GRAPHICS_LIBRARY
+;   _WDISP_PaletteTriplesRBase-2297, _Global_REF_RASTPORT_2, _Global_REF_GRAPHICS_LIBRARY
 ; WRITES:
 ;   _WDISP_DisplayContextBase, _WDISP_PaletteTriplesRBase-2297, _WDISP_AccumulatorFlushPending
 ; DESC:
@@ -69,7 +69,7 @@ _TEXTDISP_SetRastForMode:
     MOVE.L  D7,D0
     EXT.L   D0
     MOVEA.L A0,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
 .return:

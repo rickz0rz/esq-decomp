@@ -67,7 +67,7 @@ _NEWGRID_DrawSelectionMarkers:
     MOVEA.L -4(A5),A1
     LEA     -33(A5),A0
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     BRA.S   .store_primary_width
@@ -83,7 +83,7 @@ _NEWGRID_DrawSelectionMarkers:
     MOVEA.L -4(A5),A1
     LEA     -35(A5),A0
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     BRA.S   .store_secondary_width
@@ -239,7 +239,7 @@ _NEWGRID_DrawSelectionMarkers:
     MOVEA.L -4(A5),A1
     MOVE.L  -8(A5),D0
     MOVE.L  -12(A5),D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVEA.L -4(A5),A1
@@ -272,7 +272,7 @@ _NEWGRID_DrawSelectionMarkers:
     MOVE.L  D0,-8(A5)
     MOVEA.L -4(A5),A1
     MOVE.L  -12(A5),D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVEA.L -4(A5),A1

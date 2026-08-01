@@ -23,7 +23,7 @@
 ;   _TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble, _TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble, _STR_FindCharPtr,
 ;   _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition, _LVOTextLength
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _CLOCK_AlignedInsetRenderGateFlag, _CLEANUP_AlignedInsetNibblePrimary, _CLEANUP_AlignedInsetNibbleSecondary, ff, if_eq_1780, if_eq_1787, if_ne_1773, return_1788
+;   _Global_REF_GRAPHICS_LIBRARY, _CLOCK_AlignedInsetRenderGateFlag, _CLEANUP_AlignedInsetNibblePrimary, _CLEANUP_AlignedInsetNibbleSecondary, ff, if_eq_1780, if_eq_1787, if_ne_1773, return_1788
 ; WRITES:
 ;   _CLOCK_AlignedInsetRenderGateFlag
 ; DESC:
@@ -107,7 +107,7 @@ _TLIBA1_DrawInlineStyledText:
     MOVEA.L A3,A1
     MOVEA.L -4(A5),A0
     MOVE.L  -22(A5),D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     ADD.L   D0,-14(A5)
@@ -226,7 +226,7 @@ _TLIBA1_DrawInlineStyledText:
     MOVE.L  -22(A5),D0
     SUBQ.L  #3,D0
     MOVEA.L A3,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     ADD.L   D0,-18(A5)
@@ -289,7 +289,7 @@ _TLIBA1_DrawInlineStyledText:
     MOVE.L  A0,-4(A5)
     MOVEA.L A3,A1
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     TST.L   D0
@@ -412,7 +412,7 @@ _TLIBA1_DrawInlineStyledText:
 ;   _TLIBA1_DrawInlineStyledText, _MATH_DivS32, _MATH_Mulu32, _MEMORY_AllocateMemory,
 ;   _MEMORY_DeallocateMemory, _LVOSetAPen, _LVOSetFont, _LVOTextLength
 ; READS:
-;   _Global_HANDLE_PREVUE_FONT, Global_REF_GRAPHICS_LIBRARY, _Global_STR_TLIBA1_C_3, _CLOCK_AlignedInsetRenderGateFlag, _TLIBA1_STR_TLIBA1_DOT_C, _CLEANUP_AlignedInsetNibblePrimary, _TEXTDISP_LinePenOverrideEnabledFlag, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
+;   _Global_HANDLE_PREVUE_FONT, _Global_REF_GRAPHICS_LIBRARY, _Global_STR_TLIBA1_C_3, _CLOCK_AlignedInsetRenderGateFlag, _TLIBA1_STR_TLIBA1_DOT_C, _CLEANUP_AlignedInsetNibblePrimary, _TEXTDISP_LinePenOverrideEnabledFlag, MEMF_CLEAR, MEMF_PUBLIC, if_eq_178F, if_eq_1792, if_eq_1794, if_eq_1798, if_eq_1799, if_ge_17A6, loop_179C, return_17A7, skip_179A, skip_179B
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -720,7 +720,7 @@ _TLIBA1_DrawFormattedTextBlock:
     EXT.L   D1
     MOVEA.L A3,A1
     MOVE.L  D1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
 .if_eq_179D:
@@ -732,7 +732,7 @@ _TLIBA1_DrawFormattedTextBlock:
 
     MOVEA.L A3,A1
     MOVEA.L _Global_HANDLE_PREVUE_FONT,A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
     BRA.S   .skip_179F
@@ -740,7 +740,7 @@ _TLIBA1_DrawFormattedTextBlock:
 .if_eq_179E:
     MOVEA.L A3,A1
     MOVEA.L -26(A5),A0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetFont(A6)
 
 .skip_179F:
@@ -841,7 +841,7 @@ _TLIBA1_DrawFormattedTextBlock:
     EXT.W   D0
     EXT.L   D0
     MOVEA.L A3,A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEA.L A3,A1

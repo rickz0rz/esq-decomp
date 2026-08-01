@@ -36,7 +36,7 @@ _NEWGRID_DrawDateBanner:
 
     MOVEA.L .rastport(A5),A1
     MOVEQ   #0,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetDrMd(A6)
 
     PEA     7.W
@@ -45,7 +45,7 @@ _NEWGRID_DrawDateBanner:
     JSR     _NEWGRID_SetRowColor(PC)
 
     MOVEA.L .rastport(A5),A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     ; Fill in the blue background for behind the date string
@@ -81,7 +81,7 @@ _NEWGRID_DrawDateBanner:
 
     MOVEA.L .rastport(A5),A1
     MOVEQ   #3,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0

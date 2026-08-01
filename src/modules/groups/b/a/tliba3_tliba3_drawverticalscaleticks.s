@@ -14,7 +14,7 @@
 ; CALLS:
 ;   _MATH_DivS32, _WDISP_SPrintf, _LVODraw, _LVOMove, _LVOText
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, LAB_1828, _TLIBA1_FMT_PCT_03LD_VerticalScaleTick, return
+;   _Global_REF_GRAPHICS_LIBRARY, LAB_1828, _TLIBA1_FMT_PCT_03LD_VerticalScaleTick, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -34,7 +34,7 @@ _TLIBA3_DrawVerticalScaleTicks:
     MOVEA.L A3,A1
     MOVE.L  D7,D0
     MOVEQ   #0,D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVEA.L 4(A3),A0
@@ -70,7 +70,7 @@ _TLIBA3_DrawVerticalScaleTicks:
     MOVEA.L A3,A1
     MOVE.L  D7,D0
     MOVE.L  D6,D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVE.L  D7,D0
@@ -103,7 +103,7 @@ _TLIBA3_DrawVerticalScaleTicks:
     MOVE.L  A1,16(A7)
     MOVEA.L A3,A1
     MOVE.L  16(A7),D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOText(A6)
 
     BRA.S   .lab_182B
@@ -119,7 +119,7 @@ _TLIBA3_DrawVerticalScaleTicks:
     MOVEA.L A3,A1
     MOVE.L  D7,D0
     MOVE.L  D6,D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOMove(A6)
 
     MOVE.L  D7,D0

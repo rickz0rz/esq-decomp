@@ -1145,6 +1145,7 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "data/dst.s"
     include "data/ed2.s"
     include "data/esq.s"
+    include "data/esq_p1.s"
     include "data/esqdisp.s"
     include "data/esqfunc.s"
     include "data/esqiff.s"

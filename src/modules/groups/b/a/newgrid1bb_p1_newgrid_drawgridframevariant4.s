@@ -34,7 +34,7 @@ _NEWGRID_DrawGridFrameVariant4:
 
     LEA     12(A7),A7
     MOVEA.L -20(A5),A1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetAPen(A6)
 
     MOVEQ   #0,D0

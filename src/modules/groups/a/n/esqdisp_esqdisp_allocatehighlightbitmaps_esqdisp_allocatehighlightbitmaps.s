@@ -15,7 +15,7 @@
 ; CALLS:
 ;   _ESQDISP_JMPTBL_GRAPHICS_AllocRaster, _LVOBltClear, _LVOInitBitMap
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _Global_STR_ESQDISP_C, _WDISP_HighlightRasterHeightPx
+;   _Global_REF_GRAPHICS_LIBRARY, _Global_STR_ESQDISP_C, _WDISP_HighlightRasterHeightPx
 ; WRITES:
 ;   A3+8/A3+12/A3+16 raster plane pointers
 ; DESC:
@@ -34,7 +34,7 @@ _ESQDISP_AllocateHighlightBitmaps:
     MOVE.L  D0,D2
     MOVEQ   #3,D0
     MOVE.L  #696,D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOInitBitMap(A6)
 
     MOVEQ   #0,D7
@@ -68,7 +68,7 @@ _ESQDISP_AllocateHighlightBitmaps:
     MOVE.L  12(A7),D2
     MOVEA.L 8(A3,D2.L),A1
     MOVEQ   #0,D1
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOBltClear(A6)
 
     ADDQ.L  #1,D7

@@ -43,7 +43,7 @@ _DISPTEXT_ComputeMarkerWidths:
     MOVEA.L A3,A1
     LEA     -1(A5),A0
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     BRA.S   .check_prefix2
@@ -59,7 +59,7 @@ _DISPTEXT_ComputeMarkerWidths:
     MOVEA.L A3,A1
     LEA     -3(A5),A0
     MOVEQ   #1,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOTextLength(A6)
 
     BRA.S   .store_combined

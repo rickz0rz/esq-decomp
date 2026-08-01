@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _WDISP_JMPTBL_BRUSH_FreeBrushList, _WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad, _WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice, _WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock, _WDISP_JMPTBL_NEWGRID_ResetRowTable, _LVOSetRast
 ; READS:
-;   Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _WDISP_WeatherStatusBrushListHead, _P_TYPE_WeatherBrushRefreshPendingFlag, _TLIBA1_PreviewSlotRefreshState, _TLIBA1_PreviewSlotRenderResult, _WDISP_WeatherStatusCountdown, _WDISP_WeatherStatusDigitChar, _WDISP_WeatherCycleOffsetCount
+;   _Global_REF_GRAPHICS_LIBRARY, _Global_REF_RASTPORT_1, _WDISP_WeatherStatusBrushListHead, _P_TYPE_WeatherBrushRefreshPendingFlag, _TLIBA1_PreviewSlotRefreshState, _TLIBA1_PreviewSlotRenderResult, _WDISP_WeatherStatusCountdown, _WDISP_WeatherStatusDigitChar, _WDISP_WeatherCycleOffsetCount
 ; WRITES:
 ;   _TLIBA1_PreviewSlotRefreshState, _TLIBA1_PreviewSlotRenderResult
 ; DESC:
@@ -41,7 +41,7 @@ _WDISP_UpdateSelectionPreviewPanel:
     LEA     60(A2),A0
     MOVEA.L A0,A1
     MOVEQ   #7,D0
-    MOVEA.L Global_REF_GRAPHICS_LIBRARY,A6
+    MOVEA.L _Global_REF_GRAPHICS_LIBRARY,A6
     JSR     _LVOSetRast(A6)
 
     MOVEA.L _Global_REF_RASTPORT_1,A0
