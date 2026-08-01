@@ -110,3 +110,6 @@ modules/submodules/unknown20.s                                         c/lib_dos
 modules/submodules/unknown11.s                                         c/lib_dos_seek_by_index.c
 modules/submodules/unknown26.s                                         c/lib_dos_write_by_index.c
 modules/submodules/unknown37.s                                         c/lib_handle_close_by_index.c
+modules/submodules/unknown17.s                                         c/lib_dos_write_with_error_state.c
+modules/submodules/unknown19.s                                         c/lib_dos_read_with_error_state.c
+modules/submodules/unknown38.s                                         c/lib_signal_poll_and_dispatch.c

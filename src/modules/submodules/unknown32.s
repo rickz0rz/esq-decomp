@@ -1,8 +1,8 @@
-    XDEF    HANDLE_CloseAllAndReturnWithCode
+    XDEF    _HANDLE_CloseAllAndReturnWithCode
     XDEF    UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode
 
 ;------------------------------------------------------------------------------
-; FUNC: HANDLE_CloseAllAndReturnWithCode   (Close all handles, then return w/ code.)
+; FUNC: _HANDLE_CloseAllAndReturnWithCode   (Close all handles, then return w/ code.)
 ; ARGS:
 ;   stack +4: D7 = return code passed to ESQ_ReturnWithStackCode
 ; RET:
@@ -17,7 +17,7 @@
 ;   Iterates the handle table and closes entries not flagged with bit 4,
 ;   then tail-calls ESQ_ReturnWithStackCode with the provided code.
 ;------------------------------------------------------------------------------
-HANDLE_CloseAllAndReturnWithCode:
+_HANDLE_CloseAllAndReturnWithCode:
     MOVEM.L D5-D7,-(A7)
 
     SetOffsetForStack 3

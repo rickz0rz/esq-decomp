@@ -1,7 +1,7 @@
-    XDEF    DOS_ReadWithErrorState
+    XDEF    _DOS_ReadWithErrorState
 
 ;------------------------------------------------------------------------------
-; FUNC: DOS_ReadWithErrorState   (Read wrapper that tracks IoErr/AppErrorCode.)
+; FUNC: _DOS_ReadWithErrorState   (Read wrapper that tracks IoErr/AppErrorCode.)
 ; ARGS:
 ;   stack +28: D7 = file handle
 ;   stack +32: A3 = buffer pointer
@@ -20,7 +20,7 @@
 ;   Optionally calls a signal callback, then performs DOS Read.
 ;   On error, captures IoErr and sets AppErrorCode to 5.
 ;------------------------------------------------------------------------------
-DOS_ReadWithErrorState:
+_DOS_ReadWithErrorState:
     MOVEM.L D2-D3/D5-D7/A3,-(A7)
 
     MOVE.L  28(A7),D7

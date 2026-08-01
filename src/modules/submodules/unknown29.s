@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   HANDLE_CloseAllAndReturnWithCode, STRING_AppendN, BUFFER_FlushAllAndCloseWithCode,
+;   _HANDLE_CloseAllAndReturnWithCode, STRING_AppendN, BUFFER_FlushAllAndCloseWithCode,
 ;   UNKNOWN29_JMPTBL_ESQ_MainInitAndRun
 ; READS:
 ;   Global_ArgCount, Global_ArgvStorage, Global_SavedMsg, Global_DefaultHandleFlags
@@ -85,7 +85,7 @@ ESQ_ParseCommandLineAndRun:
     BNE.S   .terminate_quoted
 
     PEA     1.W
-    JSR     HANDLE_CloseAllAndReturnWithCode(PC)
+    JSR     _HANDLE_CloseAllAndReturnWithCode(PC)
 
     ADDQ.W  #4,A7
     BRA.S   .parse_loop

@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0/D6-D7/A3
 ; CALLS:
-;   _DOS_WriteByIndex (write by handle index), HANDLE_CloseAllAndReturnWithCode (close handles/return)
+;   _DOS_WriteByIndex (write by handle index), _HANDLE_CloseAllAndReturnWithCode (close handles/return)
 ; READS:
 ;   Global_PreallocHandleNode0 (buffered output list head)
 ; DESC:
@@ -54,7 +54,7 @@ BUFFER_FlushAllAndCloseWithCode:
 
 .after_flush:
     MOVE.L  D7,-(A7)
-    JSR     HANDLE_CloseAllAndReturnWithCode(PC)
+    JSR     _HANDLE_CloseAllAndReturnWithCode(PC)
 
     ADDQ.W  #4,A7
     MOVEM.L (A7)+,D6-D7/A3

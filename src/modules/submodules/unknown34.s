@@ -13,7 +13,7 @@
 ; CLOBBERS:
 ;   D0-D7/A2-A3
 ; CALLS:
-;   _HANDLE_GetEntryByIndex (_HANDLE_GetEntryByIndex), DOS_ReadWithErrorState (read)
+;   _HANDLE_GetEntryByIndex (_HANDLE_GetEntryByIndex), _DOS_ReadWithErrorState (read)
 ; READS:
 ;   Global_DosIoErr
 ; DESC:
@@ -41,7 +41,7 @@ DOS_ReadByIndex:
     MOVE.L  D6,-(A7)
     MOVE.L  A3,-(A7)
     MOVE.L  4(A2),-(A7)
-    JSR     DOS_ReadWithErrorState(PC)
+    JSR     _DOS_ReadWithErrorState(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D5

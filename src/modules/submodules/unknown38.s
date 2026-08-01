@@ -9,14 +9,14 @@
 ; CLOBBERS:
 ;   D0-D1/A0/A6
 ; CALLS:
-;   _LVOSetSignal, Global_SignalCallbackPtr, HANDLE_CloseAllAndReturnWithCode (close handles/exit?)
+;   _LVOSetSignal, Global_SignalCallbackPtr, _HANDLE_CloseAllAndReturnWithCode (close handles/exit?)
 ; READS:
 ;   Global_SignalCallbackPtr
 ; WRITES:
 ;   Global_SignalCallbackPtr (cleared on callback failure)
 ; DESC:
 ;   Checks for signals 0x3000; if present, calls the registered callback.
-;   If callback returns non-zero, clears it and calls HANDLE_CloseAllAndReturnWithCode with code 20.
+;   If callback returns non-zero, clears it and calls _HANDLE_CloseAllAndReturnWithCode with code 20.
 ;------------------------------------------------------------------------------
 _SIGNAL_PollAndDispatch:
     MOVE.L  D7,-(A7)
@@ -45,7 +45,7 @@ _SIGNAL_PollAndDispatch:
 .callback_failed:
     CLR.L   Global_SignalCallbackPtr(A4)
     PEA     20.W
-    JSR     HANDLE_CloseAllAndReturnWithCode(PC)
+    JSR     _HANDLE_CloseAllAndReturnWithCode(PC)
 
     ADDQ.W  #4,A7
 
