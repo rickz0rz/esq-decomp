@@ -33,3 +33,10 @@ modules/groups/a/a/app_p0.s                                            c/esq_cap
 modules/groups/a/a/app_get_bit_3_of_ciab_pra_into_d1.s                 c/get_bit3_of_ciab_pra.c
 modules/groups/a/a/app_p1.s                                            c/esq_capture_ctrl_bit4_stream.c
 modules/groups/a/a/app_get_bit_4_of_ciab_pra_into_d1.s                 c/get_bit4_of_ciab_pra.c
+
+# THE FIRST DATA MODULE IN C. gen_all_manifest.py only walks src/modules, so no
+# data module can ever appear in the generated rows -- a data replacement has to
+# be declared here. gen_units.py needs no change: it runs the replacement map
+# over the data group as well as the code group.
+# 24 bytes, byte-exact against the assembly it replaces.
+data/displib.s                                                         c/data_displib.c

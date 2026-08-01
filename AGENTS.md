@@ -1551,6 +1551,46 @@ whatever the code decides, so a displacement into it is ordinary indexing.
 > **An audit that finds nothing is a claim, and it has to be tested against a
 > case you already know about.**
 
+## The DATA section CAN move to C, and the first module has
+
+`src/data/displib.s` is now `src/c/data_displib.c`. It is 24 bytes and three
+symbols, and it is **byte-exact**: the compiled object places
+`_Global_STR_DISPLIB_C_1` at 0, `_Global_STR_DISPLIB_C_2` at 10 and
+`_DISPTEXT_ControlMarkerXOffsetPx` at 20, with the same 24 bytes the assembly
+emits. `build-split.sh` reports the same 6 differing DATA bytes with the module
+in C as without it, so the conversion moved nothing.
+
+**No build change was needed, and that is the surprise.** `gen_units.py` runs its
+replacement map over BOTH groups -- `coalesce(...)` is called once for the code
+group and once for the data group with the same `repl` -- so a manifest line
+naming a path under `data/` already links a C object at that module's position.
+The capability was there the whole time and had never been used.
+
+Four rules, and the last two are the ones that will bite:
+
+1. **Declare it in `src/c/replacements-extra.txt`.** `gen_all_manifest.py` only
+   walks `src/modules`, so no data module can ever appear in its generated rows.
+
+2. **`NStr` is string + NUL + even alignment** (`DC.B \1,0` then `CNOP 0,2`),
+   which is exactly what `char X[] = "..."` emits. The two spellings agree byte
+   for byte, padding included.
+
+3. **Write `= 0` on an uninitialised symbol.** `DS.L 1` inside a loaded DATA hunk
+   contributes four ZERO BYTES to the image. A C global with no initialiser is a
+   tentative definition that SAS/C may place in BSS, which the linker puts in a
+   different hunk -- moving everything after it. Check with
+   `python3 tools/objbytes.py <file.o>` that the emitted size covers every symbol
+   before adding a module.
+
+4. **Order inside the file is the order in the original.** C guarantees nothing
+   about where two globals land relative to each other, so any module whose code
+   reads ACROSS a symbol boundary has to become one struct or array first.
+   `tools/data_adjacency_audit.py` finds exactly eight such groups over 2,218
+   symbols; they are listed in the section above and none of them is in
+   `displib.s`. Convert the modules that hold them last.
+
+31 data modules remain, 10,926 lines. The path is proven; the rest is volume.
+
 ## Merging beats splitting when a module will not cut
 
 A C replacement substitutes for a WHOLE module, so a module holding several

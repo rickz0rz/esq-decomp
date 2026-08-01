@@ -643,6 +643,7 @@ modules/groups/a/a/app_p0.s                                            c/esq_cap
 modules/groups/a/a/app_get_bit_3_of_ciab_pra_into_d1.s                 c/get_bit3_of_ciab_pra.c
 modules/groups/a/a/app_p1.s                                            c/esq_capture_ctrl_bit4_stream.c
 modules/groups/a/a/app_get_bit_4_of_ciab_pra_into_d1.s                 c/get_bit4_of_ciab_pra.c
+data/displib.s                                                         c/data_displib.c
 modules/groups/a/a/app2_p7.s                                           c/app2_p7_merged.c
 modules/groups/a/a/app2_esq_findsubstringcasefold.s                    c/app2_esq_findsubstringcasefold_merged.c
 modules/groups/a/c/cleanup2_p1_p0_p0.s                                 c/cleanup2_p1_p0_p0_merged.c
