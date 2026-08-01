@@ -408,9 +408,11 @@ modules/groups/a/w/ladfunc_ladfunc_setpackedpenlownibble.s             c/ladfunc
 modules/groups/a/w/ladfunc_p1_ladfunc_updateentryfromtextandattrbuffers.s c/ladfunc_update_entry_from_text_and_attr_buffers.c
 modules/groups/a/w/ladfunc_p0_ladfunc_updatehighlightcycle.s           c/ladfunc_update_highlight_cycle.c
 modules/groups/a/w/ladfunc_ladfunc_updatehighlightstate.s              c/ladfunc_update_highlight_state.c
+modules/submodules/unknown31.s                                         c/lib_buffer_ensure_allocated.c
 modules/submodules/unknown20.s                                         c/lib_dos_open_with_error_state.c
 modules/submodules/unknown19.s                                         c/lib_dos_read_with_error_state.c
 modules/submodules/unknown11.s                                         c/lib_dos_seek_by_index.c
+modules/submodules/unknown18.s                                         c/lib_dos_seek_with_error_state.c
 modules/submodules/unknown26.s                                         c/lib_dos_write_by_index.c
 modules/submodules/unknown17.s                                         c/lib_dos_write_with_error_state.c
 modules/submodules/unknown8.s                                          c/lib_format_u32_to_decimal_string.c

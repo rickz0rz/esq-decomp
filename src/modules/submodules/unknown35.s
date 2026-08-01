@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   D0-D1/A0-A3
 ; CALLS:
-;   ALLOC_AllocFromFreeList (allocator), HANDLE_OpenFromModeString (parse mode/open)
+;   _ALLOC_AllocFromFreeList (allocator), HANDLE_OpenFromModeString (parse mode/open)
 ; READS:
 ;   Global_PreallocHandleNode0
 ; DESC:
@@ -41,7 +41,7 @@ HANDLE_OpenWithMode:
     BNE.S   .init_handle
 
     PEA     34.W
-    JSR     ALLOC_AllocFromFreeList(PC)
+    JSR     _ALLOC_AllocFromFreeList(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L D0,A3

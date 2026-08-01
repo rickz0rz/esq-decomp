@@ -1,7 +1,7 @@
-    XDEF    BUFFER_EnsureAllocated
+    XDEF    _BUFFER_EnsureAllocated
 
 ;------------------------------------------------------------------------------
-; FUNC: BUFFER_EnsureAllocated   (Ensure buffer memory exists for a stream.)
+; FUNC: _BUFFER_EnsureAllocated   (Ensure buffer memory exists for a stream.)
 ; ARGS:
 ;   stack +8: A3 = stream/handle struct pointer
 ; RET:
@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0/A3
 ; CALLS:
-;   ALLOC_AllocFromFreeList (allocator)
+;   _ALLOC_AllocFromFreeList (allocator)
 ; READS:
 ;   Global_StreamBufferAllocSize
 ; WRITES:
@@ -20,7 +20,7 @@
 ; NOTES:
 ;   Returns success immediately if a buffer is already present and not flagged.
 ;------------------------------------------------------------------------------
-BUFFER_EnsureAllocated:
+_BUFFER_EnsureAllocated:
     MOVE.L  A3,-(A7)
     MOVEA.L 8(A7),A3
     TST.L   Struct_PreallocHandleNode__BufferCapacity(A3)
@@ -34,7 +34,7 @@ BUFFER_EnsureAllocated:
 
 .alloc_buffer:
     MOVE.L  Global_StreamBufferAllocSize(A4),-(A7)
-    JSR     ALLOC_AllocFromFreeList(PC)
+    JSR     _ALLOC_AllocFromFreeList(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  D0,Struct_PreallocHandleNode__BufferCursor(A3)

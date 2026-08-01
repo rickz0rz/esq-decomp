@@ -113,3 +113,5 @@ modules/submodules/unknown37.s                                         c/lib_han
 modules/submodules/unknown17.s                                         c/lib_dos_write_with_error_state.c
 modules/submodules/unknown19.s                                         c/lib_dos_read_with_error_state.c
 modules/submodules/unknown38.s                                         c/lib_signal_poll_and_dispatch.c
+modules/submodules/unknown18.s                                         c/lib_dos_seek_with_error_state.c
+modules/submodules/unknown31.s                                         c/lib_buffer_ensure_allocated.c

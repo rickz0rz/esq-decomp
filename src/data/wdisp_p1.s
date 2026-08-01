@@ -209,7 +209,7 @@ _PREALLOC_DefaultHandleFlagsSeed:
 ; SYM: _PREALLOC_AllocBlockSizeSeed   (startup allocator block-size seed)
 ; TYPE: u32
 ; PURPOSE: Initial value read through Global_AllocBlockSize (A4-1012).
-; USED BY: ALLOC_AllocFromFreeList
+; USED BY: _ALLOC_AllocFromFreeList
 ; NOTES: Seed is `$00000400` (1024-byte allocator growth quantum).
 ;------------------------------------------------------------------------------
 _PREALLOC_AllocBlockSizeSeed:

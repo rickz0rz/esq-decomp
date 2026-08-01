@@ -1,7 +1,7 @@
-    XDEF    ALLOC_AllocFromFreeList
+    XDEF    _ALLOC_AllocFromFreeList
 
 ;------------------------------------------------------------------------------
-; FUNC: ALLOC_AllocFromFreeList   (Allocate a block from the internal free list.)
+; FUNC: _ALLOC_AllocFromFreeList   (Allocate a block from the internal free list.)
 ; ARGS:
 ;   stack +20: D7 = size (bytes)
 ; RET:
@@ -20,7 +20,7 @@
 ; NOTES:
 ;   Size is aligned to 4 bytes and clamped to a minimum of 8 bytes.
 ;------------------------------------------------------------------------------
-ALLOC_AllocFromFreeList:
+_ALLOC_AllocFromFreeList:
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVE.L  20(A7),D7
     TST.L   D7
@@ -112,7 +112,7 @@ ALLOC_AllocFromFreeList:
     JSR     ALLOC_InsertFreeBlock(PC)
 
     MOVE.L  D7,(A7)
-    BSR.W   ALLOC_AllocFromFreeList
+    BSR.W   _ALLOC_AllocFromFreeList
 
     ADDQ.W  #8,A7
     BRA.S   .return

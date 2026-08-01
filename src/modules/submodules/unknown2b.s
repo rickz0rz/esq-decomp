@@ -259,7 +259,7 @@ STREAM_BufferedWriteString:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   BUFFER_EnsureAllocated, _DOS_WriteByIndex, _DOS_SeekByIndex, DOS_ReadByIndex, STREAM_BufferedGetc
+;   _BUFFER_EnsureAllocated, _DOS_WriteByIndex, _DOS_SeekByIndex, DOS_ReadByIndex, STREAM_BufferedGetc
 ; READS:
 ;   Struct_PreallocHandleNode__BufferCursor/WriteRemaining/BufferBase/BufferCapacity/OpenFlags/ModeFlags/StateFlags/HandleIndex,
 ;   Global_DosIoErr(A4)
@@ -310,7 +310,7 @@ STREAM_BufferedPutcOrFlush:
     BEQ.W   .return
 
     MOVE.L  A3,-(A7)
-    JSR     BUFFER_EnsureAllocated(PC)
+    JSR     _BUFFER_EnsureAllocated(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
@@ -632,7 +632,7 @@ DOS_MovepWordReadCallback:
 ; CLOBBERS:
 ;   A0/A1/A3/A7/D0/D5/D6/D7
 ; CALLS:
-;   STREAM_BufferedPutcOrFlush, BUFFER_EnsureAllocated, DOS_ReadByIndex
+;   STREAM_BufferedPutcOrFlush, _BUFFER_EnsureAllocated, DOS_ReadByIndex
 ; READS:
 ;   Struct_PreallocHandleNode__BufferCursor/ReadRemaining/BufferBase/BufferCapacity/OpenFlags/ModeFlags/StateFlags/HandleIndex
 ; WRITES:
@@ -693,7 +693,7 @@ STREAM_BufferedGetc:
 
 .ensure_buffer:
     MOVE.L  A3,-(A7)
-    JSR     BUFFER_EnsureAllocated(PC)
+    JSR     _BUFFER_EnsureAllocated(PC)
 
     ADDQ.W  #4,A7
     TST.L   D0
