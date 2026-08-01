@@ -14,9 +14,9 @@
 ; CALLS:
 ;   _LVOExecute
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, DISKIO_Pc1MountAssignFlag, DISKIO_CMD_MOUNT_PC1, DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT
+;   Global_REF_DOS_LIBRARY_2, _DISKIO_Pc1MountAssignFlag, _DISKIO_CMD_MOUNT_PC1, _DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT
 ; WRITES:
-;   DISKIO_Pc1MountAssignFlag
+;   _DISKIO_Pc1MountAssignFlag
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -24,11 +24,11 @@
 ;------------------------------------------------------------------------------
 _DISKIO_EnsurePc1MountedAndGfxAssigned:
     MOVEM.L D2-D3,-(A7)
-    TST.W   DISKIO_Pc1MountAssignFlag
+    TST.W   _DISKIO_Pc1MountAssignFlag
     BNE.S   DISKIO_EnsurePc1MountedAndGfxAssigned_Return
 
-    MOVE.W  #1,DISKIO_Pc1MountAssignFlag
-    LEA     DISKIO_CMD_MOUNT_PC1,A0
+    MOVE.W  #1,_DISKIO_Pc1MountAssignFlag
+    LEA     _DISKIO_CMD_MOUNT_PC1,A0
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
@@ -36,7 +36,7 @@ _DISKIO_EnsurePc1MountedAndGfxAssigned:
     JSR     _LVOExecute(A6)
 
     MOVE.L  D2,D3
-    LEA     DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT,A0
+    LEA     _DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT,A0
     MOVE.L  A0,D1
     JSR     _LVOExecute(A6)
 

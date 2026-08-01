@@ -80,9 +80,6 @@
     XDEF    _SCRIPT_FilterTag_SBE
     XDEF    _SCRIPT_FilterTag_SPORTS
     XDEF    _TEXTDISP_LastDispatchMatchIndex
-    XDEF    _TEXTDISP_LastDispatchGroupId
-    XDEF    _TEXTDISP_CommandBufferPtr
-    XDEF    _TEXTDISP_CommandPrefixFormat
 ; ========== SCRIPT.c ==========
 
 _Global_STR_SCRIPT_C_1:
@@ -107,227 +104,227 @@ _SCRIPT_SerialReadModeOverflowCount:
 ;------------------------------------------------------------------------------
 _SCRIPT_CtrlLineAssertedFlag:
     DS.L    1
-Global_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
+_Global_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
     NStr    "No Current Weather Data Available"
 _Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE:
-    DC.L    Global_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE
-SCRIPT_StrNoForecastWeatherData:
+    DC.L    _Global_STR_NO_CURRENT_WEATHER_DATA_AVIALABLE
+_SCRIPT_StrNoForecastWeatherData:
     NStr    "No Forecast Weather Data Available"
 _SCRIPT_PtrNoForecastWeatherData:
-    DC.L    SCRIPT_StrNoForecastWeatherData
-SCRIPT_StrWeatherDataAvailabilityDisclaimer:
+    DC.L    _SCRIPT_StrNoForecastWeatherData
+_SCRIPT_StrWeatherDataAvailabilityDisclaimer:
     NStr    "May not be available in all areas."
 _SCRIPT_PtrWeatherDataAvailabilityDisclaimer:
-    DC.L    SCRIPT_StrWeatherDataAvailabilityDisclaimer
-SCRIPT_StrContinued:
+    DC.L    _SCRIPT_StrWeatherDataAvailabilityDisclaimer
+_SCRIPT_StrContinued:
     NStr    "Continued"
-SCRIPT_PtrContinued:
-    DC.L    SCRIPT_StrContinued
+_SCRIPT_PtrContinued:
+    DC.L    _SCRIPT_StrContinued
 
-Global_STR_JANUARY:
+_Global_STR_JANUARY:
     NStr    "January"
-Global_STR_FEBRUARY:
+_Global_STR_FEBRUARY:
     NStr    "February"
-Global_STR_MARCH:
+_Global_STR_MARCH:
     NStr    "March"
-Global_STR_APRIL:
+_Global_STR_APRIL:
     NStr    "April"
-Global_STR_MAY:
+_Global_STR_MAY:
     NStr    "May"
-Global_STR_JUNE:
+_Global_STR_JUNE:
     NStr    "June"
-Global_STR_JULY:
+_Global_STR_JULY:
     NStr    "July"
-Global_STR_AUGUST:
+_Global_STR_AUGUST:
     NStr    "August"
-Global_STR_SEPTEMBER:
+_Global_STR_SEPTEMBER:
     NStr    "September"
-Global_STR_OCTOBER:
+_Global_STR_OCTOBER:
     NStr    "October"
-Global_STR_NOVEMBER:
+_Global_STR_NOVEMBER:
     NStr    "November"
-Global_STR_DECEMBER:
+_Global_STR_DECEMBER:
     NStr    "December"
 
 _Global_JMPTBL_MONTHS:
-    DC.L    Global_STR_JANUARY
-    DC.L    Global_STR_FEBRUARY
-    DC.L    Global_STR_MARCH
-    DC.L    Global_STR_APRIL
-    DC.L    Global_STR_MAY
-    DC.L    Global_STR_JUNE
-    DC.L    Global_STR_JULY
-    DC.L    Global_STR_AUGUST
-    DC.L    Global_STR_SEPTEMBER
-    DC.L    Global_STR_OCTOBER
-    DC.L    Global_STR_NOVEMBER
-    DC.L    Global_STR_DECEMBER
+    DC.L    _Global_STR_JANUARY
+    DC.L    _Global_STR_FEBRUARY
+    DC.L    _Global_STR_MARCH
+    DC.L    _Global_STR_APRIL
+    DC.L    _Global_STR_MAY
+    DC.L    _Global_STR_JUNE
+    DC.L    _Global_STR_JULY
+    DC.L    _Global_STR_AUGUST
+    DC.L    _Global_STR_SEPTEMBER
+    DC.L    _Global_STR_OCTOBER
+    DC.L    _Global_STR_NOVEMBER
+    DC.L    _Global_STR_DECEMBER
 
-SCRIPT_StrMonthShort_Jan:
+_SCRIPT_StrMonthShort_Jan:
     NStr    "Jan "
-SCRIPT_StrMonthShort_Feb:
+_SCRIPT_StrMonthShort_Feb:
     NStr    "Feb "
-SCRIPT_StrMonthShort_Mar:
+_SCRIPT_StrMonthShort_Mar:
     NStr    "Mar "
-SCRIPT_StrMonthShort_Apr:
+_SCRIPT_StrMonthShort_Apr:
     NStr    "Apr "
-SCRIPT_StrMonthShort_May:
+_SCRIPT_StrMonthShort_May:
     NStr    "May "
-SCRIPT_StrMonthShort_Jun:
+_SCRIPT_StrMonthShort_Jun:
     NStr    "Jun "
-SCRIPT_StrMonthShort_Jul:
+_SCRIPT_StrMonthShort_Jul:
     NStr    "Jul "
-SCRIPT_StrMonthShort_Aug:
+_SCRIPT_StrMonthShort_Aug:
     NStr    "Aug "
-SCRIPT_StrMonthShort_Sep:
+_SCRIPT_StrMonthShort_Sep:
     NStr    "Sep "
-SCRIPT_StrMonthShort_Oct:
+_SCRIPT_StrMonthShort_Oct:
     NStr    "Oct "
-SCRIPT_StrMonthShort_Nov:
+_SCRIPT_StrMonthShort_Nov:
     NStr    "Nov "
-SCRIPT_StrMonthShort_Dec:
+_SCRIPT_StrMonthShort_Dec:
     NStr    "Dec "
 
 _Global_JMPTBL_SHORT_MONTHS:
-    DC.L    SCRIPT_StrMonthShort_Jan
-    DC.L    SCRIPT_StrMonthShort_Feb
-    DC.L    SCRIPT_StrMonthShort_Mar
-    DC.L    SCRIPT_StrMonthShort_Apr
-    DC.L    SCRIPT_StrMonthShort_May
-    DC.L    SCRIPT_StrMonthShort_Jun
-    DC.L    SCRIPT_StrMonthShort_Jul
-    DC.L    SCRIPT_StrMonthShort_Aug
-    DC.L    SCRIPT_StrMonthShort_Sep
-    DC.L    SCRIPT_StrMonthShort_Oct
-    DC.L    SCRIPT_StrMonthShort_Nov
-    DC.L    SCRIPT_StrMonthShort_Dec
+    DC.L    _SCRIPT_StrMonthShort_Jan
+    DC.L    _SCRIPT_StrMonthShort_Feb
+    DC.L    _SCRIPT_StrMonthShort_Mar
+    DC.L    _SCRIPT_StrMonthShort_Apr
+    DC.L    _SCRIPT_StrMonthShort_May
+    DC.L    _SCRIPT_StrMonthShort_Jun
+    DC.L    _SCRIPT_StrMonthShort_Jul
+    DC.L    _SCRIPT_StrMonthShort_Aug
+    DC.L    _SCRIPT_StrMonthShort_Sep
+    DC.L    _SCRIPT_StrMonthShort_Oct
+    DC.L    _SCRIPT_StrMonthShort_Nov
+    DC.L    _SCRIPT_StrMonthShort_Dec
 
-Global_STR_SUNDAY_1:
+_Global_STR_SUNDAY_1:
     NStr    "Sunday"
-Global_STR_MONDAY_1:
+_Global_STR_MONDAY_1:
     NStr    "Monday"
-Global_STR_TUESDAY_1:
+_Global_STR_TUESDAY_1:
     NStr    "Tuesday"
-Global_STR_WEDNESDAY_1:
+_Global_STR_WEDNESDAY_1:
     NStr    "Wednesday"
-Global_STR_THURSDAY_1:
+_Global_STR_THURSDAY_1:
     NStr    "Thursday"
-Global_STR_FRIDAY_1:
+_Global_STR_FRIDAY_1:
     NStr    "Friday"
-Global_STR_SATURDAY_1:
+_Global_STR_SATURDAY_1:
     NStr    "Saturday"
 
 _Global_JMPTBL_DAYS_OF_WEEK:
-    DC.L    Global_STR_SUNDAY_1
-    DC.L    Global_STR_MONDAY_1
-    DC.L    Global_STR_TUESDAY_1
-    DC.L    Global_STR_WEDNESDAY_1
-    DC.L    Global_STR_THURSDAY_1
-    DC.L    Global_STR_FRIDAY_1
-    DC.L    Global_STR_SATURDAY_1
+    DC.L    _Global_STR_SUNDAY_1
+    DC.L    _Global_STR_MONDAY_1
+    DC.L    _Global_STR_TUESDAY_1
+    DC.L    _Global_STR_WEDNESDAY_1
+    DC.L    _Global_STR_THURSDAY_1
+    DC.L    _Global_STR_FRIDAY_1
+    DC.L    _Global_STR_SATURDAY_1
 
-SCRIPT_StrDayShort_Sun:
+_SCRIPT_StrDayShort_Sun:
     NStr    "Sun "
-SCRIPT_StrDayShort_Mon:
+_SCRIPT_StrDayShort_Mon:
     NStr    "Mon "
-SCRIPT_StrDayShort_Tue:
+_SCRIPT_StrDayShort_Tue:
     NStr    "Tue "
-SCRIPT_StrDayShort_Wed:
+_SCRIPT_StrDayShort_Wed:
     NStr    "Wed "
-SCRIPT_StrDayShort_Thu:
+_SCRIPT_StrDayShort_Thu:
     NStr    "Thu "
-SCRIPT_StrDayShort_Fri:
+_SCRIPT_StrDayShort_Fri:
     NStr    "Fri "
-SCRIPT_StrDayShort_Sat:
+_SCRIPT_StrDayShort_Sat:
     NStr    "Sat "
 _Global_JMPTBL_SHORT_DAYS_OF_WEEK:
-    DC.L    SCRIPT_StrDayShort_Sun
-    DC.L    SCRIPT_StrDayShort_Mon
-    DC.L    SCRIPT_StrDayShort_Tue
-    DC.L    SCRIPT_StrDayShort_Wed
-    DC.L    SCRIPT_StrDayShort_Thu
-    DC.L    SCRIPT_StrDayShort_Fri
-    DC.L    SCRIPT_StrDayShort_Sat
-SCRIPT_StrChannelLabel_Monday:
+    DC.L    _SCRIPT_StrDayShort_Sun
+    DC.L    _SCRIPT_StrDayShort_Mon
+    DC.L    _SCRIPT_StrDayShort_Tue
+    DC.L    _SCRIPT_StrDayShort_Wed
+    DC.L    _SCRIPT_StrDayShort_Thu
+    DC.L    _SCRIPT_StrDayShort_Fri
+    DC.L    _SCRIPT_StrDayShort_Sat
+_SCRIPT_StrChannelLabel_Monday:
     NStr    "Monday"
-SCRIPT_StrChannelLabel_Tuesday:
+_SCRIPT_StrChannelLabel_Tuesday:
     NStr    "Tuesday"
-SCRIPT_StrChannelLabel_Wednesday:
+_SCRIPT_StrChannelLabel_Wednesday:
     NStr    "Wednesday"
-SCRIPT_StrChannelLabel_Thursday:
+_SCRIPT_StrChannelLabel_Thursday:
     NStr    "Thursday"
-SCRIPT_StrChannelLabel_Friday:
+_SCRIPT_StrChannelLabel_Friday:
     NStr    "Friday"
-SCRIPT_StrChannelLabel_Saturday:
+_SCRIPT_StrChannelLabel_Saturday:
     NStr    "Saturday"
-SCRIPT_StrChannelLabel_Sunday:
+_SCRIPT_StrChannelLabel_Sunday:
     NStr    "Sunday"
-SCRIPT_StrChannelLabel_Weekdays:
+_SCRIPT_StrChannelLabel_Weekdays:
     NStr    "Weekdays"
-SCRIPT_StrChannelLabel_Weeknights:
+_SCRIPT_StrChannelLabel_Weeknights:
     NStr    "Weeknights"
-SCRIPT_StrChannelLabel_ComingSoon:
+_SCRIPT_StrChannelLabel_ComingSoon:
     NStr    "Coming Soon"
-SCRIPT_StrChannelLabel_ThisMonth:
+_SCRIPT_StrChannelLabel_ThisMonth:
     NStr    "This Month"
-SCRIPT_StrChannelLabel_NextMonth:
+_SCRIPT_StrChannelLabel_NextMonth:
     NStr    "Next Month"
-SCRIPT_StrChannelLabel_ThisFall:
+_SCRIPT_StrChannelLabel_ThisFall:
     NStr    "This Fall"
-SCRIPT_StrChannelLabel_ThisSummer:
+_SCRIPT_StrChannelLabel_ThisSummer:
     NStr    "This Summer"
 ;------------------------------------------------------------------------------
 ; SYM: _SCRIPT_StrChannelLabel_TuesdaysFridays   (legacy channel-label index anchor)
 ; TYPE: cstring
 ; PURPOSE: Historical anchor used by `index * 4` address math in legacy callsites.
 ; USED BY: CLEANUP3/Textdisp channel-label lookups.
-; NOTES: Anchor label only; pointer-table base is SCRIPT_ChannelLabelPtrTable.
+; NOTES: Anchor label only; pointer-table base is _SCRIPT_ChannelLabelPtrTable.
 ;------------------------------------------------------------------------------
 _SCRIPT_StrChannelLabel_TuesdaysFridays:
     NStr    "Tuesdays & Fridays"
-SCRIPT_StrChannelLabel_MondaysSaturdays:
+_SCRIPT_StrChannelLabel_MondaysSaturdays:
     NStr    "Mondays & Saturdays"
-SCRIPT_StrChannelLabel_Weekends:
+_SCRIPT_StrChannelLabel_Weekends:
     NStr    "Weekends"
-SCRIPT_StrChannelLabel_EveryNight:
+_SCRIPT_StrChannelLabel_EveryNight:
     NStr    "Every Night"
-SCRIPT_StrChannelLabel_EveryDay:
+_SCRIPT_StrChannelLabel_EveryDay:
     NStr    "Every Day"
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_ChannelLabelEmptySlot0/SCRIPT_ChannelLabelEmptySlot1/SCRIPT_ChannelLabelEmptySlot2/SCRIPT_ChannelLabelEmptySlot3   (channel label empty-string slots)
+; SYM: _SCRIPT_ChannelLabelEmptySlot0/_SCRIPT_ChannelLabelEmptySlot1/_SCRIPT_ChannelLabelEmptySlot2/_SCRIPT_ChannelLabelEmptySlot3   (channel label empty-string slots)
 ; TYPE: char[2] x4
-; PURPOSE: Zero-initialized placeholders referenced by SCRIPT_ChannelLabelPtrTable.
+; PURPOSE: Zero-initialized placeholders referenced by _SCRIPT_ChannelLabelPtrTable.
 ; USED BY: Legacy channel-label pointer lookups in TEXTDISP/CLEANUP3 flows.
 ; NOTES:
 ;   These currently act as empty-string targets (byte0 = NUL).
 ;   No direct symbol-based writers are identified yet; preserve contiguous layout.
 ;------------------------------------------------------------------------------
-SCRIPT_ChannelLabelEmptySlot0:
-SCRIPT_ChannelLabelEmptySlot0_BackingWord:
+_SCRIPT_ChannelLabelEmptySlot0:
+_SCRIPT_ChannelLabelEmptySlot0_BackingWord:
     DS.W    1
-SCRIPT_ChannelLabelEmptySlot1:
-SCRIPT_ChannelLabelEmptySlot1_BackingWord:
+_SCRIPT_ChannelLabelEmptySlot1:
+_SCRIPT_ChannelLabelEmptySlot1_BackingWord:
     DS.W    1
-SCRIPT_ChannelLabelEmptySlot2:
-SCRIPT_ChannelLabelEmptySlot2_BackingWord:
+_SCRIPT_ChannelLabelEmptySlot2:
+_SCRIPT_ChannelLabelEmptySlot2_BackingWord:
     DS.W    1
-SCRIPT_ChannelLabelEmptySlot3:
-SCRIPT_ChannelLabelEmptySlot3_BackingWord:
+_SCRIPT_ChannelLabelEmptySlot3:
+_SCRIPT_ChannelLabelEmptySlot3_BackingWord:
     DS.W    1
-SCRIPT_StrChannelLabel_MondaysThruSaturdays:
+_SCRIPT_StrChannelLabel_MondaysThruSaturdays:
     NStr    "Mondays thru Saturdays"
-SCRIPT_StrChannelLabel_MondaysThruThursdays:
+_SCRIPT_StrChannelLabel_MondaysThruThursdays:
     NStr    "Mondays thru Thursdays"
-SCRIPT_StrChannelLabel_WeekdayMornings:
+_SCRIPT_StrChannelLabel_WeekdayMornings:
     NStr    "Weekday Mornings"
-SCRIPT_StrChannelLabel_WeekdayAfternoons:
+_SCRIPT_StrChannelLabel_WeekdayAfternoons:
     NStr    "Weekday Afternoons"
-SCRIPT_StrChannelLabel_TuesdaysThursdays:
+_SCRIPT_StrChannelLabel_TuesdaysThursdays:
     NStr    "Tuesdays & Thursdays"
-SCRIPT_StrChannelLabel_ThisWeek:
+_SCRIPT_StrChannelLabel_ThisWeek:
     NStr    "This Week"
 ;------------------------------------------------------------------------------
-; SYM: SCRIPT_ChannelLabelPtrTable   (channel label pointer table)
+; SYM: _SCRIPT_ChannelLabelPtrTable   (channel label pointer table)
 ; TYPE: array<u32 ptr>
 ; PURPOSE: Maps channel/group selector values to label strings for append paths.
 ; USED BY: CLEANUP3/Textdisp routines that index from _SCRIPT_StrChannelLabel_TuesdaysFridays.
@@ -335,36 +332,36 @@ SCRIPT_StrChannelLabel_ThisWeek:
 ;   Legacy callsites index relative to _SCRIPT_StrChannelLabel_TuesdaysFridays.
 ;   Entries 19..22 intentionally point at zeroed empty-slot placeholders.
 ;------------------------------------------------------------------------------
-SCRIPT_ChannelLabelPtrTable:
-    DC.L    SCRIPT_StrChannelLabel_Monday
-    DC.L    SCRIPT_StrChannelLabel_Tuesday
-    DC.L    SCRIPT_StrChannelLabel_Wednesday
-    DC.L    SCRIPT_StrChannelLabel_Thursday
-    DC.L    SCRIPT_StrChannelLabel_Friday
-    DC.L    SCRIPT_StrChannelLabel_Saturday
-    DC.L    SCRIPT_StrChannelLabel_Sunday
-    DC.L    SCRIPT_StrChannelLabel_Weekdays
-    DC.L    SCRIPT_StrChannelLabel_Weeknights
-    DC.L    SCRIPT_StrChannelLabel_ComingSoon
-    DC.L    SCRIPT_StrChannelLabel_ThisMonth
-    DC.L    SCRIPT_StrChannelLabel_NextMonth
-    DC.L    SCRIPT_StrChannelLabel_ThisFall
-    DC.L    SCRIPT_StrChannelLabel_ThisSummer
+_SCRIPT_ChannelLabelPtrTable:
+    DC.L    _SCRIPT_StrChannelLabel_Monday
+    DC.L    _SCRIPT_StrChannelLabel_Tuesday
+    DC.L    _SCRIPT_StrChannelLabel_Wednesday
+    DC.L    _SCRIPT_StrChannelLabel_Thursday
+    DC.L    _SCRIPT_StrChannelLabel_Friday
+    DC.L    _SCRIPT_StrChannelLabel_Saturday
+    DC.L    _SCRIPT_StrChannelLabel_Sunday
+    DC.L    _SCRIPT_StrChannelLabel_Weekdays
+    DC.L    _SCRIPT_StrChannelLabel_Weeknights
+    DC.L    _SCRIPT_StrChannelLabel_ComingSoon
+    DC.L    _SCRIPT_StrChannelLabel_ThisMonth
+    DC.L    _SCRIPT_StrChannelLabel_NextMonth
+    DC.L    _SCRIPT_StrChannelLabel_ThisFall
+    DC.L    _SCRIPT_StrChannelLabel_ThisSummer
     DC.L    _SCRIPT_StrChannelLabel_TuesdaysFridays
-    DC.L    SCRIPT_StrChannelLabel_MondaysSaturdays
-    DC.L    SCRIPT_StrChannelLabel_Weekends
-    DC.L    SCRIPT_StrChannelLabel_EveryNight
-    DC.L    SCRIPT_StrChannelLabel_EveryDay
-    DC.L    SCRIPT_ChannelLabelEmptySlot0
-    DC.L    SCRIPT_ChannelLabelEmptySlot1
-    DC.L    SCRIPT_ChannelLabelEmptySlot2
-    DC.L    SCRIPT_ChannelLabelEmptySlot3
-    DC.L    SCRIPT_StrChannelLabel_MondaysThruSaturdays
-    DC.L    SCRIPT_StrChannelLabel_MondaysThruThursdays
-    DC.L    SCRIPT_StrChannelLabel_WeekdayMornings
-    DC.L    SCRIPT_StrChannelLabel_WeekdayAfternoons
-    DC.L    SCRIPT_StrChannelLabel_TuesdaysThursdays
-    DC.L    SCRIPT_StrChannelLabel_ThisWeek
+    DC.L    _SCRIPT_StrChannelLabel_MondaysSaturdays
+    DC.L    _SCRIPT_StrChannelLabel_Weekends
+    DC.L    _SCRIPT_StrChannelLabel_EveryNight
+    DC.L    _SCRIPT_StrChannelLabel_EveryDay
+    DC.L    _SCRIPT_ChannelLabelEmptySlot0
+    DC.L    _SCRIPT_ChannelLabelEmptySlot1
+    DC.L    _SCRIPT_ChannelLabelEmptySlot2
+    DC.L    _SCRIPT_ChannelLabelEmptySlot3
+    DC.L    _SCRIPT_StrChannelLabel_MondaysThruSaturdays
+    DC.L    _SCRIPT_StrChannelLabel_MondaysThruThursdays
+    DC.L    _SCRIPT_StrChannelLabel_WeekdayMornings
+    DC.L    _SCRIPT_StrChannelLabel_WeekdayAfternoons
+    DC.L    _SCRIPT_StrChannelLabel_TuesdaysThursdays
+    DC.L    _SCRIPT_StrChannelLabel_ThisWeek
 
 ; Another struct?
 _Global_STR_ALIGNED_NOW_SHOWING:
@@ -391,34 +388,34 @@ _Global_STR_ALIGNED_ON:
     DC.B    TextAlignCenter,"on",0
 _Global_STR_ALIGNED_CHANNEL_1:
     NStr2   TextAlignCenter,"Channel "
-SCRIPT_StrSportsOnPrefix:
+_SCRIPT_StrSportsOnPrefix:
     NStr    "Sports on "
 _SCRIPT_PtrSportsOnPrefix:
-    DC.L    SCRIPT_StrSportsOnPrefix
-SCRIPT_StrMovieSummaryForPrefix:
+    DC.L    _SCRIPT_StrSportsOnPrefix
+_SCRIPT_StrMovieSummaryForPrefix:
     NStr    "Movie Summary for "
 _SCRIPT_PtrMovieSummaryForPrefix:
-    DC.L    SCRIPT_StrMovieSummaryForPrefix
-SCRIPT_StrSummaryOfPrefix:
+    DC.L    _SCRIPT_StrMovieSummaryForPrefix
+_SCRIPT_StrSummaryOfPrefix:
     NStr    "Summary of "
 _SCRIPT_PtrSummaryOfPrefix:
-    DC.L    SCRIPT_StrSummaryOfPrefix
-SCRIPT_StrChannelSuffix:
+    DC.L    _SCRIPT_StrSummaryOfPrefix
+_SCRIPT_StrChannelSuffix:
     NStr    " channel "
 _SCRIPT_PtrChannelSuffix:
-    DC.L    SCRIPT_StrChannelSuffix
-SCRIPT_StrNoDataPlaceholder:
+    DC.L    _SCRIPT_StrChannelSuffix
+_SCRIPT_StrNoDataPlaceholder:
     NStr    "No Data."
 _SCRIPT_PtrNoDataPlaceholder:
-    DC.L    SCRIPT_StrNoDataPlaceholder
-Global_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
+    DC.L    _SCRIPT_StrNoDataPlaceholder
+_Global_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
     NStr    "Please Stand By for your Local Listings.  ER007"
 _Global_PTR_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION:
-    DC.L    Global_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
-Global_STR_OFF_AIR_1:
+    DC.L    _Global_STR_ER007_AWAITING_LISTINGS_DATA_TRANSMISSION
+_Global_STR_OFF_AIR_1:
     NStr    "Off Air."
 _SCRIPT_PtrOffAirPlaceholder:
-    DC.L    Global_STR_OFF_AIR_1
+    DC.L    _Global_STR_OFF_AIR_1
 _Global_STR_GRID_DATE_FORMAT_STRING:
     NStr    "%s %s %ld %04ld"
 _Global_STR_WEATHER_UPDATE_FOR:
@@ -514,10 +511,10 @@ _SCRIPT_Tag_YL:
 ;------------------------------------------------------------------------------
 _TEXTDISP_SourceConfigFlagMask:
     DS.W    1
-Global_STR_PREVUESPORTS:
+_Global_STR_PREVUESPORTS:
     NStr    "PrevueSports"
 _TEXTDISP_PtrPrevueSportsTag:
-    DC.L    Global_STR_PREVUESPORTS
+    DC.L    _Global_STR_PREVUESPORTS
 _SCRIPT_AlignedPrefixEmptyA:
     NStr    TextAlignCenter
 _SCRIPT_AlignedPrefixEmptyB:
@@ -576,9 +573,3 @@ _SCRIPT_FilterTag_SPORTS:
 ;------------------------------------------------------------------------------
 _TEXTDISP_LastDispatchMatchIndex:
     DC.W    $ffff
-_TEXTDISP_LastDispatchGroupId:
-    DC.B    0,"1"
-_TEXTDISP_CommandBufferPtr:
-    DS.L    1
-_TEXTDISP_CommandPrefixFormat:
-    NStr3   "xx%s",18,"TEMPO"

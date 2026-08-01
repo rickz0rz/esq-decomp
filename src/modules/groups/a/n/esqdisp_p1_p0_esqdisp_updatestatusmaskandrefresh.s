@@ -13,9 +13,9 @@
 ; CALLS:
 ;   _ESQDISP_ApplyStatusMaskToIndicators
 ; READS:
-;   ESQDISP_StatusIndicatorMask, fff
+;   _ESQDISP_StatusIndicatorMask, fff
 ; WRITES:
-;   ESQDISP_StatusIndicatorMask
+;   _ESQDISP_StatusIndicatorMask
 ; DESC:
 ;   Sets or clears bits in the global status mask, clamps to 12 bits, and only
 ;   refreshes status indicators when the effective mask changed.
@@ -27,21 +27,21 @@ _ESQDISP_UpdateStatusMaskAndRefresh:
     MOVE.L  16(A7),D7
     MOVE.L  20(A7),D6
     MOVEQ   #-1,D5
-    MOVE.L  ESQDISP_StatusIndicatorMask,D5
+    MOVE.L  _ESQDISP_StatusIndicatorMask,D5
     TST.L   D6
     BEQ.S   .lab_08DB
 
-    OR.L    D7,ESQDISP_StatusIndicatorMask
+    OR.L    D7,_ESQDISP_StatusIndicatorMask
     BRA.S   .lab_08DC
 
 .lab_08DB:
     MOVE.L  D7,D0
     NOT.L   D0
-    AND.L   D0,ESQDISP_StatusIndicatorMask
+    AND.L   D0,_ESQDISP_StatusIndicatorMask
 
 .lab_08DC:
-    ANDI.L  #$fff,ESQDISP_StatusIndicatorMask
-    MOVE.L  ESQDISP_StatusIndicatorMask,D0
+    ANDI.L  #$fff,_ESQDISP_StatusIndicatorMask
+    MOVE.L  _ESQDISP_StatusIndicatorMask,D0
     CMP.L   D0,D5
     BEQ.S   ESQDISP_UpdateStatusMaskAndRefresh_Return
 

@@ -27,9 +27,9 @@
 ; CALLS:
 ;   _ESQ_NoOp
 ; READS:
-;   ESQSHARED4_ApplyBannerColorStep, _ESQ_CopperListBannerA, _ESQ_BannerSweepWaitRowA, _ESQ_BannerSweepWaitStartProgramA, _ESQ_BannerSweepWaitEndProgramA, _ESQ_CopperListBannerB, _ESQ_BannerSweepWaitRowB, _ESQ_BannerSweepWaitStartProgramB, _ESQ_BannerSweepWaitEndProgramB, ESQPARS2_BannerColorThreshold, _ESQPARS2_BannerColorBaseValue, f6, ff, lab_0CA9, lab_0CAA, lab_0CAB
+;   ESQSHARED4_ApplyBannerColorStep, _ESQ_CopperListBannerA, _ESQ_BannerSweepWaitRowA, _ESQ_BannerSweepWaitStartProgramA, _ESQ_BannerSweepWaitEndProgramA, _ESQ_CopperListBannerB, _ESQ_BannerSweepWaitRowB, _ESQ_BannerSweepWaitStartProgramB, _ESQ_BannerSweepWaitEndProgramB, _ESQPARS2_BannerColorThreshold, _ESQPARS2_BannerColorBaseValue, f6, ff, lab_0CA9, lab_0CAA, lab_0CAB
 ; WRITES:
-;   _ESQPARS2_BannerSweepEntryGuardCounter, _ESQPARS2_BannerColorStepCounter, ESQPARS2_BannerColorThreshold
+;   _ESQPARS2_BannerSweepEntryGuardCounter, _ESQPARS2_BannerColorStepCounter, _ESQPARS2_BannerColorThreshold
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -55,7 +55,7 @@ ESQSHARED4_SetBannerCopperColorAndThreshold:
     LEA     _ESQ_BannerSweepWaitEndProgramB,A4
     MOVE.B  D0,(A4)
     ANDI.W  #$ff,D0
-    MOVE.W  D0,ESQPARS2_BannerColorThreshold
+    MOVE.W  D0,_ESQPARS2_BannerColorThreshold
     RTS
 
 ;!======
@@ -64,7 +64,7 @@ ESQSHARED4_SetBannerCopperColorAndThreshold:
     MOVEQ   #0,D0
     MOVE.W  (A4),D0
     SUBQ.W  #2,D0
-    CMP.W   ESQPARS2_BannerColorThreshold,D0
+    CMP.W   _ESQPARS2_BannerColorThreshold,D0
     BPL.W   .lab_0CA9
 
     RTS
@@ -127,9 +127,9 @@ _ESQSHARED4_ResetBannerColorToStart:
 ; CALLS:
 ;   _ESQ_NoOp, _ESQSHARED4_BindAndClearBannerWorkRaster, ESQSHARED4_SetBannerCopperColorAndThreshold
 ; READS:
-;   _ESQ_CopperListBannerA, _ESQ_BannerSnapshotPlane0DstPtrLoWord, _ESQ_BannerPlane0DstPtrReset_LoWord, _ESQ_BannerSweepSrcPlane0Ptr_LoWord, _ESQ_BannerSweepSrcPlane0PtrReset_LoWord, ESQPARS2_BannerColorThreshold, _ESQPARS2_BannerColorBaseValue, f6, lab_0CAE, lab_0CAF, lab_0CB0
+;   _ESQ_CopperListBannerA, _ESQ_BannerSnapshotPlane0DstPtrLoWord, _ESQ_BannerPlane0DstPtrReset_LoWord, _ESQ_BannerSweepSrcPlane0Ptr_LoWord, _ESQ_BannerSweepSrcPlane0PtrReset_LoWord, _ESQPARS2_BannerColorThreshold, _ESQPARS2_BannerColorBaseValue, f6, lab_0CAE, lab_0CAF, lab_0CB0
 ; WRITES:
-;   _ESQ_BannerColorClampValueA, _ESQ_BannerColorClampValueB, ESQPARS2_BannerSweepDelayCounter, _ESQPARS2_BannerColorStepCounter, ESQPARS2_BannerColorClampThreshold
+;   _ESQ_BannerColorClampValueA, _ESQ_BannerColorClampValueB, _ESQPARS2_BannerSweepDelayCounter, _ESQPARS2_BannerColorStepCounter, _ESQPARS2_BannerColorClampThreshold
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -160,7 +160,7 @@ ESQSHARED4_ApplyBannerColorStep:
     MOVEQ   #0,D0
     MOVE.W  (A4),D0
     SUBQ.W  #2,D0
-    CMP.W   ESQPARS2_BannerColorThreshold,D0
+    CMP.W   _ESQPARS2_BannerColorThreshold,D0
     BPL.W   .lab_0CAE
 
     RTS
@@ -168,7 +168,7 @@ ESQSHARED4_ApplyBannerColorStep:
 ;!======
 
 .lab_0CAE:
-    SUBI.W  #1,ESQPARS2_BannerSweepDelayCounter
+    SUBI.W  #1,_ESQPARS2_BannerSweepDelayCounter
     BNE.W   .lab_0CAF
 
     BRA.W   .lab_0CB0
@@ -176,7 +176,7 @@ ESQSHARED4_ApplyBannerColorStep:
 .lab_0CAF:
     BPL.W   .lab_0CB0
 
-    MOVE.W  #0,ESQPARS2_BannerSweepDelayCounter
+    MOVE.W  #0,_ESQPARS2_BannerSweepDelayCounter
     JSR     _ESQ_NoOp
 
 .lab_0CB0:
@@ -208,7 +208,7 @@ ESQSHARED4_ApplyBannerColorStep:
 
 .lab_0CB1:
     MOVE.W  #$8a,_ESQ_BannerColorClampValueA
-    MOVE.W  #$8a,ESQPARS2_BannerColorClampThreshold
+    MOVE.W  #$8a,_ESQPARS2_BannerColorClampThreshold
 
 .lab_0CB2:
     MOVE.W  _ESQ_BannerSweepSrcPlane0PtrReset_LoWord,D0
@@ -222,7 +222,7 @@ ESQSHARED4_ApplyBannerColorStep:
 
 .lab_0CB3:
     MOVE.W  #$8a,_ESQ_BannerColorClampValueB
-    MOVE.W  #$8a,ESQPARS2_BannerColorClampThreshold
+    MOVE.W  #$8a,_ESQPARS2_BannerColorClampThreshold
 
 ;------------------------------------------------------------------------------
 ; FUNC: ESQSHARED4_ApplyBannerColorStep_Return   (Routine at ESQSHARED4_ApplyBannerColorStep_Return)

@@ -64,7 +64,7 @@ LADFUNC2_EmitEscapedStringWithLimit:
 ; CALLS:
 ;   _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer, _LADFUNC2_EmitEscapedCharToScratch, _NEWGRID_JMPTBL_MATH_DivS32
 ; READS:
-;   LADFUNC_STR_QuoteAndNewline, LADFUNC_STR_Quote
+;   _LADFUNC_STR_QuoteAndNewline, _LADFUNC_STR_Quote
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -100,13 +100,13 @@ LADFUNC2_EmitEscapedStringWithLimit_Return:
     TST.L   D6
     BLE.S   .branch_1
 
-    PEA     LADFUNC_STR_QuoteAndNewline
+    PEA     _LADFUNC_STR_QuoteAndNewline
     JSR     _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7
 
 .branch_1:
-    PEA     LADFUNC_STR_Quote
+    PEA     _LADFUNC_STR_Quote
     JSR     _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7

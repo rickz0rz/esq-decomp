@@ -24,8 +24,6 @@
     XDEF    _P_TYPE_TAG_BRUSH
     XDEF    _P_TYPE_TAG_BANNER
     XDEF    _P_TYPE_STR_DEFAULT_TEXT
-    XDEF    _P_TYPE_STR_SOURCE_CONFIG
-    XDEF    _PARSEINI_DelimSpaceTab_Section1
 ; ========== P_TYPE.c ==========
 
 _Global_STR_P_TYPE_C_1:
@@ -83,7 +81,3 @@ _P_TYPE_TAG_BANNER:
     NStr    "BANNER"
 _P_TYPE_STR_DEFAULT_TEXT:
     NStr    "DEFAULT TEXT"
-_P_TYPE_STR_SOURCE_CONFIG:
-    NStr    "SOURCE CONFIG"
-_PARSEINI_DelimSpaceTab_Section1:
-    NStr2   " ",9

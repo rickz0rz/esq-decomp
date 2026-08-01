@@ -12,9 +12,9 @@
 ; CALLS:
 ;   _GCOMMAND_TickHighlightState, _ESQSHARED4_ProgramDisplayWindowAndCopper, _ESQSHARED4_BlitBannerRowsForActiveField, _SCRIPT_UpdateBannerCharTransition
 ; READS:
-;   BLTDDAT, LAB_0C85, LAB_0C86, LAB_0C87, LAB_0C89, LAB_0C8A, LAB_0C8B, _ED2_HighlightTickEnabledFlag, _ESQ_CopperEffectListA, _ESQ_BannerSnapshotPlane0DstPtrHiWord, _ESQ_BannerSnapshotPlane0DstPtrLoWord, _ESQ_BannerSnapshotPlane1DstPtrHiWord, _ESQ_BannerSnapshotPlane1DstPtrLoWord, _ESQ_BannerSnapshotPlane2DstPtrHiWord, _ESQ_BannerSnapshotPlane2DstPtrLoWord, _ESQ_CopperEffectListB, ESQPARS2_CopperProgramPendingFlag, _ESQPARS2_StateIndex, _ESQPARS2_ReadModeFlags, _GCOMMAND_HighlightHoldoffTickCount, _SCRIPT_BannerTransitionActive, VPOSR, b0
+;   BLTDDAT, LAB_0C85, LAB_0C86, LAB_0C87, LAB_0C89, LAB_0C8A, LAB_0C8B, _ED2_HighlightTickEnabledFlag, _ESQ_CopperEffectListA, _ESQ_BannerSnapshotPlane0DstPtrHiWord, _ESQ_BannerSnapshotPlane0DstPtrLoWord, _ESQ_BannerSnapshotPlane1DstPtrHiWord, _ESQ_BannerSnapshotPlane1DstPtrLoWord, _ESQ_BannerSnapshotPlane2DstPtrHiWord, _ESQ_BannerSnapshotPlane2DstPtrLoWord, _ESQ_CopperEffectListB, _ESQPARS2_CopperProgramPendingFlag, _ESQPARS2_StateIndex, _ESQPARS2_ReadModeFlags, _GCOMMAND_HighlightHoldoffTickCount, _SCRIPT_BannerTransitionActive, VPOSR, b0
 ; WRITES:
-;   BLTDDAT, COP1LCH, _ESQ_BannerSnapshotPlane0DstPtrHiWord, _ESQ_BannerSnapshotPlane0DstPtrLoWord, _ESQ_BannerSnapshotPlane1DstPtrHiWord, _ESQ_BannerSnapshotPlane1DstPtrLoWord, _ESQ_BannerSnapshotPlane2DstPtrHiWord, _ESQ_BannerSnapshotPlane2DstPtrLoWord, _ESQ_BannerSweepSrcPlane0Ptr_HiWord, _ESQ_BannerSweepSrcPlane0Ptr_LoWord, _ESQ_BannerSweepSrcPlane1Ptr_HiWord, _ESQ_BannerSweepSrcPlane1Ptr_LoWord, _ESQ_BannerSweepSrcPlane2Ptr_HiWord, _ESQ_BannerSweepSrcPlane2Ptr_LoWord, _ESQPARS2_BannerSnapshotPlane0DstPtr, ESQPARS2_BannerSnapshotPlane0DstPtrLo, _ESQPARS2_BannerSnapshotPlane1DstPtr, ESQPARS2_BannerSnapshotPlane1DstPtrLo, _ESQPARS2_BannerSnapshotPlane2DstPtr, ESQPARS2_BannerSnapshotPlane2DstPtrLo, ESQPARS2_CopperProgramPendingFlag, ESQPARS2_HighlightTickCountdown, _ESQPARS2_ReadModeFlags, _ESQPARS2_ActiveCopperListSelectFlag, _GCOMMAND_HighlightHoldoffTickCount
+;   BLTDDAT, COP1LCH, _ESQ_BannerSnapshotPlane0DstPtrHiWord, _ESQ_BannerSnapshotPlane0DstPtrLoWord, _ESQ_BannerSnapshotPlane1DstPtrHiWord, _ESQ_BannerSnapshotPlane1DstPtrLoWord, _ESQ_BannerSnapshotPlane2DstPtrHiWord, _ESQ_BannerSnapshotPlane2DstPtrLoWord, _ESQ_BannerSweepSrcPlane0Ptr_HiWord, _ESQ_BannerSweepSrcPlane0Ptr_LoWord, _ESQ_BannerSweepSrcPlane1Ptr_HiWord, _ESQ_BannerSweepSrcPlane1Ptr_LoWord, _ESQ_BannerSweepSrcPlane2Ptr_HiWord, _ESQ_BannerSweepSrcPlane2Ptr_LoWord, _ESQPARS2_BannerSnapshotPlane0DstPtr, _ESQPARS2_BannerSnapshotPlane0DstPtrLo, _ESQPARS2_BannerSnapshotPlane1DstPtr, _ESQPARS2_BannerSnapshotPlane1DstPtrLo, _ESQPARS2_BannerSnapshotPlane2DstPtr, _ESQPARS2_BannerSnapshotPlane2DstPtrLo, _ESQPARS2_CopperProgramPendingFlag, _ESQPARS2_HighlightTickCountdown, _ESQPARS2_ReadModeFlags, _ESQPARS2_ActiveCopperListSelectFlag, _GCOMMAND_HighlightHoldoffTickCount
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -35,12 +35,12 @@ _ESQSHARED4_TickCopperAndBannerTransitions:
 .lab_0C83:
     MOVE.L  A2,(COP1LCH-BLTDDAT)(A0)
     MOVE.L  D1,_ESQPARS2_ActiveCopperListSelectFlag
-    TST.W   ESQPARS2_CopperProgramPendingFlag
+    TST.W   _ESQPARS2_CopperProgramPendingFlag
     BEQ.S   .lab_0C84
 
     JSR     _ESQSHARED4_ProgramDisplayWindowAndCopper(PC)
 
-    MOVE.W  #0,ESQPARS2_CopperProgramPendingFlag
+    MOVE.W  #0,_ESQPARS2_CopperProgramPendingFlag
     BRA.W   .lab_0C8B
 
 .lab_0C84:
@@ -82,11 +82,11 @@ _ESQSHARED4_TickCopperAndBannerTransitions:
     BRA.W   .lab_0C8B
 
 .lab_0C88:
-    SUBQ.W  #1,ESQPARS2_HighlightTickCountdown
+    SUBQ.W  #1,_ESQPARS2_HighlightTickCountdown
     BPL.S   .lab_0C8B
 
 .lab_0C89:
-    MOVE.W  _ESQPARS2_StateIndex,ESQPARS2_HighlightTickCountdown
+    MOVE.W  _ESQPARS2_StateIndex,_ESQPARS2_HighlightTickCountdown
     TST.W   _ED2_HighlightTickEnabledFlag
     BEQ.S   .lab_0C8B
 
@@ -96,7 +96,7 @@ _ESQSHARED4_TickCopperAndBannerTransitions:
 
 .lab_0C8A:
     SUBQ.B  #1,_GCOMMAND_HighlightHoldoffTickCount
-    SUBQ.W  #1,ESQPARS2_HighlightTickCountdown
+    SUBQ.W  #1,_ESQPARS2_HighlightTickCountdown
     BSR.W   _ESQSHARED4_BlitBannerRowsForActiveField
 
 .lab_0C8B:
@@ -105,11 +105,11 @@ _ESQSHARED4_TickCopperAndBannerTransitions:
 
 ;!======
 
-    MOVE.W  _ESQ_BannerSnapshotPlane0DstPtrLoWord,ESQPARS2_BannerSnapshotPlane0DstPtrLo
+    MOVE.W  _ESQ_BannerSnapshotPlane0DstPtrLoWord,_ESQPARS2_BannerSnapshotPlane0DstPtrLo
     MOVE.W  _ESQ_BannerSnapshotPlane0DstPtrHiWord,_ESQPARS2_BannerSnapshotPlane0DstPtr
-    MOVE.W  _ESQ_BannerSnapshotPlane1DstPtrLoWord,ESQPARS2_BannerSnapshotPlane1DstPtrLo
+    MOVE.W  _ESQ_BannerSnapshotPlane1DstPtrLoWord,_ESQPARS2_BannerSnapshotPlane1DstPtrLo
     MOVE.W  _ESQ_BannerSnapshotPlane1DstPtrHiWord,_ESQPARS2_BannerSnapshotPlane1DstPtr
-    MOVE.W  _ESQ_BannerSnapshotPlane2DstPtrLoWord,ESQPARS2_BannerSnapshotPlane2DstPtrLo
+    MOVE.W  _ESQ_BannerSnapshotPlane2DstPtrLoWord,_ESQPARS2_BannerSnapshotPlane2DstPtrLo
     MOVE.W  _ESQ_BannerSnapshotPlane2DstPtrHiWord,_ESQPARS2_BannerSnapshotPlane2DstPtr
     RTS
 

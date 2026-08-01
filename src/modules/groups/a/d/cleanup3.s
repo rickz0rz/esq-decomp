@@ -798,7 +798,7 @@ _CLEANUP_RenderAlignedStatusScreen:
 
     ; Compiler-style indexed lookup: template code at -38(A5) is scaled by 4 and
     ; read as a pointer entry via the legacy _SCRIPT_StrChannelLabel_TuesdaysFridays+2
-    ; anchor (see SCRIPT_ChannelLabelPtrTable notes in src/data/script.s).
+    ; anchor (see _SCRIPT_ChannelLabelPtrTable notes in src/data/script.s).
     ; This branch prepends center-align control bytes and appends the selected
     ; schedule/day label text when code falls in the accepted fallback ranges.
 

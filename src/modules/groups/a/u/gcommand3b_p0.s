@@ -4,10 +4,10 @@
     MOVEA.L 20(A7),A3
     MOVEA.L 24(A7),A2
     MOVE.L  A3,-(A7)
-    PEA     GCOMMAND_FMT_PCT_S_COLON
+    PEA     _GCOMMAND_FMT_PCT_S_COLON
     JSR     _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
-    PEA     GCOMMAND_STR_GRADIENT
+    PEA     _GCOMMAND_STR_GRADIENT
     JSR     _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     12(A7),A7
@@ -24,7 +24,7 @@
     EXT.L   D1
     MOVE.L  D1,-(A7)
     MOVE.L  D7,-(A7)
-    PEA     GCOMMAND_FMT_COLOR_PCT_D_PCT_D
+    PEA     _GCOMMAND_FMT_COLOR_PCT_D_PCT_D
     JSR     _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     12(A7),A7
@@ -49,7 +49,7 @@
     MOVE.W  32(A0),D0
     MOVE.L  D0,-(A7)
     MOVE.L  D6,-(A7)
-    PEA     GCOMMAND_FMT_PCT_D_PCT_03X
+    PEA     _GCOMMAND_FMT_PCT_D_PCT_03X
     JSR     _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     12(A7),A7
@@ -61,7 +61,7 @@
     BRA.S   .lab_0D6F
 
 .lab_0D72:
-    PEA     GCOMMAND_FMT_TABLE_DONE_WITH_LEADING_BLANK_LINE
+    PEA     _GCOMMAND_FMT_TABLE_DONE_WITH_LEADING_BLANK_LINE
     JSR     _GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     ADDQ.W  #4,A7

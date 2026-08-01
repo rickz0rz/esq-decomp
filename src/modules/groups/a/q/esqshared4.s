@@ -6,7 +6,7 @@
 
     MOVE.W  #$62,_ESQPARS2_BannerColorStepCounter
     MOVE.W  #0,_ESQPARS2_BannerSweepEntryGuardCounter
-    MOVE.W  #0,ESQPARS2_BannerSweepDelayCounter
+    MOVE.W  #0,_ESQPARS2_BannerSweepDelayCounter
     LEA     _ESQ_CopperListBannerA,A4
     MOVE.W  _CONFIG_BannerCopperHeadByte,D0
     BSR.W   ESQSHARED4_ApplyBannerColorStep

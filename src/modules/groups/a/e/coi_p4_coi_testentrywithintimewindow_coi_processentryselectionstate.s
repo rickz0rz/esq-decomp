@@ -212,7 +212,7 @@ _COI_TestEntryWithinTimeWindow:
 ; CALLS:
 ;   _GROUP_AE_JMPTBL_WDISP_SPrintf, _COI_GetAnimFieldPointerByMode
 ; READS:
-;   COI_FMT_WIDE_STR_WITH_TRAILING_SPACE
+;   _COI_FMT_WIDE_STR_WITH_TRAILING_SPACE
 ; WRITES:
 ;   (none observed)
 ; DESC:

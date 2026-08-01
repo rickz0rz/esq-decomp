@@ -21,10 +21,9 @@
     XDEF    _COI_STR_DEFAULT_TOKEN_TEMPLATE_B
     XDEF    _COI_FMT_WRAP_CHAR_STRING_CHAR
     XDEF    _COI_STR_SINGLE_SPACE
-    XDEF    COI_FMT_WIDE_STR_WITH_TRAILING_SPACE
+    XDEF    _COI_FMT_WIDE_STR_WITH_TRAILING_SPACE
     XDEF    _CTASKS_IffTaskDoneFlag
     XDEF    _CTASKS_IffTaskState
-    XDEF    _COI_AttentionOverlayBusyFlag
 ; ========== COI.c ==========
 
 _Global_STR_COI_C_3:
@@ -80,7 +79,7 @@ _COI_FMT_WRAP_CHAR_STRING_CHAR:
     NStr    "%c%s%c"
 _COI_STR_SINGLE_SPACE:
     NStr    " "
-COI_FMT_WIDE_STR_WITH_TRAILING_SPACE:
+_COI_FMT_WIDE_STR_WITH_TRAILING_SPACE:
     NStr    "%ls "
     DS.W    1
 ;------------------------------------------------------------------------------
@@ -94,5 +93,3 @@ _CTASKS_IffTaskDoneFlag:
     DC.W    $0001
 _CTASKS_IffTaskState:
     DC.W    $0004
-_COI_AttentionOverlayBusyFlag:
-    DS.W    1

@@ -1,6 +1,6 @@
     XDEF    _Global_STR_ESQDISP_C
     XDEF    _ESQDISP_StatusIndicatorColorCache
-    XDEF    ESQDISP_StatusIndicatorMask
+    XDEF    _ESQDISP_StatusIndicatorMask
     XDEF    _Global_REF_INTB_AUD1_INTERRUPT
     XDEF    _Global_REF_INTB_RBF_INTERRUPT
     XDEF    _ESQDISP_DisplayActiveFlag
@@ -14,7 +14,6 @@
     XDEF    _ESQDISP_InputModeDebounceCount
     XDEF    _ESQDISP_LastPrimaryCountdownValue
     XDEF    _ESQDISP_SecondaryPersistArmGateFlag
-    XDEF    _ESQDISP_SecondaryPropagationDoneFlag
 ; ========== ESQDISP.c ==========
 
 _Global_STR_ESQDISP_C:
@@ -29,13 +28,13 @@ _Global_STR_ESQDISP_C:
 _ESQDISP_StatusIndicatorColorCache:
     DC.L    $ffffffff,$ffffffff
 ;------------------------------------------------------------------------------
-; SYM: ESQDISP_StatusIndicatorMask   (status indicator bitmask)
+; SYM: _ESQDISP_StatusIndicatorMask   (status indicator bitmask)
 ; TYPE: u32 mask
 ; PURPOSE: Tracks active status-indicator bits used for repaint decisions.
 ; USED BY: _ESQDISP_UpdateStatusMaskAndRefresh
 ; NOTES: Mask is clamped to 12 bits.
 ;------------------------------------------------------------------------------
-ESQDISP_StatusIndicatorMask:
+_ESQDISP_StatusIndicatorMask:
     DS.L    1
     DS.W    1
 ;------------------------------------------------------------------------------
@@ -154,13 +153,4 @@ _ESQDISP_LastPrimaryCountdownValue:
 ; NOTES: Behavior is slot-index dependent; naming remains conservative.
 ;------------------------------------------------------------------------------
 _ESQDISP_SecondaryPersistArmGateFlag:
-    DC.W    $0001
-;------------------------------------------------------------------------------
-; SYM: _ESQDISP_SecondaryPropagationDoneFlag   (secondary propagation done gate)
-; TYPE: u16 flag
-; PURPOSE: Prevents duplicate secondary metadata propagation within a slot window.
-; USED BY: _ESQDISP_DrawStatusBanner_Impl
-; NOTES: Cleared at window start and set after propagation routine runs.
-;------------------------------------------------------------------------------
-_ESQDISP_SecondaryPropagationDoneFlag:
     DC.W    $0001
