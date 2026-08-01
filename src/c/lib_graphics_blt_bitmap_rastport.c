@@ -7,10 +7,12 @@
  * registers the call wants, and calls.
  *
  * THE ORIGINAL READS THE BASE FROM A4 NEAR-DATA
- * (`MOVEA.L Global_GraphicsLibraryBase_A4(A4),A6`), which a DATA=FAR build has
- * no access to. `esq-graphics.h` reaches the same library through the absolute
- * `GfxBase` that src/data/esq.s labels, which is what every other restored
- * graphics caller in this program already does.
+ * (`MOVEA.L Global_GraphicsLibraryBase_A4(A4),A6`), and that is the SAME
+ * VARIABLE `esq-graphics.h` uses. A4 is `_Global_REF_LONG_FILE_SCRATCH` at DATA
+ * offset 32768, and resolving the -22440 displacement against the data map lands
+ * on `_GfxBase` / `_Global_REF_GRAPHICS_LIBRARY`. So this is a faithful
+ * restoration reached by a different addressing mode, not an analogue -- an
+ * earlier draft of this header said otherwise and was wrong.
  *
  * esq-graphics.h, NOT esq-graphics-leaf.h. The leaf header exists for a function
  * whose every call is a library call and it would be correct here on that test

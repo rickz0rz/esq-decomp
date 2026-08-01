@@ -495,6 +495,47 @@ nonzero if any remain. It found 14 of 232 restorations broken. **No byte gate ca
 see this** — all 14 compiled clean and compared sanely, because a byte comparison
 checks a function's body, not the convention its callees use.
 
+## An `(A4)` symbol is a NAMED ADDRESS IN OUR OWN DATA, not hidden runtime state
+
+`modules/submodules/` is full of references like `Global_DosIoErr(A4)` and
+`LEA Global_CharClassTable(A4),A0`. They look like SAS/C runtime state living in
+a near-data area that a `DATA=FAR` build cannot reach, and that reading is
+wrong. It cost one restoration a needless functional analogue before it was
+checked.
+
+**A4 is `_Global_REF_LONG_FILE_SCRATCH`.** `ESQ_StartupEntry` loads it in its
+fourth instruction and never changes it. The label sits at DATA offset 32768 --
+the classic SAS/C near-data base of data+0x8000 -- and the `Global_*` names are
+plain equates in `src/Prevue.asm` giving a displacement from it.
+
+So resolving one is arithmetic:
+
+```
+address = offset_of(_Global_REF_LONG_FILE_SCRATCH) + <the equate>
+```
+
+Look that address up in the DATA label map and the symbol usually has a name.
+`Global_CharClassTable` is -1007 and lands exactly on `_WDISP_CharClassTable`,
+which another restoration was already indexing directly.
+`Global_GraphicsLibraryBase_A4` is -22440 and lands on `_GfxBase`, which is the
+same variable `esq-graphics.h` uses.
+
+**So an A4 reference is normally a FAITHFUL restoration reached by a different
+addressing mode, not an analogue.** The divergence is only
+`near-data-addressing`: a 16-bit displacement off A4 becomes an absolute
+reference, 2 bytes more per site, which is what `DATA=FAR` means.
+
+Two cautions before assuming every one resolves:
+
+- **Some land on unlabelled space.** `Global_DosIoErr` (-640),
+  `Global_HandleTableBase` (+22492) and nine others point into the middle of a
+  `DS.B`/`DS.L` block that carries no label of its own. Those need a label added
+  first -- byte-neutral, like every other labelling in this project -- before C
+  can name them.
+- **Many are expressions, not literals.** `Global_AppErrorCode` is defined as
+  `Global_FormatCallbackByteCount+Type_Long_Size`. The arithmetic has to be
+  evaluated before the lookup; a regex for `= <number>` sees only 14 of the 59.
+
 ## Library code is not application code
 
 `src/modules/submodules/unknown*.s` is largely SAS/C runtime library code, not
