@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0-D7/A3
 ; CALLS:
-;   HANDLE_GetEntryByIndex (HANDLE_GetEntryByIndex), DOS_SeekWithErrorState (seek)
+;   _HANDLE_GetEntryByIndex (_HANDLE_GetEntryByIndex), DOS_SeekWithErrorState (seek)
 ; READS:
 ;   Global_DosIoErr
 ; DESC:
@@ -21,7 +21,7 @@ DOS_SeekByIndex:
     MOVE.L  28(A7),D6
     MOVE.L  32(A7),D5
     MOVE.L  D7,-(A7)
-    JSR     HANDLE_GetEntryByIndex(PC)
+    JSR     _HANDLE_GetEntryByIndex(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L D0,A3

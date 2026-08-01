@@ -1,7 +1,7 @@
-    XDEF    HANDLE_GetEntryByIndex
+    XDEF    _HANDLE_GetEntryByIndex
 
 ;------------------------------------------------------------------------------
-; FUNC: HANDLE_GetEntryByIndex   (Validate handle index and return entry pointer.)
+; FUNC: _HANDLE_GetEntryByIndex   (Validate handle index and return entry pointer.)
 ; ARGS:
 ;   stack +8: D7 = handle index
 ; RET:
@@ -15,7 +15,7 @@
 ; DESC:
 ;   Bounds-checks the handle index and ensures entry is non-null.
 ;------------------------------------------------------------------------------
-HANDLE_GetEntryByIndex:
+_HANDLE_GetEntryByIndex:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
 

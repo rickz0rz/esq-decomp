@@ -9,7 +9,7 @@
 ; CLOBBERS:
 ;   D0/D7/A3
 ; CALLS:
-;   HANDLE_GetEntryByIndex (HANDLE_GetEntryByIndex), DOS_CloseWithSignalCheck (close)
+;   _HANDLE_GetEntryByIndex (_HANDLE_GetEntryByIndex), DOS_CloseWithSignalCheck (close)
 ; READS:
 ;   Global_DosIoErr, handle entry flags at 3(A3)
 ; WRITES:
@@ -22,7 +22,7 @@ HANDLE_CloseByIndex:
 
     MOVE.L  12(A7),D7
     MOVE.L  D7,-(A7)
-    JSR     HANDLE_GetEntryByIndex(PC)
+    JSR     _HANDLE_GetEntryByIndex(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L D0,A3
