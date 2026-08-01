@@ -7,13 +7,13 @@
     XDEF    _COMMON_QueryDiskUsagePercentScratch
     XDEF    _Global_STR_DISK_IS_FULL_FORMATTED
     XDEF    _CTRL_Bit4CaptureDelayCounter
-    XDEF    CTRL_Bit3CaptureDelayCounter
+    XDEF    _CTRL_Bit3CaptureDelayCounter
     XDEF    _CTRL_Bit4CapturePhase
     XDEF    CTRL_Bit4SampleSlotIndex
-    XDEF    CTRL_Bit3CapturePhase
-    XDEF    CTRL_Bit3SampleSlotIndex
+    XDEF    _CTRL_Bit3CapturePhase
+    XDEF    _CTRL_Bit3SampleSlotIndex
     XDEF    CTRL_Bit4SampleScratch
-    XDEF    CTRL_Bit3SampleScratch
+    XDEF    _CTRL_Bit3SampleScratch
     XDEF    _HIGHLIGHT_CopperEffectSeed
     XDEF    _HIGHLIGHT_CopperEffectParamA
     XDEF    _HIGHLIGHT_CopperEffectParamB
@@ -77,19 +77,19 @@ _Global_STR_DISK_IS_FULL_FORMATTED:
     NStr    "Disk is %ld%% full"
 _CTRL_Bit4CaptureDelayCounter:
     DC.W    0
-CTRL_Bit3CaptureDelayCounter:
+_CTRL_Bit3CaptureDelayCounter:
     DC.W    0
 _CTRL_Bit4CapturePhase:
     DC.W    0
 CTRL_Bit4SampleSlotIndex:
     DC.W    0
-CTRL_Bit3CapturePhase:
+_CTRL_Bit3CapturePhase:
     DC.W    0
-CTRL_Bit3SampleSlotIndex:
+_CTRL_Bit3SampleSlotIndex:
     DC.W    0
 CTRL_Bit4SampleScratch:
     DC.L    0,0
-CTRL_Bit3SampleScratch:
+_CTRL_Bit3SampleScratch:
     DC.L    0,0
 _HIGHLIGHT_CopperEffectSeed:
     DC.W    0

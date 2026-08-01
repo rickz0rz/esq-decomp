@@ -12,17 +12,17 @@
 ; CALLS:
 ;   _GET_BIT_3_OF_CIAB_PRA_INTO_D1, _ESQ_StoreCtrlSampleEntry
 ; READS:
-;   CTRL_Bit3CapturePhase, CTRL_Bit3CaptureDelayCounter, CTRL_Bit3SampleSlotIndex, _CTRL_SampleEntryCount
+;   _CTRL_Bit3CapturePhase, _CTRL_Bit3CaptureDelayCounter, _CTRL_Bit3SampleSlotIndex, _CTRL_SampleEntryCount
 ; WRITES:
-;   CTRL_Bit3CapturePhase, CTRL_Bit3CaptureDelayCounter, CTRL_Bit3SampleSlotIndex, CTRL_Bit3SampleScratch, _CTRL_SampleEntryCount, _CTRL_SampleEntryScratch
+;   _CTRL_Bit3CapturePhase, _CTRL_Bit3CaptureDelayCounter, _CTRL_Bit3SampleSlotIndex, _CTRL_Bit3SampleScratch, _CTRL_SampleEntryCount, _CTRL_SampleEntryScratch
 ; DESC:
 ;   Samples CIAB PRA bit 3 over time, builds bytes from samples, and stores
 ;   them into the _CTRL_SampleEntryScratch ring buffer.
 ; NOTES:
-;   Uses CTRL_Bit3CapturePhase/1AF9/1AFD as sampling state. Sample buffer is CTRL_Bit3SampleScratch.
+;   Uses _CTRL_Bit3CapturePhase/1AF9/1AFD as sampling state. Sample buffer is _CTRL_Bit3SampleScratch.
 ;------------------------------------------------------------------------------
 _ESQ_CaptureCtrlBit3Stream:
-    TST.W   CTRL_Bit3CapturePhase
+    TST.W   _CTRL_Bit3CapturePhase
     BNE.S   .advance_state
 
     BSR.W   _GET_BIT_3_OF_CIAB_PRA_INTO_D1
@@ -30,16 +30,16 @@ _ESQ_CaptureCtrlBit3Stream:
     TST.B   D1
     BPL.W   .return
 
-    ADDQ.W  #1,CTRL_Bit3CapturePhase
-    MOVE.W  #4,CTRL_Bit3CaptureDelayCounter
-    MOVE.W  #0,CTRL_Bit3SampleSlotIndex
+    ADDQ.W  #1,_CTRL_Bit3CapturePhase
+    MOVE.W  #4,_CTRL_Bit3CaptureDelayCounter
+    MOVE.W  #0,_CTRL_Bit3SampleSlotIndex
     RTS
 
 .advance_state:
-    MOVE.W  CTRL_Bit3CapturePhase,D0
+    MOVE.W  _CTRL_Bit3CapturePhase,D0
     ADDQ.W  #1,D0
-    MOVE.W  D0,CTRL_Bit3CapturePhase
-    MOVE.W  CTRL_Bit3CaptureDelayCounter,D1
+    MOVE.W  D0,_CTRL_Bit3CapturePhase
+    MOVE.W  _CTRL_Bit3CaptureDelayCounter,D1
     CMP.W   D0,D1
     BGT.W   .return
 
@@ -52,9 +52,9 @@ _ESQ_CaptureCtrlBit3Stream:
     TST.B   D1
     BPL.S   .reset_state
 
-    MOVE.W  #14,CTRL_Bit3CaptureDelayCounter
+    MOVE.W  #14,_CTRL_Bit3CaptureDelayCounter
     MOVEQ   #7,D0
-    LEA     CTRL_Bit3SampleScratch,A5
+    LEA     _CTRL_Bit3SampleScratch,A5
     MOVEQ   #0,D1
 
 .clear_sample_buffer_loop:
@@ -64,9 +64,9 @@ _ESQ_CaptureCtrlBit3Stream:
 
 .reset_state:
     MOVEQ   #0,D0
-    MOVE.W  D0,CTRL_Bit3CaptureDelayCounter
-    MOVE.W  D0,CTRL_Bit3SampleSlotIndex
-    MOVE.W  D0,CTRL_Bit3CapturePhase
+    MOVE.W  D0,_CTRL_Bit3CaptureDelayCounter
+    MOVE.W  D0,_CTRL_Bit3SampleSlotIndex
+    MOVE.W  D0,_CTRL_Bit3CapturePhase
     RTS
 
 .collect_samples:
@@ -76,11 +76,11 @@ _ESQ_CaptureCtrlBit3Stream:
 
     BSR.W   _GET_BIT_3_OF_CIAB_PRA_INTO_D1
 
-    LEA     CTRL_Bit3SampleScratch,A5
-    ADDA.W  CTRL_Bit3SampleSlotIndex,A5
+    LEA     _CTRL_Bit3SampleScratch,A5
+    ADDA.W  _CTRL_Bit3SampleSlotIndex,A5
     MOVE.B  D1,(A5)
-    ADDQ.W  #1,CTRL_Bit3SampleSlotIndex
-    ADDI.W  #10,CTRL_Bit3CaptureDelayCounter
+    ADDQ.W  #1,_CTRL_Bit3SampleSlotIndex
+    ADDI.W  #10,_CTRL_Bit3CaptureDelayCounter
     RTS
 
 .assemble_and_store:
@@ -89,9 +89,9 @@ _ESQ_CaptureCtrlBit3Stream:
     TST.B   D1
     BMI.S   .reset_state_and_exit
 
-    LEA     CTRL_Bit3SampleScratch,A5
-    ADDA.W  CTRL_Bit3SampleSlotIndex,A5
-    MOVE.W  CTRL_Bit3SampleSlotIndex,D1
+    LEA     _CTRL_Bit3SampleScratch,A5
+    ADDA.W  _CTRL_Bit3SampleSlotIndex,A5
+    MOVE.W  _CTRL_Bit3SampleSlotIndex,D1
     SUBQ.W  #1,D1
     MOVEQ   #0,D0
 
@@ -129,9 +129,9 @@ _ESQ_CaptureCtrlBit3Stream:
 
 .reset_state_and_exit:
     MOVEQ   #0,D0
-    MOVE.W  D0,CTRL_Bit3CaptureDelayCounter
-    MOVE.W  D0,CTRL_Bit3SampleSlotIndex
-    MOVE.W  D0,CTRL_Bit3CapturePhase
+    MOVE.W  D0,_CTRL_Bit3CaptureDelayCounter
+    MOVE.W  D0,_CTRL_Bit3SampleSlotIndex
+    MOVE.W  D0,_CTRL_Bit3CapturePhase
 
 .return:
     RTS

@@ -637,3 +637,5 @@ modules/groups/a/q/esqshared4_p4.s                                     c/esqshar
 modules/groups/a/q/esqshared4_p2.s                                    c/esqshared4_bind_and_clear_banner_work_raster.c
 modules/groups/b/a/script3b_p0_p1_2.s                                 c/script_refresh_ctrl_state.c
 modules/groups/a/a/app2_p1.s                                           c/esq_update_copper_lists_from_params.c
+modules/groups/a/a/app_p0.s                                           c/esq_capture_ctrl_bit3_stream.c
+modules/groups/a/a/app_get_bit_3_of_ciab_pra_into_d1.s                c/get_bit3_of_ciab_pra.c
