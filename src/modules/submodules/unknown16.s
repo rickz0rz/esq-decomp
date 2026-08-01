@@ -1,7 +1,7 @@
-    XDEF    BUFFER_FlushAllAndCloseWithCode
+    XDEF    _BUFFER_FlushAllAndCloseWithCode
 
 ;------------------------------------------------------------------------------
-; FUNC: BUFFER_FlushAllAndCloseWithCode   (Flush buffered outputs, then close.)
+; FUNC: _BUFFER_FlushAllAndCloseWithCode   (Flush buffered outputs, then close.)
 ; ARGS:
 ;   stack +16: D7 = return/status code
 ; RET:
@@ -20,7 +20,7 @@
 ;   Struct_PreallocHandleNode_OpenFlagsLowBit1_WritePending_Bit /
 ;   Struct_PreallocHandleNode_OpenFlagsLowBit2_Unbuffered_Bit.
 ;------------------------------------------------------------------------------
-BUFFER_FlushAllAndCloseWithCode:
+_BUFFER_FlushAllAndCloseWithCode:
     MOVEM.L D6-D7/A3,-(A7)
     MOVE.L  16(A7),D7
     LEA     Global_PreallocHandleNode0(A4),A3

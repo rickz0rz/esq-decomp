@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3/A6
 ; CALLS:
-;   _HANDLE_CloseAllAndReturnWithCode, STRING_AppendN, BUFFER_FlushAllAndCloseWithCode,
+;   _HANDLE_CloseAllAndReturnWithCode, STRING_AppendN, _BUFFER_FlushAllAndCloseWithCode,
 ;   UNKNOWN29_JMPTBL_ESQ_MainInitAndRun
 ; READS:
 ;   Global_ArgCount, Global_ArgvStorage, Global_SavedMsg, Global_DefaultHandleFlags
@@ -238,7 +238,7 @@ ESQ_ParseCommandLineAndRun:
     JSR     UNKNOWN29_JMPTBL_ESQ_MainInitAndRun(PC)
 
     CLR.L   (A7)
-    JSR     BUFFER_FlushAllAndCloseWithCode(PC)
+    JSR     _BUFFER_FlushAllAndCloseWithCode(PC)
 
     MOVEM.L -36(A5),D2/D7/A2-A3/A6
     UNLK    A5

@@ -115,3 +115,5 @@ modules/submodules/unknown19.s                                         c/lib_dos
 modules/submodules/unknown38.s                                         c/lib_signal_poll_and_dispatch.c
 modules/submodules/unknown18.s                                         c/lib_dos_seek_with_error_state.c
 modules/submodules/unknown31.s                                         c/lib_buffer_ensure_allocated.c
+modules/submodules/unknown16.s                                         c/lib_buffer_flush_all_and_close_with_code.c
+modules/submodules/unknown32.s                                         c/lib_handle_close_all_and_return_with_code.c

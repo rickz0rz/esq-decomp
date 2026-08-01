@@ -78,7 +78,7 @@ _GROUP_MAIN_B_JMPTBL_MATH_Mulu32:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   BUFFER_FlushAllAndCloseWithCode
+;   _BUFFER_FlushAllAndCloseWithCode
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -89,7 +89,7 @@ _GROUP_MAIN_B_JMPTBL_MATH_Mulu32:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode:
-    JMP     BUFFER_FlushAllAndCloseWithCode
+    JMP     _BUFFER_FlushAllAndCloseWithCode
 
 ;!======
 

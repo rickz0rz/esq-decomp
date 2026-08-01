@@ -1,21 +1,21 @@
     XDEF    _HANDLE_CloseAllAndReturnWithCode
-    XDEF    UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode
+    XDEF    _UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode
 
 ;------------------------------------------------------------------------------
 ; FUNC: _HANDLE_CloseAllAndReturnWithCode   (Close all handles, then return w/ code.)
 ; ARGS:
-;   stack +4: D7 = return code passed to ESQ_ReturnWithStackCode
+;   stack +4: D7 = return code passed to _ESQ_ReturnWithStackCode
 ; RET:
 ;   D0: result/status
 ; CLOBBERS:
 ;   D0-D7/A0
 ; CALLS:
-;   _DOS_CloseWithSignalCheck (close handle), ESQ_ReturnWithStackCode
+;   _DOS_CloseWithSignalCheck (close handle), _ESQ_ReturnWithStackCode
 ; READS:
 ;   Global_HandleTableCount, Global_HandleTableBase
 ; DESC:
 ;   Iterates the handle table and closes entries not flagged with bit 4,
-;   then tail-calls ESQ_ReturnWithStackCode with the provided code.
+;   then tail-calls _ESQ_ReturnWithStackCode with the provided code.
 ;------------------------------------------------------------------------------
 _HANDLE_CloseAllAndReturnWithCode:
     MOVEM.L D5-D7,-(A7)
@@ -57,7 +57,7 @@ _HANDLE_CloseAllAndReturnWithCode:
 
 .after_close:
     MOVE.L  D7,-(A7)
-    JSR     UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode(PC)
+    JSR     _UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode(PC)
 
     ADDQ.W  #4,A7
     MOVEM.L (A7)+,D5-D7
@@ -71,10 +71,10 @@ _HANDLE_CloseAllAndReturnWithCode:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode   (Jump stub to ESQ_ReturnWithStackCode)
+; FUNC: _UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode   (Jump stub to _ESQ_ReturnWithStackCode)
 ;------------------------------------------------------------------------------
-UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode:
-    JMP     ESQ_ReturnWithStackCode
+_UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode:
+    JMP     _ESQ_ReturnWithStackCode
 
 ;!======
 

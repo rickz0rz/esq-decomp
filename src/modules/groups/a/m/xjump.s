@@ -549,16 +549,16 @@ _GROUP_AM_JMPTBL_OVERRIDE_INTUITION_FUNCS:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   BUFFER_FlushAllAndCloseWithCode
+;   _BUFFER_FlushAllAndCloseWithCode
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to BUFFER_FlushAllAndCloseWithCode.
+;   Jump stub to _BUFFER_FlushAllAndCloseWithCode.
 ;------------------------------------------------------------------------------
 _GROUP_AM_JMPTBL_BUFFER_FlushAllAndCloseWithCode:
-    JMP     BUFFER_FlushAllAndCloseWithCode
+    JMP     _BUFFER_FlushAllAndCloseWithCode
 
 ;!======
 

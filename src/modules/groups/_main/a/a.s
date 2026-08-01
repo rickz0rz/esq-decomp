@@ -1,4 +1,4 @@
-    XDEF    ESQ_ReturnWithStackCode
+    XDEF    _ESQ_ReturnWithStackCode
     XDEF    ESQ_ShutdownAndReturn
 
 ;------------------------------------------------------------------------------
@@ -168,7 +168,7 @@ ESQ_StartupEntry:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_ReturnWithStackCode   (ReturnWithStackCode)
+; FUNC: _ESQ_ReturnWithStackCode   (ReturnWithStackCode)
 ; ARGS:
 ;   stack +4: exitCode (long)
 ; RET:
@@ -184,7 +184,7 @@ ESQ_StartupEntry:
 ; DESC:
 ;   Loads exit code from the stack and jumps to shutdown/return path.
 ;------------------------------------------------------------------------------
-ESQ_ReturnWithStackCode:
+_ESQ_ReturnWithStackCode:
     MOVE.L  4(A7),D0
 
 ;------------------------------------------------------------------------------
