@@ -1,11 +1,14 @@
 /* RESTORES: ESQ_UpdateMonthDayFromDayOfYear
  * MODULE:   modules/groups/a/a/app2.s
  * STATUS:   behavioural
- * DO-NOT-LINK: takes its arguments in REGISTERS, so the compiled C reads the
- *   stack and gets garbage. Proven: esq_dec_color_step.c linked alone over a
- *   clean 356-entry build paints a green panel over the grid area, and
- *   ESQ_SetCopperEffect_Custom compiles to 610000004e75 -- a call and a
- *   return, doing none of the work. Kept for the analysis, never linked.
+ * LINKABLE SINCE 2026-08-01. It took its argument in a REGISTER, which is
+ *   true of the ORIGINAL and was the reason for the marker that used to sit
+ *   here. Its only caller is ESQ_TickClockAndFlagEvents, which is C, and
+ *   that caller declared it `__asm register` to match. Both sides move to C
+ *   together, so the convention is C's and neither can disagree with the
+ *   other. Check the caller list before believing a register-convention
+ *   marker.
+
  *
  * SASC-MISMATCH: register-argument-convention
  *   ref:     2f0230280010740043f9000001344a680014670443e900183219b0416f069041524260f43142000231400004241f4e75

@@ -254,6 +254,7 @@ modules/groups/a/a/app2_esq_testbit1based.s                            c/esq_tes
 modules/groups/a/a/app2_p5.s                                           c/esq_tick_clock_and_flag_events.c
 modules/groups/a/a/app3_esqtryromwritetest.s                           c/esq_try_rom_write_test.c
 modules/groups/a/a/app2_p1.s                                           c/esq_update_copper_lists_from_params.c
+modules/groups/a/a/app2_esq_updatemonthdayfromdayofyear.s              c/esq_update_month_day_from_day_of_year.c
 modules/groups/a/a/app2_esq_wildcardmatch.s                            c/esq_wildcard_match.c
 modules/groups/a/n/esqdisp_esqdisp_allocatehighlightbitmaps_esqdisp_allocatehighlightbitmaps.s c/esqdisp_allocate_highlight_bitmaps.c
 modules/groups/a/n/esqdisp_p1_p0.s                                     c/esqdisp_apply_status_mask_to_indicators.c
@@ -708,6 +709,8 @@ modules/submodules/unknown32.s                                         c/lib_han
 modules/submodules/unknown5.s                                          c/lib_string_compare_and_copy.c
 modules/submodules/unknown7.s                                          c/lib_str_search.c
 modules/submodules/unknown25.s                                         c/lib_struct_alloc_with_owner.c
+modules/groups/a/a/app2_esq_storectrlsampleentry.s                     c/esq_store_ctrl_sample_entry.c
+modules/groups/a/q/esqshared4_esqshared4_copyplanesfromcontexttosnapshot.s c/esqshared4_copy_planes_from_context_to_snapshot.c
 modules/groups/a/a/app2_p7.s                                           c/app2_p7_merged.c
 modules/groups/a/a/app2_esq_findsubstringcasefold.s                    c/app2_esq_findsubstringcasefold_merged.c
 modules/groups/a/c/cleanup2_p1_p0_p0.s                                 c/cleanup2_p1_p0_p0_merged.c

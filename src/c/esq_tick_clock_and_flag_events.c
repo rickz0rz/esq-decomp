@@ -101,7 +101,10 @@ struct EsqClock {
     short leapYear;             /* +20 0 or -1 */
 };
 
-extern void __asm ESQ_UpdateMonthDayFromDayOfYear(register __a0 struct EsqClock *t);
+/* Both sides are C now, so the convention is C's. The __asm register form this
+ * used to carry described the ASSEMBLY callee, and its module moves to C in the
+ * same manifest entry -- the two cannot disagree. */
+extern void ESQ_UpdateMonthDayFromDayOfYear(struct EsqClock *t);
 
 extern short CLOCK_MinuteTrigger30MinusBase;
 extern short CLOCK_MinuteTrigger60MinusBase;

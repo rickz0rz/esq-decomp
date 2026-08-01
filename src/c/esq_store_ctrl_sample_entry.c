@@ -9,13 +9,26 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
  *
- * DO NOT LINK. This restoration is valid as ANALYSIS and its byte comparison
- * stands, but it must never be substituted into a build: takes its arguments in registers AND preserves them; runs in interrupt context.
- * A C function with an ordinary prologue is not a different encoding of that,
- * it is wrong. tools/gen_all_manifest.py excludes it automatically; this note
- * is here so the reason survives if the tooling changes.
+ * LINKABLE SINCE 2026-08-01, and the header that used to sit here was wrong on
+ * both of its counts.
  *
- * This class is what hung the machine on the first whole-program C run.
+ * It said the function "takes its arguments in registers". It takes NO arguments
+ * at all -- it is `void f(void)`. What the entry MOVEM does is PRESERVE D0/D1/A0/A1,
+ * the scratch registers, as a courtesy to an ASSEMBLY caller that expected them
+ * to survive. coverage.py screens that shape as `register-args` and here that is
+ * a false positive.
+ *
+ * It also said the function runs in interrupt context, which is true and is not
+ * a reason to keep it in assembly. Its ONLY caller is ESQ_CaptureCtrlBit3Stream,
+ * which is already C and already running in that same interrupt path -- the one
+ * remaining assembly link in the chain is ESQ_PollCtrlInput above it. A C caller
+ * does not expect D0/D1/A0/A1 to survive a call, so the courtesy the MOVEM
+ * provides is no longer needed by anybody. This function touches no library and
+ * only copies bytes into a table, so it is safe where it runs.
+ *
+ * The general rule, again: a register-convention blocker describes the ORIGINAL's
+ * contract with ITS callers, and it stops being a blocker when every one of them
+ * becomes C.
  */
 extern char ED_StateRingTable[];
 extern long ED_StateRingWriteIndex;
