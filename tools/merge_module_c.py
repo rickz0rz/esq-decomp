@@ -1,0 +1,317 @@
+#!/usr/bin/env python3
+"""Build one C file per assembly module out of the per-function C restorations.
+
+    python3 tools/merge_module_c.py                 # report what can be merged
+    python3 tools/merge_module_c.py --write         # write the merged files
+    python3 tools/merge_module_c.py --verify        # compile each candidate too
+    python3 tools/merge_module_c.py --write --verify --add
+
+A C replacement substitutes for a WHOLE module, so a module holding several
+functions cannot be replaced until every one of them is written. That rule is
+why dozens of finished restorations never reached a manifest: the C existed, the
+module simply had a neighbour.
+
+Splitting the module is one answer and `tools/split_module.py` does it, but it
+cannot cut a module whose label is not at a `;!======` separator, and about 66
+are like that. Merging is the other answer and needs no assembly change at all.
+
+The merged file INCLUDES each restoration rather than copying it, so the
+per-function files stay the single source of truth. `cmatch.sh`,
+`mismatches.py --recheck` and every header stay pointed at the real file.
+
+Include order follows the ORDER OF THE LABELS IN THE MODULE, so the compiled
+functions land in the same sequence as the assembly they replace. That keeps the
+link layout close to the original, which matters because
+tools/check_pcrel_range.py measures distances between callers and callees.
+
+WHAT STOPS A MERGE. Two files that define the same `static` helper, or the same
+macro with different bodies, collide when compiled as one unit. The report names
+those and skips them rather than writing a file that will not build.
+"""
+import os
+import re
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+C_DIR = os.path.join(ROOT, 'src/c')
+MANIFEST = os.path.join(C_DIR, 'replacements-all.txt')
+
+LABEL = re.compile(r'^(_?[A-Za-z][\w]*):', re.M)
+STATIC = re.compile(r'^\s*static\s+[\w \t*]+?([A-Za-z_]\w*)\s*\(', re.M)
+DEFINE = re.compile(r'^\s*#define\s+([A-Za-z_]\w*)\s+(.*)$', re.M)
+
+
+def restores_map():
+    """Map restored label -> the C file that restores it."""
+    out = {}
+    for fn in sorted(os.listdir(C_DIR)):
+        if not fn.endswith('.c'):
+            continue
+        # A generated unit is not a source of truth, and reading it as one makes
+        # the tool INCLUDE A FILE INTO ITSELF. Once a `_merged.c` exists on disk
+        # its own RESTORES: line claims every label it covers, so the next run
+        # resolves those labels to the merged unit and emits
+        # `#include "newgrid_p4_merged.c"` inside newgrid_p4_merged.c. That
+        # duplicates every declaration in it, and --verify reports the collision
+        # as though the restorations clashed with each other.
+        if fn.endswith('_merged.c'):
+            continue
+        head = open(os.path.join(C_DIR, fn), errors='replace').read(4000)
+        m = re.search(r'RESTORES:\s*(.+)', head)
+        if not m:
+            continue
+        for name in re.split(r'[,\s]+', m.group(1).strip()):
+            name = name.strip().lstrip('_')
+            if name and re.match(r'^[A-Za-z_]\w*$', name):
+                out.setdefault(name, fn)
+    return out
+
+
+def module_list():
+    txt = open(os.path.join(ROOT, 'src/Prevue.asm')).read()
+    return [i for i in re.findall(r'^\s*include\s+"([^"]+)"', txt, re.M)
+            if i.startswith('modules/')]
+
+
+def manifest_modules():
+    """Modules already replaced, and which of those use a merged unit.
+
+    A module whose manifest entry names a `_merged.c` must still be REGENERATED,
+    or a stale manifest points at a file that is not there. That is not
+    hypothetical: deleting the generated files to re-run the tool left eleven
+    entries dangling, and the build stopped at the first of them.
+    """
+    done, merged = set(), set()
+    for line in open(MANIFEST):
+        parts = line.split('#')[0].split()
+        if len(parts) >= 2:
+            done.add(parts[0])
+            if parts[1].endswith('_merged.c'):
+                merged.add(parts[0])
+    return done, merged
+
+
+def labels_of(mod):
+    body = open(os.path.join(ROOT, 'src', mod), errors='replace').read()
+    return [l.lstrip('_') for l in LABEL.findall(body)
+            if not l.endswith('_Return')]
+
+
+TERMINAL = ('RTS', 'RTE', 'RTR', 'JMP', 'BRA')
+
+
+def falls_through(mod):
+    """Name the first label whose block runs into the next one.
+
+    THIS IS THE CHECK THAT MAKES MERGING SAFE, and it is not optional. When one
+    block falls into the next, the two labels are ONE routine with a second
+    entry point, and the earlier restoration stops where the assembly does not.
+    _ED1_EnterEscMenu is the worked example: it ends at the copper rise, and the
+    assembly then runs straight into _ED1_EnterEscMenu_AfterVersionText, which
+    resets the filter cursor. Merged as two independent C functions, that reset
+    would simply never happen -- on the ESC-menu path, silently.
+
+    A block that ends in RTS, RTE, RTR, JMP or BRA hands control on by itself
+    and is safe.
+    """
+    body = open(os.path.join(ROOT, 'src', mod), errors='replace').read()
+    lines = body.split('\n')
+    last_op = None
+    prev_label = None
+    for line in lines:
+        text = line.split(';')[0].rstrip()
+        if not text.strip():
+            continue
+        m = LABEL.match(text)
+        if m:
+            name = m.group(1)
+            if (prev_label is not None and not name.startswith('.')
+                    and not name.endswith('_Return')
+                    and last_op not in TERMINAL):
+                return '%s falls through into %s' % (prev_label, name)
+            if not name.startswith('.') and not name.endswith('_Return'):
+                prev_label = name
+                last_op = None
+            continue
+        if text.startswith(('\t', ' ')):
+            op = text.strip().split(None, 1)[0].upper().split('.')[0]
+            if op in ('XDEF', 'XREF', 'INCLUDE', 'IF', 'ENDIF', 'ALIGN_WORD'):
+                continue
+            last_op = op
+    return None
+
+
+TAG = re.compile(r'^\s*(?:typedef\s+)?(struct|union|enum)\s+([A-Za-z_]\w*)\s*\{',
+                 re.M)
+EXTERN = re.compile(r'^\s*extern\s+(.+?)\b([A-Za-z_]\w*)\s*(\[[^\]]*\])?\s*[;(]',
+                    re.M)
+
+
+GUARD = re.compile(
+    r'#ifndef\s+(\w+)\s*\n\s*#define\s+\1\s*\n(.*?)\n\s*#endif', re.S)
+
+
+def strip_guards(body):
+    """Drop `#ifndef X / #define X / ... / #endif` regions.
+
+    A struct wrapped in its own include guard is safe to see twice -- the second
+    copy compiles to nothing -- so it must not count as a clash. Without this the
+    tool kept reporting the very duplicates that had just been fixed.
+    """
+    return GUARD.sub('', body)
+
+
+def collides(files):
+    """Name a clash that would stop the merged unit compiling.
+
+    Four kinds, all seen for real when this tool was first run over the tree:
+    a `static` helper with the same name in two files, a `#define` with two
+    bodies, the same struct TAG defined twice (SAS/C says `item already
+    declared`), and one symbol declared `extern` with two different types
+    (`conflict with previous declaration`). The last two are the common ones,
+    because two restorations that touch the same table each carry their own copy
+    of its struct.
+    """
+    statics, defines, tags, externs = {}, {}, {}, {}
+    for fn in files:
+        body = open(os.path.join(C_DIR, fn), errors='replace').read()
+        for name in STATIC.findall(body):
+            if name in statics and statics[name] != fn:
+                return 'static %s in %s and %s' % (name, statics[name], fn)
+            statics[name] = fn
+        for name, val in DEFINE.findall(body):
+            val = val.strip()
+            if name in defines and defines[name][1] != val:
+                return ('#define %s differs between %s and %s'
+                        % (name, defines[name][0], fn))
+            defines[name] = (fn, val)
+        for kind, name in TAG.findall(strip_guards(body)):
+            if name in tags and tags[name] != fn:
+                return ('%s %s defined in %s and %s'
+                        % (kind, name, tags[name], fn))
+            tags[name] = fn
+        for typ, name, arr in EXTERN.findall(body):
+            decl = ' '.join((typ + ' ' + (arr or '')).split())
+            if name in externs and externs[name][1] != decl:
+                return ('extern %s declared as "%s" in %s and "%s" in %s'
+                        % (name, externs[name][1], externs[name][0], decl, fn))
+            externs[name] = (fn, decl)
+    return None
+
+
+VAMOS = os.path.expanduser('~/Downloads/vamos/bin/activate')
+SCOPTS = 'NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128'
+
+
+def compile_check(item):
+    """Actually compile the merged unit and report the first error.
+
+    The static checks below catch what can be found by reading, and they miss a
+    real class: file A forward-declares a function that file B DEFINES, with a
+    different parameter list. Separately compiled that is invisible, because the
+    linker does not check types. Merged into one unit SAS/C says `conflict with
+    previous declaration` and stops. Two of the first thirteen candidates failed
+    that way, so the compiler is the only trustworthy gate.
+    """
+    import shutil
+    import subprocess
+    import tempfile
+    mod, labels, files = item
+    work = tempfile.mkdtemp(prefix='mergechk.')
+    try:
+        base = os.path.basename(mod)[:-2] + '_merged.c'
+        text = ''.join('#include "%s"\n' % f for f in files)
+        open(os.path.join(work, 'u.c'), 'w').write(text)
+        for fn in os.listdir(C_DIR):
+            if fn.endswith(('.c', '.h')):
+                shutil.copy(os.path.join(C_DIR, fn), work)
+        cmd = ('. %s 2>/dev/null; vamos --volume work:%s sc:c/sc %s '
+               'OBJNAME=work:u.o work:u.c' % (VAMOS, work, SCOPTS))
+        out = subprocess.run(['bash', '-c', cmd], capture_output=True,
+                             text=True).stdout
+        if os.path.exists(os.path.join(work, 'u.o')):
+            return None
+        for line in out.split('\n'):
+            if 'Error' in line:
+                return 'does not compile merged: ' + line.strip()
+        return 'does not compile merged'
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
+
+def main():
+    write = '--write' in sys.argv
+    add = '--add' in sys.argv
+    verify = '--verify' in sys.argv
+    restores = restores_map()
+    done, already_merged = manifest_modules()
+
+    ready, blocked = [], []
+    for mod in module_list():
+        if (mod in done and mod not in already_merged) \
+                or '/submodules/' in mod:
+            continue
+        labels = labels_of(mod)
+        if len(labels) < 2:
+            continue
+        if not all(l in restores for l in labels):
+            continue
+        files = []
+        for l in labels:                    # module order, not alphabetical
+            f = restores[l]
+            if f not in files:
+                files.append(f)
+        why = falls_through(mod) or collides(files)
+        if why:
+            blocked.append((mod, why))
+            continue
+        ready.append((mod, labels, files))
+
+    if verify:
+        kept = []
+        for item in ready:
+            why = compile_check(item)
+            if why:
+                blocked.append((item[0], why))
+            else:
+                kept.append(item)
+        ready = kept
+
+    new_lines = []
+    for mod, labels, files in ready:
+        base = os.path.basename(mod)[:-2] + '_merged.c'
+        path = os.path.join(C_DIR, base)
+        text = (
+            '/* MERGED MODULE: %s\n'
+            ' *\n'
+            ' * A C replacement substitutes for a WHOLE module, so every label in this\n'
+            ' * one has to be present before any of it can be linked. Each restoration\n'
+            ' * below is finished and lives in its own file; this unit only puts them in\n'
+            ' * the module\'s own order. Generated by tools/merge_module_c.py -- edit the\n'
+            ' * included files, never this one.\n'
+            ' *\n'
+            ' * RESTORES: %s\n'
+            ' */\n' % (mod, ', '.join(labels)))
+        text += ''.join('#include "%s"\n' % f for f in files)
+        if write:
+            open(path, 'w').write(text)
+        if mod not in already_merged:
+            new_lines.append('%-70s c/%s' % (mod, base))
+        print('%s  <- %s' % (base, ', '.join(files)))
+
+    for mod, why in blocked:
+        print('SKIP %s: %s' % (mod, why))
+
+    print('\nmerge_module_c: %d module(s) ready, %d blocked (fall-through or '
+          'a name clash)' % (len(ready), len(blocked)))
+    if add and new_lines:
+        with open(MANIFEST, 'a') as fh:
+            fh.write('\n'.join(new_lines) + '\n')
+        print('appended %d entries to %s' % (len(new_lines), MANIFEST))
+    elif new_lines and not write:
+        print('(dry run -- pass --write to create the files, --add to list them)')
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

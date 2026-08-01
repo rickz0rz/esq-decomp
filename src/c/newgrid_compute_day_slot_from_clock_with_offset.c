@@ -47,11 +47,14 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
+#ifndef NEWGRIDCLOCKDATA_DEFINED
+#define NEWGRIDCLOCKDATA_DEFINED
 struct NewGridClockData {
     short f0, f2, f4, f6, f8;
     short minutes;              /* +10 */
     short f12, f14, f16, f18, f20;
 };
+#endif
 
 extern unsigned short NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(
     struct NewGridClockData *c);

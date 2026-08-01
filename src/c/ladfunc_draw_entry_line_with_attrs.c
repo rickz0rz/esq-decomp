@@ -85,8 +85,12 @@ extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
 extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
                                                     void *p, long size);
+/* The 4th parameter is a PACKED PEN BYTE, not a pen number, and the definition
+ * in ladfunc_display_text_packed_pens.c spells it `char`. Declaring it `long`
+ * here was invisible while the two files compiled separately and became
+ * `conflict with previous declaration` the moment they shared a unit. */
 extern void  LADFUNC_DisplayTextPackedPens(struct RastPort *rp, long x, long y,
-                                           long pen, char *text);
+                                           char packed, char *text);
 
 extern long ED_TextLimit;
 extern char Global_STR_SINGLE_SPACE_1[];

@@ -178,7 +178,7 @@
     XDEF    _ESQIFF_RecordChecksumByte
     XDEF    _LADFUNC_LineSlotWriteIndex
     XDEF    DISPLIB_PreviousSearchWrappedFlag
-    XDEF    ESQ_BannerCharResetPulse
+    XDEF    _ESQ_BannerCharResetPulse
     XDEF    _WDISP_BannerCharIndex
     XDEF    _TEXTDISP_ChannelLabelBufferTerminatorByte
     XDEF    _TEXTDISP_ChannelLabelBuffer
@@ -207,7 +207,7 @@
     XDEF    _CLOCK_HalfHourSlotIndex
     XDEF    _ESQ_StartupWriteOnlyWord2271
     XDEF    _ESQ_StartupWriteOnlyLong2272
-    XDEF    ESQ_BannerCharIndexShadow2273
+    XDEF    _ESQ_BannerCharIndexShadow2273
     XDEF    _CLOCK_CurrentDayOfWeekIndex
     XDEF    _CLOCK_CurrentMonthIndex
     XDEF    _CLOCK_CurrentDayOfMonth
@@ -1811,20 +1811,20 @@ _LADFUNC_LineSlotWriteIndex:
 DISPLIB_PreviousSearchWrappedFlag:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: ESQ_BannerCharResetPulse   (banner-char reset pulse latch)
+; SYM: _ESQ_BannerCharResetPulse   (banner-char reset pulse latch)
 ; TYPE: u16
 ; PURPOSE: Set to 1 whenever banner-char index is forced back to range start.
-; USED BY: ESQ_AdvanceBannerCharIndex
+; USED BY: _ESQ_AdvanceBannerCharIndex
 ; NOTES: No direct readers found in current scan; likely legacy telemetry/state.
 ;   Current writer sets literal `1` on reset paths and does not locally clear it.
 ;------------------------------------------------------------------------------
-ESQ_BannerCharResetPulse:
+_ESQ_BannerCharResetPulse:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _WDISP_BannerCharIndex   (current banner char index)
 ; TYPE: u16
 ; PURPOSE: Holds the active 1..48 banner character index for cycling/animation logic.
-; USED BY: ESQ_AdvanceBannerCharIndex, ESQ startup/init helpers
+; USED BY: _ESQ_AdvanceBannerCharIndex, ESQ startup/init helpers
 ; NOTES: Updated every tick and reset from `_WDISP_BannerCharRangeStart` when range bounds are hit.
 ;------------------------------------------------------------------------------
 _WDISP_BannerCharIndex:
@@ -1864,7 +1864,7 @@ _LADFUNC_LineControlCodeTable:
 ; SYM: _WDISP_BannerCharPhaseShift   (banner char phase-shift value)
 ; TYPE: s16
 ; PURPOSE: Per-tick phase/step value applied by banner-char index advance logic.
-; USED BY: _DST_TickBannerCounters, ESQ_AdvanceBannerCharIndex, _ESQFUNC_DrawMemoryStatusScreen
+; USED BY: _DST_TickBannerCounters, _ESQ_AdvanceBannerCharIndex, _ESQFUNC_DrawMemoryStatusScreen
 ; NOTES: Derived from DST counters and applied as +/- two-step adjustments in index math.
 ;------------------------------------------------------------------------------
 _WDISP_BannerCharPhaseShift:
@@ -2018,7 +2018,7 @@ _ED_Rastport2PenModeSelector:
 ; SYM: _WDISP_BannerCharRangeStart   (banner char range start index)
 ; TYPE: u16
 ; PURPOSE: Start index for the active banner char window/range.
-; USED BY: _ESQ_ClampBannerCharRange, _CLEANUP_ProcessAlerts, ESQ_AdvanceBannerCharIndex
+; USED BY: _ESQ_ClampBannerCharRange, _CLEANUP_ProcessAlerts, _ESQ_AdvanceBannerCharIndex
 ; NOTES: Paired with `_WDISP_BannerCharRangeEnd` (range end) for 1..48 wrapping behavior.
 ;------------------------------------------------------------------------------
 _WDISP_BannerCharRangeStart:
@@ -2033,21 +2033,21 @@ _WDISP_BannerCharRangeStart:
 _CLOCK_HalfHourSlotIndex:
     DS.W    1
 ;------------------------------------------------------------------------------
-; SYM: _ESQ_StartupWriteOnlyWord2271/_ESQ_StartupWriteOnlyLong2272/ESQ_BannerCharIndexShadow2273   (startup-reserved + banner shadow)
+; SYM: _ESQ_StartupWriteOnlyWord2271/_ESQ_StartupWriteOnlyLong2272/_ESQ_BannerCharIndexShadow2273   (startup-reserved + banner shadow)
 ; TYPE: u16/u32/u16
 ; PURPOSE:
 ;   `_ESQ_StartupWriteOnlyWord2271` and `_ESQ_StartupWriteOnlyLong2272` are startup-written placeholders with no confirmed readers.
-;   `ESQ_BannerCharIndexShadow2273` mirrors banner-char index writes from APP2 banner-advance flow.
+;   `_ESQ_BannerCharIndexShadow2273` mirrors banner-char index writes from APP2 banner-advance flow.
 ; USED BY: ESQ_InitializeState, ESQ_AdvanceBannerCharIndex_Return
 ; NOTES:
 ;   Keep as reserved placeholders until a reader path is confirmed by trace.
-;   `ESQ_BannerCharIndexShadow2273` currently appears write-only.
+;   `_ESQ_BannerCharIndexShadow2273` currently appears write-only.
 ;------------------------------------------------------------------------------
 _ESQ_StartupWriteOnlyWord2271:
     DS.W    1
 _ESQ_StartupWriteOnlyLong2272:
     DS.L    1
-ESQ_BannerCharIndexShadow2273:
+_ESQ_BannerCharIndexShadow2273:
     DS.W    1
 ;------------------------------------------------------------------------------
 ; SYM: _CLOCK_CurrentDayOfWeekIndex/_CLOCK_CurrentMonthIndex/_CLOCK_CurrentDayOfMonth/_CLOCK_CurrentYearValue   (current calendar tuple)
@@ -2111,7 +2111,7 @@ _WDISP_WeatherStatusCountdown:
 ; SYM: _WDISP_BannerCharRangeEnd   (banner char range end index)
 ; TYPE: u16
 ; PURPOSE: End index for the active banner-char wrap window.
-; USED BY: _ESQ_ClampBannerCharRange, ESQ_AdvanceBannerCharIndex, _CLEANUP_ProcessAlerts
+; USED BY: _ESQ_ClampBannerCharRange, _ESQ_AdvanceBannerCharIndex, _CLEANUP_ProcessAlerts
 ; NOTES: Paired with `_WDISP_BannerCharRangeStart` for 1..48 normalization/wrap behavior.
 ;------------------------------------------------------------------------------
 _WDISP_BannerCharRangeEnd:

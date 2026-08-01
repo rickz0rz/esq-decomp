@@ -9,10 +9,10 @@
     XDEF    _CTRL_Bit4CaptureDelayCounter
     XDEF    _CTRL_Bit3CaptureDelayCounter
     XDEF    _CTRL_Bit4CapturePhase
-    XDEF    CTRL_Bit4SampleSlotIndex
+    XDEF    _CTRL_Bit4SampleSlotIndex
     XDEF    _CTRL_Bit3CapturePhase
     XDEF    _CTRL_Bit3SampleSlotIndex
-    XDEF    CTRL_Bit4SampleScratch
+    XDEF    _CTRL_Bit4SampleScratch
     XDEF    _CTRL_Bit3SampleScratch
     XDEF    _HIGHLIGHT_CopperEffectSeed
     XDEF    _HIGHLIGHT_CopperEffectParamA
@@ -81,13 +81,13 @@ _CTRL_Bit3CaptureDelayCounter:
     DC.W    0
 _CTRL_Bit4CapturePhase:
     DC.W    0
-CTRL_Bit4SampleSlotIndex:
+_CTRL_Bit4SampleSlotIndex:
     DC.W    0
 _CTRL_Bit3CapturePhase:
     DC.W    0
 _CTRL_Bit3SampleSlotIndex:
     DC.W    0
-CTRL_Bit4SampleScratch:
+_CTRL_Bit4SampleScratch:
     DC.L    0,0
 _CTRL_Bit3SampleScratch:
     DC.L    0,0

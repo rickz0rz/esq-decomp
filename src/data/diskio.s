@@ -31,44 +31,44 @@
     XDEF    _Global_STR_DEFAULT_CONFIG_FORMATTED
     XDEF    _Global_STR_DF0_CONFIG_DAT_2
     XDEF    _Global_STR_DISKIO_C_9
-    XDEF    DISKIO_FMT_CHANNEL_LINE_UP_PCT_LD
-    XDEF    DISKIO_FMT_ETID_PCT_LD_PCT_02LX
-    XDEF    DISKIO_FMT_CHAN_NUM_PCT_S
-    XDEF    DISKIO_FMT_SOURCE_PCT_S
-    XDEF    DISKIO_FMT_CALL_LET_PCT_S
-    XDEF    DISKIO_FMT_ATTR_PCT_02LX
-    XDEF    DISKIO_STR_NONE_CompactSourceAttrFlags
-    XDEF    DISKIO_STR_HILITE_SRC_CompactSourceAttrFlags
-    XDEF    DISKIO_STR_SUM_SRC_CompactSourceAttrFlags
-    XDEF    DISKIO_STR_VIDEO_TAG_DISABLE_CompactSourceAttrFlags
-    XDEF    DISKIO_STR_PPV_SRC_CompactSourceAttrFlags
-    XDEF    DISKIO_STR_DITTO_CompactSourceAttrFlags
-    XDEF    DISKIO_STR_ALTHILITESRC_CompactSourceAttrFlags
-    XDEF    DISKIO_STR_0X80
-    XDEF    DISKIO_STR_AttrFlagsCloseParenNewline_A
-    XDEF    DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX
-    XDEF    DISKIO_STR_NONE_TimeSlotMaskAllSet
-    XDEF    Global_STR_OFF_AIR_2
-    XDEF    DISKIO_STR_TimeSlotListOpenParen
-    XDEF    DISKIO_FMT_PCT_S_TimeSlotMaskEntry
-    XDEF    DISKIO_STR_TimeSlotListCloseParenNewline
-    XDEF    DISKIO_FMT_BLKOUT_MASK_PCT_02LX_PCT_02LX_PCT_02
-    XDEF    DISKIO_STR_NONE_BlackoutMaskEmpty
-    XDEF    DISKIO_STR_BLACKED_OUT
-    XDEF    DISKIO_STR_BlackoutListOpenParen
-    XDEF    DISKIO_FMT_PCT_S_BlackoutMaskEntry
-    XDEF    DISKIO_STR_BlackoutListCloseParenNewline
-    XDEF    DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_DefaultCoiDump
-    XDEF    DISKIO_FMT_COI_DASH_PTR_PCT_08LX
-    XDEF    DISKIO_STR_DEF_COI_INFORMATION_FOLLOWS_COLON
-    XDEF    DISKIO_STR_DEF_DEFAULT
-    XDEF    DISKIO_FMT_DEF_CITY_PCT_08LX_STAR_DEF_CITY
-    XDEF    DISKIO_FMT_DEF_ORDER_PCT_08LX_STAR_DEF_ORDER
-    XDEF    DISKIO_FMT_DEF_PRICE_PCT_08LX_STAR_DEF_PRICE
-    XDEF    DISKIO_FMT_DEF_TELE_PCT_08LX_STAR_DEF_TELE
-    XDEF    DISKIO_FMT_DEF_EVENT_PCT_08LX_STAR_DEF_EVENT
-    XDEF    DISKIO_FMT_EXCEPTION_COUNT_IS_PCT_LD
-    XDEF    DISKIO_FMT_EXCEPTION_BLOCK_PCT_08LX
+    XDEF    _DISKIO_FMT_CHANNEL_LINE_UP_PCT_LD
+    XDEF    _DISKIO_FMT_ETID_PCT_LD_PCT_02LX
+    XDEF    _DISKIO_FMT_CHAN_NUM_PCT_S
+    XDEF    _DISKIO_FMT_SOURCE_PCT_S
+    XDEF    _DISKIO_FMT_CALL_LET_PCT_S
+    XDEF    _DISKIO_FMT_ATTR_PCT_02LX
+    XDEF    _DISKIO_STR_NONE_CompactSourceAttrFlags
+    XDEF    _DISKIO_STR_HILITE_SRC_CompactSourceAttrFlags
+    XDEF    _DISKIO_STR_SUM_SRC_CompactSourceAttrFlags
+    XDEF    _DISKIO_STR_VIDEO_TAG_DISABLE_CompactSourceAttrFlags
+    XDEF    _DISKIO_STR_PPV_SRC_CompactSourceAttrFlags
+    XDEF    _DISKIO_STR_DITTO_CompactSourceAttrFlags
+    XDEF    _DISKIO_STR_ALTHILITESRC_CompactSourceAttrFlags
+    XDEF    _DISKIO_STR_0X80
+    XDEF    _DISKIO_STR_AttrFlagsCloseParenNewline_A
+    XDEF    _DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX
+    XDEF    _DISKIO_STR_NONE_TimeSlotMaskAllSet
+    XDEF    _Global_STR_OFF_AIR_2
+    XDEF    _DISKIO_STR_TimeSlotListOpenParen
+    XDEF    _DISKIO_FMT_PCT_S_TimeSlotMaskEntry
+    XDEF    _DISKIO_STR_TimeSlotListCloseParenNewline
+    XDEF    _DISKIO_FMT_BLKOUT_MASK_PCT_02LX_PCT_02LX_PCT_02
+    XDEF    _DISKIO_STR_NONE_BlackoutMaskEmpty
+    XDEF    _DISKIO_STR_BLACKED_OUT
+    XDEF    _DISKIO_STR_BlackoutListOpenParen
+    XDEF    _DISKIO_FMT_PCT_S_BlackoutMaskEntry
+    XDEF    _DISKIO_STR_BlackoutListCloseParenNewline
+    XDEF    _DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_DefaultCoiDump
+    XDEF    _DISKIO_FMT_COI_DASH_PTR_PCT_08LX
+    XDEF    _DISKIO_STR_DEF_COI_INFORMATION_FOLLOWS_COLON
+    XDEF    _DISKIO_STR_DEF_DEFAULT
+    XDEF    _DISKIO_FMT_DEF_CITY_PCT_08LX_STAR_DEF_CITY
+    XDEF    _DISKIO_FMT_DEF_ORDER_PCT_08LX_STAR_DEF_ORDER
+    XDEF    _DISKIO_FMT_DEF_PRICE_PCT_08LX_STAR_DEF_PRICE
+    XDEF    _DISKIO_FMT_DEF_TELE_PCT_08LX_STAR_DEF_TELE
+    XDEF    _DISKIO_FMT_DEF_EVENT_PCT_08LX_STAR_DEF_EVENT
+    XDEF    _DISKIO_FMT_EXCEPTION_COUNT_IS_PCT_LD
+    XDEF    _DISKIO_FMT_EXCEPTION_BLOCK_PCT_08LX
     XDEF    _DISKIO_FMT_CHANNEL_LINE_UP_PCT_D
     XDEF    _DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT
     XDEF    _DISKIO_STR_ATTR
@@ -84,37 +84,37 @@
     XDEF    _DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC
     XDEF    _DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_
     XDEF    _DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord
-    XDEF    DISKIO_FMT_PROGRAM_INFO_PCT_LD
-    XDEF    DISKIO_FMT_PROG_SRCE_PCT_S_VerboseProgramInfo
-    XDEF    DISKIO_STR_NewlineOnly_A
-    XDEF    DISKIO_FMT_PCT_02LD_PCT_S_COLON_ATTR_PCT_02LX
-    XDEF    DISKIO_STR_NONE_VerboseProgramAttrFlags
-    XDEF    DISKIO_STR_MOVIE_VerboseProgramAttrFlags
-    XDEF    DISKIO_STR_ALTHILITE_PROG_VerboseProgramAttrFlags
-    XDEF    DISKIO_STR_TAG_PROG_VerboseProgramAttrFlags
-    XDEF    DISKIO_STR_0X10
-    XDEF    DISKIO_STR_0X20_VerboseProgramAttrFlags
-    XDEF    DISKIO_STR_0X40
-    XDEF    DISKIO_STR_PREV_DAYS_DATA_VerboseProgramAttrFlags
-    XDEF    DISKIO_STR_ProgramAttrCloseAndProgPrefix
-    XDEF    DISKIO_FMT_PCT_S_VerboseProgramStringLine
-    XDEF    DISKIO_STR_NullLine
-    XDEF    DISKIO_STR_NewlineOnly_B
-    XDEF    DISKIO_FMT_PROGRAM_INFO_PCT_D
-    XDEF    DISKIO_STR_NewlineOnly_C
-    XDEF    DISKIO_FMT_PROG_SRCE_PCT_S_ProgramInfoAttrTable
-    XDEF    DISKIO_FMT_PCT_02D_PCT_S_COLON_ATTR
-    XDEF    DISKIO_STR_NONE_ProgramInfoAttrTable
-    XDEF    DISKIO_STR_MOVIE_ProgramInfoAttrTable
-    XDEF    DISKIO_STR_ALTHILITE_PROG_ProgramInfoAttrTable
-    XDEF    DISKIO_STR_TAG_PROG_ProgramInfoAttrTable
-    XDEF    DISKIO_STR_SPORTSPROG
-    XDEF    DISKIO_STR_0X20_ProgramInfoAttrTable
-    XDEF    DISKIO_STR_REPEATPROG
-    XDEF    DISKIO_STR_PREV_DAYS_DATA_ProgramInfoAttrTable
-    XDEF    DISKIO_STR_ProgramAttrCloseAndProgQuotedPrefix
-    XDEF    DISKIO_TAG_NONE
-    XDEF    DISKIO_FMT_ProgramStringSuffixWithTypeFields
+    XDEF    _DISKIO_FMT_PROGRAM_INFO_PCT_LD
+    XDEF    _DISKIO_FMT_PROG_SRCE_PCT_S_VerboseProgramInfo
+    XDEF    _DISKIO_STR_NewlineOnly_A
+    XDEF    _DISKIO_FMT_PCT_02LD_PCT_S_COLON_ATTR_PCT_02LX
+    XDEF    _DISKIO_STR_NONE_VerboseProgramAttrFlags
+    XDEF    _DISKIO_STR_MOVIE_VerboseProgramAttrFlags
+    XDEF    _DISKIO_STR_ALTHILITE_PROG_VerboseProgramAttrFlags
+    XDEF    _DISKIO_STR_TAG_PROG_VerboseProgramAttrFlags
+    XDEF    _DISKIO_STR_0X10
+    XDEF    _DISKIO_STR_0X20_VerboseProgramAttrFlags
+    XDEF    _DISKIO_STR_0X40
+    XDEF    _DISKIO_STR_PREV_DAYS_DATA_VerboseProgramAttrFlags
+    XDEF    _DISKIO_STR_ProgramAttrCloseAndProgPrefix
+    XDEF    _DISKIO_FMT_PCT_S_VerboseProgramStringLine
+    XDEF    _DISKIO_STR_NullLine
+    XDEF    _DISKIO_STR_NewlineOnly_B
+    XDEF    _DISKIO_FMT_PROGRAM_INFO_PCT_D
+    XDEF    _DISKIO_STR_NewlineOnly_C
+    XDEF    _DISKIO_FMT_PROG_SRCE_PCT_S_ProgramInfoAttrTable
+    XDEF    _DISKIO_FMT_PCT_02D_PCT_S_COLON_ATTR
+    XDEF    _DISKIO_STR_NONE_ProgramInfoAttrTable
+    XDEF    _DISKIO_STR_MOVIE_ProgramInfoAttrTable
+    XDEF    _DISKIO_STR_ALTHILITE_PROG_ProgramInfoAttrTable
+    XDEF    _DISKIO_STR_TAG_PROG_ProgramInfoAttrTable
+    XDEF    _DISKIO_STR_SPORTSPROG
+    XDEF    _DISKIO_STR_0X20_ProgramInfoAttrTable
+    XDEF    _DISKIO_STR_REPEATPROG
+    XDEF    _DISKIO_STR_PREV_DAYS_DATA_ProgramInfoAttrTable
+    XDEF    _DISKIO_STR_ProgramAttrCloseAndProgQuotedPrefix
+    XDEF    _DISKIO_TAG_NONE
+    XDEF    _DISKIO_FMT_ProgramStringSuffixWithTypeFields
     XDEF    _DISKIO_CurrentDriveRevisionIndex
 ; ========== DISKIO.c ==========
 
@@ -194,83 +194,83 @@ _Global_STR_DF0_CONFIG_DAT_2:
     NStr    "df0:config.dat"
 _Global_STR_DISKIO_C_9:
     NStr    "DISKIO.c"
-DISKIO_FMT_CHANNEL_LINE_UP_PCT_LD:
+_DISKIO_FMT_CHANNEL_LINE_UP_PCT_LD:
     NStr2   "Channel Line Up # %ld",TextLineFeed
-DISKIO_FMT_ETID_PCT_LD_PCT_02LX:
+_DISKIO_FMT_ETID_PCT_LD_PCT_02LX:
     NStr2   "ETID = %ld ($%02lx)",TextLineFeed
-DISKIO_FMT_CHAN_NUM_PCT_S:
+_DISKIO_FMT_CHAN_NUM_PCT_S:
     NStr2   "chan_num = '%s'",TextLineFeed
-DISKIO_FMT_SOURCE_PCT_S:
+_DISKIO_FMT_SOURCE_PCT_S:
     NStr2   "source = '%s'",TextLineFeed
-DISKIO_FMT_CALL_LET_PCT_S:
+_DISKIO_FMT_CALL_LET_PCT_S:
     NStr2   "call_let = '%s'",TextLineFeed
-DISKIO_FMT_ATTR_PCT_02LX:
+_DISKIO_FMT_ATTR_PCT_02LX:
     NStr    "attr = $%02lx ("
-DISKIO_STR_NONE_CompactSourceAttrFlags:
+_DISKIO_STR_NONE_CompactSourceAttrFlags:
     NStr    " NONE"
-DISKIO_STR_HILITE_SRC_CompactSourceAttrFlags:
+_DISKIO_STR_HILITE_SRC_CompactSourceAttrFlags:
     NStr    " HILITE_SRC"
-DISKIO_STR_SUM_SRC_CompactSourceAttrFlags:
+_DISKIO_STR_SUM_SRC_CompactSourceAttrFlags:
     NStr    " SUM_SRC"
-DISKIO_STR_VIDEO_TAG_DISABLE_CompactSourceAttrFlags:
+_DISKIO_STR_VIDEO_TAG_DISABLE_CompactSourceAttrFlags:
     NStr    " VIDEO_TAG_DISABLE"
-DISKIO_STR_PPV_SRC_CompactSourceAttrFlags:
+_DISKIO_STR_PPV_SRC_CompactSourceAttrFlags:
     NStr    " PPV_SRC"
-DISKIO_STR_DITTO_CompactSourceAttrFlags:
+_DISKIO_STR_DITTO_CompactSourceAttrFlags:
     NStr    " DITTO"
-DISKIO_STR_ALTHILITESRC_CompactSourceAttrFlags:
+_DISKIO_STR_ALTHILITESRC_CompactSourceAttrFlags:
     NStr    " ALTHILITESRC"
-DISKIO_STR_0X80:
+_DISKIO_STR_0X80:
     NStr    " 0x80"
-DISKIO_STR_AttrFlagsCloseParenNewline_A:
+_DISKIO_STR_AttrFlagsCloseParenNewline_A:
     NStr2   " )",TextLineFeed
-DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX:
+_DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX:
     NStr    "tslt_mask = ($%02lx $%02lx $%02lx $%02lx $%02lx $%02lx) "
-DISKIO_STR_NONE_TimeSlotMaskAllSet:
+_DISKIO_STR_NONE_TimeSlotMaskAllSet:
     NStr2   "(NONE)",TextLineFeed
-Global_STR_OFF_AIR_2:
+_Global_STR_OFF_AIR_2:
     NStr2   "(OFF AIR)",TextLineFeed
-DISKIO_STR_TimeSlotListOpenParen:
+_DISKIO_STR_TimeSlotListOpenParen:
     NStr    "("
-DISKIO_FMT_PCT_S_TimeSlotMaskEntry:
+_DISKIO_FMT_PCT_S_TimeSlotMaskEntry:
     NStr    "%s "
-DISKIO_STR_TimeSlotListCloseParenNewline:
+_DISKIO_STR_TimeSlotListCloseParenNewline:
     NStr2   ")",TextLineFeed
-DISKIO_FMT_BLKOUT_MASK_PCT_02LX_PCT_02LX_PCT_02:
+_DISKIO_FMT_BLKOUT_MASK_PCT_02LX_PCT_02LX_PCT_02:
     NStr    "blkout_mask = ($%02lx $%02lx $%02lx $%02lx $%02lx $%02lx) "
-DISKIO_STR_NONE_BlackoutMaskEmpty:
+_DISKIO_STR_NONE_BlackoutMaskEmpty:
     NStr2   "(NONE)",TextLineFeed
-DISKIO_STR_BLACKED_OUT:
+_DISKIO_STR_BLACKED_OUT:
     NStr2   "(BLACKED OUT)",TextLineFeed
-DISKIO_STR_BlackoutListOpenParen:
+_DISKIO_STR_BlackoutListOpenParen:
     NStr    "("
-DISKIO_FMT_PCT_S_BlackoutMaskEntry:
+_DISKIO_FMT_PCT_S_BlackoutMaskEntry:
     NStr    "%s "
-DISKIO_STR_BlackoutListCloseParenNewline:
+_DISKIO_STR_BlackoutListCloseParenNewline:
     NStr2   ")",TextLineFeed
-DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_DefaultCoiDump:
+_DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_DefaultCoiDump:
     NStr2   "flag1 = 0x%02X, flag2 = 0x%04X, BgColor = 0x%02X, FgColor = 0x%02X, BrushId = %s",TextLineFeed
-DISKIO_FMT_COI_DASH_PTR_PCT_08LX:
+_DISKIO_FMT_COI_DASH_PTR_PCT_08LX:
     NStr2   "COI->Ptr = $%08lx",TextLineFeed
-DISKIO_STR_DEF_COI_INFORMATION_FOLLOWS_COLON:
+_DISKIO_STR_DEF_COI_INFORMATION_FOLLOWS_COLON:
     ; 9 probably = tab
     ; 10 probably = line feed
     NStr3   TextHorizontalTab,"def_COI information follows:",TextLineFeed
-DISKIO_STR_DEF_DEFAULT:
+_DISKIO_STR_DEF_DEFAULT:
     NStr3   TextHorizontalTab,"def_default = ""%s""",TextLineFeed
-DISKIO_FMT_DEF_CITY_PCT_08LX_STAR_DEF_CITY:
+_DISKIO_FMT_DEF_CITY_PCT_08LX_STAR_DEF_CITY:
     NStr3   TextHorizontalTab,"def_city = $%08lx ; *def_city = ""%s""",TextLineFeed
-DISKIO_FMT_DEF_ORDER_PCT_08LX_STAR_DEF_ORDER:
+_DISKIO_FMT_DEF_ORDER_PCT_08LX_STAR_DEF_ORDER:
     NStr3   TextHorizontalTab,"def_order = $%08lx ; *def_order = ""%s""",TextLineFeed
-DISKIO_FMT_DEF_PRICE_PCT_08LX_STAR_DEF_PRICE:
+_DISKIO_FMT_DEF_PRICE_PCT_08LX_STAR_DEF_PRICE:
     NStr3   TextHorizontalTab,"def_price = $%08lx ; *def_price = ""%s""",TextLineFeed
-DISKIO_FMT_DEF_TELE_PCT_08LX_STAR_DEF_TELE:
+_DISKIO_FMT_DEF_TELE_PCT_08LX_STAR_DEF_TELE:
     NStr3   TextHorizontalTab,"def_tele = $%08lx ; *def_tele = ""%s""",TextLineFeed
-DISKIO_FMT_DEF_EVENT_PCT_08LX_STAR_DEF_EVENT:
+_DISKIO_FMT_DEF_EVENT_PCT_08LX_STAR_DEF_EVENT:
     NStr3   TextHorizontalTab,"def_event = $%08lx ; *def_event = ""%s""",TextLineFeed
-DISKIO_FMT_EXCEPTION_COUNT_IS_PCT_LD:
+_DISKIO_FMT_EXCEPTION_COUNT_IS_PCT_LD:
     NStr3   TextHorizontalTab,"Exception_count is %ld",TextLineFeed
-DISKIO_FMT_EXCEPTION_BLOCK_PCT_08LX:
+_DISKIO_FMT_EXCEPTION_BLOCK_PCT_08LX:
     NStr3   TextHorizontalTab,"Exception_Block = $%08lx",TextLineFeed
 _DISKIO_FMT_CHANNEL_LINE_UP_PCT_D:
     NStr2   TextLineFeed,"Channel Line Up # %d, "
@@ -302,69 +302,69 @@ _DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_:
     NStr2   "blkout_mask=($%02x $%02x $%02x $%02x $%02x $%02x)",TextLineFeed
 _DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord:
     NStr2   "  flag1 = 0x%02X, flag2 = 0x%04X, BgColor = 0x%02X, FgColor = 0x%02X, BrushId = %s",TextLineFeed
-DISKIO_FMT_PROGRAM_INFO_PCT_LD:
+_DISKIO_FMT_PROGRAM_INFO_PCT_LD:
     NStr2   "Program Info # %ld",TextLineFeed
-DISKIO_FMT_PROG_SRCE_PCT_S_VerboseProgramInfo:
+_DISKIO_FMT_PROG_SRCE_PCT_S_VerboseProgramInfo:
     NStr2   "prog_srce = '%s'",TextLineFeed
-DISKIO_STR_NewlineOnly_A:
+_DISKIO_STR_NewlineOnly_A:
     NStr    10
-DISKIO_FMT_PCT_02LD_PCT_S_COLON_ATTR_PCT_02LX:
+_DISKIO_FMT_PCT_02LD_PCT_S_COLON_ATTR_PCT_02LX:
     NStr    "    (%02ld) [%s]: attr = $%02lx ("
-DISKIO_STR_NONE_VerboseProgramAttrFlags:
+_DISKIO_STR_NONE_VerboseProgramAttrFlags:
     NStr    " NONE"
-DISKIO_STR_MOVIE_VerboseProgramAttrFlags:
+_DISKIO_STR_MOVIE_VerboseProgramAttrFlags:
     NStr    " MOVIE"
-DISKIO_STR_ALTHILITE_PROG_VerboseProgramAttrFlags:
+_DISKIO_STR_ALTHILITE_PROG_VerboseProgramAttrFlags:
     NStr    " ALTHILITE_PROG"
-DISKIO_STR_TAG_PROG_VerboseProgramAttrFlags:
+_DISKIO_STR_TAG_PROG_VerboseProgramAttrFlags:
     NStr    " TAG_PROG"
-DISKIO_STR_0X10:
+_DISKIO_STR_0X10:
     NStr    " 0x10"
-DISKIO_STR_0X20_VerboseProgramAttrFlags:
+_DISKIO_STR_0X20_VerboseProgramAttrFlags:
     NStr    " 0x20"
-DISKIO_STR_0X40:
+_DISKIO_STR_0X40:
     NStr    " 0x40"
-DISKIO_STR_PREV_DAYS_DATA_VerboseProgramAttrFlags:
+_DISKIO_STR_PREV_DAYS_DATA_VerboseProgramAttrFlags:
     NStr    " PREV_DAYS_DATA"
-DISKIO_STR_ProgramAttrCloseAndProgPrefix:
+_DISKIO_STR_ProgramAttrCloseAndProgPrefix:
     DC.B    " )",TextLineFeed
     NStr    "         prog_str = "
-DISKIO_FMT_PCT_S_VerboseProgramStringLine:
+_DISKIO_FMT_PCT_S_VerboseProgramStringLine:
     NStr2   "'%s'",TextLineFeed
-DISKIO_STR_NullLine:
+_DISKIO_STR_NullLine:
     NStr2   "NULL",TextLineFeed
-DISKIO_STR_NewlineOnly_B:
+_DISKIO_STR_NewlineOnly_B:
     NStr    10
-DISKIO_FMT_PROGRAM_INFO_PCT_D:
+_DISKIO_FMT_PROGRAM_INFO_PCT_D:
     NStr2   "Program Info # %d",TextLineFeed
-DISKIO_STR_NewlineOnly_C:
+_DISKIO_STR_NewlineOnly_C:
     NStr    10
-DISKIO_FMT_PROG_SRCE_PCT_S_ProgramInfoAttrTable:
+_DISKIO_FMT_PROG_SRCE_PCT_S_ProgramInfoAttrTable:
     NStr2   "prog_srce = '%s'",TextLineFeed
-DISKIO_FMT_PCT_02D_PCT_S_COLON_ATTR:
+_DISKIO_FMT_PCT_02D_PCT_S_COLON_ATTR:
     NStr    "  %02d) [%s]: attr = ("
-DISKIO_STR_NONE_ProgramInfoAttrTable:
+_DISKIO_STR_NONE_ProgramInfoAttrTable:
     NStr    " NONE"
-DISKIO_STR_MOVIE_ProgramInfoAttrTable:
+_DISKIO_STR_MOVIE_ProgramInfoAttrTable:
     NStr    " MOVIE"
-DISKIO_STR_ALTHILITE_PROG_ProgramInfoAttrTable:
+_DISKIO_STR_ALTHILITE_PROG_ProgramInfoAttrTable:
     NStr    " ALTHILITE_PROG"
-DISKIO_STR_TAG_PROG_ProgramInfoAttrTable:
+_DISKIO_STR_TAG_PROG_ProgramInfoAttrTable:
     NStr    " TAG_PROG"
-DISKIO_STR_SPORTSPROG:
+_DISKIO_STR_SPORTSPROG:
     NStr    " SPORTSPROG"
-DISKIO_STR_0X20_ProgramInfoAttrTable:
+_DISKIO_STR_0X20_ProgramInfoAttrTable:
     NStr    " 0x20"
-DISKIO_STR_REPEATPROG:
+_DISKIO_STR_REPEATPROG:
     NStr    " REPEATPROG"
-DISKIO_STR_PREV_DAYS_DATA_ProgramInfoAttrTable:
+_DISKIO_STR_PREV_DAYS_DATA_ProgramInfoAttrTable:
     NStr    " PREV_DAYS_DATA"
-DISKIO_STR_ProgramAttrCloseAndProgQuotedPrefix:
+_DISKIO_STR_ProgramAttrCloseAndProgQuotedPrefix:
     DC.B    " )"
     NStr2   TextLineFeed,"    prog_str='"
-DISKIO_TAG_NONE:
+_DISKIO_TAG_NONE:
     NStr    "NONE"
-DISKIO_FMT_ProgramStringSuffixWithTypeFields:
+_DISKIO_FMT_ProgramStringSuffixWithTypeFields:
     DC.B    "'",TextLineFeed
     NStr2   "    p_type=%03d, movie_cat=%03d, color=0x%02x",TextLineFeed
     DS.W    1

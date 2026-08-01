@@ -1,7 +1,7 @@
     XDEF    _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning
     XDEF    _GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState
     XDEF    _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport
-    XDEF    GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch
+    XDEF    _GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch
     XDEF    _GROUP_AG_JMPTBL_MATH_DivS32
     XDEF    _GROUP_AG_JMPTBL_MATH_Mulu32
     XDEF    _GROUP_AG_JMPTBL_MEMORY_AllocateMemory
@@ -239,7 +239,7 @@ _GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition:
     JMP     _SCRIPT_BeginBannerCharTransition
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch   (Routine at GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch)
+; FUNC: _GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch   (Routine at _GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -257,7 +257,7 @@ _GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch:
+_GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch:
     JMP     _LADFUNC2_EmitEscapedStringToScratch
 
 ;------------------------------------------------------------------------------

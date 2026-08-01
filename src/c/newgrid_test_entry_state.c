@@ -43,7 +43,26 @@ extern void *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(long index,
                                                            long mode);
 extern void *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(long index,
                                                               long mode);
-extern long  NEWGRID_GetEntryStateCode(void *entry, void *aux, long slot);
+/* The callee takes two TYPED pointers and a `short` slot. `void *, void *, long`
+ * compiled alone and clashed as soon as this file was merged into one unit with
+ * newgrid_get_entry_state_code.c. Separately compiled the linker checks no types,
+ * so the disagreement was invisible. Forward declarations keep each struct
+ * defined only in the file that owns it. The slot still occupies a 4-byte stack
+ * slot either way -- only SHORTINT would change that, and it is off here.
+ *
+ * The guards make the pair order-independent inside a merged unit. SAS/C 6.51
+ * accepts a forward declaration followed by the definition and REJECTS the
+ * reverse -- "item already declared" -- so an unguarded tag declaration here
+ * would compile or not depending on which file the merge happened to put
+ * first. */
+#ifndef NEWGRIDSTATEENTRY_DEFINED
+struct NewGridStateEntry;
+#endif
+#ifndef NEWGRIDSTATECTX_DEFINED
+struct NewGridStateCtx;
+#endif
+extern long  NEWGRID_GetEntryStateCode(struct NewGridStateEntry *entry,
+                                       struct NewGridStateCtx *aux, short slot);
 
 long NEWGRID_TestEntryState(long mode, long primaryIndex, long secondaryIndex,
                             short key)
@@ -65,7 +84,8 @@ long NEWGRID_TestEntryState(long mode, long primaryIndex, long secondaryIndex,
                                                                  1L);
     }
 
-    state = NEWGRID_GetEntryStateCode(entry, aux, (long)key);
+    state = NEWGRID_GetEntryStateCode((struct NewGridStateEntry *)entry,
+                                      (struct NewGridStateCtx *)aux, key);
 
     switch (mode) {
     case 0:

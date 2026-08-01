@@ -49,17 +49,23 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
+#ifndef NEWGRIDSTATEENTRY_DEFINED
+#define NEWGRIDSTATEENTRY_DEFINED
 struct NewGridStateEntry {
     char pad0[28];
     char bits[1];               /* +28 */
 };
+#endif
 
+#ifndef NEWGRIDSTATECTX_DEFINED
+#define NEWGRIDSTATECTX_DEFINED
 struct NewGridStateCtx {
     char  pad0[7];
     unsigned char flags[1];     /* +7, indexed by slot */
     char  pad8[48];
     void *slots[1];             /* +56, indexed by slot */
 };
+#endif
 
 extern long NEWGRID2_JMPTBL_ESQ_TestBit1Based(char *bits, long slot);
 

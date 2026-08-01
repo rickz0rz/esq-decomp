@@ -652,7 +652,7 @@ Known divergences so far are written up in `docs/compiler-version.md`.
 
 ## Progress is measured in BYTES, not function count
 
-**Coverage is 97.2% by byte, 689 restorations, both gates green. The
+**Coverage is 97.9% by byte, 701 restorations, both gates green. The
 push-to-the-ceiling run of 2026-07-31 is DONE.** It took coverage from 75.3% by
 working the worklist straight down, largest first, and by LABELLING four blocks
 the disassembly had documented but left unnamed -- `ESQIFF_NoOpFrame`,
@@ -683,8 +683,8 @@ is work; it regenerates from `coverage.survey()`, so it cannot go stale.
 
 Function count flatters: the easy targets are small, so a high count can sit on a
 tiny fraction of the program. 202 restorations once read as 28% of the program
-and was 5.2% of it by byte. At 689 restorations the two readings have converged
--- 95% by count against 97.2% by byte -- because the large end has been worked.
+and was 5.2% of it by byte. At 701 restorations the two readings have converged
+-- 96% by count against 97.9% by byte -- because the large end has been worked.
 
 ```sh
 python3 tools/coverage.py             # progress by byte and by count
@@ -711,11 +711,11 @@ The restoration record says so unambiguously:
 
 | bucket | exact | behavioural | exact rate |
 |---|---:|---:|---:|
-| intra-unit (`6100`) | **11** | 276 | 4% |
-| no-calls | **14** | 127 | 10% |
-| cross-unit (`4EBA`) | **0** | 252 | **0%** |
+| intra-unit (`6100`) | **13** | 274 | 5% |
+| no-calls | **16** | 131 | 11% |
+| cross-unit (`4EBA`) | **0** | 255 | **0%** |
 
-Zero of 252. Every function whose original calls are `4EBA` is capped at
+Zero of 255. Every function whose original calls are `4EBA` is capped at
 `behavioural` under 6.51, and the cap is the call opcode alone — same size, same
 displacement, same semantics, different byte. `src/c/script_read_next_rbf_byte.c`
 is the whole class in six bytes.
@@ -998,7 +998,7 @@ far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
 BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
 278-entry parent, also clean and additionally proven on all six ESC-menu items.
 
-`src/c/replacements-all.txt` is the one to grow. It stands at **614 entries**
+`src/c/replacements-all.txt` is the one to grow. It stands at **642 entries**
 after the push-to-the-ceiling run, with 28 restorations held out as unsafe to
 link. It went 440 -> 464 from new restorations and 464 -> 614 from SPLITTING
 modules, which is the cheaper lever of the two and was sitting unused. **That size is NOT yet proven.** The last size proven end to end is
@@ -1510,6 +1510,190 @@ match what the disassembly shows is a labelling bug, not a hard function.**
 Fixing the six moved four new candidates into the `no-calls` bucket and shrank
 two worklist entries from 58 bytes to 2. Both directions are the point: the
 worklist was reporting sizes that were not true.
+
+## Before the DATA section can move to C: eight adjacencies
+
+In assembly the data section is one flat image and a symbol is only a name for
+an offset, so a routine can read a word symbol with `MOVE.L` and pick up
+whatever follows. C guarantees nothing about where two globals land. Every place
+the code crosses a symbol boundary therefore has to become ONE struct or array
+first.
+
+```sh
+python3 tools/data_adjacency_audit.py            # the overruns
+python3 tools/data_adjacency_audit.py --sizes    # every symbol and its size
+```
+
+Over 2,218 data symbols, of which 1,921 are referenced by code, there are
+exactly **eight**:
+
+| symbol | storage | read as | shape |
+|---|---:|---:|---|
+| `ED_DiagAvailMemMask` | 3 | 4 | word plus byte |
+| `ESQFUNC_MissingAssetRetryMask` | 3 | 4 | word plus byte |
+| `ESQIFF_SecondaryLineHeadPtr` | 2 | 4 | split pointer |
+| `ESQPARS2_BannerSnapshotPlane1DstPtr` | 2 | 4 | split pointer |
+| `ESQPARS2_BannerSnapshotPlane2DstPtr` | 2 | 4 | split pointer |
+| `ESQ_BannerColorClampValueA` | 1 | 2 | byte pair |
+| `ESQ_BannerColorClampValueB` | 1 | 2 | byte pair |
+| `HIGHLIGHT_CopperEffectSeed` | 2 | 4 | word plus two bytes |
+
+`src/c/esq_update_copper_lists_from_params.c` is the worked example and reads
+its group through a cast today, with the dependency written into its header.
+
+A symbol the code only ever takes the ADDRESS of is skipped: its size is
+whatever the code decides, so a displacement into it is ordinary indexing.
+
+> The first version of the audit reported **zero** overruns, which reads exactly
+> like a clean result. It keyed data labels by their written name and code
+> references by the name with the underscore stripped, so the two never met --
+> 166 symbols of 2,218 matched. Both sides now strip one leading underscore.
+> **An audit that finds nothing is a claim, and it has to be tested against a
+> case you already know about.**
+
+## Merging beats splitting when a module will not cut
+
+A C replacement substitutes for a WHOLE module, so a module holding several
+functions cannot be replaced until every one is written. `split_module.py`
+answers that by cutting the module up, and it cannot cut a module whose label is
+not at a `;!======` separator -- about 66 are like that.
+
+`tools/merge_module_c.py` answers it the other way and needs no assembly change:
+
+```sh
+python3 tools/merge_module_c.py                        # what can be merged
+python3 tools/merge_module_c.py --write --verify --add # write, compile, list
+```
+
+It writes one unit per module that `#include`s each restoration in the order the
+LABELS appear in the module, so the compiled functions land in the same sequence
+as the assembly they replace. The per-function files stay the single source of
+truth, so `cmatch.sh` and `mismatches.py --recheck` still measure the real file.
+
+**`--verify` is not optional.** Static checks catch a `static` helper defined
+twice, a `#define` with two bodies, and a struct tag defined twice. They miss the
+commonest clash: file A forward-declares a function that file B DEFINES, with a
+different parameter list. Separately compiled that is invisible, because the
+linker does not check types. In one unit SAS/C says `conflict with previous
+declaration`. Two of the first thirteen candidates failed exactly that way, so
+the compiler is the only gate worth trusting.
+
+Two of those conflicts were worth fixing rather than skipping, and both were
+latent documentation errors: `LADFUNC_DisplayTextPackedPens` takes a packed pen
+BYTE and one caller declared it `long`, and `NEWGRID_GetEntryStateCode` takes
+typed pointers where its caller declared `void *`. Where two files define the
+same struct, wrap it in its own `#ifndef` guard -- the tool ignores guarded
+definitions, and each file still compiles alone.
+
+> **A fall-through between two labels blocks the merge, and this check is the
+> reason the tool is safe.** When one block runs into the next, the two labels
+> are ONE routine with a second entry point, and the earlier restoration stops
+> where the assembly does not. `_ED1_EnterEscMenu` is the worked example: it ends
+> at the copper rise and the assembly then runs straight into
+> `_ED1_EnterEscMenu_AfterVersionText`, which resets the filter cursor. Merged as
+> two independent C functions that reset would never happen -- on the ESC-menu
+> path, silently. The tool refuses `ed1_p0.s` for that reason.
+
+## A module of 26 labels can still be ONE function
+
+`gen_all_manifest.py` used to refuse any module holding more than one label,
+because a C file replaces the WHOLE module. That count is the wrong question.
+What decides it is how many of those labels are FUNCTIONS.
+
+`modules/groups/a/g/diskio1.s` is the case that forced this. It carries 26
+labels and it is **one routine**: the head had no label at all, and the other 25
+are branch targets inside it. Twenty of them sat in the worklist as
+`falls-through` or `live-register-on-entry` -- twenty phantom entries for a
+function that does not exist.
+
+The test now asks, for every label except the one the C file restores:
+
+- Does anything OUTSIDE the module name it? Then it is a function.
+- Does ANY `BSR`/`JSR` name it, from anywhere? Then it is a function.
+- Is it named only by a `Bcc`/`BRA` inside its own module? Then it is an
+  interior branch target, and the C restoration of the routine covers it.
+
+**A label that NOTHING names is a FUNCTION, not an interior target.** This is
+the trap, and it is worth stating on its own, because the opposite reading looks
+equally reasonable and is what the first version of the rule did.
+`modules/groups/a/g/diskio1_p1.s` holds two dead dumpers, and the second is
+named by nothing at all -- treating "unreferenced" as "interior" claimed that
+one module for TWO C files at once. Only a `<name>_Return` epilogue is exempt.
+
+A second guard covers what references cannot see: a module entered by
+FALL-THROUGH from its predecessor in `src/Prevue.asm` is named by nothing
+either, and must not be replaced. `fallen_into()` reads the include order and
+checks the previous module's last instruction.
+
+Read together the two rules say: **replace a module only when every way into it
+is a reference to the one symbol the C file defines.**
+
+## `replacements-all.txt` is GENERATED. Overrides go in `replacements-extra.txt`
+
+The manifest header has always said "do not hand-edit" and past sessions edited
+it anyway, to force in restorations the generator refuses. `gen_all_manifest.py`
+rewrites the whole file, so those entries vanished on the next run without a
+word. Four were found missing this way.
+
+```
+python3 tools/gen_all_manifest.py                          # truncates and rewrites
+python3 tools/merge_module_c.py --write --verify --add     # appends merged units
+```
+
+**Run them in that order, and never `--add` without `--write --verify`.** `--add`
+on its own does not gate on compilation: it will list a `_merged.c` that does not
+build and leave the manifest pointing at a file that is not on disk.
+
+`src/c/replacements-extra.txt` is appended verbatim, after the generated rows and
+with no skip rule applied. Put a deliberate override there with a comment saying
+who read the case and why it is safe. An override whose C file the generator
+already emits is ignored, so a stale one is harmless.
+
+**One of the four was a generator defect, not a judgement call.** The
+`DO-NOT-LINK` detector searched the whole file, so it matched PROSE that merely
+names the marker: `esq_capture_ctrl_bit3_stream.c` explains why a *different*
+file carries one and was dropped for saying so. The pattern now requires the
+marker to OPEN a header line.
+
+## A `_merged.c` is not a source of truth
+
+`merge_module_c.py` reads every `RESTORES:` line under `src/c` to decide which
+file restores which label. That included the `_merged.c` files it had written
+itself, whose headers claim every label they cover -- so on the second run a
+label resolved to the merged unit and the tool emitted
+`#include "newgrid_p4_merged.c"` INSIDE `newgrid_p4_merged.c`.
+
+Every declaration in the file then appeared twice and `--verify` reported the
+collision as though the restorations clashed with each other. Three modules read
+as blocked by a name clash that did not exist. The tool now skips `_merged.c`
+when building that map.
+
+**The per-function files stay the single source of truth.** If `--verify` blames
+a clash, check that the two files really do disagree before rewriting either.
+
+### SAS/C 6.51 accepts a forward tag declaration only BEFORE the definition
+
+Merging exposes disagreements the linker never checks, and the fix is a forward
+declaration plus the struct's own `#ifndef` guard:
+
+```c
+#ifndef NEWGRIDCLOCKDATA_DEFINED
+struct NewGridClockData;
+#endif
+extern long NEWGRID_ComputeDaySlotFromClock(struct NewGridClockData *rec);
+```
+
+The guard is not decoration. 6.51 accepts `struct Foo;` followed by
+`struct Foo {...}` and REJECTS the reverse with `Error 63: item "Foo" already
+declared`, so an unguarded tag declaration compiles or not depending on which
+file the merge happens to put first. Reusing the definition's own guard macro
+makes it correct in both orders. Measured both ways on 2026-08-01.
+
+Three prototypes were corrected this way and all three were latent documentation
+errors, invisible while the files were compiled separately: two clock helpers
+declared `char *` for a struct parameter, and `NEWGRID_GetEntryStateCode` was
+declared `(void *, void *, long)` against a definition taking two typed pointers
+and a `short`. All four files still emit byte-for-byte what they emitted before.
 
 ## A `_Return` label is not a second function
 

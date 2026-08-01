@@ -103,8 +103,163 @@ def short_branch_targets():
     return out
 
 
+BRANCH = (r'B(?:RA|EQ|NE|CC|CS|GE|LT|GT|LE|MI|PL|HI|LS|VC|VS)'
+          r'(?:\.[SWLswl])?\s+%s\s*$')
+
+
+def reference_index():
+    """Every non-XDEF source line that names an identifier, keyed by identifier.
+
+    Built once. Asking the question per candidate re-walked 950 files 600 times.
+    """
+    idx = {}
+    for dp, _, fs in os.walk(os.path.join(ROOT, 'src')):
+        for f in fs:
+            if not f.endswith('.s'):
+                continue
+            p = os.path.join(dp, f)
+            for raw in open(p):
+                ln = raw.split(';')[0].rstrip()
+                s = ln.strip()
+                if not s or s.endswith(':'):
+                    continue
+                if s.split()[0].upper() == 'XDEF':
+                    continue
+                for tok in set(re.findall(r'[A-Za-z_][\w]*', ln)):
+                    idx.setdefault(tok, []).append((p, s))
+    return idx
+
+
+def other_real_functions(path, keep, idx):
+    """Labels in `path`, besides `keep`, that are GENUINE functions.
+
+    An empty result means the module holds one routine and may be replaced.
+
+    A label reached only by a branch inside its own module is not a function. It
+    is a branch target inside a larger routine, so a C restoration of that
+    routine covers it and the label may go away with the module.
+
+    A label that ANY `BSR`/`JSR` names is a function, whoever calls it -- that is
+    the test that separates modules/groups/a/g/diskio1.s, where none of the 25
+    extra labels is ever called, from modules/groups/a/w/ladfunc_p1_p0.s, where
+    BOTH labels are. The first is one routine; the second is two, and replacing
+    it with a single C file would delete a live function. A label whose ADDRESS
+    is taken counts as a function too, so the test demands a branch mnemonic
+    rather than merely excluding BSR and JSR.
+
+    `keep` is the label the C file provides, which is allowed to be anything.
+    """
+    labs = re.findall(r'^([A-Za-z_][\w]*):', open(path).read(), re.M)
+    bare_labs = [x.lstrip('_') for x in labs]
+
+    others = []
+    for l in labs:
+        if l.lstrip('_') == keep:
+            continue
+        # A `<name>_Return` epilogue is not a function, whether it is branched
+        # to or merely fallen into.
+        if l.endswith('_Return') and l[:-7].lstrip('_') in bare_labs:
+            continue
+        others.append(l)
+    if not others:
+        return set()
+
+    ok = set()
+    for l in others:
+        hits = idx.get(l, [])
+        # NO references at all does NOT mean "interior". A dead function is
+        # named by nothing either, and treating the two alike claimed
+        # modules/groups/a/g/diskio1_p1.s for TWO C files at once -- it holds two
+        # dead dumpers, and the second is reachable only by being the module's
+        # second entry point. Only a label that something actually BRANCHES to,
+        # from inside this module, is an interior target.
+        if hits and all(p == path and re.match(BRANCH % re.escape(l), ln)
+                        for p, ln in hits):
+            ok.add(l)
+    return set(others) - ok
+
+
+def externally_referenced():
+    """Labels that some OTHER file names. Keyed by module path.
+
+    A C file replaces a WHOLE module, so what decides whether it may is not how
+    many labels the module carries but how many of them anything outside needs.
+    The `_Return` carve-out below is one instance of that: an epilogue label is
+    XDEF'd, is never referenced from outside, and is not a function.
+
+    Interior branch targets are the same case at larger scale.
+    modules/groups/a/g/diskio1.s carries 25 of them for ONE routine, and counting
+    them made a finished restoration unlinkable.
+
+    Both sides strip one leading underscore. Keying the two halves differently is
+    what made the first data-adjacency audit report zero overruns, so the bare
+    name is used throughout here.
+    """
+    defs, refs = {}, {}
+    for base in ('modules', 'data'):
+        for dp, _, fs in os.walk(os.path.join(ROOT, 'src', base)):
+            for f in fs:
+                if not f.endswith('.s'):
+                    continue
+                p = os.path.join(dp, f)
+                t = open(p).read()
+                for l in re.findall(r'^([A-Za-z_][\w]*):', t, re.M):
+                    defs.setdefault(l.lstrip('_'), p)
+                bare = '\n'.join(x.split(';')[0] for x in t.split('\n'))
+                for tok in set(re.findall(r'[A-Za-z_][\w]*', bare)):
+                    refs.setdefault(tok.lstrip('_'), set()).add(p)
+
+    out = {}
+    for sym, home_p in defs.items():
+        if any(u != home_p for u in refs.get(sym, ())):
+            out.setdefault(home_p, set()).add(sym)
+    return out
+
+
+TERMINAL = ('RTS', 'RTE', 'RTR', 'JMP', 'BRA')
+
+
+def fallen_into():
+    """Modules whose PREDECESSOR in link order runs straight into them.
+
+    This is the hazard that the externally_referenced() relaxation opens up. A
+    module entered by fall-through is named by nothing, so that function reports
+    no outside user and is right to -- yet the module still must not be replaced.
+    The C function would open a prologue the original has not got, and the
+    predecessor's last instruction would run into it.
+
+    Read together the two rules say: replace a module only when every way into it
+    is a reference to the one symbol the C file defines.
+    """
+    order = []
+    for line in open(os.path.join(ROOT, 'src', 'Prevue.asm')):
+        m = re.match(r'\s*include\s+"([^"]+)"', line)
+        if m and m.group(1).startswith('modules/'):
+            order.append(m.group(1))
+
+    out = set()
+    for prev, cur in zip(order, order[1:]):
+        p = os.path.join(ROOT, 'src', prev)
+        if not os.path.exists(p):
+            continue
+        last = None
+        for ln in open(p):
+            ln = ln.split(';')[0].strip()
+            if not ln or ln.endswith(':'):
+                continue
+            if ln.split()[0].upper() in ('XDEF', 'XREF', 'SECTION', 'INCLUDE'):
+                continue
+            last = ln
+        if last and not last.split()[0].upper().startswith(TERMINAL):
+            out.add(os.path.join(ROOT, 'src', cur))
+    return out
+
+
 def main():
     fns = {f['name'].lstrip('_'): f for f in coverage.survey()}
+    ext_refs = externally_referenced()
+    fell_in = fallen_into()
+    ref_idx = reference_index()
     reg_abi = register_entry_abi()
     short_br = short_branch_targets()
 
@@ -127,7 +282,7 @@ def main():
                               [x.lstrip('_') for x in labs])]
             for l in labs:
                 home[l] = (os.path.relpath(p, os.path.join(ROOT, 'src')),
-                           len(fnlabs))
+                           len(fnlabs), p)
 
     # Per-file sc options come from TWO places. replacements.txt carries them for
     # byte-exact restorations, but a BEHAVIOURAL file cannot have an entry there
@@ -163,7 +318,12 @@ def main():
         # that keeps it out of every generated manifest. No blocker can predict
         # this: the file compiles, compares sanely, links, and passes a6_audit,
         # and the only thing that knows better is the emulator.
-        dnl = re.search(r'DO-NOT-LINK:\s*(.+)', text)
+        # The marker must OPEN a header line. Searching for it anywhere matched
+        # prose that merely names it -- esq_capture_ctrl_bit3_stream.c explains
+        # why a DIFFERENT file carries one, and was itself dropped for saying so.
+        # A restoration was then hand-appended to the manifest to put it back,
+        # which is how a generated file grew entries the generator would delete.
+        dnl = re.search(r'^\s*\*\s*DO-NOT-LINK:\s*(.+)', text, re.M)
         if dnl:
             skipped.append((f, 'DO-NOT-LINK: ' + dnl.group(1).strip()))
             continue
@@ -172,10 +332,24 @@ def main():
         cand = next((c for c in (lab, '_' + lab, bare) if c in home), None)
         if not cand:
             continue
-        mod, n = home[cand]
+        mod, n, abspath = home[cand]
         if n != 1:
-            skipped.append((f, 'module holds %d labels' % n))
-            continue
+            # The label count alone is the wrong question -- see
+            # externally_referenced(). What matters is whether anything OUTSIDE
+            # the module needs a symbol other than the one this C file provides.
+            # If not, the extra labels are interior branch targets and the C
+            # function covers them.
+            outside = ext_refs.get(abspath, set()) - {bare}
+            real = other_real_functions(abspath, bare, ref_idx)
+            if outside or real:
+                why = sorted(outside | {r.lstrip('_') for r in real})
+                skipped.append((f, 'module holds %d labels, %d of them functions: %s'
+                                % (n, len(why), ','.join(why[:3]))))
+                continue
+            if abspath in fell_in:
+                skipped.append((f, 'module holds %d labels and is entered by '
+                                   'fall-through from its predecessor' % n))
+                continue
         blockers = set(fns.get(bare, {}).get('blockers', []))
         if blockers & ABI_BLOCKERS:
             skipped.append((f, 'ABI: ' + ','.join(sorted(blockers & ABI_BLOCKERS))))
@@ -192,6 +366,24 @@ def main():
             skipped.append((f, 'reached by an 8-bit BSR.S from another module'))
             continue
         rows.append((mod, 'c/' + f, opts.get('c/' + f, '')))
+
+    # Deliberate overrides. A skip rule here is a heuristic, and a restoration
+    # that was READ and found linkable anyway must be able to say so somewhere
+    # the generator will not delete. Before this file existed the only way was to
+    # append to the generated manifest by hand, and the next regeneration threw
+    # the entry away without a word.
+    extra = os.path.join(ROOT, 'src/c/replacements-extra.txt')
+    have = {c for _, c, _ in rows}
+    n_extra = 0
+    if os.path.exists(extra):
+        for line in open(extra):
+            if not line.strip() or line.startswith('#'):
+                continue
+            parts = line.split()
+            if len(parts) >= 2 and parts[1] not in have:
+                rows.append((parts[0], parts[1], ' '.join(parts[2:])))
+                have.add(parts[1])
+                n_extra += 1
 
     out = os.path.join(ROOT, 'src/c/replacements-all.txt')
     with open(out, 'w') as fh:

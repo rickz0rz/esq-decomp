@@ -38,10 +38,13 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
+#ifndef TEXTDISPSOURCECONFIG_DEFINED
+#define TEXTDISPSOURCECONFIG_DEFINED
 struct TextDispSourceConfig {
     char         *name;         /* +0 */
     unsigned char bits;         /* +4, record is 6 bytes */
 };
+#endif
 
 extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newStr, char *old);
 extern void  MEMORY_DeallocateMemory(char *who, long line, void *p, long size);

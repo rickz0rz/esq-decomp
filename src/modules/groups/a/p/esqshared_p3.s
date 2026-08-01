@@ -88,7 +88,7 @@ _ESQSHARED_JMPTBL_ESQ_SetBit1Based:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQ_AdjustBracketedHourInString
+;   _ESQ_AdjustBracketedHourInString
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -99,7 +99,7 @@ _ESQSHARED_JMPTBL_ESQ_SetBit1Based:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString:
-    JMP     ESQ_AdjustBracketedHourInString
+    JMP     _ESQ_AdjustBracketedHourInString
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated   (Routine at _ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated)

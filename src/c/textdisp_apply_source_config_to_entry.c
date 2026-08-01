@@ -37,10 +37,13 @@
  */
 #include <string.h>
 
+#ifndef TEXTDISPSOURCECONFIG_DEFINED
+#define TEXTDISPSOURCECONFIG_DEFINED
 struct TextDispSourceConfig {
     char         *name;         /* +0 */
     unsigned char bits;         /* +4 */
 };
+#endif
 
 struct TextDispConfigEntry {
     char          pad0[12];

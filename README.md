@@ -16,20 +16,20 @@ that broke it.
 Both byte gates pass on the current tree.
 
 ```
-assembly converted to C   97.2%   [#######################################.]
-                                  188,352 of 193,848 application bytes
+assembly converted to C   97.9%   [#######################################.]
+                                  190,358 of 194,408 application bytes
 ```
 
 Count the bytes, not the functions. The easy targets are small, so a function
 count reads higher than the real progress. By function count the same work is
-94%, which flatters it.
+96%, which flatters it.
 
 Run `python3 tools/coverage.py` to regenerate every number in this section.
 
 | measure | value |
 |---|---|
-| application functions | 730 (193,848 bytes) |
-| restored to C | 689 (188,352 bytes, 97.2% by byte, 94% by count) |
+| application functions | 732 (194,408 bytes) |
+| restored to C | 701 (190,358 bytes, 97.9% by byte, 96% by count) |
 | byte-exact restorations | 29 |
 | source modules | 981, coalesced into 494 link units |
 | linked size | CODE 211,348 bytes, DATA 55,820 bytes |
@@ -143,12 +143,23 @@ python3 tools/verify_restorations.py
 /tmp/.capvenv/bin/python tools/a6_audit.py
 python3 tools/data_shape_audit.py           # does a C extern deref as often as the original
 python3 tools/extern_width_audit.py         # is a C extern narrower than the original reads it
+python3 tools/data_adjacency_audit.py       # where the code reads across a data symbol boundary
+python3 tools/merge_module_c.py --verify    # one C unit per module, from the per-function files
 ```
 
-`build-split.sh` runs both audits itself on any build that sets
+`build-split.sh` runs the first two audits itself on any build that sets
 `C_REPLACEMENTS`, and stops the build on a hit. They catch two errors that no
 byte check can see: reading a global one level too shallow, and declaring a word
 global one byte wide so the read takes the high half.
+
+`data_adjacency_audit.py` answers a question the DATA section raises rather than
+the code: which symbols the program reads across. There are eight, and each has
+to become one struct before `src/data` can stop being assembly.
+
+`merge_module_c.py` builds one C unit per module out of the per-function
+restorations, for modules `split_module.py` cannot cut. Always pass `--verify`:
+it compiles each candidate, which is the only way to catch a forward declaration
+that disagrees with the definition it names.
 
 Five manifests exist, each for a different question:
 

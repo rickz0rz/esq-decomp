@@ -1,0 +1,35 @@
+# DELIBERATE OVERRIDES for the maximum-C manifest.
+#
+# tools/gen_all_manifest.py appends every line here to replacements-all.txt,
+# after its own rows and without applying any skip rule. Use it for a
+# restoration that one of those rules refuses and that a person has READ and
+# found linkable anyway.
+#
+# The skip rules are heuristics. They screen on the shape of the ORIGINAL, so
+# they cannot see that a caller was converted too, or that a module's extra
+# labels are dead. Each line below records a case where that judgement was made.
+#
+# Format is the same as replacements-all.txt:
+#   <module path under src/>    <c file under src/>    [sc options]
+#
+# A line whose C file the generator already emitted is ignored, so an override
+# that later becomes unnecessary is harmless.
+
+# The module holds ESQSHARED4_BlitBannerRowsForActiveField AND the routine
+# beneath it. The C file restores both, and its RESTORES: line names both --
+# the generator reads only the first name and so measures the wrong module.
+modules/groups/a/q/esqshared4_p4.s                                     c/esqshared4_blit_banner_rows.c
+
+# Screened `register-args`. Its only caller is restored alongside it and passes
+# the arguments in the registers the original expects.
+modules/groups/a/q/esqshared4_p2.s                                     c/esqshared4_bind_and_clear_banner_work_raster.c
+
+# Screened `interior-label`. The screen fires on a body that uses A5 without a
+# LINK.W A5. Both samplers load A5 themselves, as a scratch address register, so
+# neither is an interior label. Each sampler is the SOLE caller of its bit
+# helper, and the helper returns in D1 -- which stops mattering once both sides
+# are C. Helper and caller must therefore move together, hence the pairs.
+modules/groups/a/a/app_p0.s                                            c/esq_capture_ctrl_bit3_stream.c
+modules/groups/a/a/app_get_bit_3_of_ciab_pra_into_d1.s                 c/get_bit3_of_ciab_pra.c
+modules/groups/a/a/app_p1.s                                            c/esq_capture_ctrl_bit4_stream.c
+modules/groups/a/a/app_get_bit_4_of_ciab_pra_into_d1.s                 c/get_bit4_of_ciab_pra.c

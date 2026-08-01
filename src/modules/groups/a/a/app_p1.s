@@ -12,9 +12,9 @@
 ; CALLS:
 ;   _GET_BIT_4_OF_CIAB_PRA_INTO_D1
 ; READS:
-;   _CTRL_Bit4CapturePhase, _CTRL_Bit4CaptureDelayCounter, CTRL_Bit4SampleSlotIndex
+;   _CTRL_Bit4CapturePhase, _CTRL_Bit4CaptureDelayCounter, _CTRL_Bit4SampleSlotIndex
 ; WRITES:
-;   _CTRL_Bit4CapturePhase, _CTRL_Bit4CaptureDelayCounter, CTRL_Bit4SampleSlotIndex, CTRL_Bit4SampleScratch, _CTRL_BUFFER, _CTRL_H, _CTRL_HPreviousSample,
+;   _CTRL_Bit4CapturePhase, _CTRL_Bit4CaptureDelayCounter, _CTRL_Bit4SampleSlotIndex, _CTRL_Bit4SampleScratch, _CTRL_BUFFER, _CTRL_H, _CTRL_HPreviousSample,
 ;   _CTRL_HDeltaMax, _CTRL_BufferedByteCount
 ; DESC:
 ;   Samples CIAB PRA bit 4 over time, assembles bytes, and appends them to
@@ -33,7 +33,7 @@ _ESQ_CaptureCtrlBit4Stream:
 
     ADDQ.W  #1,_CTRL_Bit4CapturePhase
     MOVE.W  #4,_CTRL_Bit4CaptureDelayCounter
-    MOVE.W  #0,CTRL_Bit4SampleSlotIndex
+    MOVE.W  #0,_CTRL_Bit4SampleSlotIndex
     RTS
 
 .advance_state:
@@ -55,7 +55,7 @@ _ESQ_CaptureCtrlBit4Stream:
 
     MOVE.W  #14,_CTRL_Bit4CaptureDelayCounter
     MOVEQ   #7,D0
-    LEA     CTRL_Bit4SampleScratch,A5
+    LEA     _CTRL_Bit4SampleScratch,A5
     MOVEQ   #0,D1
 
 .clear_sample_buffer_loop:
@@ -67,7 +67,7 @@ _ESQ_CaptureCtrlBit4Stream:
 .reset_state:
     MOVEQ   #0,D0           ; Set D0 to 0
     MOVE.W  D0,_CTRL_Bit4CaptureDelayCounter     ; Set _CTRL_Bit4CaptureDelayCounter to D0 (0)
-    MOVE.W  D0,CTRL_Bit4SampleSlotIndex     ; Set CTRL_Bit4SampleSlotIndex to D0 (0)
+    MOVE.W  D0,_CTRL_Bit4SampleSlotIndex     ; Set _CTRL_Bit4SampleSlotIndex to D0 (0)
     MOVE.W  D0,_CTRL_Bit4CapturePhase     ; Set _CTRL_Bit4CapturePhase to D0 (0)
     RTS
 
@@ -78,10 +78,10 @@ _ESQ_CaptureCtrlBit4Stream:
 
     JSR     _GET_BIT_4_OF_CIAB_PRA_INTO_D1(PC)
 
-    LEA     CTRL_Bit4SampleScratch,A5
-    ADDA.W  CTRL_Bit4SampleSlotIndex,A5
+    LEA     _CTRL_Bit4SampleScratch,A5
+    ADDA.W  _CTRL_Bit4SampleSlotIndex,A5
     MOVE.B  D1,(A5)
-    ADDQ.W  #1,CTRL_Bit4SampleSlotIndex
+    ADDQ.W  #1,_CTRL_Bit4SampleSlotIndex
     ADDI.W  #10,_CTRL_Bit4CaptureDelayCounter
     RTS
 
@@ -91,9 +91,9 @@ _ESQ_CaptureCtrlBit4Stream:
     TST.B   D1
     BMI.S   .reset_state_and_exit
 
-    LEA     CTRL_Bit4SampleScratch,A5
-    ADDA.W  CTRL_Bit4SampleSlotIndex,A5
-    MOVE.W  CTRL_Bit4SampleSlotIndex,D1
+    LEA     _CTRL_Bit4SampleScratch,A5
+    ADDA.W  _CTRL_Bit4SampleSlotIndex,A5
+    MOVE.W  _CTRL_Bit4SampleSlotIndex,D1
     SUBQ.W  #1,D1
     MOVEQ   #0,D0
 
@@ -138,7 +138,7 @@ _ESQ_CaptureCtrlBit4Stream:
 .reset_state_and_exit:
     MOVEQ   #0,D0
     MOVE.W  D0,_CTRL_Bit4CaptureDelayCounter
-    MOVE.W  D0,CTRL_Bit4SampleSlotIndex
+    MOVE.W  D0,_CTRL_Bit4SampleSlotIndex
     MOVE.W  D0,_CTRL_Bit4CapturePhase
 
 .return:

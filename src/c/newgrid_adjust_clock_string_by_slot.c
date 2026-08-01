@@ -51,7 +51,15 @@
 
 extern long NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(char *rec);
 extern void NEWGRID_JMPTBL_DATETIME_SecondsToStruct(long secs, char *rec);
-extern long NEWGRID_ComputeDaySlotFromClock(char *rec);
+/* The callee takes the 22-byte clock record as a struct, not as bytes. Declaring
+ * it `char *` here compiled alone and clashed the moment this file and
+ * newgrid_compute_day_slot_from_clock.c were merged into one unit, which is the
+ * only place a C compiler ever compares the two. A forward declaration is enough
+ * for a pointer parameter, so the definition stays in the file that owns it. */
+#ifndef NEWGRIDCLOCKDATA_DEFINED
+struct NewGridClockData;
+#endif
+extern long NEWGRID_ComputeDaySlotFromClock(struct NewGridClockData *rec);
 extern unsigned char CLOCK_FormatVariantCode;
 
 long NEWGRID_AdjustClockStringBySlot(char *clock)
@@ -64,5 +72,5 @@ long NEWGRID_AdjustClockStringBySlot(char *clock)
     secs -= 60 * ((long)CLOCK_FormatVariantCode % 30);
     NEWGRID_JMPTBL_DATETIME_SecondsToStruct(secs, tmp);
 
-    return NEWGRID_ComputeDaySlotFromClock(tmp);
+    return NEWGRID_ComputeDaySlotFromClock((struct NewGridClockData *)tmp);
 }

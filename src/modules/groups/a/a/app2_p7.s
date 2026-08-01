@@ -1,9 +1,9 @@
-    XDEF    ESQ_AdjustBracketedHourInString
+    XDEF    _ESQ_AdjustBracketedHourInString
     XDEF    ESQ_AdvanceBannerCharIndex_Return
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_AdvanceBannerCharIndex   (Advance banner char index)
+; FUNC: _ESQ_AdvanceBannerCharIndex   (Advance banner char index)
 ; ARGS:
 ;   (none)
 ; RET:
@@ -15,14 +15,14 @@
 ; READS:
 ;   _WDISP_BannerCharIndex, _WDISP_BannerCharPhaseShift, _WDISP_BannerCharRangeStart, _WDISP_BannerCharRangeEnd, _BANNER_ResetPendingFlag
 ; WRITES:
-;   ESQ_BannerCharResetPulse, _WDISP_BannerCharIndex, ESQ_BannerCharIndexShadow2273, _BANNER_ResetPendingFlag
+;   _ESQ_BannerCharResetPulse, _WDISP_BannerCharIndex, _ESQ_BannerCharIndexShadow2273, _BANNER_ResetPendingFlag
 ; DESC:
 ;   Advances a cycling index in the 1..48 range and applies a step offset.
 ; NOTES:
 ;   If _BANNER_ResetPendingFlag is non-zero, forces a reset path and clears the flag.
 ;   Also resets when the index matches _WDISP_BannerCharRangeEnd, using _WDISP_BannerCharRangeStart as the base.
 ;------------------------------------------------------------------------------
-ESQ_AdvanceBannerCharIndex:
+_ESQ_AdvanceBannerCharIndex:
     MOVEM.L D2-D3,-(A7)
     MOVE.W  _WDISP_BannerCharIndex,D0
     MOVEQ   #1,D2
@@ -46,7 +46,7 @@ ESQ_AdvanceBannerCharIndex:
     BNE.S   .lab_00A4
 
 .lab_00A3:
-    MOVE.W  D2,ESQ_BannerCharResetPulse
+    MOVE.W  D2,_ESQ_BannerCharResetPulse
     MOVE.W  _WDISP_BannerCharRangeStart,D0
 
 .lab_00A4:
@@ -81,21 +81,21 @@ ESQ_AdvanceBannerCharIndex:
 ; READS:
 ;   (none observed)
 ; WRITES:
-;   ESQ_BannerCharIndexShadow2273
+;   _ESQ_BannerCharIndexShadow2273
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 ESQ_AdvanceBannerCharIndex_Return:
-    MOVE.W  D0,ESQ_BannerCharIndexShadow2273
+    MOVE.W  D0,_ESQ_BannerCharIndexShadow2273
     MOVEM.L (A7)+,D2-D3
     RTS
 
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_AdjustBracketedHourInString   (AdjustBracketedHourInStringuncertain)
+; FUNC: _ESQ_AdjustBracketedHourInString   (AdjustBracketedHourInStringuncertain)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -115,7 +115,7 @@ ESQ_AdvanceBannerCharIndex_Return:
 ;   Only adjusts when hourOffset != 0; parsing assumes two-digit hours with
 ;   a possible leading space.
 ;------------------------------------------------------------------------------
-ESQ_AdjustBracketedHourInString:
+_ESQ_AdjustBracketedHourInString:
     MOVEA.L 4(A7),A0
     MOVE.L  8(A7),D0
     MOVEM.L D2-D4,-(A7)

@@ -90,14 +90,48 @@ while read -r u; do
         cnum=$((cnum + 1))
         cobj="$OBJ/c_repl_$cnum.o"
         cwork="$BUILD/cwork_$cnum"
+        if [ ! -f "$cfile" ]; then
+            # A manifest entry naming a file that is not there. Say so and keep
+            # going, rather than letting `set -e` end the build on a bare cp
+            # error with no mention of which entry was at fault.
+            fail=$((fail + 1)); echo "  FAILED (missing): $cfile"
+            continue
+        fi
         rm -rf "$cwork"; mkdir -p "$cwork"; cp "$cfile" "$cwork/u.c"
         cp src/c/*.h "$cwork/" 2>/dev/null || true   # see cmatch.sh
+        # A merged unit (tools/merge_module_c.py) is nothing but #include lines
+        # naming its sibling restorations, so those .c files have to be reachable
+        # too. Only merged units need them, and copying 700 files for every one
+        # of 600-odd compiles would dominate the build, so this is conditional.
+        case "$cfile" in
+        *_merged.c) cp src/c/*.c "$cwork/" 2>/dev/null || true ;;
+        esac
+        # `|| true` matters: the script runs under `set -e`, so a compiler that
+        # exits nonzero would kill the build HERE, before the check below can
+        # name the file. That is exactly what happened when a merged unit could
+        # not find its includes -- the build stopped after 26 compiles with a
+        # bare `rc=20` and no clue which file was at fault.
         ( . "$VAMOS_ACTIVATE" 2>/dev/null
           vamos --volume work:"$PWD/$cwork" sc:c/sc $SCOPTS $extra \
-                OBJNAME=work:u.o work:u.c ) >"$cwork/log" 2>&1
+                OBJNAME=work:u.o work:u.c ) >"$cwork/log" 2>&1 || true
+        # vamos fails occasionally for reasons that have nothing to do with the
+        # source -- one run of 631 compiles lost gcommand_parse_command_options.c,
+        # which then built first try on its own. Retry once before believing it,
+        # the same rule probe_esq.sh follows for a FAIL.
+        if [ ! -f "$cwork/u.o" ]; then
+            ( . "$VAMOS_ACTIVATE" 2>/dev/null
+              vamos --volume work:"$PWD/$cwork" sc:c/sc $SCOPTS $extra \
+                    OBJNAME=work:u.o work:u.c ) >"$cwork/log" 2>&1 || true
+            [ -f "$cwork/u.o" ] && echo "  (retried) $cfile"
+        fi
         if [ ! -f "$cwork/u.o" ]; then
             fail=$((fail + 1)); echo "  FAILED (cc): $cfile"
-            grep -iE 'error [0-9]+:|^(error)|Invalid' "$cwork/log" | head -3
+            # `|| true` again, and for a subtler reason than the compile above.
+            # Under `set -o pipefail` a grep that matches NOTHING returns 1, the
+            # pipeline returns 1, and `set -e` kills the build -- so the line
+            # meant to explain the failure was itself ending the run, one file
+            # short of the report.
+            grep -iE 'error [0-9]+:|^(error)|Invalid' "$cwork/log" | head -3 || true
         else
             cp "$cwork/u.o" "$cobj"
             echo "  cc $cfile${extra:+ [+$extra]} -> $(python3 tools/objbytes.py "$cobj" | sed -n 's/^code: //p')"

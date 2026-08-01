@@ -25,7 +25,13 @@
 
 extern long NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(char *rec);
 extern void NEWGRID_JMPTBL_DATETIME_SecondsToStruct(long secs, char *rec);
-extern long NEWGRID_ComputeDaySlotFromClockWithOffset(char *rec);
+/* Takes the clock record as a struct, not as bytes. See the guarded forward
+ * declaration in newgrid_adjust_clock_string_by_slot.c for why the guard is
+ * needed rather than a bare tag declaration. */
+#ifndef NEWGRIDCLOCKDATA_DEFINED
+struct NewGridClockData;
+#endif
+extern long NEWGRID_ComputeDaySlotFromClockWithOffset(struct NewGridClockData *rec);
 extern unsigned char CLOCK_FormatVariantCode;
 
 long NEWGRID_AdjustClockStringBySlotWithOffset(char *clock)
@@ -38,5 +44,6 @@ long NEWGRID_AdjustClockStringBySlotWithOffset(char *clock)
     secs -= 60 * ((long)CLOCK_FormatVariantCode % 30);
     NEWGRID_JMPTBL_DATETIME_SecondsToStruct(secs, tmp);
 
-    return NEWGRID_ComputeDaySlotFromClockWithOffset(tmp);
+    return NEWGRID_ComputeDaySlotFromClockWithOffset(
+        (struct NewGridClockData *)tmp);
 }
