@@ -647,6 +647,11 @@ data/displib.s                                                         c/data_di
 data/esqpars.s                                                         c/data_esqpars.c
 data/newgrid2.s                                                        c/data_newgrid2.c
 data/disptext.s                                                        c/data_disptext.c
+data/brush.s                                                           c/data_brush.c
+data/cleanup.s                                                         c/data_cleanup.c
+data/clock.s                                                           c/data_clock.c
+data/common.s                                                          c/data_common.c
+data/esqiff.s                                                          c/data_esqiff.c
 modules/groups/a/a/app2_p7.s                                           c/app2_p7_merged.c
 modules/groups/a/a/app2_esq_findsubstringcasefold.s                    c/app2_esq_findsubstringcasefold_merged.c
 modules/groups/a/c/cleanup2_p1_p0_p0.s                                 c/cleanup2_p1_p0_p0_merged.c

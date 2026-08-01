@@ -90,31 +90,31 @@ _CTASKS_PendingPrimaryOiDiskId:
 _CTASKS_PendingSecondaryOiDiskId:
     DS.B    1
 ;------------------------------------------------------------------------------
-; SYM: CTASKS_STR_TERM_MISSED_RECORD   (termination status text)
+; SYM: _CTASKS_STR_TERM_MISSED_RECORD   (termination status text)
 ; TYPE: cstring
 ; PURPOSE: User-facing close-task termination reason strings.
 ; USED BY: _DISKIO_DrawTransferErrorMessageIfDiagnostics
-; NOTES: CTASKS_STR_TERM_DL_TOO_LARGE_HEAD + _CTASKS_TerminationReasonPtrTable intentionally split "Too Large" text and pointer base.
+; NOTES: _CTASKS_STR_TERM_DL_TOO_LARGE_HEAD + _CTASKS_TerminationReasonPtrTable intentionally split "Too Large" text and pointer base.
 ;------------------------------------------------------------------------------
-CTASKS_STR_TERM_MISSED_RECORD:
+_CTASKS_STR_TERM_MISSED_RECORD:
     NStr    "Terminated: Missed Record"
-CTASKS_STR_TERM_WRITE_DISK1:
+_CTASKS_STR_TERM_WRITE_DISK1:
     NStr    "Terminated: Error Writing to Disk 1"
-CTASKS_STR_TERM_WRITE_DISK2:
+_CTASKS_STR_TERM_WRITE_DISK2:
     NStr    "Terminated: Error Writing to Disk 2"
-CTASKS_STR_TERM_BATCH_OFF:
+_CTASKS_STR_TERM_BATCH_OFF:
     NStr    "Terminated: Batch OFF Found"
-CTASKS_STR_TERM_OPEN_FILE:
+_CTASKS_STR_TERM_OPEN_FILE:
     NStr    "Terminated: Error Opening file"
-CTASKS_STR_TERM_DL_TOO_LARGE_HEAD:
+_CTASKS_STR_TERM_DL_TOO_LARGE_HEAD:
     NStr    "Terminated: DL File Too Large"
 _CTASKS_TerminationReasonPtrTable:
-    DC.L    CTASKS_STR_TERM_MISSED_RECORD
-    DC.L    CTASKS_STR_TERM_WRITE_DISK1
-    DC.L    CTASKS_STR_TERM_WRITE_DISK2
-    DC.L    CTASKS_STR_TERM_BATCH_OFF
-    DC.L    CTASKS_STR_TERM_OPEN_FILE
-    DC.L    CTASKS_STR_TERM_DL_TOO_LARGE_HEAD
+    DC.L    _CTASKS_STR_TERM_MISSED_RECORD
+    DC.L    _CTASKS_STR_TERM_WRITE_DISK1
+    DC.L    _CTASKS_STR_TERM_WRITE_DISK2
+    DC.L    _CTASKS_STR_TERM_BATCH_OFF
+    DC.L    _CTASKS_STR_TERM_OPEN_FILE
+    DC.L    _CTASKS_STR_TERM_DL_TOO_LARGE_HEAD
 ; For some reason these strings are off alignment and screw up when forcing
 ; them on a boundary of a word/2 bytes. It almost feels like this is
 ; some kind of struct instead...

@@ -2,7 +2,7 @@
     LINK.W  A5,#-80
 
     MOVE.L  _TLIBA1_CurrentViewModeIndex,-(A7)
-    PEA     Global_STR_VM_ARRAY_1
+    PEA     _Global_STR_VM_ARRAY_1
     PEA     -80(A5)
     JSR     _WDISP_SPrintf(PC)
 
@@ -32,7 +32,7 @@
     BGE.S   .return
 
     MOVE.L  D7,-(A7)
-    PEA     Global_STR_VM_ARRAY_2
+    PEA     _Global_STR_VM_ARRAY_2
     PEA     -84(A5)
     JSR     _WDISP_SPrintf(PC)
 
@@ -46,7 +46,7 @@
     PEA     -84(A5)
     BSR.W   _TLIBA3_FormatPatternRegisterDump
 
-    PEA     TLIBA1_STR_PatternDumpLoopNewline
+    PEA     _TLIBA1_STR_PatternDumpLoopNewline
     JSR     _FORMAT_RawDoFmtWithScratchBuffer(PC)
 
     LEA     20(A7),A7

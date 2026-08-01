@@ -1595,9 +1595,22 @@ Four rules, and the last two are the ones that will bite:
    symbols; they are listed in the section above and none of them is in
    `displib.s`. Convert the modules that hold them last.
 
-5. **ONLY convert a module whose content is a multiple of 4 bytes.** This is the
-   alignment rule from the code side, and on the data side it is not a cost, it
-   is a HARD LIMIT. A hunk object is longword-sized, so a data module of any
+5. **ONLY convert a module that is LAYOUT-NEUTRAL: 4-aligned START OFFSET *and*
+   a size that is a multiple of 4.** This is the alignment rule from the code
+   side, and on the data side it is not a cost, it is a HARD LIMIT.
+
+   **The size rule alone is not enough, and believing it cost a second frozen
+   display.** `coalesce()` groups consecutive data modules until the running
+   total is a whole number of longwords, and it FORCE-CLOSES the current group in
+   front of a replaced module. If that group was mid-longword, the assembly unit
+   it closes gets padded and everything after it moves. Nine modules were
+   converted, every one of them a multiple of 4 and every one byte-exact against
+   the assembler, and four of them started at a 2-mod-4 offset: the DATA hunk
+   went 55,820 -> 55,832 and the display froze.
+
+   `tools/data_to_c.py --write` now refuses on either count and prints both
+   numbers. Ten of the 31 modules pass, and the list is not guessable from the
+   sizes -- `data/kybd.s` is 48 bytes and fails on its start offset. A hunk object is longword-sized, so a data module of any
    other length gains padding, the DATA hunk GROWS, and every symbol after it
    moves.
 
@@ -1618,8 +1631,26 @@ Four rules, and the last two are the ones that will bite:
    bisect first: insert 4 bytes of padding at successive points in the assembly
    DATA section and find what stops working.
 
-31 data modules remain, 10,926 lines. Two are converted. The path is proven, and
-the multiple-of-4 rule decides which module is next.
+```sh
+python3 tools/data_to_c.py data/<mod>.s            # print the C
+python3 tools/data_to_c.py data/<mod>.s --write    # write it, if it is allowed
+```
+
+The generator is byte-exact by construction and refuses anything it does not
+understand. It cross-checks its own arithmetic against vasm before writing --
+that caught three modules it measured wrong by 2 and 4 bytes -- and it reads the
+`TextLineFeed`-style equates out of the headers rather than hardcoding them,
+because two of five hardcoded values were wrong.
+
+**Rename the data labels afterwards.** `check_c_symbols.py` inspects `extern`
+DECLARATIONS, so it cannot see a symbol a data module DEFINES. Four labels in
+`data/tliba1.s` and `data/clock.s` lacked the leading underscore and the link
+failed on them. Run `tools/rename_for_c.py` over every label in a converted
+module that does not already start with `_`.
+
+31 data modules, 55,472 bytes, and it is 69% of everything left in assembly.
+NINE are converted. Ten are layout-neutral in total, `data/esq.s` at 11,088 bytes
+among them.
 
 ## Merging beats splitting when a module will not cut
 

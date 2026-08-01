@@ -46,9 +46,9 @@
     XDEF    _TLIBA1_FMT_BPL5PTH_COLON_0X_PCT_04LX_0X_PCT_04L
     XDEF    _TLIBA1_FMT_BPL5PTL_COLON_0X_PCT_04LX_0X_PCT_04L
     XDEF    _TLIBA1_STR_PatternDumpSeparatorNewline
-    XDEF    Global_STR_VM_ARRAY_1
-    XDEF    Global_STR_VM_ARRAY_2
-    XDEF    TLIBA1_STR_PatternDumpLoopNewline
+    XDEF    _Global_STR_VM_ARRAY_1
+    XDEF    _Global_STR_VM_ARRAY_2
+    XDEF    _TLIBA1_STR_PatternDumpLoopNewline
     XDEF    _TLIBA1_PreviewSlotRefreshState
     XDEF    _TLIBA1_PreviewSlotRenderResult
     XDEF    _TLIBA1_DayEntryModeCounter
@@ -163,11 +163,11 @@ _TLIBA1_FMT_BPL5PTL_COLON_0X_PCT_04LX_0X_PCT_04L:
     NStr2   "BPL5PTL: 0x%04lx 0x%04lx, ($%08lx)",TextLineFeed
 _TLIBA1_STR_PatternDumpSeparatorNewline:
     NStr    10
-Global_STR_VM_ARRAY_1:
+_Global_STR_VM_ARRAY_1:
     NStr    "VM[ARRAY[%ld]"
-Global_STR_VM_ARRAY_2:
+_Global_STR_VM_ARRAY_2:
     NStr    "VM[ARRAY[%ld]"
-TLIBA1_STR_PatternDumpLoopNewline:
+_TLIBA1_STR_PatternDumpLoopNewline:
     NStr    10
     DS.W    1
 _TLIBA1_PreviewSlotRefreshState:

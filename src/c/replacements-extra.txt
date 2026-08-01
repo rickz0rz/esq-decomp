@@ -49,3 +49,8 @@ data/displib.s                                                         c/data_di
 data/esqpars.s                                                         c/data_esqpars.c
 data/newgrid2.s                                                        c/data_newgrid2.c
 data/disptext.s                                                        c/data_disptext.c
+data/brush.s                                                    c/data_brush.c
+data/cleanup.s                                                  c/data_cleanup.c
+data/clock.s                                                    c/data_clock.c
+data/common.s                                                   c/data_common.c
+data/esqiff.s                                                   c/data_esqiff.c
