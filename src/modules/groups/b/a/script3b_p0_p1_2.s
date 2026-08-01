@@ -1,7 +1,7 @@
 
-    XDEF    SCRIPT_RefreshCtrlState
+    XDEF    _SCRIPT_RefreshCtrlState
 
-SCRIPT_RefreshCtrlState:
+_SCRIPT_RefreshCtrlState:
     MOVEQ   #0,D0
     MOVE.B  _ED_DiagVinModeChar,D0
     MOVE.L  D0,-(A7)

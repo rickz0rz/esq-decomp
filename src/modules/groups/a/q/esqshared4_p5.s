@@ -125,7 +125,7 @@ _ESQSHARED4_ResetBannerColorToStart:
 ; CLOBBERS:
 ;   A4/A7/D0/D1/D2
 ; CALLS:
-;   _ESQ_NoOp, ESQSHARED4_BindAndClearBannerWorkRaster, ESQSHARED4_SetBannerCopperColorAndThreshold
+;   _ESQ_NoOp, _ESQSHARED4_BindAndClearBannerWorkRaster, ESQSHARED4_SetBannerCopperColorAndThreshold
 ; READS:
 ;   _ESQ_CopperListBannerA, ESQ_BannerSnapshotPlane0DstPtrLoWord, ESQ_BannerPlane0DstPtrReset_LoWord, ESQ_BannerSweepSrcPlane0Ptr_LoWord, ESQ_BannerSweepSrcPlane0PtrReset_LoWord, ESQPARS2_BannerColorThreshold, _ESQPARS2_BannerColorBaseValue, f6, lab_0CAE, lab_0CAF, lab_0CB0
 ; WRITES:
@@ -139,7 +139,7 @@ ESQSHARED4_ApplyBannerColorStep:
     BSR.W   ESQSHARED4_SetBannerCopperColorAndThreshold
 
     MOVE.W  #$58,D1
-    JSR     ESQSHARED4_BindAndClearBannerWorkRaster(PC)
+    JSR     _ESQSHARED4_BindAndClearBannerWorkRaster(PC)
 
     RTS
 

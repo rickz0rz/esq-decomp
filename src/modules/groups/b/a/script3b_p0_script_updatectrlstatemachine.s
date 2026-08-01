@@ -22,7 +22,7 @@
 ;   Uses _ED_DiagVinModeChar via _STR_FindCharPtr to probe a control flag string.
 ;------------------------------------------------------------------------------
 _SCRIPT_UpdateCtrlStateMachine:
-    BSR.W   SCRIPT_RefreshCtrlState
+    BSR.W   _SCRIPT_RefreshCtrlState
 
     MOVE.W  _SCRIPT_RuntimeMode,D0
     SUBQ.W  #2,D0

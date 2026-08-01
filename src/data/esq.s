@@ -111,8 +111,8 @@
     XDEF    _ESQ_CopperStatusDigitsA_ColorRegistersC
     XDEF    _ESQ_CopperStatusDigitsA_TailColorWord
     XDEF    _ESQ_CopperListBannerA
-    XDEF    ESQ_BannerWorkRasterPtrA_HiWord
-    XDEF    ESQ_BannerWorkRasterPtrA_LoWord
+    XDEF    _ESQ_BannerWorkRasterPtrA_HiWord
+    XDEF    _ESQ_BannerWorkRasterPtrA_LoWord
     XDEF    _ESQ_BannerPaletteWordsA
     XDEF    ESQ_BannerSweepWaitRowA
     XDEF    ESQ_BannerPlane0SnapshotScratchPtrHiWord
@@ -123,8 +123,8 @@
     XDEF    ESQ_BannerPlane2SnapshotScratchPtrLoWord
     XDEF    _ESQ_BannerColorSweepProgramA
     XDEF    ESQ_BannerSweepWaitStartProgramA
-    XDEF    ESQ_BannerWorkRasterPtrMirrorA_HiWord
-    XDEF    ESQ_BannerWorkRasterPtrMirrorA_LoWord
+    XDEF    _ESQ_BannerWorkRasterPtrMirrorA_HiWord
+    XDEF    _ESQ_BannerWorkRasterPtrMirrorA_LoWord
     XDEF    ESQ_BannerSweepWaitEndProgramA
     XDEF    ESQ_BannerSnapshotPlane0DstPtrHiWord
     XDEF    ESQ_BannerSnapshotPlane0DstPtrLoWord
@@ -146,8 +146,8 @@
     XDEF    ESQ_BannerPlane2DstPtrReset_LoWord
     XDEF    _ESQ_CopperEffectSwitchWaitWordA
     XDEF    _ESQ_CopperBannerTailListA
-    XDEF    ESQ_BannerWorkRasterPtrTailA_HiWord
-    XDEF    ESQ_CopperBannerRasterPointerListA
+    XDEF    _ESQ_BannerWorkRasterPtrTailA_HiWord
+    XDEF    _ESQ_CopperBannerRasterPointerListA
     XDEF    _ESQ_CopperEffectListB
     XDEF    _ESQ_CopperEffectListA_PtrHiWord
     XDEF    _ESQ_CopperEffectListA_PtrLoWord
@@ -156,8 +156,8 @@
     XDEF    _ESQ_CopperStatusDigitsB_ColorRegistersA
     XDEF    _ESQ_CopperStatusDigitsB_TailColorWord
     XDEF    _ESQ_CopperListBannerB
-    XDEF    ESQ_BannerWorkRasterPtrB_HiWord
-    XDEF    ESQ_BannerWorkRasterPtrB_LoWord
+    XDEF    _ESQ_BannerWorkRasterPtrB_HiWord
+    XDEF    _ESQ_BannerWorkRasterPtrB_LoWord
     XDEF    _ESQ_BannerPaletteWordsB
     XDEF    ESQ_BannerSweepWaitRowB
     XDEF    ESQ_BannerPlane0ScratchPtrAlt_HiWord
@@ -168,8 +168,8 @@
     XDEF    ESQ_BannerPlane2ScratchPtrAlt_LoWord
     XDEF    _ESQ_BannerColorSweepProgramB
     XDEF    ESQ_BannerSweepWaitStartProgramB
-    XDEF    ESQ_BannerWorkRasterPtrMirrorB_HiWord
-    XDEF    ESQ_BannerWorkRasterPtrMirrorB_LoWord
+    XDEF    _ESQ_BannerWorkRasterPtrMirrorB_HiWord
+    XDEF    _ESQ_BannerWorkRasterPtrMirrorB_LoWord
     XDEF    ESQ_BannerSweepWaitEndProgramB
     XDEF    ESQ_BannerSweepSrcPlane0Ptr_HiWord
     XDEF    ESQ_BannerSweepSrcPlane0Ptr_LoWord
@@ -191,8 +191,8 @@
     XDEF    ESQ_BannerSweepSrcPlane2PtrReset_LoWord
     XDEF    _ESQ_CopperEffectSwitchWaitWordB
     XDEF    _ESQ_CopperBannerTailListB
-    XDEF    ESQ_BannerWorkRasterPtrTailB_HiWord
-    XDEF    ESQ_CopperBannerRasterPointerListB
+    XDEF    _ESQ_BannerWorkRasterPtrTailB_HiWord
+    XDEF    _ESQ_CopperBannerRasterPointerListB
     XDEF    _Global_PTR_AUD1_DMA
     XDEF    _GfxBase
     XDEF    _IntuitionBase
@@ -703,9 +703,9 @@ _ESQ_CopperListBannerA:
     DC.L    $0090ffc5,$01080058,$010a0058,$01009306
     DC.L    $01020000,$01820003
     DC.W    $00e0
-ESQ_BannerWorkRasterPtrA_HiWord:
+_ESQ_BannerWorkRasterPtrA_HiWord:
     DC.L    $000000e2
-ESQ_BannerWorkRasterPtrA_LoWord:
+_ESQ_BannerWorkRasterPtrA_LoWord:
     DC.L    $00000180
 _ESQ_BannerPaletteWordsA:
     DC.L    $00030182,$00030184,$03330186,$0cc00188
@@ -762,9 +762,9 @@ _ESQ_BannerColorSweepProgramA:
 ESQ_BannerSweepWaitStartProgramA:
     DC.L    $00d9fffe,$01009306,$01820003
     DC.W    $00e0
-ESQ_BannerWorkRasterPtrMirrorA_HiWord:
+_ESQ_BannerWorkRasterPtrMirrorA_HiWord:
     DC.L    $000000e2
-ESQ_BannerWorkRasterPtrMirrorA_LoWord:
+_ESQ_BannerWorkRasterPtrMirrorA_LoWord:
     DC.W    0
 ESQ_BannerSweepWaitEndProgramA:
     DC.L    $00dffffe
@@ -820,18 +820,18 @@ _ESQ_CopperEffectSwitchWaitWordA:
 _ESQ_CopperBannerTailListA:
     DC.L    $00d9fffe,$0180016a,$01009306,$01820003
     DC.W    $00e0
-ESQ_BannerWorkRasterPtrTailA_HiWord:
+_ESQ_BannerWorkRasterPtrTailA_HiWord:
     DC.L    $000000e2
 ;------------------------------------------------------------------------------
-; SYM: ESQ_CopperBannerRasterPointerListA/ESQ_CopperBannerRasterPointerListB   (banner raster pointer lists)
+; SYM: _ESQ_CopperBannerRasterPointerListA/_ESQ_CopperBannerRasterPointerListB   (banner raster pointer lists)
 ; TYPE: u32[]/u32[]
 ; PURPOSE: Copper wait/pointer payload lists whose base pointer words are
 ;   rebound to the banner work raster.
-; USED BY: ESQSHARED4_BindAndClearBannerWorkRaster
+; USED BY: _ESQSHARED4_BindAndClearBannerWorkRaster
 ; NOTES:
 ;   Bind step writes the work-raster low/high words into the first long entry.
 ;------------------------------------------------------------------------------
-ESQ_CopperBannerRasterPointerListA:
+_ESQ_CopperBannerRasterPointerListA:
     DC.L    $0000ffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
@@ -1152,7 +1152,7 @@ _ESQ_CopperListBannerB:
     DC.L    $01020000,$01820003
     DC.W    $00e0
 ;------------------------------------------------------------------------------
-; SYM: ESQ_BannerWorkRasterPtrB_HiWord..ESQ_BannerWorkRasterPtrTailB_HiWord   (banner copper color-sweep cluster B ??)
+; SYM: _ESQ_BannerWorkRasterPtrB_HiWord.._ESQ_BannerWorkRasterPtrTailB_HiWord   (banner copper color-sweep cluster B ??)
 ; TYPE: u32/u16 mixed command templates
 ; PURPOSE: Runtime-patched copper command words used by banner color sweep (B path).
 ; USED BY: _ESQSHARED4_InitializeBannerCopperSystem, ESQSHARED4_ApplyBannerColorStep
@@ -1160,9 +1160,9 @@ _ESQ_CopperListBannerB:
 ;   Companion set to cluster A above; many entries are structural mirrors.
 ;   Retain anonymous per-entry labels until row/register mapping is fully traced.
 ;------------------------------------------------------------------------------
-ESQ_BannerWorkRasterPtrB_HiWord:
+_ESQ_BannerWorkRasterPtrB_HiWord:
     DC.L    $000000e2
-ESQ_BannerWorkRasterPtrB_LoWord:
+_ESQ_BannerWorkRasterPtrB_LoWord:
     DC.L    $00000180
 _ESQ_BannerPaletteWordsB:
     DC.L    $00030182,$00030184,$03330186,$0cc00188
@@ -1209,9 +1209,9 @@ _ESQ_BannerColorSweepProgramB:
 ESQ_BannerSweepWaitStartProgramB:
     DC.L    $00d9fffe,$01009306,$01820003
     DC.W    $00e0
-ESQ_BannerWorkRasterPtrMirrorB_HiWord:
+_ESQ_BannerWorkRasterPtrMirrorB_HiWord:
     DC.L    $000000e2
-ESQ_BannerWorkRasterPtrMirrorB_LoWord:
+_ESQ_BannerWorkRasterPtrMirrorB_LoWord:
     DC.W    0
 ESQ_BannerSweepWaitEndProgramB:
     DC.L    $00dffffe
@@ -1258,9 +1258,9 @@ _ESQ_CopperEffectSwitchWaitWordB:
 _ESQ_CopperBannerTailListB:
     DC.L    $00d9fffe,$0180016a,$01009306,$01820003
     DC.W    $00e0
-ESQ_BannerWorkRasterPtrTailB_HiWord:
+_ESQ_BannerWorkRasterPtrTailB_HiWord:
     DC.L    $000000e2
-ESQ_CopperBannerRasterPointerListB:
+_ESQ_CopperBannerRasterPointerListB:
     DC.L    $0000ffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
     DC.L    $fffeffff,$fffeffff,$fffeffff,$fffeffff
