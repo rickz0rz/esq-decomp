@@ -47,3 +47,5 @@ modules/groups/a/a/app_get_bit_4_of_ciab_pra_into_d1.s                 c/get_bit
 # byte-correct in isolation, and deliberately NOT listed.
 data/displib.s                                                         c/data_displib.c
 data/esqpars.s                                                         c/data_esqpars.c
+data/newgrid2.s                                                        c/data_newgrid2.c
+data/disptext.s                                                        c/data_disptext.c
