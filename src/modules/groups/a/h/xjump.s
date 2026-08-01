@@ -312,7 +312,7 @@ _GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STR_FindAnyCharPtr
+;   _STR_FindAnyCharPtr
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -323,7 +323,7 @@ _GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AH_JMPTBL_STR_FindAnyCharPtr:
-    JMP     STR_FindAnyCharPtr
+    JMP     _STR_FindAnyCharPtr
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile   (Routine at _GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile)

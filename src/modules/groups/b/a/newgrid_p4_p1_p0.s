@@ -205,12 +205,12 @@ _NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STR_CopyUntilAnyDelimN
+;   _STR_CopyUntilAnyDelimN
 ; DESC:
-;   Jump table entry that forwards to STR_CopyUntilAnyDelimN.
+;   Jump table entry that forwards to _STR_CopyUntilAnyDelimN.
 ;------------------------------------------------------------------------------
 _NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN:
-    JMP     STR_CopyUntilAnyDelimN
+    JMP     _STR_CopyUntilAnyDelimN
 
 ;------------------------------------------------------------------------------
 ; FUNC: _NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel   (Jump stub)

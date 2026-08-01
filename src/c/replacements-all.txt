@@ -706,6 +706,7 @@ modules/groups/b/a/tliba2_p2_p0.s                                      c/jmptbl_
 modules/groups/b/a/tliba3_p5_p0_tliba3_jmptbl_gcommand_applyhighlightflag.s c/jmptbl_b_a_tliba3_p5_p0_tliba3_jmptbl_gcommand_applyhighlightflag.c
 modules/submodules/unknown32.s                                         c/lib_handle_close_all_and_return_with_code.c
 modules/submodules/unknown5.s                                          c/lib_string_compare_and_copy.c
+modules/submodules/unknown7.s                                          c/lib_str_search.c
 modules/groups/a/a/app2_p7.s                                           c/app2_p7_merged.c
 modules/groups/a/a/app2_esq_findsubstringcasefold.s                    c/app2_esq_findsubstringcasefold_merged.c
 modules/groups/a/c/cleanup2_p1_p0_p0.s                                 c/cleanup2_p1_p0_p0_merged.c

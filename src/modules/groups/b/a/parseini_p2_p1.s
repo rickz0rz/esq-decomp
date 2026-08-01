@@ -875,14 +875,14 @@ _PARSEINI_JMPTBL_STREAM_ReadLineWithLimit:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STR_FindAnyCharPtr
+;   _STR_FindAnyCharPtr
 ; DESC:
-;   Jump stub to STR_FindAnyCharPtr.
+;   Jump stub to _STR_FindAnyCharPtr.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _PARSEINI_JMPTBL_STR_FindAnyCharPtr:
-    JMP     STR_FindAnyCharPtr
+    JMP     _STR_FindAnyCharPtr
 
 ;------------------------------------------------------------------------------
 ; FUNC: _PARSEINI_JMPTBL_ED1_ExitEscMenu   (JumpStub_ED1_ExitEscMenu)

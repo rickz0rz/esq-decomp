@@ -1,13 +1,13 @@
-    XDEF    STR_CopyUntilAnyDelimN
-    XDEF    STR_FindAnyCharInSet
-    XDEF    STR_FindAnyCharPtr
-    XDEF    STR_FindChar
+    XDEF    _STR_CopyUntilAnyDelimN
+    XDEF    _STR_FindAnyCharInSet
+    XDEF    _STR_FindAnyCharPtr
+    XDEF    _STR_FindChar
     XDEF    _STR_FindCharPtr
     XDEF    _STR_SkipClass3Chars
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STR_CopyUntilAnyDelimN   (Copy until delimiter or length)
+; FUNC: _STR_CopyUntilAnyDelimN   (Copy until delimiter or length)
 ; ARGS:
 ;   stack +8: A3 = source string
 ;   stack +12: A0 = destination buffer
@@ -29,7 +29,7 @@
 ; NOTES:
 ;   Stops before D7-1; always writes a trailing NUL.
 ;------------------------------------------------------------------------------
-STR_CopyUntilAnyDelimN:
+_STR_CopyUntilAnyDelimN:
     LINK.W  A5,#-8
     MOVEM.L D5-D7/A2-A3,-(A7)
 
@@ -82,7 +82,7 @@ STR_CopyUntilAnyDelimN:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STR_FindChar   (Find first occurrence of byte)
+; FUNC: _STR_FindChar   (Find first occurrence of byte)
 ; ARGS:
 ;   stack +8: A3 = string
 ;   stack +12: D7 = byte to find
@@ -101,7 +101,7 @@ STR_CopyUntilAnyDelimN:
 ; NOTES:
 ;   Returns 0 if NUL terminator is reached with no match.
 ;------------------------------------------------------------------------------
-STR_FindChar:
+_STR_FindChar:
     MOVEM.L D7/A3,-(A7)
 
     MOVEA.L 12(A7),A3
@@ -129,7 +129,7 @@ STR_FindChar:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: _STR_FindCharPtr   (Wrapper around STR_FindChar)
+; FUNC: _STR_FindCharPtr   (Wrapper around _STR_FindChar)
 ; ARGS:
 ;   stack +8: A3 = string
 ;   stack +12: D7 = byte to find
@@ -138,13 +138,13 @@ STR_FindChar:
 ; CLOBBERS:
 ;   D0/D7/A3
 ; CALLS:
-;   STR_FindChar (STR_FindChar)
+;   _STR_FindChar (_STR_FindChar)
 ; READS:
 ;   A3
 ; WRITES:
 ;   none
 ; DESC:
-;   Convenience wrapper around STR_FindChar.
+;   Convenience wrapper around _STR_FindChar.
 ; NOTES:
 ;   Equivalent behavior to a `strchr` helper with this ABI:
 ;     D0 = _STR_FindCharPtr(stringPtr, targetByte)
@@ -161,7 +161,7 @@ _STR_FindCharPtr:
     MOVE.L  16(A7),D7
     MOVE.L  D7,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.S   STR_FindChar
+    BSR.S   _STR_FindChar
 
     ADDQ.W  #8,A7
 
@@ -169,7 +169,7 @@ _STR_FindCharPtr:
     RTS
 
 ;------------------------------------------------------------------------------
-; SYM: STR_FindCharPtr_UnreachableLastMatchStub   (post-RTS legacy scan stub)
+; SYM: _STR_FindCharPtr_UnreachableLastMatchStub   (post-RTS legacy scan stub)
 ; TYPE: code block (unreachable in current control flow)
 ; PURPOSE: Legacy/stranded implementation that tracks the last matching byte.
 ; USED BY: none confirmed (no branch/call sites in current linked paths)
@@ -177,7 +177,7 @@ _STR_FindCharPtr:
 ;   a `strrchr`-style scan (`A2 = last match`) but is not entered by current
 ;   callers or in-file branches.
 ;------------------------------------------------------------------------------
-STR_FindCharPtr_UnreachableLastMatchStub:
+_STR_FindCharPtr_UnreachableLastMatchStub:
     MOVEM.L D7/A2-A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVE.L  20(A7),D7
@@ -205,7 +205,7 @@ STR_FindCharPtr_UnreachableLastMatchStub:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STR_FindAnyCharInSet   (Find first occurrence of any byte in set)
+; FUNC: _STR_FindAnyCharInSet   (Find first occurrence of any byte in set)
 ; ARGS:
 ;   stack +8: A3 = string
 ;   stack +12: A2 = charset (NUL-terminated)
@@ -224,7 +224,7 @@ STR_FindCharPtr_UnreachableLastMatchStub:
 ; NOTES:
 ;   Equivalent to strpbrk.
 ;------------------------------------------------------------------------------
-STR_FindAnyCharInSet:
+_STR_FindAnyCharInSet:
     LINK.W  A5,#-4
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 20(A7),A3
@@ -266,7 +266,7 @@ STR_FindAnyCharInSet:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STR_FindAnyCharPtr   (Wrapper around STR_FindAnyCharInSet)
+; FUNC: _STR_FindAnyCharPtr   (Wrapper around _STR_FindAnyCharInSet)
 ; ARGS:
 ;   stack +8: A3 = string
 ;   stack +12: A2 = charset
@@ -275,24 +275,24 @@ STR_FindAnyCharInSet:
 ; CLOBBERS:
 ;   D0/A2-A3
 ; CALLS:
-;   STR_FindAnyCharInSet (STR_FindAnyCharInSet)
+;   _STR_FindAnyCharInSet (_STR_FindAnyCharInSet)
 ; READS:
 ;   A3, A2
 ; WRITES:
 ;   none
 ; DESC:
-;   Convenience wrapper around STR_FindAnyCharInSet.
+;   Convenience wrapper around _STR_FindAnyCharInSet.
 ; NOTES:
 ;   ABI-preserving shim used by older jump tables and callsites.
 ;------------------------------------------------------------------------------
-STR_FindAnyCharPtr:
+_STR_FindAnyCharPtr:
     MOVEM.L A2-A3,-(A7)
 
     MOVEA.L 12(A7),A3
     MOVEA.L 16(A7),A2
     MOVE.L  A2,-(A7)
     MOVE.L  A3,-(A7)
-    BSR.S   STR_FindAnyCharInSet
+    BSR.S   _STR_FindAnyCharInSet
 
     ADDQ.W  #8,A7
 

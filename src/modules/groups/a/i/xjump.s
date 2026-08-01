@@ -148,18 +148,18 @@ _GROUP_AI_JMPTBL_STRING_AppendAtNull:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   STR_CopyUntilAnyDelimN
+;   _STR_CopyUntilAnyDelimN
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to STR_CopyUntilAnyDelimN.
+;   Jump stub to _STR_CopyUntilAnyDelimN.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN:
-    JMP     STR_CopyUntilAnyDelimN
+    JMP     _STR_CopyUntilAnyDelimN
 
     ; Alignment?
     MOVEQ   #97,D0
