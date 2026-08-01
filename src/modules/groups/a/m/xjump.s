@@ -301,16 +301,16 @@ _GROUP_AM_JMPTBL_ESQ_CheckAvailableFastMemory:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   STRUCT_AllocWithOwner
+;   _STRUCT_AllocWithOwner
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to STRUCT_AllocWithOwner.
+;   Jump stub to _STRUCT_AllocWithOwner.
 ;------------------------------------------------------------------------------
 _GROUP_AM_JMPTBL_STRUCT_AllocWithOwner:
-    JMP     STRUCT_AllocWithOwner
+    JMP     _STRUCT_AllocWithOwner
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState   (JumpStub)

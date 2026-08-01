@@ -93,7 +93,7 @@ _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRUCT_AllocWithOwner
+;   _STRUCT_AllocWithOwner
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -104,7 +104,7 @@ _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AG_JMPTBL_STRUCT_AllocWithOwner:
-    JMP     STRUCT_AllocWithOwner
+    JMP     _STRUCT_AllocWithOwner
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh   (Routine at _GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh)
@@ -181,7 +181,7 @@ _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRUCT_FreeWithSizeField
+;   _STRUCT_FreeWithSizeField
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -192,7 +192,7 @@ _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField:
-    JMP     STRUCT_FreeWithSizeField
+    JMP     _STRUCT_FreeWithSizeField
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt   (Routine at _GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt)

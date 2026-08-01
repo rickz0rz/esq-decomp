@@ -119,3 +119,4 @@ modules/submodules/unknown16.s                                         c/lib_buf
 modules/submodules/unknown32.s                                         c/lib_handle_close_all_and_return_with_code.c
 modules/submodules/unknown5.s                                          c/lib_string_compare_and_copy.c
 modules/submodules/unknown7.s                                          c/lib_str_search.c
+modules/submodules/unknown25.s                                         c/lib_struct_alloc_with_owner.c

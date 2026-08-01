@@ -1,8 +1,8 @@
-    XDEF    STRUCT_AllocWithOwner
-    XDEF    STRUCT_FreeWithSizeField
+    XDEF    _STRUCT_AllocWithOwner
+    XDEF    _STRUCT_FreeWithSizeField
 
 ;------------------------------------------------------------------------------
-; FUNC: STRUCT_FreeWithSizeField   (Free struct using size field at +18.)
+; FUNC: _STRUCT_FreeWithSizeField   (Free struct using size field at +18.)
 ; ARGS:
 ;   stack +12: A3 = struct pointer
 ; RET:
@@ -16,7 +16,7 @@
 ; NOTES:
 ;   Structure layout is unknown; offsets 8/20/24/18 are used here.
 ;------------------------------------------------------------------------------
-STRUCT_FreeWithSizeField:
+_STRUCT_FreeWithSizeField:
     MOVEM.L A3/A6,-(A7)
     MOVEA.L 12(A7),A3
 
@@ -38,7 +38,7 @@ STRUCT_FreeWithSizeField:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: STRUCT_AllocWithOwner   (Allocate struct and initialize fields.)
+; FUNC: _STRUCT_AllocWithOwner   (Allocate struct and initialize fields.)
 ; ARGS:
 ;   stack +20: A3 = owner/context pointer
 ;   stack +24: D7 = size (bytes)
@@ -53,7 +53,7 @@ STRUCT_FreeWithSizeField:
 ; NOTES:
 ;   Uses offsets 8/9/14/18; structure layout still unknown.
 ;------------------------------------------------------------------------------
-STRUCT_AllocWithOwner:
+_STRUCT_AllocWithOwner:
     MOVEM.L D7/A2-A3/A6,-(A7)
     MOVEA.L 20(A7),A3
     MOVE.L  24(A7),D7
