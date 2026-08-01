@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   A1/A2/A3/A7/D0/D3
 ; CALLS:
-;   ESQSHARED4_LoadCopperColorWordsFromNibbleTable
+;   _ESQSHARED4_LoadCopperColorWordsFromNibbleTable
 ; READS:
 ;   _GCOMMAND_PresetFallbackValue0, _ESQ_BannerPaletteWordsA, _ESQ_BannerPaletteWordsB
 ; WRITES:

@@ -2831,7 +2831,7 @@ _GCOMMAND_ActiveMsgSavedField28:
 ;   `...BaseOffset` is the fixed start offset for interleaved row-word copy passes.
 ;   `...TailOffsetCurrent` advances each tick to select the final tail source row.
 ;   `...TailOffsetReset` seeds/reset value copied back into current on wrap/rebuild.
-; USED BY: _GCOMMAND_ResetBannerFadeState, _GCOMMAND_BuildBannerTables, _GCOMMAND_TickHighlightState, ESQSHARED4_CopyInterleavedRowWordsFromOffset
+; USED BY: _GCOMMAND_ResetBannerFadeState, _GCOMMAND_BuildBannerTables, _GCOMMAND_TickHighlightState, _ESQSHARED4_CopyInterleavedRowWordsFromOffset
 ; NOTES: Current known reset constants are 128 (base) and 128+0x264 (tail reset).
 ;------------------------------------------------------------------------------
 _ESQSHARED4_InterleaveCopyBaseOffset:

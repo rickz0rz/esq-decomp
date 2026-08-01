@@ -9,7 +9,7 @@
     LEA     _ESQ_BannerPaletteWordsB,A3
     MOVE.W  #0,D3
     LEA     _GCOMMAND_PresetFallbackValue0,A1
-    JSR     ESQSHARED4_LoadCopperColorWordsFromNibbleTable(PC)
+    JSR     _ESQSHARED4_LoadCopperColorWordsFromNibbleTable(PC)
 
     MOVEM.L (A7)+,D0-D4/A0-A4
     RTS

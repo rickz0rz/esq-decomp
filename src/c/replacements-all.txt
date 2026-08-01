@@ -633,3 +633,4 @@ modules/groups/b/a/tliba2_p1.s                                         c/tliba_f
 modules/groups/b/a/wdisp_p0.s                                          c/wdisp_draw_weather_status_summary.c
 modules/groups/b/a/wdisp_wdisp_handleweatherstatuscommand.s            c/wdisp_handle_weather_status_command.c
 modules/groups/b/a/wdisp_p1_wdisp_updateselectionpreviewpanel.s        c/wdisp_update_selection_preview_panel.c
+modules/groups/a/q/esqshared4_p4.s                                     c/esqshared4_blit_banner_rows.c

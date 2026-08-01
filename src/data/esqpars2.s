@@ -46,10 +46,10 @@
     XDEF    _ESQPARS2_BannerRowCopyWordCount
     XDEF    _ESQPARS2_BannerRowCopySpanBytes
     XDEF    _ESQPARS2_BannerRowCopyStrideBytes
-    XDEF    ESQPARS2_BannerCopySourceOffset
-    XDEF    ESQPARS2_BannerCopyTailOffset
+    XDEF    _ESQPARS2_BannerCopySourceOffset
+    XDEF    _ESQPARS2_BannerCopyTailOffset
     XDEF    _ESQSHARED_BlitAddressOffset
-    XDEF    ESQPARS2_ActiveCopperListSelectFlag
+    XDEF    _ESQPARS2_ActiveCopperListSelectFlag
     XDEF    _ESQPARS2_BannerRowCount
     XDEF    _ESQPARS2_BannerRowWidthBytes
     XDEF    _ESQPARS2_BannerCopyBlockSpanBytes
@@ -249,9 +249,9 @@ _ESQPARS2_BannerRowCopySpanBytes:
     DS.L    1
 _ESQPARS2_BannerRowCopyStrideBytes:
     DS.L    1
-ESQPARS2_BannerCopySourceOffset:
+_ESQPARS2_BannerCopySourceOffset:
     DS.L    1
-ESQPARS2_BannerCopyTailOffset:
+_ESQPARS2_BannerCopyTailOffset:
     DS.L    1
 ;------------------------------------------------------------------------------
 ; SYM: _ESQSHARED_BlitAddressOffset   (shared blit address offset)
@@ -262,7 +262,7 @@ ESQPARS2_BannerCopyTailOffset:
 ;------------------------------------------------------------------------------
 _ESQSHARED_BlitAddressOffset:
     DS.L    1
-ESQPARS2_ActiveCopperListSelectFlag:
+_ESQPARS2_ActiveCopperListSelectFlag:
     DS.L    1
 _ESQPARS2_BannerRowCount:
     DC.L    $00000022

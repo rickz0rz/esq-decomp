@@ -121,7 +121,7 @@
     XDEF    ESQ_BannerPlane1SnapshotScratchPtrLoWord
     XDEF    ESQ_BannerPlane2SnapshotScratchPtrHiWord
     XDEF    ESQ_BannerPlane2SnapshotScratchPtrLoWord
-    XDEF    ESQ_BannerColorSweepProgramA
+    XDEF    _ESQ_BannerColorSweepProgramA
     XDEF    ESQ_BannerSweepWaitStartProgramA
     XDEF    ESQ_BannerWorkRasterPtrMirrorA_HiWord
     XDEF    ESQ_BannerWorkRasterPtrMirrorA_LoWord
@@ -134,8 +134,8 @@
     XDEF    ESQ_BannerSnapshotPlane2DstPtrLoWord
     XDEF    _ESQ_CopperEffectJumpTargetA_HiWord
     XDEF    _ESQ_CopperEffectJumpTargetA_LoWord
-    XDEF    ESQ_BannerColorSweepProgramA_AnchorColorWord
-    XDEF    ESQ_BannerColorSweepProgramA_TailColorWord
+    XDEF    _ESQ_BannerColorSweepProgramA_AnchorColorWord
+    XDEF    _ESQ_BannerColorSweepProgramA_TailColorWord
     XDEF    _ESQ_BannerColorClampValueA
     XDEF    _ESQ_BannerColorClampWaitRowA
     XDEF    ESQ_BannerPlane0DstPtrReset_HiWord
@@ -166,7 +166,7 @@
     XDEF    ESQ_BannerPlane1ScratchPtrAlt_LoWord
     XDEF    ESQ_BannerPlane2ScratchPtrAlt_HiWord
     XDEF    ESQ_BannerPlane2ScratchPtrAlt_LoWord
-    XDEF    ESQ_BannerColorSweepProgramB
+    XDEF    _ESQ_BannerColorSweepProgramB
     XDEF    ESQ_BannerSweepWaitStartProgramB
     XDEF    ESQ_BannerWorkRasterPtrMirrorB_HiWord
     XDEF    ESQ_BannerWorkRasterPtrMirrorB_LoWord
@@ -179,8 +179,8 @@
     XDEF    ESQ_BannerSweepSrcPlane2Ptr_LoWord
     XDEF    _ESQ_CopperEffectJumpTargetB_HiWord
     XDEF    _ESQ_CopperEffectJumpTargetB_LoWord
-    XDEF    ESQ_BannerColorSweepProgramB_AnchorColorWord
-    XDEF    ESQ_BannerColorSweepProgramB_TailColorWord
+    XDEF    _ESQ_BannerColorSweepProgramB_AnchorColorWord
+    XDEF    _ESQ_BannerColorSweepProgramB_TailColorWord
     XDEF    _ESQ_BannerColorClampValueB
     XDEF    _ESQ_BannerColorClampWaitRowB
     XDEF    ESQ_BannerSweepSrcPlane0PtrReset_HiWord
@@ -727,7 +727,7 @@ ESQ_BannerPlane2SnapshotScratchPtrHiWord:
 ESQ_BannerPlane2SnapshotScratchPtrLoWord:
     DC.L    $00000182
 ;------------------------------------------------------------------------------
-; SYM: ESQ_BannerColorSweepProgramA.._ESQ_CopperEffectSwitchWaitWordA   (banner copper color-sweep cluster A ??)
+; SYM: _ESQ_BannerColorSweepProgramA.._ESQ_CopperEffectSwitchWaitWordA   (banner copper color-sweep cluster A ??)
 ; TYPE: u32/u16 mixed command templates
 ; PURPOSE: Runtime-patched copper command words used by banner color sweep (A path).
 ; USED BY: _ESQSHARED4_InitializeBannerCopperSystem, ESQSHARED4_ApplyBannerColorStep
@@ -736,7 +736,7 @@ ESQ_BannerPlane2SnapshotScratchPtrLoWord:
 ;   Individual entries remain intentionally anonymous until per-word behavior is
 ;   confirmed from deeper trace work.
 ;------------------------------------------------------------------------------
-ESQ_BannerColorSweepProgramA:
+_ESQ_BannerColorSweepProgramA:
     DC.L    $0aaa0100,$b30680d5,$80fe0188,$0100018a
     DC.L    $0000018c,$0000018e,$000180d5,$80fe0188
     DC.L    $0200018a,$0011018c,$0111018e,$000280d5
@@ -785,9 +785,9 @@ _ESQ_CopperEffectJumpTargetA_HiWord:
     DC.L    $00000086
 _ESQ_CopperEffectJumpTargetA_LoWord:
     DC.L    $00000182
-ESQ_BannerColorSweepProgramA_AnchorColorWord:
+_ESQ_BannerColorSweepProgramA_AnchorColorWord:
     DC.L    $0aaa018e
-ESQ_BannerColorSweepProgramA_TailColorWord:
+_ESQ_BannerColorSweepProgramA_TailColorWord:
     DC.W    $0003
 _ESQ_BannerColorClampValueA:
     DC.B    0
@@ -1183,7 +1183,7 @@ ESQ_BannerPlane2ScratchPtrAlt_HiWord:
     DC.L    $000000ea
 ESQ_BannerPlane2ScratchPtrAlt_LoWord:
     DC.L    $00000182
-ESQ_BannerColorSweepProgramB:
+_ESQ_BannerColorSweepProgramB:
     DC.L    $0aaa018e,$03330100,$b30680d5,$80fe0188
     DC.L    $0100018a,$0000018c,$0000018e,$000180d5
     DC.L    $80fe0188,$0200018a,$0011018c,$0111018e
@@ -1232,9 +1232,9 @@ _ESQ_CopperEffectJumpTargetB_HiWord:
     DC.L    $00000086
 _ESQ_CopperEffectJumpTargetB_LoWord:
     DC.L    $00000182
-ESQ_BannerColorSweepProgramB_AnchorColorWord:
+_ESQ_BannerColorSweepProgramB_AnchorColorWord:
     DC.L    $0aaa018e
-ESQ_BannerColorSweepProgramB_TailColorWord:
+_ESQ_BannerColorSweepProgramB_TailColorWord:
     DC.W    $0003
 _ESQ_BannerColorClampValueB:
     DC.B    0

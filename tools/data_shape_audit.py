@@ -95,6 +95,12 @@ def asm_usage():
             for fn in sorted(files):
                 if not fn.endswith('.s'):
                     continue
+                # `LEA _SYM,An` followed at once by a dereference of An is a
+                # VALUE access, not merely an address. The original writes the
+                # banner sweep words that way -- LEA _SYM,A4 then MOVE.W D0,(A4)
+                # -- which is a plain store to the symbol, and reading only the
+                # LEA reported six such stores as one dereference too many.
+                pending = None      # (symbol, register) from the previous line
                 with open(os.path.join(root, fn), errors='replace') as fh:
                     for line in fh:
                         line = line.split(';')[0]
@@ -103,11 +109,24 @@ def asm_usage():
                             pass
                         s = line.strip()
                         if not s or s.endswith(':'):
+                            pending = None      # a label may be branched to
                             continue
                         parts = s.split(None, 1)
                         if len(parts) < 2:
+                            pending = None
                             continue
                         op, operands = parts[0].upper(), parts[1]
+                        if pending is not None:
+                            psym, preg = pending
+                            if re.search(r'[-(]?\(%s\)[+]?' % preg, operands,
+                                         re.I):
+                                use.setdefault(psym, set()).add(VALUE)
+                        pending = None
+                        m_lea = re.match(
+                            r'LEA(?:\.[LW])?\s+(_?[A-Za-z_][\w.]*)\s*,\s*(A[0-7])\s*$',
+                            s, re.I)
+                        if m_lea:
+                            pending = (m_lea.group(1), m_lea.group(2).upper())
                         if op.startswith(('DC.', 'DS.', 'DCB.', 'XDEF', 'XREF',
                                           'INCLUDE', 'IF', 'ENDIF', 'EQU')):
                             continue
