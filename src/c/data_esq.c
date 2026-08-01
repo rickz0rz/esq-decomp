@@ -11,8 +11,36 @@
  * rule that a data module must be a multiple of 4 bytes.
  */
 
-/* Forward declarations for the pointer tables below. The type has to
- * match the definition exactly or 6.51 rejects the pair. */
+/* Struct types are hoisted so a forward reference can name them. A tag
+ * declared at its point of use is too late for a span whose own
+ * initialiser holds its own address. */
+struct Global_STRUCT_TEXTATTR_PREVUEC_FONT_t {
+    char * f0;
+    unsigned short f4;
+    unsigned char f6;
+    unsigned char f7;
+};
+struct Global_STRUCT_TEXTATTR_H26F_FONT_t {
+    char * f0;
+    unsigned short f4;
+    unsigned char f6;
+    unsigned char f7;
+};
+struct Global_STRUCT_TEXTATTR_TOPAZ_FONT_t {
+    char * f0;
+    unsigned short f4;
+    unsigned char f6;
+    unsigned char f7;
+};
+struct Global_STRUCT_TEXTATTR_PREVUE_FONT_t {
+    char * f0;
+    unsigned short f4;
+    unsigned char f6;
+    unsigned char f7;
+};
+
+/* Forward declarations. The type has to match the definition exactly
+ * or 6.51 rejects the pair. */
 extern char Global_STR_PREVUEC_FONT[];
 extern char Global_STR_H26F_FONT[];
 extern char Global_STR_TOPAZ_FONT[];
@@ -28,33 +56,13 @@ long Global_REF_INTUITION_LIBRARY = 0;
 long Global_REF_UTILITY_LIBRARY = 0;
 long Global_REF_BATTCLOCK_RESOURCE = 0;
 char Global_STR_PREVUEC_FONT[14] = "PrevueC.font";
-struct Global_STRUCT_TEXTATTR_PREVUEC_FONT_t {
-    char * f0;
-    unsigned short f4;
-    unsigned char f6;
-    unsigned char f7;
-} Global_STRUCT_TEXTATTR_PREVUEC_FONT = { Global_STR_PREVUEC_FONT, 25, 64, 32 };
+struct Global_STRUCT_TEXTATTR_PREVUEC_FONT_t Global_STRUCT_TEXTATTR_PREVUEC_FONT = { (char *)Global_STR_PREVUEC_FONT, 25, 64, 32 };
 char Global_STR_H26F_FONT[10] = "h26f.font";
-struct Global_STRUCT_TEXTATTR_H26F_FONT_t {
-    char * f0;
-    unsigned short f4;
-    unsigned char f6;
-    unsigned char f7;
-} Global_STRUCT_TEXTATTR_H26F_FONT = { Global_STR_H26F_FONT, 26, 0, 0 };
+struct Global_STRUCT_TEXTATTR_H26F_FONT_t Global_STRUCT_TEXTATTR_H26F_FONT = { (char *)Global_STR_H26F_FONT, 26, 0, 0 };
 char Global_STR_TOPAZ_FONT[12] = "topaz.font";
-struct Global_STRUCT_TEXTATTR_TOPAZ_FONT_t {
-    char * f0;
-    unsigned short f4;
-    unsigned char f6;
-    unsigned char f7;
-} Global_STRUCT_TEXTATTR_TOPAZ_FONT = { Global_STR_TOPAZ_FONT, 8, 0, 1 };
+struct Global_STRUCT_TEXTATTR_TOPAZ_FONT_t Global_STRUCT_TEXTATTR_TOPAZ_FONT = { (char *)Global_STR_TOPAZ_FONT, 8, 0, 1 };
 char Global_STR_PREVUE_FONT[12] = "Prevue.font";
-struct Global_STRUCT_TEXTATTR_PREVUE_FONT_t {
-    char * f0;
-    unsigned short f4;
-    unsigned char f6;
-    unsigned char f7;
-} Global_STRUCT_TEXTATTR_PREVUE_FONT = { Global_STR_PREVUE_FONT, 13, 64, 32 };
+struct Global_STRUCT_TEXTATTR_PREVUE_FONT_t Global_STRUCT_TEXTATTR_PREVUE_FONT = { (char *)Global_STR_PREVUE_FONT, 13, 64, 32 };
 long Global_HANDLE_PREVUE_FONT = 0;
 unsigned char DiskfontBase[0] = {
 };

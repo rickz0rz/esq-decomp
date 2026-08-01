@@ -164,8 +164,8 @@ _ESQFUNC_DrawDiagnosticsScreen:
     MOVEQ   #0,D1
     MOVE.W  _TEXTDISP_DeferredActionArmed,D1
     ; Layout-coupled _LOCAVAIL_PrimaryFilterState longs (+12 then +8).
-    MOVE.L  LOCAVAIL_PrimaryFilterState_Field0C,(A7)
-    MOVE.L  LOCAVAIL_PrimaryFilterState_Field08,-(A7)
+    MOVE.L  _LOCAVAIL_PrimaryFilterState_Field0C,(A7)
+    MOVE.L  _LOCAVAIL_PrimaryFilterState_Field08,-(A7)
     ; Filter class/step/mode are state-machine outputs from _LOCAVAIL_UpdateFilterStateMachine.
     MOVE.L  _LOCAVAIL_FilterClassId,-(A7)
     MOVE.L  _LOCAVAIL_FilterStep,-(A7)

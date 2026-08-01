@@ -35,13 +35,13 @@ ESQ_StartupEntry:
     MOVE.L  D0,D2                           ; D0 is the length of the command string at startup, copy to D2
     LEA     _Global_REF_LONG_FILE_SCRATCH,A4   ; Copy address of _Global_REF_LONG_FILE_SCRATCH into A4 (0x3BB24) - 00017118
     MOVEA.L AbsExecBase.W,A6                ; 00000004 but this address is dynamically translated at runtime to 002007a0 (confirmed by checking exec.library when dumping libs in fs-uae)
-    LEA     BUFFER_5929_LONGWORDS,A3        ; 00016e80
+    LEA     _BUFFER_5929_LONGWORDS,A3        ; 00016e80
     MOVEQ   #0,D1
     MOVE.L  #5929,D0
     BRA.S   .clear_5929_buffer_check
 
 .clear_5929_buffer_loop:
-    MOVE.L  D1,(A3)+                        ; Copy longword 0 into A3 (BUFFER_5929_LONGWORDS) addr and increment to zero that memory.
+    MOVE.L  D1,(A3)+                        ; Copy longword 0 into A3 (_BUFFER_5929_LONGWORDS) addr and increment to zero that memory.
 
 .clear_5929_buffer_check:
     DBF     D0,.clear_5929_buffer_loop  ; If our counter (D1) is not zero then jump to .clear_5929_buffer_loop else continue

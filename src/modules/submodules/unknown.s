@@ -125,7 +125,7 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
 ; CALLS:
 ;   _UNKNOWN_JMPTBL_ESQ_WildcardMatch, UNKNOWN_JMPTBL_DST_NormalizeDayOfYear, _STRING_CopyPadNul, _PARSE_ReadSignedLongSkipClass3_Alt, _MATH_Mulu32
 ; READS:
-;   WDISP_StatusListMatchPattern, _CLOCK_CurrentDayOfYear, _CLOCK_CurrentYearValue, _WDISP_StatusDayEntry0
+;   _WDISP_StatusListMatchPattern, _CLOCK_CurrentDayOfYear, _CLOCK_CurrentYearValue, _WDISP_StatusDayEntry0
 ; WRITES:
 ;   _TLIBA1_DayEntryModeCounter
 ; DESC:
@@ -163,7 +163,7 @@ UNKNOWN_ParseListAndUpdateEntries:
     BEQ.W   .return
 
     PEA     -15(A5)
-    PEA     WDISP_StatusListMatchPattern
+    PEA     _WDISP_StatusListMatchPattern
     JSR     _UNKNOWN_JMPTBL_ESQ_WildcardMatch(PC)
 
     ADDQ.W  #8,A7
@@ -619,7 +619,7 @@ ESQPROTO_ParseDigitLabelAndDisplay:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: ESQPROTO_CopyLabelToGlobal   (Copy short label into WDISP_StatusListMatchPattern.)
+; FUNC: ESQPROTO_CopyLabelToGlobal   (Copy short label into _WDISP_StatusListMatchPattern.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +9: arg_2 (via 13(A5))
@@ -632,9 +632,9 @@ ESQPROTO_ParseDigitLabelAndDisplay:
 ; READS:
 ;   (none)
 ; WRITES:
-;   WDISP_StatusListMatchPattern
+;   _WDISP_StatusListMatchPattern
 ; DESC:
-;   Copies a short label string from the input buffer into WDISP_StatusListMatchPattern.
+;   Copies a short label string from the input buffer into _WDISP_StatusListMatchPattern.
 ; NOTES:
 ;   Uses 0x12 sentinel and max length 10 for label.
 ;------------------------------------------------------------------------------
@@ -661,7 +661,7 @@ ESQPROTO_CopyLabelToGlobal:
 .copy_done:
     CLR.B   -13(A5,D7.W)
     LEA     -13(A5),A0
-    LEA     WDISP_StatusListMatchPattern,A1
+    LEA     _WDISP_StatusListMatchPattern,A1
 
 .copy_label:
     MOVE.B  (A0)+,(A1)+

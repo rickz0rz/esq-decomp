@@ -1167,5 +1167,10 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "data/textdisp.s"
     include "data/tliba1.s"
     include "data/wdisp.s"
+    include "data/wdisp_p1.s"
+    include "data/wdisp_p1_p4.s"
+    include "data/wdisp_p1_p3.s"
+    include "data/wdisp_p1_p2.s"
+    include "data/wdisp_p1_p1.s"
 
     END

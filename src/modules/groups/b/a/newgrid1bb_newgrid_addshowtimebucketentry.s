@@ -72,7 +72,7 @@ _NEWGRID_AddShowtimeBucketEntry:
 
     MOVE.L  D5,D0
     ASL.L   #2,D0
-    LEA     NEWGRID_ShowtimeBucketEntryTablePadLong,A0
+    LEA     _NEWGRID_ShowtimeBucketEntryTablePadLong,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     CMP.L   (A1),D6
@@ -87,7 +87,7 @@ _NEWGRID_AddShowtimeBucketEntry:
 
     MOVE.L  D5,D0
     ASL.L   #2,D0
-    LEA     NEWGRID_ShowtimeBucketEntryTablePadLong,A0
+    LEA     _NEWGRID_ShowtimeBucketEntryTablePadLong,A0
     ADDA.L  D0,A0
     MOVEA.L (A0),A1
     CMP.L   (A1),D6
@@ -106,7 +106,7 @@ _NEWGRID_AddShowtimeBucketEntry:
     ADDA.L  D0,A0
     MOVE.L  D4,D0
     ASL.L   #2,D0
-    LEA     NEWGRID_ShowtimeBucketEntryTablePadLong,A1
+    LEA     _NEWGRID_ShowtimeBucketEntryTablePadLong,A1
     ADDA.L  D0,A1
     MOVE.L  (A1),(A0)
     SUBQ.L  #1,D4

@@ -1,6 +1,6 @@
-    XDEF    DEBUG_STR_UserAbortRequested
-    XDEF    DEBUG_STR_Continue
-    XDEF    DEBUG_STR_Abort
+    XDEF    _DEBUG_STR_UserAbortRequested
+    XDEF    _DEBUG_STR_Continue
+    XDEF    _DEBUG_STR_Abort
     XDEF    UNKNOWN36_FinalizeRequest
     XDEF    UNKNOWN36_ShowAbortRequester
 
@@ -229,13 +229,13 @@ UNKNOWN36_ShowAbortRequester:
 
 ;!======
 
-DEBUG_STR_UserAbortRequested:
+_DEBUG_STR_UserAbortRequested:
     DC.B    "** User Abort Requested **",0,0
 
-DEBUG_STR_Continue:
+_DEBUG_STR_Continue:
     DC.B    "CONTINUE",0,0
 
-DEBUG_STR_Abort:
+_DEBUG_STR_Abort:
     DC.B    "ABORT",0
 
 UNKNOWN36_STR_BreakPrefix:

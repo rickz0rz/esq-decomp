@@ -59,3 +59,7 @@ data/esq_p1.s                                                          c/data_es
 data/diskio2_p1.s                                               c/data_diskio2_p1.c
 data/ed2_p1.s                                                   c/data_ed2_p1.c
 data/esqfunc_p1.s                                               c/data_esqfunc_p1.c
+data/wdisp_p1.s                                                 c/data_wdisp_p1.c
+data/wdisp_p1_p4.s                                              c/data_wdisp_p1_p4.c
+data/wdisp_p1_p3.s                                              c/data_wdisp_p1_p3.c
+data/wdisp_p1_p2.s                                              c/data_wdisp_p1_p2.c

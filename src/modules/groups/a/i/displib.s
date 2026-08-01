@@ -18,7 +18,7 @@
 ; READS:
 ;   (none observed)
 ; WRITES:
-;   DISPLIB_PreviousSearchWrappedFlag
+;   _DISPLIB_PreviousSearchWrappedFlag
 ; DESC:
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
@@ -60,14 +60,14 @@ DISPLIB_FindPreviousValidEntryIndex:
     BGE.S   .branch_1
 
     MOVEQ   #0,D7
-    CLR.W   DISPLIB_PreviousSearchWrappedFlag
+    CLR.W   _DISPLIB_PreviousSearchWrappedFlag
     BRA.S   DISPLIB_FindPreviousValidEntryIndex_Return
 
 .branch_1:
     BTST    #5,27(A3)
     BNE.S   .branch
 
-    MOVE.W  #1,DISPLIB_PreviousSearchWrappedFlag
+    MOVE.W  #1,_DISPLIB_PreviousSearchWrappedFlag
     BRA.S   .branch
 
 ;------------------------------------------------------------------------------

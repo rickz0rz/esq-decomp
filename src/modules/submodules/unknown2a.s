@@ -14,11 +14,11 @@
 ; CALLS:
 ;   FORMAT_FormatToBuffer2, PARALLEL_RawDoFmtStackArgs
 ; READS:
-;   FORMAT_ScratchBuffer
+;   _FORMAT_ScratchBuffer
 ; WRITES:
-;   FORMAT_ScratchBuffer
+;   _FORMAT_ScratchBuffer
 ; DESC:
-;   Dead code wrapper that formats/updates FORMAT_ScratchBuffer and then calls
+;   Dead code wrapper that formats/updates _FORMAT_ScratchBuffer and then calls
 ;   PARALLEL_RawDoFmtStackArgs.
 ; NOTES:
 ;   Entry label not present in source.
@@ -29,11 +29,11 @@
     LEA     12(A5),A0
     MOVE.L  A0,-(A7)
     MOVE.L  8(A5),-(A7)
-    PEA     FORMAT_ScratchBuffer
+    PEA     _FORMAT_ScratchBuffer
     MOVE.L  A0,-4(A5)
     JSR     FORMAT_FormatToBuffer2(PC)
 
-    PEA     FORMAT_ScratchBuffer
+    PEA     _FORMAT_ScratchBuffer
     JSR     PARALLEL_RawDoFmtStackArgs(PC)
 
     UNLK    A5
@@ -54,11 +54,11 @@
 ; CALLS:
 ;   FORMAT_FormatToBuffer2, PARALLEL_RawDoFmtStackArgs
 ; READS:
-;   FORMAT_ScratchBuffer
+;   _FORMAT_ScratchBuffer
 ; WRITES:
-;   FORMAT_ScratchBuffer
+;   _FORMAT_ScratchBuffer
 ; DESC:
-;   Wrapper that formats/updates FORMAT_ScratchBuffer and then calls PARALLEL_RawDoFmtStackArgs.
+;   Wrapper that formats/updates _FORMAT_ScratchBuffer and then calls PARALLEL_RawDoFmtStackArgs.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
@@ -67,11 +67,11 @@ _FORMAT_RawDoFmtWithScratchBuffer:
     LEA     12(A5),A0
     MOVE.L  A0,-(A7)
     MOVE.L  8(A5),-(A7)
-    PEA     FORMAT_ScratchBuffer
+    PEA     _FORMAT_ScratchBuffer
     MOVE.L  A0,-4(A5)
     JSR     FORMAT_FormatToBuffer2(PC)
 
-    PEA     FORMAT_ScratchBuffer
+    PEA     _FORMAT_ScratchBuffer
     JSR     PARALLEL_RawDoFmtStackArgs(PC)
 
     UNLK    A5
@@ -92,19 +92,19 @@ _FORMAT_RawDoFmtWithScratchBuffer:
 ; CALLS:
 ;   HANDLE_OpenWithMode, FORMAT_FormatToBuffer2, FORMAT_FormatToCallbackBuffer, UNKNOWN36_FinalizeRequest
 ; READS:
-;   Global_STR_A_PLUS, Global_STR_DF1_DEBUG_LOG, FORMAT_ScratchBuffer
+;   _Global_STR_A_PLUS, _Global_STR_DF1_DEBUG_LOG, _FORMAT_ScratchBuffer
 ; WRITES:
-;   FORMAT_ScratchBuffer
+;   _FORMAT_ScratchBuffer
 ; DESC:
-;   Dead code that opens a debug log, formats FORMAT_ScratchBuffer, writes it, and closes.
+;   Dead code that opens a debug log, formats _FORMAT_ScratchBuffer, writes it, and closes.
 ; NOTES:
 ;   Entry label not present in source.
 ;------------------------------------------------------------------------------
     ; Dead code.
     LINK.W  A5,#-8
 
-    PEA     Global_STR_A_PLUS
-    PEA     Global_STR_DF1_DEBUG_LOG
+    PEA     _Global_STR_A_PLUS
+    PEA     _Global_STR_DF1_DEBUG_LOG
     JSR     HANDLE_OpenWithMode(PC)
 
     ADDQ.W  #8,A7
@@ -114,11 +114,11 @@ _FORMAT_RawDoFmtWithScratchBuffer:
     LEA     12(A5),A0
     MOVE.L  A0,-(A7)
     MOVE.L  8(A5),-(A7)
-    PEA     FORMAT_ScratchBuffer
+    PEA     _FORMAT_ScratchBuffer
     MOVE.L  A0,-4(A5)
     JSR     FORMAT_FormatToBuffer2(PC)
 
-    PEA     FORMAT_ScratchBuffer
+    PEA     _FORMAT_ScratchBuffer
     MOVE.L  -8(A5),-(A7)
     JSR     FORMAT_FormatToCallbackBuffer(PC)
 

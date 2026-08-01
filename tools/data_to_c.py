@@ -145,6 +145,8 @@ def parse(path):
     spans = []
     cur = None
     off = 0
+    skipping = 0
+    conditional = []
 
     def emit(kind, val, size):
         nonlocal off
@@ -165,6 +167,20 @@ def parse(path):
         mnem = op[0].upper()
         rest = op[1] if len(op) > 1 else ''
 
+        # A build-variant block. `includeCustomAriAssembly` is 0 in the default
+        # build, so the body emits nothing and is skipped for sizing. It must
+        # never end up inside a C module: C cannot carry the variant, so a piece
+        # holding one is refused below.
+        m2 = re.match(r'^(?:IF|IFNE)\s+([A-Za-z_][\w]*)\s*$', body, re.I)
+        if m2:
+            conditional.append(m2.group(1))
+            skipping += 1
+            continue
+        if re.match(r'^(?:ENDIF|ENDC)\s*$', body, re.I):
+            skipping = max(0, skipping - 1)
+            continue
+        if skipping:
+            continue
         # `assert` is a build-time consistency check against data-lengths.s and
         # emits no bytes. A local `NAME = value` is an assembler equate, also no
         # bytes -- but it may be USED below, so record it.
@@ -245,7 +261,7 @@ def parse(path):
 
         raise Unsupported('directive %r' % body)
 
-    return spans, off
+    return spans, off, conditional
 
 
 def span_bytes(items):
@@ -293,17 +309,72 @@ def to_c(path, spans, total):
         elif len(items) == 1 and items[0][0] in ('b', 'w', 'l') \
                 and isinstance(items[0][1], int):
             decl[label] = {'b': 'unsigned char', 'w': 'short', 'l': 'long'}[items[0][0]]
+        elif 'l' in kinds and any(isinstance(v, str) for k, v in items if k == 'l') \
+                and kinds - {'l'}:
+            decl[label] = 'struct'          # emitted as struct <name>_t below
         elif 'l' in kinds and any(isinstance(v, str) for k, v in items if k == 'l'):
             decl[label] = 'long'
         else:
             decl[label] = 'unsigned char'
 
+    # A pointer may target a symbol in ANOTHER module -- data/wdisp.s points at
+    # DEBUG_STR_UserAbortRequested, which lives in submodules/. Declaring only
+    # the labels this file defines left it undefined and the initialiser became
+    # an invalid constant expression.
+    defined = {l for l, _ in spans}
+    outside = sorted(referenced - defined)
+    if outside:
+        out.append('/* Pointer targets defined in other modules. */')
+        for l in outside:
+            out.append('extern unsigned char %s[];' % l.lstrip('_'))
+        out.append('')
+
+    # An ARRAY decays to a pointer; a struct or a scalar does not. Emitting the
+    # bare name of a struct-typed symbol is "invalid constant expression", and
+    # data/wdisp.s has DEBUG_AbortRequesterTagChain, whose own initialiser holds
+    # its own address. External targets are declared as arrays, so they decay.
+    def ref(sym):
+        d = decl.get(sym)
+        if d is None or d in ('char', 'unsigned char', 'long'):
+            single = any(lb == sym and len(it) == 1 and it[0][0] in 'bwl'
+                         and isinstance(it[0][1], int) for lb, it in spans)
+            if not single:
+                return sym.lstrip('_')                  # an array: decays
+        return '&' + sym.lstrip('_')                    # struct or scalar
+
+    structs = [l for l, _ in spans if decl[l] == 'struct']
+    if structs:
+        out.append('/* Struct types are hoisted so a forward reference can name them. A tag')
+        out.append(' * declared at its point of use is too late for a span whose own')
+        out.append(' * initialiser holds its own address. */')
+        for label, items in spans:
+            if decl[label] != 'struct':
+                continue
+            o = 0
+            out.append('struct %s_t {' % label.lstrip('_'))
+            for k, v in items:
+                if k == 's':
+                    out.append('    unsigned char f%d[%d];' % (o, len(v)))
+                    o += len(v)
+                    continue
+                ctype, w = {'b': ('unsigned char', 1), 'w': ('unsigned short', 2),
+                            'l': ('long', 4), 'pad': ('unsigned char', 1)}[k]
+                if k == 'l' and isinstance(v, str):
+                    ctype = 'char *'
+                out.append('    %s f%d;' % (ctype, o))
+                o += w
+            out.append('};')
+        out.append('')
+
     local = [l for l, _ in spans if l in referenced]
     if local:
-        out.append('/* Forward declarations for the pointer tables below. The type has to')
-        out.append(' * match the definition exactly or 6.51 rejects the pair. */')
+        out.append('/* Forward declarations. The type has to match the definition exactly')
+        out.append(' * or 6.51 rejects the pair. */')
         for l in local:
             ty = decl[l]
+            if ty == 'struct':
+                out.append('extern struct %s_t %s;' % (l.lstrip('_'), l.lstrip('_')))
+                continue
             arr = '' if ty in ('short', 'long') and \
                   len([1 for lb, it in spans if lb == l and len(it) == 1]) else '[]'
             out.append('extern %s %s%s;' % (ty, l.lstrip('_'), arr))
@@ -350,22 +421,25 @@ def to_c(path, spans, total):
                             'l': ('long', 4), 'pad': ('unsigned char', 1)}[k]
                 if k == 'l' and isinstance(v, str):
                     ctype = 'char *'
-                    vals.append(v.lstrip('_'))
+                    vals.append('(char *)%s' % ref(v))
                 elif k == 'pad':
                     vals.append('0')
+                elif k == 'l':
+                    # 0xFFFF0000 does not fit a signed long in decimal and 6.51
+                    # calls it an invalid constant expression. Hex with the L
+                    # suffix is accepted and is the same 32 bits.
+                    vals.append('0x%08xL' % (v & 0xffffffff))
                 else:
                     vals.append(str(v))
                 fields.append('    %s f%d;' % (ctype, o))
                 o += w
-            out.append('struct %s_t {' % cname)
-            out.extend(fields)
-            out.append('} %s = { %s };' % (cname, ', '.join(vals)))
+            out.append('struct %s_t %s = { %s };' % (cname, cname, ', '.join(vals)))
             continue
         # a pure pointer/long table -> an array of long with casts
         if 'l' in kinds and any(isinstance(v, str) for k, v in items if k == 'l'):
             vals = []
             for _, v in items:
-                vals.append('(long)%s' % v.lstrip('_') if isinstance(v, str)
+                vals.append('(long)%s' % ref(v) if isinstance(v, str)
                             else '0x%08xL' % (v & 0xffffffff))
             out.append('long %s[%d] = {' % (cname, n // 4))
             for i in range(0, len(vals), 4):
@@ -465,7 +539,7 @@ def main():
         sys.exit(__doc__)
     path = sys.argv[1]
     try:
-        spans, total = parse(path)
+        spans, total, cond = parse(path)
     except Unsupported as e:
         sys.exit('data_to_c: %s: UNSUPPORTED: %s' % (path, e))
     try:
@@ -476,6 +550,11 @@ def main():
     sys.stderr.write('%s: %d bytes, %d symbols -- %s\n'
                      % (path, total, len(spans), status))
     if '--write' in sys.argv:
+        if cond:
+            sys.exit('data_to_c: %s: REFUSING -- it holds a build-variant block '
+                     '(%s). C cannot carry the variant, so the piece that holds '
+                     'the conditional must stay in assembly. Split it off with '
+                     'tools/data_split.py first.' % (path, ', '.join(cond)))
         real = vasm_size(path)
         if real != total:
             sys.exit('data_to_c: %s: REFUSING -- parser says %d bytes, vasm says '

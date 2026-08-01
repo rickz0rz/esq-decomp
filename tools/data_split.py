@@ -63,7 +63,7 @@ def module_start(path):
 def candidates(path):
     import data_to_c as d
     base, total = module_start(path)
-    spans, parsed = d.parse(path)
+    spans, parsed, cond = d.parse(path)
     if parsed != total:
         sys.exit('data_split: %s: parser says %d bytes, vasm says %d. Fix '
                  'tools/data_to_c.py first.' % (path, parsed, total))
@@ -82,8 +82,12 @@ def split(path, label):
     xdefs = [l for l in orig if re.match(r'^\s*XDEF\s', l)]
     body = [l for l in orig if not re.match(r'^\s*XDEF\s', l)]
 
+    # A label may carry a trailing comment -- data/wdisp.s has
+    # `_GCOMMAND_PpvEditorLayoutPen:    ; 22EA`. Anchoring on end-of-line missed
+    # five of them, and the XDEF guard below is what caught it.
+    import data_to_c as _d
     idx = next(i for i, l in enumerate(body)
-               if re.match(r'^%s:\s*$' % re.escape(label), l))
+               if re.match(r'^%s:\s*$' % re.escape(label), _d._strip_comment(l).rstrip()))
     j = idx
     while j > 0 and (body[j - 1].startswith(';') or not body[j - 1].strip()):
         j -= 1
@@ -91,7 +95,8 @@ def split(path, label):
 
     def labels(ls):
         return {m.group(1) for l in ls
-                for m in [re.match(r'^([A-Za-z_][\w]*):\s*$', l)] if m}
+                for m in [re.match(r'^([A-Za-z_][\w]*):\s*$',
+                                   _d._strip_comment(l).rstrip())] if m}
 
     hl, tl = labels(head), labels(tail)
     hx = [x for x in xdefs if x.split()[1] in hl]
@@ -102,9 +107,12 @@ def split(path, label):
                  % (path, [x.split()[1] for x in lost]))
     assert len(hx) + len(tx) == len(xdefs)
 
-    dst = path[:-2] + '_p1.s'
-    if os.path.exists(os.path.join(ROOT, 'src', dst)):
-        sys.exit('data_split: %s already exists' % dst)
+    # A module may be split more than once -- data/wdisp.s needs four pieces to
+    # get under the compiler's limit -- so take the first free _pN.
+    n = 1
+    while os.path.exists(os.path.join(ROOT, 'src', path[:-2] + '_p%d.s' % n)):
+        n += 1
+    dst = path[:-2] + '_p%d.s' % n
 
     open(src, 'w').write('\n'.join(hx + head))
     open(os.path.join(ROOT, 'src', dst), 'w').write('\n'.join(tx + tail))
@@ -134,7 +142,13 @@ def main():
         sys.stderr.write('  ... %d candidates\n' % len(cands))
 
     if '--write' in sys.argv:
-        pick = next((c for c in cands if c[3]), None)
+        want = None
+        if '--at' in sys.argv:
+            want = sys.argv[sys.argv.index('--at') + 1]
+        pick = (next((c for c in cands if c[0] == want), None) if want
+                else next((c for c in cands if c[3]), None))
+        if want and not pick:
+            sys.exit('  %s is not a longword-aligned label in this module' % want)
         if not pick:
             sys.exit('  no candidate yields a convertible tail')
         dst, nh, nt = split(path, pick[0])

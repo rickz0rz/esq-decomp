@@ -11,8 +11,8 @@
  * rule that a data module must be a multiple of 4 bytes.
  */
 
-/* Forward declarations for the pointer tables below. The type has to
- * match the definition exactly or 6.51 rejects the pair. */
+/* Forward declarations. The type has to match the definition exactly
+ * or 6.51 rejects the pair. */
 extern unsigned char CLOCK_HalfHourLabelEmpty12Hr[];
 extern char DISKIO2_STR_5_COLON_00_AM[];
 extern char DISKIO2_STR_5_COLON_30_AM[];

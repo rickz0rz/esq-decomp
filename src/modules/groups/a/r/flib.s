@@ -171,7 +171,7 @@ FLIB_AppendClockStampedLogEntry:
 ; CALLS:
 ;   GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry, _GROUP_AW_JMPTBL_WDISP_SPrintf, _ESQPARS_ReplaceOwnedString, FLIB_AppendClockStampedLogEntry
 ; READS:
-;   _FLIB_EmptyLogReplacementString, _FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02, _NEWGRID2_ErrorLogEntryPtr, _CLOCK_DaySlotIndex, _CLOCK_CacheDayIndex0, _CLOCK_CacheHour, FLIB_LogEntryScratchBuffer
+;   _FLIB_EmptyLogReplacementString, _FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02, _NEWGRID2_ErrorLogEntryPtr, _CLOCK_DaySlotIndex, _CLOCK_CacheDayIndex0, _CLOCK_CacheHour, _FLIB_LogEntryScratchBuffer
 ; WRITES:
 ;   _NEWGRID2_ErrorLogEntryPtr, _FLIB_LogEntryByteCount
 ; DESC:
@@ -221,7 +221,7 @@ FLIB_AppendClockStampedLogEntry_Return:
     CLR.W   _FLIB_LogEntryByteCount
 
 .lab_0CC2:
-    PEA     FLIB_LogEntryScratchBuffer
+    PEA     _FLIB_LogEntryScratchBuffer
     BSR.W   FLIB_AppendClockStampedLogEntry
 
     JSR     GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry(PC)

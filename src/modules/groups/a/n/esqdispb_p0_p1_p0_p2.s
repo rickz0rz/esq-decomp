@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _ESQDISP_FillProgramInfoHeaderFields, _ESQSHARED_CreateGroupEntryAndTitle
 ; READS:
-;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, TEXTDISP_SecondaryEntryPtrTablePreSlot, ff7f
+;   _TEXTDISP_SecondaryGroupCode, _TEXTDISP_SecondaryGroupEntryCount, _TEXTDISP_PrimaryGroupEntryCount, _TEXTDISP_PrimaryEntryPtrTable, _TEXTDISP_SecondaryEntryPtrTablePreSlot, ff7f
 ; WRITES:
 ;   _ESQDISP_PrimarySecondaryMirrorFlag
 ; DESC:
@@ -63,7 +63,7 @@ _ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty:
     MOVEQ   #0,D1
     MOVE.W  D0,D1
     ASL.L   #2,D1
-    LEA     TEXTDISP_SecondaryEntryPtrTablePreSlot,A0
+    LEA     _TEXTDISP_SecondaryEntryPtrTablePreSlot,A0
     ADDA.L  D1,A0
     MOVEA.L (A0),A1
     MOVEQ   #0,D0

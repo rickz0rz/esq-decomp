@@ -657,6 +657,10 @@ data/esq_p1.s                                                          c/data_es
 data/diskio2_p1.s                                                      c/data_diskio2_p1.c
 data/ed2_p1.s                                                          c/data_ed2_p1.c
 data/esqfunc_p1.s                                                      c/data_esqfunc_p1.c
+data/wdisp_p1.s                                                        c/data_wdisp_p1.c
+data/wdisp_p1_p4.s                                                     c/data_wdisp_p1_p4.c
+data/wdisp_p1_p3.s                                                     c/data_wdisp_p1_p3.c
+data/wdisp_p1_p2.s                                                     c/data_wdisp_p1_p2.c
 modules/groups/a/a/app2_p7.s                                           c/app2_p7_merged.c
 modules/groups/a/a/app2_esq_findsubstringcasefold.s                    c/app2_esq_findsubstringcasefold_merged.c
 modules/groups/a/c/cleanup2_p1_p0_p0.s                                 c/cleanup2_p1_p0_p0_merged.c

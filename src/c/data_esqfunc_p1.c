@@ -11,8 +11,8 @@
  * rule that a data module must be a multiple of 4 bytes.
  */
 
-/* Forward declarations for the pointer tables below. The type has to
- * match the definition exactly or 6.51 rejects the pair. */
+/* Forward declarations. The type has to match the definition exactly
+ * or 6.51 rejects the pair. */
 extern char ESQFUNC_STR_VIDEO_INSERTION_INACTIVE[];
 extern char ESQFUNC_STR_VIDEO_INSERTION_START[];
 extern char ESQFUNC_STR_VIDEO_INSERTION_INPROGRESS[];
