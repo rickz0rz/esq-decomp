@@ -15,7 +15,7 @@
 ; CLOBBERS:
 ;   D0-D7/A2-A3
 ; CALLS:
-;   STRING_ToUpperChar
+;   _STRING_ToUpperChar
 ; DESC:
 ;   Compares strings case-insensitively up to D7 bytes or NUL.
 ;------------------------------------------------------------------------------
@@ -40,13 +40,13 @@ _STRING_CompareNoCaseN:
     MOVEQ   #0,D0
     MOVE.B  (A3)+,D0
     MOVE.L  D0,-(A7)
-    JSR     STRING_ToUpperChar(PC)
+    JSR     _STRING_ToUpperChar(PC)
 
     MOVEQ   #0,D1
     MOVE.B  (A2)+,D1
     MOVE.L  D1,(A7)
     MOVE.L  D0,20(A7)
-    JSR     STRING_ToUpperChar(PC)
+    JSR     _STRING_ToUpperChar(PC)
 
     ADDQ.W  #4,A7
     MOVE.L  16(A7),D1

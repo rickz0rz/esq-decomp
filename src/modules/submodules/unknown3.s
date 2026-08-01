@@ -1,7 +1,7 @@
-    XDEF    STRING_ToUpperChar
+    XDEF    _STRING_ToUpperChar
 
 ;------------------------------------------------------------------------------
-; FUNC: STRING_ToUpperChar   (Convert lowercase ASCII to uppercase.)
+; FUNC: _STRING_ToUpperChar   (Convert lowercase ASCII to uppercase.)
 ; ARGS:
 ;   stack +4: char (ASCII)
 ; RET:
@@ -11,7 +11,7 @@
 ; DESC:
 ;   Maps lowercase ASCII letters to uppercase by subtracting 0x20.
 ;------------------------------------------------------------------------------
-STRING_ToUpperChar:
+_STRING_ToUpperChar:
     MOVE.L  4(A7),D0
 
     CMPI.B  #'a',D0

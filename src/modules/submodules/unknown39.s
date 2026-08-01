@@ -1,7 +1,7 @@
-    XDEF    GRAPHICS_BltBitMapRastPort
+    XDEF    _GRAPHICS_BltBitMapRastPort
 
 ;------------------------------------------------------------------------------
-; FUNC: GRAPHICS_BltBitMapRastPort   (Wrapper around Graphics.library blituncertain)
+; FUNC: _GRAPHICS_BltBitMapRastPort   (Wrapper around Graphics.library blituncertain)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -13,7 +13,7 @@
 ; NOTES:
 ;   None
 ;------------------------------------------------------------------------------
-GRAPHICS_BltBitMapRastPort:
+_GRAPHICS_BltBitMapRastPort:
     MOVEM.L D2-D6/A6,-(A7)
 
     MOVEA.L Global_GraphicsLibraryBase_A4(A4),A6

@@ -1,7 +1,7 @@
-    XDEF    FORMAT_U32ToOctalString
+    XDEF    _FORMAT_U32ToOctalString
 
 ;------------------------------------------------------------------------------
-; FUNC: FORMAT_U32ToOctalString   (Format an unsigned value as octal ASCII.)
+; FUNC: _FORMAT_U32ToOctalString   (Format an unsigned value as octal ASCII.)
 ; ARGS:
 ;   stack +4: A0 = destination buffer
 ;   stack +8: D0 = value
@@ -12,7 +12,7 @@
 ; DESC:
 ;   Emits octal digits into a temp stack buffer, then reverses into A0.
 ;------------------------------------------------------------------------------
-FORMAT_U32ToOctalString:
+_FORMAT_U32ToOctalString:
     MOVE.L  8(A7),D0
     MOVEA.L 4(A7),A0
     LINK.W  A5,#-12

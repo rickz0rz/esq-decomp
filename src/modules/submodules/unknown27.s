@@ -79,7 +79,7 @@ FORMAT_FormatToBuffer2:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   PARSE_ReadSignedLong_NoBranch, FORMAT_U32ToHexString, FORMAT_U32ToDecimalString, FORMAT_U32ToOctalString, etc.
+;   PARSE_ReadSignedLong_NoBranch, FORMAT_U32ToHexString, _FORMAT_U32ToDecimalString, _FORMAT_U32ToOctalString, etc.
 ; DESC:
 ;   Parses flags/width/precision/length and emits formatted output via callback.
 ; NOTES:
@@ -301,7 +301,7 @@ FORMAT_ParseFormatSpec:
 .format_decimal:
     MOVE.L  -20(A5),-(A7)
     MOVE.L  -52(A5),-(A7)
-    JSR     FORMAT_U32ToDecimalString(PC)
+    JSR     _FORMAT_U32ToDecimalString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-56(A5)
@@ -402,7 +402,7 @@ FORMAT_ParseFormatSpec:
 .octal_alt_prefix:
     MOVE.L  D0,-(A7)
     MOVE.L  -52(A5),-(A7)
-    JSR     FORMAT_U32ToOctalString(PC)
+    JSR     _FORMAT_U32ToOctalString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-56(A5)
@@ -455,7 +455,7 @@ FORMAT_ParseFormatSpec:
     BNE.W   .apply_precision
 
     PEA     -48(A5)
-    JSR     STRING_ToUpperInPlace(PC)
+    JSR     _STRING_ToUpperInPlace(PC)
 
     ADDQ.W  #4,A7
     BRA.W   .apply_precision

@@ -1,7 +1,7 @@
-    XDEF    STRING_ToUpperInPlace
+    XDEF    _STRING_ToUpperInPlace
 
 ;------------------------------------------------------------------------------
-; FUNC: STRING_ToUpperInPlace   (Convert ASCII string to uppercase in place.)
+; FUNC: _STRING_ToUpperInPlace   (Convert ASCII string to uppercase in place.)
 ; ARGS:
 ;   stack +16: A3 = string pointer
 ; RET:
@@ -15,7 +15,7 @@
 ; NOTES:
 ;   Uses Global_CharClassTable to decide if a byte is lowercase.
 ;------------------------------------------------------------------------------
-STRING_ToUpperInPlace:
+_STRING_ToUpperInPlace:
     MOVEM.L D2/A2-A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVEA.L A3,A2

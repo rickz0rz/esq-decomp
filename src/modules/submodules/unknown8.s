@@ -1,7 +1,7 @@
-    XDEF    FORMAT_U32ToDecimalString
+    XDEF    _FORMAT_U32ToDecimalString
 
 ;------------------------------------------------------------------------------
-; FUNC: FORMAT_U32ToDecimalString   (Format an unsigned value as decimal ASCII.)
+; FUNC: _FORMAT_U32ToDecimalString   (Format an unsigned value as decimal ASCII.)
 ; ARGS:
 ;   stack +4: A0 = destination buffer
 ;   stack +8: D0 = value
@@ -14,7 +14,7 @@
 ; DESC:
 ;   Emits decimal digits into a temp stack buffer, then reverses into A0.
 ;------------------------------------------------------------------------------
-FORMAT_U32ToDecimalString:
+_FORMAT_U32ToDecimalString:
     MOVE.L  8(A7),D0
     MOVEA.L 4(A7),A0
     LINK.W  A5,#-12

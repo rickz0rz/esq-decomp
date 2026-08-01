@@ -166,16 +166,16 @@ _GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   GRAPHICS_BltBitMapRastPort
+;   _GRAPHICS_BltBitMapRastPort
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to GRAPHICS_BltBitMapRastPort.
+;   Jump stub to _GRAPHICS_BltBitMapRastPort.
 ;------------------------------------------------------------------------------
 _GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort:
-    JMP     GRAPHICS_BltBitMapRastPort
+    JMP     _GRAPHICS_BltBitMapRastPort
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition   (JumpStub)
