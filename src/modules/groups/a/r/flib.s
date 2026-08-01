@@ -169,7 +169,7 @@ FLIB_AppendClockStampedLogEntry:
 ; CLOBBERS:
 ;   A2/A3/A7/D0/D1/D2/D3/D6/D7
 ; CALLS:
-;   GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry, _GROUP_AW_JMPTBL_WDISP_SPrintf, _ESQPARS_ReplaceOwnedString, FLIB_AppendClockStampedLogEntry
+;   _GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry, _GROUP_AW_JMPTBL_WDISP_SPrintf, _ESQPARS_ReplaceOwnedString, FLIB_AppendClockStampedLogEntry
 ; READS:
 ;   _FLIB_EmptyLogReplacementString, _FLIB_FMT_PCT_02LD_COLON_PCT_02LD_COLON_PCT_02, _NEWGRID2_ErrorLogEntryPtr, _CLOCK_DaySlotIndex, _CLOCK_CacheDayIndex0, _CLOCK_CacheHour, _FLIB_LogEntryScratchBuffer
 ; WRITES:
@@ -224,7 +224,7 @@ FLIB_AppendClockStampedLogEntry_Return:
     PEA     _FLIB_LogEntryScratchBuffer
     BSR.W   FLIB_AppendClockStampedLogEntry
 
-    JSR     GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry(PC)
+    JSR     _GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry(PC)
 
     ADDQ.W  #4,A7
     MOVEM.L (A7)+,D6-D7

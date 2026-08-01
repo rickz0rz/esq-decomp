@@ -1,8 +1,8 @@
-    XDEF    GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry
+    XDEF    _GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry
     XDEF    _GROUP_AR_JMPTBL_STRING_AppendAtNull
 
 ;------------------------------------------------------------------------------
-; FUNC: GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry   (Routine at GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry)
+; FUNC: _GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry   (Routine at _GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -20,7 +20,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry:
+_GROUP_AR_JMPTBL_PARSEINI_WriteErrorLogEntry:
     JMP     _PARSEINI_WriteErrorLogEntry
 
 ;------------------------------------------------------------------------------
