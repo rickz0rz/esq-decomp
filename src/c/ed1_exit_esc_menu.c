@@ -8,7 +8,18 @@
  *   summary: 296 got vs 292 ref, four bytes over. 6.51 reloads the two graph-mode characters for the second transition test where the original still holds them in D0 and D1 from the first. The bitmap reinitialisation at 696x400 depth 3, the font restore, the four chained zero stores on the CTRL registers, the save-on-exit gate, the two-sided graph-mode transition with its brush-list free, the runtime-mode bump to 3 and the closing copper rise all match in kind and order.
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
+ *
+ * ESQ_FIX_ESCMENU: the exact arm passes 1 to TEXTDISP_SetRastForMode, which is
+ *   what the original does and what leaves the ad window light grey after the
+ *   ESC menu closes. The fixed arm passes 2. Both compile to the same size, so
+ *   the arm changes one byte and no layout. build-split.sh reads the value from
+ *   fixEscMenuExitDisplayMode in src/Prevue.asm, so the C arm and the assembly
+ *   arm always agree. The default is 0, which keeps this file byte-comparable.
+ *   See the AGENTS.md section "The ESC menu leaves the ad window grey".
  */
+#ifndef ESQ_FIX_ESCMENU
+#define ESQ_FIX_ESCMENU 0
+#endif
 #include <exec/types.h>
 #include <graphics/rastport.h>
 #include <graphics/gfx.h>
@@ -94,7 +105,11 @@ void ED1_ExitEscMenu(void)
 
     ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs();
     ED_DrawBottomHelpBarBackground();
+#if ESQ_FIX_ESCMENU
+    ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(2);
+#else
     ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(1);
+#endif
     ESQIFF_RunCopperRiseTransition();
     ESQPARS2_ReadModeFlags = 0;
 }

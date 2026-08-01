@@ -59,6 +59,20 @@ If a change cannot keep both gates green, it does not go in. Revert it and pick
 another approach. A red gate is information, not an obstacle. Never patch bytes
 by hand or special-case the build to close a gap.
 
+There is one deliberate exception, and it is a build flag rather than a change.
+`fixEscMenuExitDisplayMode` in `src/Prevue.asm` corrects a defect in the original
+program: closing the ESC menu paints the ad window light grey and never clears
+it. The flag defaults to 0, so `test-hash.sh` stays green. At 1 the monolithic
+image differs by exactly one byte and no code moves, so `build-split.sh` stays
+green at both settings. Set it for any build you intend to run:
+
+```sh
+ESQ_FIX_ESCMENU=1 ./build-split.sh
+```
+
+AGENTS.md records the evidence, including the four builds that show the defect
+is original, and the regression test that now guards it.
+
 The reference hash is not the shipped ESQ. It is a vasm rebuild of a lightly
 forked disassembly. The fork changes `DF0:` paths to `DH2:`, adds an
 `InjectCTRL` subfunction, and changes the version string. The true original is
@@ -102,7 +116,7 @@ builds cannot disagree about content or ordering.
 Hunk objects store section sizes in longwords. An object whose content is 2
 modulo 4 bytes gets padded, which shifts everything after it. `gen_units.py`
 therefore joins consecutive modules until each unit lands on a 4-byte boundary.
-That is why 788 source modules become 401 link units. You can still edit any
+That is why 981 source modules become 494 link units. You can still edit any
 module on its own.
 
 ## The C phase
@@ -127,7 +141,14 @@ Build with C replacements through a manifest:
 C_REPLACEMENTS=src/c/replacements.txt ./build-split.sh
 python3 tools/verify_restorations.py
 /tmp/.capvenv/bin/python tools/a6_audit.py
+python3 tools/data_shape_audit.py           # does a C extern deref as often as the original
+python3 tools/extern_width_audit.py         # is a C extern narrower than the original reads it
 ```
+
+`build-split.sh` runs both audits itself on any build that sets
+`C_REPLACEMENTS`, and stops the build on a hit. They catch two errors that no
+byte check can see: reading a global one level too shallow, and declaring a word
+global one byte wide so the read takes the high half.
 
 Five manifests exist, each for a different question:
 
@@ -136,7 +157,7 @@ Five manifests exist, each for a different question:
 | `replacements.txt` | 22 | byte-exact only, so the build must stay content-identical |
 | `replacements-runnable.txt` | 278 | proven on all six ESC-menu items |
 | `replacements-tranche.txt` | 293 | the largest set proven without `ESQ_FARCALLS` |
-| `replacements-all.txt` | 391 | every restoration, judged by running it |
+| `replacements-all.txt` | 614 | every restoration, judged by running it |
 | `replacements-canary.txt` | 20 | a deliberate mismatch, to prove the gate can fail |
 
 `replacements-all.txt` needs `ESQ_FARCALLS=1`. That flag widens the assembly's
@@ -158,11 +179,18 @@ tools/probe_esq.sh     <binary> <label> [secs]              # does it boot
 tools/soak_esq.sh      <binary> <label> [total] [gap]       # minutes, plus a freeze check
 tools/menusweep_esq.sh <binary> <label> [items] [reps]      # all six ESC-menu items
 tools/keyprobe_esq.sh  <binary> <label> <key:wait>...       # one boot, arbitrary keys
+tools/escwatch_esq.sh  <binary> <label> [open] [shots] [gap] # ESC on, ESC off, then watch
 python3 tools/framecolor.py <label-a> <label-b>             # compare two runs by colour
+python3 tools/menuresidue.py <png>...                       # ESC-menu grey left on screen
 ```
 
 ESQ redraws a clock every second. Identical consecutive frames therefore mean
 the display stopped, which is a hang the boot probe cannot see.
+
+`escwatch_esq.sh` covers the one path the other harnesses never reached: closing
+the ESC menu. It presses ESC twice and then shoots on a timer with no further
+input, so a permanent fault reads differently from a redraw still in progress.
+It exits nonzero if the menu background survives the close.
 
 A build can animate correctly and still draw the wrong picture, because a wrong
 constant changes a colour without stopping the display. Soak the known-good

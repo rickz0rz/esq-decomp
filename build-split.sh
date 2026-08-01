@@ -16,7 +16,19 @@ VASM_BIN="${VASM_BIN:-$HOME/Downloads/vasm/vasmm68k_mot}"
 VLINK_BIN="${VLINK_BIN:-$HOME/Downloads/vbcc_installer/vlink/vlink}"
 VAMOS_ACTIVATE="${VAMOS_ACTIVATE:-$HOME/Downloads/vamos/bin/activate}"
 ESQ_EXACT="${ESQ_EXACT:-1}"          # 1 = byte-matching arm (default), 0 = pure-C fallback
-SCOPTS="${SCOPTS:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128} DEFINE=ESQ_EXACT=$ESQ_EXACT"   # options MUST precede the filename;
+# The ESC-menu exit fix has an assembly arm and a C arm, because a C manifest
+# replaces the module that holds it. One value drives both, so the two arms
+# cannot disagree. A build with the assembly fixed and the C file stale would
+# still paint the ad window grey.
+#
+# The environment wins; otherwise take whatever src/Prevue.asm says. When it is
+# on, -D reaches BOTH the reference monolith and every unit, so the two sides of
+# build-split.sh always compare like with like.
+ESQ_FIX_ESCMENU="${ESQ_FIX_ESCMENU:-$(sed -n 's/^ *fixEscMenuExitDisplayMode *= *\([0-9]\).*/\1/p' src/Prevue.asm)}"
+ESQ_FIX_ESCMENU="${ESQ_FIX_ESCMENU:-0}"
+VASM_DEFS=()
+[ "$ESQ_FIX_ESCMENU" = "1" ] && VASM_DEFS=(-DfixEscMenuExitDisplayMode=1)
+SCOPTS="${SCOPTS:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128} DEFINE=ESQ_EXACT=$ESQ_EXACT DEFINE=ESQ_FIX_ESCMENU=$ESQ_FIX_ESCMENU"   # options MUST precede the filename;
                                                           # CODENAME/DATANAME make sc emit into the
                                                           # same sections as the asm, so PC-relative
                                                           # calls into C resolve at link time. See AGENTS.md
@@ -35,7 +47,7 @@ mkdir -p "$OBJ"
 rm -f "$OBJ"/c_repl_*.o
 
 echo "==> reference (monolithic)"
-"$VASM_BIN" -I src -Fhunkexe -nosym -o "$BUILD/ESQ_reference" src/Prevue.asm >/dev/null
+"$VASM_BIN" ${VASM_DEFS[@]+"${VASM_DEFS[@]}"} -I src -Fhunkexe -nosym -o "$BUILD/ESQ_reference" src/Prevue.asm >/dev/null
 shasum -a 256 "$BUILD/ESQ_reference"
 
 # A C extern must dereference a global as many times as the original does. Get
@@ -49,6 +61,14 @@ if [ -n "${C_REPLACEMENTS:-}" ]; then
     echo "==> checking C extern shapes against the original's addressing"
     if ! python3 tools/data_shape_audit.py; then
         echo "*** ABORT: a C extern disagrees with the data it names. ***"
+        exit 1
+    fi
+    # ...and it must match the WIDTH the original uses, which data_shape_audit
+    # cannot see. A word global declared `char` reads offset 0, which on a 68000
+    # is the HIGH half and is usually 0. That is how CONFIG_BannerCopperHeadByte
+    # read 0 for 142 and stopped the guide repainting after the ESC menu closed.
+    if ! python3 tools/extern_width_audit.py; then
+        echo "*** ABORT: a C extern is narrower than the original addresses it. ***"
         exit 1
     fi
 fi
@@ -88,7 +108,7 @@ while read -r u; do
         # $UNITS/far comes FIRST so an ESQ_FARCALLS=1 rewrite shadows the original
         # module; gen_units.py empties that directory when the flag is off, so a
         # default build resolves everything from src/ exactly as before.
-        if ! "$VASM_BIN" -I "$UNITS/far" -I src -I "$UNITS" -Fhunk -nosym \
+        if ! "$VASM_BIN" ${VASM_DEFS[@]+"${VASM_DEFS[@]}"} -I "$UNITS/far" -I src -I "$UNITS" -Fhunk -nosym \
                 -o "$OBJ/$u.o" "$UNITS/$u.asm" >"$OBJ/$u.log" 2>&1; then
             fail=$((fail + 1)); echo "  FAILED: $u"; sed -n '1,4p' "$OBJ/$u.log"
         fi

@@ -5,6 +5,19 @@
 ; Set this to 1 to include Ari's custom assembly for dumping debug output.
 includeCustomAriAssembly = 0
 
+; Set this to 1 to correct the ESC-menu exit, which leaves the ad window grey.
+; The defect is in the original ESQ, so the default of 0 keeps test-hash.sh
+; green. The fix changes one byte and no size, so build-split.sh stays green at
+; both settings. See _ED1_ExitEscMenu and the AGENTS.md section
+; "The ESC menu leaves the ad window grey".
+;
+; The `ifnd` lets `ESQ_FIX_ESCMENU=1 ./build-split.sh` set it with -D instead of
+; an edit. build-split.sh gives the same value to vasm and to sc, so the
+; assembly arm and the C arm cannot disagree.
+    ifnd fixEscMenuExitDisplayMode
+fixEscMenuExitDisplayMode = 0
+    endif
+
     include "lvo-offsets.s"
     include "hardware-addresses.s"
     include "exec-constants.s"

@@ -53,11 +53,39 @@ cp -f "$BIN" "$PREVUE/ESQ" && chmod +x "$PREVUE/ESQ"
 echo "== keyprobe $LABEL: $(basename "$BIN") ($(stat -f%z "$BIN") bytes)"
 echo "   config: $(basename "$CONFIG")   keys: $*"
 
+# Capture BY WINDOW ID, not by rectangle. A rectangle cropped out of a
+# full-screen grab scored the wrong pixels three times in one day (see the
+# soak_esq.sh header) and captures NOTHING when fs-uae sits on another macOS
+# Space. soak_esq.sh was fixed for this on 2026-07-30; keyprobe was not, and
+# silently produced ZERO shots ever since -- an empty report that reads as
+# "the key changed nothing" rather than "the capture failed". That made the
+# ESC-menu regression test this file exists for a no-op.
+WID=""
+find_window() {
+    # Pick the LARGEST fs-uae window, not the first one wider than 100.
+    # fs-uae registers a 1000x1000 all-black helper window that passes a
+    # width filter and captures as solid black -- which reads as "the screen
+    # never changed" rather than "the wrong window was grabbed".
+    "$PYBIN" -c 'import Quartz
+opts = Quartz.kCGWindowListOptionAll | Quartz.kCGWindowListExcludeDesktopElements
+best, area = None, 0
+for w in Quartz.CGWindowListCopyWindowInfo(opts, Quartz.kCGNullWindowID):
+    if (w.get("kCGWindowOwnerName") or "") == "fs-uae":
+        b = w.get("kCGWindowBounds") or {}
+        a = b.get("Width", 0) * b.get("Height", 0)
+        if a > area:
+            best, area = w.get("kCGWindowNumber"), a
+if best is not None and area > 200000:
+    print(best)'
+}
 shot() {
-    local b r
-    b=$(osascript -e 'tell application "System Events" to tell process "fs-uae" to get {position, size} of window 1' 2>/dev/null | tr -d ' ')
-    r=$(echo "$b" | awk -F, 'NF==4{print $1","$2","$3","$4}')
-    [ -n "$r" ] && screencapture -x -R "$r" "$SHOTS/$1.png" 2>/dev/null
+    if [ -z "$WID" ]; then
+        for _ in $(seq 1 20); do
+            WID="$(find_window)"; [ -n "$WID" ] && break; sleep 1
+        done
+    fi
+    [ -n "$WID" ] || { echo "  ERROR: fs-uae window never appeared -- nothing captured"; return; }
+    screencapture -x -o -l "$WID" "$SHOTS/$1.png" 2>/dev/null
 }
 
 pkill -f fs-uae 2>/dev/null; sleep 1; rm -f "$UAELOG"

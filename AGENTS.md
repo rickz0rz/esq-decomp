@@ -164,6 +164,138 @@ since the default build says nothing about it.
 > top-of-file export block is wrong for conditional code — see the `XDEF` next
 > to `WDISP_FMT_CTRLH_STATUS_MAX` in `src/data/wdisp.s`.
 
+`fixEscMenuExitDisplayMode`, also at the top of `src/Prevue.asm`, corrects a
+defect in the original program. See the next section. It changes one byte and no
+size, so **both settings keep `build-split.sh` content-identical**, and `= 1`
+fails `test-hash.sh` by design.
+
+## SOLVED: the ESC menu leaves the ad window grey (2026-07-31)
+
+**Symptom.** Press ESC to open the menu, ESC again to close. The top of the
+screen — the ad window, black on a healthy grid — turns solid light grey and
+stays that way. The guide below keeps running correctly. It never recovers.
+Measured flat at grey 0.335 for 140 seconds.
+
+**It is a defect in the ORIGINAL, and four builds prove it.** The 614-entry C
+manifest, the pure-assembly `ESQ_FARCALLS=1` build, the byte-exact known-good
+build, and the shipped `ESQ.decompressed` with `DF0:` patched to `DH2:` all read
+grey **0.3356**, the same number to four places. So no restoration causes it and
+the far-call rewrite does not either. Test the original before blaming the
+reconstruction.
+
+**Cause.** `_ED1_ExitEscMenu` calls `_TEXTDISP_SetRastForMode(1)`. That routine
+sets palette slot 0 to palette slot `n` and fills the overlay rastport with pen
+`n`. Slot 1 of `_ESQFUNC_BasePaletteRgbTriples` is `12,12,12`, which is `$CCC`,
+which is `(204,204,204)` — the grey that is on screen. Slot 2 is `0,0,0`, the
+state before the menu opened.
+
+`_ESQIFF_PlayNextExternalAssetFrame` gives the ad window back to the guide twice,
+and both times it writes the same four calls with a **2**:
+
+```
+_ESQIFF_RestoreBasePaletteTriples / SetCopperEffect_OffDisableHighlight
+PEA 2.W / _TEXTDISP_SetRastForMode / _ESQIFF_RunCopperRiseTransition
+```
+
+`_ED1_ExitEscMenu` is that sequence with a `1`. Every other caller in the program
+passes 0 or 2. This site is the only `1`.
+
+**Fix.** `fixEscMenuExitDisplayMode = 1` in `src/Prevue.asm` changes `PEA 1.W`
+to `PEA 2.W`. Both encode in 4 bytes (`4878 0001` and `4878 0002`), so the
+monolithic image differs by **exactly one byte at 0x00E4C5 and no code moves**.
+Verified: `build-split.sh` reports CONTENT-IDENTICAL at both settings.
+
+Set it without editing the file:
+
+```sh
+ESQ_FIX_ESCMENU=1 ./build-split.sh
+```
+
+The equate sits behind `ifnd`, and `build-split.sh` passes `-D` to **both** the
+reference monolith and every unit, so the two sides still compare like with like.
+`test-hash.sh` takes no environment and therefore always builds the default.
+
+**The C arm must move with it.** `src/c/ed1_exit_esc_menu.c` replaces this module
+in `replacements-all.txt`, so the assembly flag alone would leave a maximum-C
+build broken. `build-split.sh` reads `fixEscMenuExitDisplayMode` out of
+`src/Prevue.asm` and passes `DEFINE=ESQ_FIX_ESCMENU` to `sc`, so the two arms
+cannot disagree. The default of 0 keeps the file byte-comparable, so
+`cmatch.sh` and `mismatches.py --recheck` still measure the exact arm.
+
+**Why every harness missed it.** Both byte gates ignore runtime behaviour.
+`check_pcrel_range`, `a6_audit` and `data_shape_audit` all pass. `soak_esq.sh`
+passes, because the guide keeps redrawing and the frames stay distinct.
+`menusweep_esq.sh` passes, because it selects items with number keys and never
+presses ESC to resume. `framecolor.py` compares whole-frame colour bins, and one
+bin turning grey still overlapped. The user found it by looking at the screen.
+
+```sh
+./tools/escwatch_esq.sh <binary> <label> [open_wait] [shots] [gap]
+```
+
+That is the regression test. It opens the menu, closes it, then shoots on a timer
+with **no further input**, and exits nonzero if the grey survives. A single shot
+after the close cannot tell a permanent fault from a redraw still in progress, so
+watch the series rather than one frame. `tools/menuresidue.py` scores frames from
+any source and also exits nonzero.
+
+## SOLVED: a byte-wide extern on a word-wide global (2026-07-31)
+
+Found while proving the ESC-menu fix on the 614-entry manifest, and it is a
+**separate defect** with a separate cause. After the menu closed, the maximum-C
+build drew the header row and the running clock and left the rest of the guide
+black. The pure-assembly build redrew it correctly, so this one belongs to a
+restoration.
+
+**Cause.** `script_prime_banner_transition_from_hex_code.c` declared
+`CONFIG_BannerCopperHeadByte` as `unsigned char`. The data section spells it
+`DC.B 0 / DC.B 142`, which looks like two bytes and is one word: every reader in
+the program loads it with `MOVE.W` and every writer stores `MOVE.W`. On a 68000
+offset 0 is the HIGH half, so the byte declaration read **0 instead of 142** and
+primed every banner transition toward character 0. Eleven other restorations
+already declared it `short`, several with a header comment saying why.
+
+**The data section is not the authority on width. The code is.**
+
+Fixing it also made the restoration more faithful: 90 bytes plus an alignment NOP
+became 92 against 92, and the emitted stream now carries the original's word load.
+
+```sh
+python3 tools/extern_width_audit.py          # the manifest
+python3 tools/extern_width_audit.py --all    # every restoration
+```
+
+`build-split.sh` runs it on any build that sets `C_REPLACEMENTS` and aborts on a
+hit. It compares each C extern's declared width against the operand size the
+module it replaces uses on that symbol, and reports only the direction that can
+be wrong: **C narrower than the assembly**. Narrower assembly is ordinary, since
+`MOVE.B` on a word global is a cast to char.
+
+Two filters keep it honest, and both were needed to get from 25 hits to 0:
+
+- A symbol used only as `&NAME` is skipped. The address of a symbol does not
+  depend on its declared width, so four `char` declarations of pointer globals
+  are harmless. `LEA` and `PEA` are excluded for the same reason.
+- Widths are taken from the module the C file REPLACES, not program-wide.
+  `HIGHLIGHT_CopperEffectSeed` is a `DC.W` that one unrelated routine reads with
+  `MOVE.L`, deliberately, to pick up the two bytes after it.
+
+**Nothing else could see this.** Both byte gates ignore a C build.
+`data_shape_audit.py` asks whether the symbol IS the data or POINTS AT it, which
+was right either way. `check_pcrel_range` and `a6_audit` passed. The file was
+already recorded `behavioural`, so a smaller emitted size read as ordinary
+codegen divergence rather than as a wrong load. It is the same family as the
+clock-format table that was read one level too shallow: a C declaration can name
+the right symbol and still read the wrong bytes.
+
+**A second, smaller divergence is recorded but NOT changed.**
+`_ED1_EnterEscMenu` copies 24 bytes from `_KYBD_CustomPaletteTriplesRBase` into
+the working palette and the exit never calls `_ESQIFF_RestoreBasePaletteTriples`,
+which is the call the asset player pairs with `SetRastForMode`. Both palettes
+hold the same 8 triples by default, so this is invisible until an INI `COLOR`
+entry changes the custom one. Restoring it would add a 4-byte call and move code,
+which the one-byte fix does not. Leave it until something measures a difference.
+
 ## Constants that used to resolve by accident
 
 Under one big assembly, any symbol could reference any other. With separate

@@ -119,7 +119,23 @@ _ED1_ExitEscMenu:
 
     JSR     _ED_DrawBottomHelpBarBackground(PC)
 
+    ; ORIGINAL DEFECT: the mode argument is 1, and every other site that gives
+    ; the ad window back to the guide gives 2. _TEXTDISP_SetRastForMode(n) sets
+    ; palette slot 0 to palette slot n and fills the overlay rastport with pen
+    ; n. Slot 1 is 12,12,12, so mode 1 paints the whole ad window light grey
+    ; and holds it there. Slot 2 is 0,0,0, which is the state before the menu.
+    ;
+    ; _ESQIFF_PlayNextExternalAssetFrame has the same sequence twice with 2:
+    ; _ESQIFF_RestoreBasePaletteTriples, SetCopperEffect off, SetRastForMode 2,
+    ; then _ESQIFF_RunCopperRiseTransition.
+    ;
+    ; Both encodings are 4 bytes ($4878 0001 and $4878 0002), so the fix moves
+    ; no code and costs no bytes. See src/Prevue.asm.
+    if fixEscMenuExitDisplayMode
+    PEA     2.W
+    else
     PEA     1.W
+    endif
     JSR     _ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(PC)
 
     JSR     _ESQIFF_RunCopperRiseTransition(PC)
