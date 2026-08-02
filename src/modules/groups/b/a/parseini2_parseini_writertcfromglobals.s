@@ -17,7 +17,7 @@
 ;   _CLOCK_DaySlotIndex-E, _CLOCK_CacheAmPmFlag, _Global_REF_UTILITY_LIBRARY, _Global_REF_BATTCLOCK_RESOURCE,
 ;   _Global_REF_CLOCKDATA_STRUCT
 ; WRITES:
-;   RTC chip via BATTCLOCK_WriteSecondsToBatteryBackedClock
+;   RTC chip via _BATTCLOCK_WriteSecondsToBatteryBackedClock
 ; DESC:
 ;   Converts current global date/time fields to a legal struct and writes them
 ;   to the battery-backed clock if the RTC resources are available.

@@ -161,3 +161,6 @@ modules/submodules/unknown14.s                                         c/lib_han
 modules/submodules/unknown13.s                                         c/lib_format_to_callback_buffer.c
 modules/submodules/unknown28.s                                         c/lib_wdisp_format_with_callback.c
 modules/submodules/unknown24.s                                         c/lib_memlist_and_parse_skip.c
+modules/submodules/unknown41.s                                         c/lib_clock_convert_amiga_seconds.c
+modules/submodules/unknown40_battclock_getsecondsfrombatterybackedclock.s c/lib_battclock.c
+modules/submodules/unknown40_battclock_writesecondstobatterybackedclock.s c/lib_battclock_write.c

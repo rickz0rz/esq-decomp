@@ -414,8 +414,11 @@ modules/groups/a/w/ladfunc_p0_ladfunc_updatehighlightcycle.s           c/ladfunc
 modules/groups/a/w/ladfunc_ladfunc_updatehighlightstate.s              c/ladfunc_update_highlight_state.c
 modules/submodules/unknown12.s                                         c/lib_alloc_from_free_list.c
 modules/submodules/unknown22_allocate_allocandinitializeiostdreq.s     c/lib_allocate_alloc_and_init_iostdreq.c
+modules/submodules/unknown40_battclock_getsecondsfrombatterybackedclock.s c/lib_battclock.c
+modules/submodules/unknown40_battclock_writesecondstobatterybackedclock.s c/lib_battclock_write.c
 modules/submodules/unknown31.s                                         c/lib_buffer_ensure_allocated.c
 modules/submodules/unknown16.s                                         c/lib_buffer_flush_all_and_close_with_code.c
+modules/submodules/unknown41.s                                         c/lib_clock_convert_amiga_seconds.c
 modules/submodules/unknown22_dos_closewithsignalcheck.s                c/lib_dos_close_with_signal_check.c
 modules/submodules/unknown40_dos_delay.s                               c/lib_dos_delay_and_system.c
 modules/submodules/unknown20.s                                         c/lib_dos_open_with_error_state.c

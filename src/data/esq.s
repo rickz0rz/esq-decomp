@@ -1,7 +1,9 @@
     XDEF    _Global_REF_GRAPHICS_LIBRARY
     XDEF    _Global_REF_INTUITION_LIBRARY
     XDEF    _Global_REF_UTILITY_LIBRARY
+    XDEF    _UtilityBase
     XDEF    _Global_REF_BATTCLOCK_RESOURCE
+    XDEF    _BattClockBase
     XDEF    _Global_STRUCT_TEXTATTR_PREVUEC_FONT
     XDEF    _Global_STRUCT_TEXTATTR_H26F_FONT
     XDEF    _Global_STRUCT_TEXTATTR_TOPAZ_FONT
@@ -161,8 +163,10 @@ _Global_REF_GRAPHICS_LIBRARY:
 _IntuitionBase:
 _Global_REF_INTUITION_LIBRARY:
     DC.L    0
+_UtilityBase:
 _Global_REF_UTILITY_LIBRARY:
     DC.L    0
+_BattClockBase:
 _Global_REF_BATTCLOCK_RESOURCE:
     DC.L    0
 

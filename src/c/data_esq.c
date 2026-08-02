@@ -53,7 +53,11 @@ long Global_REF_GRAPHICS_LIBRARY = 0;
 unsigned char IntuitionBase[0] = {
 };
 long Global_REF_INTUITION_LIBRARY = 0;
+unsigned char UtilityBase[0] = {
+};
 long Global_REF_UTILITY_LIBRARY = 0;
+unsigned char BattClockBase[0] = {
+};
 long Global_REF_BATTCLOCK_RESOURCE = 0;
 char Global_STR_PREVUEC_FONT[14] = "PrevueC.font";
 struct Global_STRUCT_TEXTATTR_PREVUEC_FONT_t Global_STRUCT_TEXTATTR_PREVUEC_FONT = { (char *)Global_STR_PREVUEC_FONT, 25, 64, 32 };

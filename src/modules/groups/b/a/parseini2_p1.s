@@ -118,14 +118,14 @@ _PARSEINI_NormalizeClockData:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   CLOCK_ConvertAmigaSecondsToClockData
+;   _CLOCK_ConvertAmigaSecondsToClockData
 ; DESC:
-;   Jump stub to CLOCK_ConvertAmigaSecondsToClockData.
+;   Jump stub to _CLOCK_ConvertAmigaSecondsToClockData.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData:
-    JMP     CLOCK_ConvertAmigaSecondsToClockData
+    JMP     _CLOCK_ConvertAmigaSecondsToClockData
 
 ;------------------------------------------------------------------------------
 ; FUNC: _PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay   (JumpStub_ESQ_CalcDayOfYearFromMonthDay)
@@ -172,14 +172,14 @@ _PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   BATTCLOCK_GetSecondsFromBatteryBackedClock
+;   _BATTCLOCK_GetSecondsFromBatteryBackedClock
 ; DESC:
-;   Jump stub to BATTCLOCK_GetSecondsFromBatteryBackedClock.
+;   Jump stub to _BATTCLOCK_GetSecondsFromBatteryBackedClock.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock:
-    JMP     BATTCLOCK_GetSecondsFromBatteryBackedClock
+    JMP     _BATTCLOCK_GetSecondsFromBatteryBackedClock
 
 ;------------------------------------------------------------------------------
 ; FUNC: _PARSEINI2_JMPTBL_DATETIME_IsLeapYear   (JumpStub_DATETIME_IsLeapYear)
@@ -208,14 +208,14 @@ _PARSEINI2_JMPTBL_DATETIME_IsLeapYear:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   BATTCLOCK_WriteSecondsToBatteryBackedClock
+;   _BATTCLOCK_WriteSecondsToBatteryBackedClock
 ; DESC:
-;   Jump stub to BATTCLOCK_WriteSecondsToBatteryBackedClock.
+;   Jump stub to _BATTCLOCK_WriteSecondsToBatteryBackedClock.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock:
-    JMP     BATTCLOCK_WriteSecondsToBatteryBackedClock
+    JMP     _BATTCLOCK_WriteSecondsToBatteryBackedClock
 
 ;------------------------------------------------------------------------------
 ; FUNC: _PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch   (JumpStub_CLOCK_SecondsFromEpoch)
