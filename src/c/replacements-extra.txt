@@ -165,3 +165,4 @@ modules/submodules/unknown41.s                                         c/lib_clo
 modules/submodules/unknown40_battclock_getsecondsfrombatterybackedclock.s c/lib_battclock.c
 modules/submodules/unknown40_battclock_writesecondstobatterybackedclock.s c/lib_battclock_write.c
 modules/submodules/unknown10.s                                         c/lib_hex_parse_sprintf.c
+modules/submodules/unknown10_handle_openentrywithflags.s               c/lib_handle_open_entry_with_flags.c

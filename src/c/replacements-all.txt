@@ -433,6 +433,7 @@ modules/submodules/unknown9.s                                          c/lib_for
 modules/submodules/unknown39.s                                         c/lib_graphics_blt_bitmap_rastport.c
 modules/submodules/unknown37.s                                         c/lib_handle_close_by_index.c
 modules/submodules/unknown23.s                                         c/lib_handle_get_entry_by_index.c
+modules/submodules/unknown10_handle_openentrywithflags.s               c/lib_handle_open_entry_with_flags.c
 modules/submodules/unknown14.s                                         c/lib_handle_open_from_mode_string.c
 modules/submodules/unknown35.s                                         c/lib_handle_open_with_mode.c
 modules/submodules/unknown22_signal_createmsgportwithsignal.s          c/lib_signal_create_msgport_with_signal.c
