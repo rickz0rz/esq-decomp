@@ -12,7 +12,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DOS_Delay
+;   _DOS_Delay
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -23,7 +23,7 @@
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_MAIN_B_JMPTBL_DOS_Delay:
-    JMP     DOS_Delay
+    JMP     _DOS_Delay
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString   (Routine at _GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString)

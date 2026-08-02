@@ -31,16 +31,16 @@ _GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   DOS_SystemTagList
+;   _DOS_SystemTagList
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to DOS_SystemTagList.
+;   Jump stub to _DOS_SystemTagList.
 ;------------------------------------------------------------------------------
 _GROUP_AT_JMPTBL_DOS_SystemTagList:
-    JMP     DOS_SystemTagList
+    JMP     _DOS_SystemTagList
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1   (JumpStub_ED1_WaitForFlagAndClearBit1)

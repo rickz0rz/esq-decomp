@@ -1,8 +1,7 @@
     XDEF    BATTCLOCK_GetSecondsFromBatteryBackedClock
     XDEF    BATTCLOCK_WriteSecondsToBatteryBackedClock
-    XDEF    DOS_Delay
-    XDEF    DOS_SystemTagList
     XDEF    EXEC_CallVector_48
+
 
 ;------------------------------------------------------------------------------
 ; FUNC: BATTCLOCK_GetSecondsFromBatteryBackedClock   (Read seconds from the battery-backed clock.)
@@ -74,52 +73,3 @@ EXEC_CallVector_48:
     RTS
 
 ;!======
-
-;------------------------------------------------------------------------------
-; FUNC: DOS_Delay   (Delay for D1 ticks.)
-; ARGS:
-;   stack +8: D1 = ticks
-; RET:
-;   D0: none observed
-; CLOBBERS:
-;   D1/A6
-; CALLS:
-;   _LVODelay
-;------------------------------------------------------------------------------
-DOS_Delay:
-    MOVE.L  A6,-(A7)
-
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
-    MOVE.L  8(A7),D1
-    JSR     _LVODelay(A6)
-
-    MOVEA.L (A7)+,A6
-    RTS
-
-;!======
-
-;------------------------------------------------------------------------------
-; FUNC: DOS_SystemTagList   (Call DOS SystemTagList.)
-; ARGS:
-;   (none observed)
-; RET:
-;   D0: status
-; CLOBBERS:
-;   D0-D2/A6
-; CALLS:
-;   _LVOSystemTagList
-;------------------------------------------------------------------------------
-DOS_SystemTagList:
-    MOVEM.L D2/A6,-(A7)
-
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
-    MOVEM.L 12(A7),D1-D2
-    JSR     _LVOSystemTagList(A6)
-
-    MOVEM.L (A7)+,D2/A6
-    RTS
-
-;!======
-
-    ; Alignment
-    ALIGN_WORD

@@ -1128,6 +1128,9 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/submodules/unknown38.s"
     include "modules/submodules/unknown39.s"
     include "modules/submodules/unknown40.s"
+    include "modules/submodules/unknown40_dos_delay.s"
+    include "modules/submodules/unknown40_dos_systemtaglist.s"
+    include "modules/submodules/unknown40_p1.s"
     include "modules/submodules/unknown41.s"
     include "modules/submodules/unknown42.s"
 
