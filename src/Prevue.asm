@@ -915,6 +915,8 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/groups/b/a/parseini_p2.s"
     include "modules/groups/b/a/parseini_p2_parseini_handlefontcommand.s"
     include "modules/groups/b/a/parseini_p2_p1.s"
+    include "modules/groups/b/a/parseini_p2_p1_parseini_scanlogodirectory.s"
+    include "modules/groups/b/a/parseini_p2_p1_p0.s"
     include "modules/groups/b/a/parseini2.s"
     include "modules/groups/b/a/parseini2_parseini_writertcfromglobals.s"
     include "modules/groups/b/a/parseini2_parseini_updateclockfromrtc.s"

@@ -194,3 +194,5 @@ data/textdisp_p1.s                                                     c/data_te
 data/textdisp_p2.s                                                     c/data_textdisp_p2.c
 data/tliba1_p1.s                                                       c/data_tliba1_p1.c
 data/wdisp_p1_p1.s                                                     c/data_wdisp_p1_p1.c
+modules/groups/a/o/esqiff2_p1.s                                        c/esqiff2_parse_line_head_tail_record.c
+modules/groups/a/q/esqshared4_p1.s                                     c/esqshared4_init_banner_copper_system.c

@@ -297,6 +297,7 @@ modules/groups/a/o/esqiff2.s                                           c/esqiff2
 modules/groups/a/o/esqiff2_esqiff2_clearlineheadtailbymode.s           c/esqiff2_clear_line_head_tail_by_mode.c
 modules/groups/a/o/esqiff2_esqiff2_padentriestomaxtitlewidth_esqiff2_padentriestomaxtitlewidth.s c/esqiff2_pad_entries_to_max_title_width.c
 modules/groups/a/o/esqiff2_p1_esqiff2_parsegrouprecordandrefresh.s     c/esqiff2_parse_group_record_and_refresh.c
+modules/groups/a/o/esqiff2_p1.s                                        c/esqiff2_parse_line_head_tail_record.c
 modules/groups/a/o/esqiff2_esqiff2_readserialrecordintobuffer_esqiff2_readserialrecordintobuffer.s c/esqiff2_read_serial_record_into_buffer.c
 modules/groups/a/o/esqiff2_esqiff2_readserialsizedtextrecord_esqiff2_readserialsizedtextrecord.s c/esqiff2_read_serial_sized_text_record.c
 modules/groups/a/o/esqiff2_esqiff2_showattentionoverlay_esqiff2_showattentionoverlay.s c/esqiff2_show_attention_overlay.c
@@ -565,6 +566,7 @@ modules/groups/b/a/parseini_parseini_parsehexvaluefromstring.s         c/parsein
 modules/groups/b/a/parseini.s                                          c/parseini_parse_ini_buffer_and_dispatch.c
 modules/groups/b/a/parseini_p1_2_parseini_parserangekeyvalue.s         c/parseini_parse_range_key_value.c
 modules/groups/b/a/parseini_p1_2_p0.s                                  c/parseini_process_weather_blocks.c
+modules/groups/b/a/parseini_p2_p1_parseini_scanlogodirectory.s         c/parseini_scan_logo_directory.c
 modules/groups/b/a/parseini_p2.s                                       c/parseini_test_memory_and_open_topaz_font.c
 modules/groups/b/a/parseini2_parseini_updateclockfromrtc.s             c/parseini_update_clock_from_rtc.c
 modules/groups/b/a/parseini3_parseini_updatectrlhdeltamax.s            c/parseini_update_ctrl_h_delta_max.c
@@ -766,6 +768,7 @@ data/textdisp_p1.s                                                     c/data_te
 data/textdisp_p2.s                                                     c/data_textdisp_p2.c
 data/tliba1_p1.s                                                       c/data_tliba1_p1.c
 data/wdisp_p1_p1.s                                                     c/data_wdisp_p1_p1.c
+modules/groups/a/q/esqshared4_p1.s                                     c/esqshared4_init_banner_copper_system.c
 modules/groups/a/a/app2_p7.s                                           c/app2_p7_merged.c
 modules/groups/a/a/app2_esq_findsubstringcasefold.s                    c/app2_esq_findsubstringcasefold_merged.c
 modules/groups/a/c/cleanup2_p1_p0_p0.s                                 c/cleanup2_p1_p0_p0_merged.c
