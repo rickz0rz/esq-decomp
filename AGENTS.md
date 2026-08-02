@@ -536,57 +536,79 @@ Two cautions before assuming every one resolves:
   `Global_FormatCallbackByteCount+Type_Long_Size`. The arithmetic has to be
   evaluated before the lookup; a regex for `= <number>` sees only 14 of the 59.
 
-## PROVEN BLOCKER: `__CXD22`/`__CXD33` return TWO values, in D0 and D1
+## The "proven blockers" were NOT blockers. Here is the corrected analysis
 
-`modules/submodules/unknown22.s` defines the helpers SAS/C itself emits calls to
-for 32-bit multiply and divide. They cannot be written in C, and this is not a
-matter of effort or of finding the right idiom.
+An earlier version of this file claimed four things could never be written in C
+and that 0% assembly was therefore unreachable. **Three of the four were wrong.**
+The error was generalising from one true measurement without testing the ways
+around it, and it is written up here because the wrong version was believed for
+a while and acted on.
 
-Compile `unsigned long r(unsigned long a, unsigned long b) { return a % b; }`
-and disassemble it:
+### What was actually measured, and what was wrongly concluded
+
+TRUE: SAS/C reads the REMAINDER out of D1 after calling its divide helper.
+Compile `return a % b;` and the call is followed by `move.l d1,d0`. A C function
+returns one value, in D0, so a C definition of `__CXD22` cannot satisfy `%`.
+
+FALSE, and this is the part that was assumed rather than tested: that this makes
+the helpers unwritable. Three measurements say otherwise.
+
+**Only `%` reads D1.** `a / b` calls the same helper and reads D0. So a C-written
+`__CXD22` serves every division in the program correctly.
+
+**`%` has an exact workaround that reads only D0.** `x - (x/y)*y` compiles to
+`jsr __CXD22` / `jsr __CXM22` / `sub.l` -- two helper calls, both read through
+D0, no D1 anywhere. There are 62 `%` sites in `src/c`.
+
+**The helper bodies are expressible.** A shift-subtract division loop compiles
+with NO external reference at all -- no `__CXD22`, so it cannot recurse. And
+`(unsigned long)(unsigned short)a * b` emits `MULU.W` inline, so `__CXM33` can be
+built from 16-bit partial products without calling itself. Both verified by
+compiling and reading the object's xref list, which was empty.
+
+So the divide and multiply helpers are a bounded refactor -- rewrite 62 `%`
+sites, then write four helpers in C -- not an impossibility.
+
+### The stack-restoring pair is setjmp/longjmp
+
+`ESQ_ShutdownAndReturn` ends:
 
 ```
-  move.l   d7, d0
-  move.l   d6, d1
-  jsr      __CXD22
-  move.l   d1, d0        <-- the REMAINDER, read out of D1
-  rts
+MOVE.L  (A7)+,D0
+MOVEA.L Global_SavedStackPointer(A4),A7
+MOVEM.L (A7)+,D1-D6/A0-A6
+RTS
 ```
 
-So the contract is: dividend in D0, divisor in D1, **quotient returned in D0 and
-remainder in D1**. A C function returns one value, in D0. There is no `__asm`
-form for a second return register -- `register __d1` names a PARAMETER, not a
-result -- so no C definition of `__CXD22` can satisfy its own compiler.
+That is a stack switch and a return on the restored stack, which no C statement
+expresses -- but it is precisely what `longjmp` does, and SAS/C has it.
+`Global_SavedStackPointer` is written and read ONLY inside
+`modules/groups/_main/a/a.s`, by this function and by `ESQ_StartupEntry` which
+saved it. Nothing else in the program touches it, so replacing the saved-state
+representation with a `jmp_buf` is a change local to that one pair.
 
-It is also self-referential: any C body using `/` or `%` on a long compiles into
-a call to the very function being defined.
+It is a functional analogue rather than a transcription, and it has to be
+labelled as one.
 
-**The escape route is worse than the disease.** Every `/` and `%` on a long
-anywhere in `src/c` would have to become a hand-written shift-subtract loop, in
-about forty files, to stop the compiler emitting the helper at all. That trades
-one small assembly module for a large amount of slower and less readable C, and
-it would still leave `__CXM33` reachable through `*`.
+### The startup entry is an `__asm` function
 
-So `unknown22.s` stays. Split the module if the rest of it is wanted: it also
-holds `_DOS_CloseWithSignalCheck`, `SIGNAL_CreateMsgPortWithSignal` and
-`ALLOCATE_AllocAndInitializeIOStdReq`, none of which has this problem.
+`ESQ_StartupEntry` is entered by the OS with the command line in A0 and its
+length in D0, which `register __a0` / `register __d0` express. It also does
+`LEA _Global_REF_LONG_FILE_SCRATCH,A4` to establish the near-data base -- and a
+`DATA=FAR` build needs no A4 at all. Ten modules still reference `(A4)`, every
+one of them still assembly and every one on the conversion list. When they are C
+they will use the absolute accessors in `src/c/esq-neardata.h`, and A4 becomes
+dead.
 
-`__CXM33`, the multiply, returns only D0 and IS expressible -- but only if its
-body avoids `*` on longs and builds the product from 16-bit partial products, or
-it calls itself.
+### So what is the real floor?
 
-### The other proven blockers, for the same reason
+**Zero, as far as anything measured so far shows.** Each of the three is work --
+some of it delicate, the setjmp pair especially -- but none is a wall.
 
-These are not "not done yet". Each has a property C cannot express:
-
-| function | why |
-|---|---|
-| `__CXD22`, `__CXD33` | return a second value in D1 |
-| `ESQ_ReturnWithStackCode`, `ESQ_ShutdownAndReturn` | restore A7 from a global and return on the restored stack |
-| `ESQ_StartupEntry` | the OS enters it with the command line in A0/D0, and it establishes A4 |
-| the `includeCustomAriAssembly` block in `data/wdisp_p1_p1.s` | a build variant; C carries no conditional assembly |
-
-Everything else that remains is a matter of work rather than of expressibility.
+The honest statement is: no remaining assembly has been shown to be
+inexpressible. That is different from a proof that all of it is expressible, and
+the difference matters. Test the specific claim before recording another blocker,
+and record what was measured separately from what was concluded.
 
 ## Library code is not application code
 
