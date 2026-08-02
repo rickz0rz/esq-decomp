@@ -731,14 +731,14 @@ _PARSEINI_JMPTBL_BRUSH_AllocBrushNode:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN36_FinalizeRequest
+;   _UNKNOWN36_FinalizeRequest
 ; DESC:
-;   Jump stub to UNKNOWN36_FinalizeRequest.
+;   Jump stub to _UNKNOWN36_FinalizeRequest.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest:
-    JMP     UNKNOWN36_FinalizeRequest
+    JMP     _UNKNOWN36_FinalizeRequest
 
 ;------------------------------------------------------------------------------
 ; FUNC: _PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette   (JumpStub_GCOMMAND_InitPresetTableFromPalette)

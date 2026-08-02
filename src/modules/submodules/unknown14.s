@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   A0/A2/A3/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   UNKNOWN36_FinalizeRequest, HANDLE_OpenEntryWithFlags
+;   _UNKNOWN36_FinalizeRequest, _HANDLE_OpenEntryWithFlags
 ; READS:
 ;   Global_DefaultHandleFlags, mode-string bytes via A3,
 ;   Struct_PreallocHandleNode__OpenFlags(A2)
@@ -18,7 +18,7 @@
 ;   Struct_PreallocHandleNode__BufferBase/BufferCursor/ReadRemaining/
 ;   WriteRemaining/BufferCapacity/HandleIndex/OpenFlags(A2)
 ; DESC:
-;   Parses a mode string (r/w/a with optional b/+), builds flags, calls HANDLE_OpenEntryWithFlags,
+;   Parses a mode string (r/w/a with optional b/+), builds flags, calls _HANDLE_OpenEntryWithFlags,
 ;   then initializes the handle/struct on success.
 ; NOTES:
 ;   Booleanize pattern: SEQ/NEG/EXT. Returns 0 on failure.
@@ -36,7 +36,7 @@ _HANDLE_OpenFromModeString:
     BEQ.S   .after_finalize
 
     MOVE.L  A2,-(A7)
-    JSR     UNKNOWN36_FinalizeRequest(PC)
+    JSR     _UNKNOWN36_FinalizeRequest(PC)
 
     ADDQ.W  #4,A7
 
@@ -82,7 +82,7 @@ _HANDLE_OpenFromModeString:
     PEA     12.W
     MOVE.L  #$8102,-(A7)
     MOVE.L  8(A5),-(A7)
-    JSR     HANDLE_OpenEntryWithFlags(PC)
+    JSR     _HANDLE_OpenEntryWithFlags(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D6
@@ -124,7 +124,7 @@ _HANDLE_OpenFromModeString:
     PEA     12.W
     MOVE.L  D0,-(A7)
     MOVE.L  8(A5),-(A7)
-    JSR     HANDLE_OpenEntryWithFlags(PC)
+    JSR     _HANDLE_OpenEntryWithFlags(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D6
@@ -167,7 +167,7 @@ _HANDLE_OpenFromModeString:
     PEA     12.W
     MOVE.L  D0,-(A7)
     MOVE.L  8(A5),-(A7)
-    JSR     HANDLE_OpenEntryWithFlags(PC)
+    JSR     _HANDLE_OpenEntryWithFlags(PC)
 
     LEA     12(A7),A7
     MOVE.L  D0,D6

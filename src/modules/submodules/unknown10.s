@@ -1,5 +1,5 @@
     XDEF    FORMAT_U32ToHexString
-    XDEF    HANDLE_OpenEntryWithFlags
+    XDEF    _HANDLE_OpenEntryWithFlags
     XDEF    PARSE_ReadSignedLong
     XDEF    PARSE_ReadSignedLong_NegateValue
     XDEF    PARSE_ReadSignedLong_NoBranch
@@ -372,7 +372,7 @@ _WDISP_SPrintf:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: HANDLE_OpenEntryWithFlags   (Allocate/open entry in handle table.)
+; FUNC: _HANDLE_OpenEntryWithFlags   (Allocate/open entry in handle table.)
 ; ARGS:
 ;   stack +10: arg_1 (via 14(A5))
 ;   stack +12: arg_2 (via 16(A5))
@@ -394,7 +394,7 @@ _WDISP_SPrintf:
 ; NOTES:
 ;   Uses SEQ/NEG/EXT booleanization in callers; sets error code in Global_AppErrorCode(A4).
 ;------------------------------------------------------------------------------
-HANDLE_OpenEntryWithFlags:
+_HANDLE_OpenEntryWithFlags:
     LINK.W  A5,#-26
     MOVEM.L D4-D7/A2-A3,-(A7)
     MOVEA.L 58(A7),A3

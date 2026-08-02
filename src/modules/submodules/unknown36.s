@@ -1,7 +1,7 @@
     XDEF    _DEBUG_STR_UserAbortRequested
     XDEF    _DEBUG_STR_Continue
     XDEF    _DEBUG_STR_Abort
-    XDEF    UNKNOWN36_FinalizeRequest
+    XDEF    _UNKNOWN36_FinalizeRequest
     XDEF    UNKNOWN36_ShowAbortRequester
 
 ;------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ Struct_UNKNOWN36_Request__Handler   = Struct_PreallocHandleNode__HandleIndex
 ;------------------------------------------------------------------------------
 
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN36_FinalizeRequest   (Finalize a request struct and dispatch callbacks.)
+; FUNC: _UNKNOWN36_FinalizeRequest   (Finalize a request struct and dispatch callbacks.)
 ; ARGS:
 ;   stack +16: struct* request (A3)
 ; RET:
@@ -35,7 +35,7 @@ Struct_UNKNOWN36_Request__Handler   = Struct_PreallocHandleNode__HandleIndex
 ; NOTES:
 ;   Returns -1 if STREAM_BufferedPutcOrFlush returns -1 or if the handler returns non-zero.
 ;------------------------------------------------------------------------------
-UNKNOWN36_FinalizeRequest:
+_UNKNOWN36_FinalizeRequest:
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 16(A7),A3
     BTST    #1,Struct_UNKNOWN36_Request__FlagByte(A3)
