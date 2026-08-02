@@ -192,7 +192,7 @@ _DISKIO2_HandleInteractiveFileTransfer:
     LEA     -68(A5),A0
     MOVE.L  A0,D1
     MOVEQ   #-2,D2
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOLock(A6)
 
     MOVE.L  D0,-76(A5)
@@ -212,7 +212,7 @@ _DISKIO2_HandleInteractiveFileTransfer:
 
     MOVE.L  D0,D2
     MOVE.L  -76(A5),D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOInfo(A6)
 
     TST.L   D0
@@ -237,7 +237,7 @@ _DISKIO2_HandleInteractiveFileTransfer:
 
 .xfer_unlock_target_dir:
     MOVE.L  -76(A5),D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOUnLock(A6)
 
 .xfer_parse_requested_size:
@@ -426,7 +426,7 @@ _DISKIO2_HandleInteractiveFileTransfer:
     MOVE.W  _ESQPARS2_ReadModeFlags,_DISKIO_SavedReadModeFlags
     MOVE.W  #$100,_ESQPARS2_ReadModeFlags
     MOVE.L  _DISKIO_WriteFileHandle,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     PEA     4352.W
@@ -461,7 +461,7 @@ _DISKIO2_HandleInteractiveFileTransfer:
 
     LEA     _DISKIO2_TransferFilenameBuffer,A0
     MOVE.L  A0,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVODeleteFile(A6)
 
     JSR     _DISKIO_ForceUiRefreshIfIdle(PC)
@@ -487,7 +487,7 @@ _DISKIO2_HandleInteractiveFileTransfer:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
     LEA     -58(A5),A0
@@ -516,7 +516,7 @@ _DISKIO2_HandleInteractiveFileTransfer:
     ADDQ.W  #4,A7
     LEA     -58(A5),A0
     MOVE.L  A0,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVODeleteFile(A6)
 
 .xfer_restore_read_mode:

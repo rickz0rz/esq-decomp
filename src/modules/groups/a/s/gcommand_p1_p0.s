@@ -11,7 +11,7 @@
 ; CALLS:
 ;   _GCOMMAND_LoadPPVTemplate, _GROUP_AS_JMPTBL_STR_FindCharPtr, _GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer, _ESQPARS_ReplaceOwnedString, _NEWGRID_JMPTBL_MEMORY_DeallocateMemory, _LVOCopyMem, _LVODeleteFile
 ; READS:
-;   AbsExecBase, Global_REF_DOS_LIBRARY_2, _Global_REF_LONG_FILE_SCRATCH, _Global_STR_GCOMMAND_C_3, _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad, _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad, _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete, _Global_PTR_WORK_BUFFER, _GCOMMAND_DigitalPpvEnabledFlag, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PPVPeriodTemplatePtr, return
+;   AbsExecBase, _Global_REF_DOS_LIBRARY_2, _Global_REF_LONG_FILE_SCRATCH, _Global_STR_GCOMMAND_C_3, _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad, _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad, _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete, _Global_PTR_WORK_BUFFER, _GCOMMAND_DigitalPpvEnabledFlag, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PPVPeriodTemplatePtr, return
 ; WRITES:
 ;   _Global_PTR_WORK_BUFFER, _GCOMMAND_PPVListingsTemplatePtr, _GCOMMAND_PPVPeriodTemplatePtr
 ; DESC:
@@ -47,7 +47,7 @@ _GCOMMAND_LoadPPV3Template:
     MOVEQ   #52,D6
     LEA     _GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackDelete,A0
     MOVE.L  A0,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVODeleteFile(A6)
 
     MOVEQ   #1,D5

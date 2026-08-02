@@ -277,7 +277,7 @@ _ED2_HandleMenuActions:
     LEA     -105(A5),A0
     MOVE.L  A0,D2
     MOVEQ   #50,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     MOVE.L  D0,D4
@@ -352,7 +352,7 @@ _ED2_HandleMenuActions:
 
 .close_file:
     MOVE.L  D6,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     BRA.W   .restore_display_state

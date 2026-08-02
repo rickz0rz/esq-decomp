@@ -97,7 +97,7 @@ GRAPHICS_FreeRaster:
 ; CALLS:
 ;   _LVOOpen
 ; READS:
-;   Global_REF_DOS_LIBRARY_2
+;   _Global_REF_DOS_LIBRARY_2
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -115,7 +115,7 @@ DOS_OpenFileWithMode:
 
     MOVE.L  A3,D1
     MOVE.L  D7,D2
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOOpen(A6)
 
     MOVE.L  D0,D6

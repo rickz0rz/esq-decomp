@@ -57,7 +57,7 @@ ESQ_StartupEntry:
     MOVEQ   #0,D0
     JSR     _LVOOpenLibrary(A6)             ; Open dos.library version 0 (any) locally...
 
-    MOVE.L  D0,Global_DosLibrary(A4) ; and store it in a known location in memory (0x3BB24 + 22832 or 0x41454) or Global_REF_DOS_LIBRARY_2
+    MOVE.L  D0,Global_DosLibrary(A4) ; and store it in a known location in memory (0x3BB24 + 22832 or 0x41454) or _Global_REF_DOS_LIBRARY_2
     BNE.S   .dos_opened_prepare_startup    ; Jump to .dos_opened_prepare_startup if D0 is not 0 (D0 is the addr returned, 0 = didn't load)
 
     MOVEQ   #100,D0                         ; If it wasn't opened, set D0 to 100...

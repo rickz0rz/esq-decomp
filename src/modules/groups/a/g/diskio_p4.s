@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVOInfo, _LVOLock, _LVOUnLock
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, _Global_STR_DISKIO_C_7, _Global_STR_DISKIO_C_8, MEMF_CLEAR, Struct_InfoData_Size
+;   _Global_REF_DOS_LIBRARY_2, _Global_STR_DISKIO_C_7, _Global_STR_DISKIO_C_8, MEMF_CLEAR, Struct_InfoData_Size
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -29,7 +29,7 @@ _DISKIO_QueryVolumeSoftErrorCount:
     MOVEQ   #0,D7
     MOVE.L  A3,D1
     MOVEQ   #-2,D2
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOLock(A6)
 
     MOVE.L  D0,D6
@@ -49,7 +49,7 @@ _DISKIO_QueryVolumeSoftErrorCount:
 
     MOVE.L  D6,D1
     MOVE.L  D0,D2
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOInfo(A6)
 
     TST.L   D0
@@ -69,7 +69,7 @@ _DISKIO_QueryVolumeSoftErrorCount:
 
 .lab_03C6:
     MOVE.L  D6,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOUnLock(A6)
 
 .return:

@@ -14,7 +14,7 @@
 ; CALLS:
 ;   _CTASKS_StartCloseTaskProcess, _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVODelay, _LVOWrite
 ; READS:
-;   _DISKIO_BufferControl, _DISKIO_BufferState, _DISKIO_OpenCount, Global_REF_DOS_LIBRARY_2, _Global_STR_DISKIO_C_2, _CTASKS_CloseTaskCompletionFlag, _Global_UIBusyFlag, Struct_DiskIoBufferControl__BufferBase, Struct_DiskIoBufferState__BufferSize, Struct_DiskIoBufferState__Remaining, Struct_DiskIoBufferState__SavedF45
+;   _DISKIO_BufferControl, _DISKIO_BufferState, _DISKIO_OpenCount, _Global_REF_DOS_LIBRARY_2, _Global_STR_DISKIO_C_2, _CTASKS_CloseTaskCompletionFlag, _Global_UIBusyFlag, Struct_DiskIoBufferControl__BufferBase, Struct_DiskIoBufferState__BufferSize, Struct_DiskIoBufferState__Remaining, Struct_DiskIoBufferState__SavedF45
 ; WRITES:
 ;   _DISKIO_BufferControl, _DISKIO_OpenCount, _ESQPARS2_ReadModeFlags, Struct_DiskIoBufferControl__ErrorFlag
 ; DESC:
@@ -43,7 +43,7 @@ _DISKIO_CloseBufferedFileAndFlush:
     MOVE.L  D7,D1
     MOVE.L  D6,D3
     MOVE.L  _DISKIO_BufferControl+Struct_DiskIoBufferControl__BufferBase,D2
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOWrite(A6)
 
     CMP.L   D3,D0
@@ -60,7 +60,7 @@ _DISKIO_CloseBufferedFileAndFlush:
     JSR     _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(PC)
 
     MOVEQ   #5,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVODelay(A6)
 
     JSR     _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(PC)

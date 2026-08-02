@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport, _GROUP_AG_JMPTBL_SCRIPT_CheckPathExists, _GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal, _GROUP_AG_JMPTBL_STRUCT_AllocWithOwner, _GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField, _LVOCloseDevice, _LVODoIO, _LVOExecute, _LVOOpenDevice
 ; READS:
-;   AbsExecBase, Global_REF_DOS_LIBRARY_2, LAB_03D0, LAB_03D6, LAB_03D7, LAB_03DA, _DISKIO_Drive0Dh2AssignDoneFlag, _DISKIO_Drive1GfxAssignDoneFlag, _DISKIO_STR_TRACKDISK_DEVICE, _DISKIO_CMD_ASSIGN_FONTS_DH2, _DISKIO_CMD_ASSIGN_ENV_DH2, _DISKIO_CMD_ASSIGN_SYS_DH2, _DISKIO_CMD_ASSIGN_S_DH2, _DISKIO_CMD_ASSIGN_C_DH2, _DISKIO_CMD_ASSIGN_L_DH2, _DISKIO_CMD_ASSIGN_LIBS_DH2, _DISKIO_CMD_ASSIGN_DEVS_DH2, _DISKIO_PATH_DF1_G_ADS, _DISKIO_CMD_ASSIGN_GFX_DF1, _DISKIO_CMD_ASSIGN_GFX_PC1, _ESQ_MainLoopUiTickEnabledFlag, _ESQPARS2_ReadModeFlags, _DISKIO_TrackdiskMsgPortPtr, _DISKIO_TrackdiskIoReqPtr, _DISKIO_Drive0WriteProtectedCode, _DISKIO_DriveWriteProtectStatusCodeDrive1, _DISKIO_DriveMediaStatusCodeTable, df, e2, return
+;   AbsExecBase, _Global_REF_DOS_LIBRARY_2, LAB_03D0, LAB_03D6, LAB_03D7, LAB_03DA, _DISKIO_Drive0Dh2AssignDoneFlag, _DISKIO_Drive1GfxAssignDoneFlag, _DISKIO_STR_TRACKDISK_DEVICE, _DISKIO_CMD_ASSIGN_FONTS_DH2, _DISKIO_CMD_ASSIGN_ENV_DH2, _DISKIO_CMD_ASSIGN_SYS_DH2, _DISKIO_CMD_ASSIGN_S_DH2, _DISKIO_CMD_ASSIGN_C_DH2, _DISKIO_CMD_ASSIGN_L_DH2, _DISKIO_CMD_ASSIGN_LIBS_DH2, _DISKIO_CMD_ASSIGN_DEVS_DH2, _DISKIO_PATH_DF1_G_ADS, _DISKIO_CMD_ASSIGN_GFX_DF1, _DISKIO_CMD_ASSIGN_GFX_PC1, _ESQ_MainLoopUiTickEnabledFlag, _ESQPARS2_ReadModeFlags, _DISKIO_TrackdiskMsgPortPtr, _DISKIO_TrackdiskIoReqPtr, _DISKIO_Drive0WriteProtectedCode, _DISKIO_DriveWriteProtectStatusCodeDrive1, _DISKIO_DriveMediaStatusCodeTable, df, e2, return
 ; WRITES:
 ;   _DISKIO_Drive0Dh2AssignDoneFlag, _DISKIO_Drive1GfxAssignDoneFlag, _ESQPARS2_ReadModeFlags, _GCOMMAND_DriveProbeRequestedFlag, _DISKIO_TrackdiskMsgPortPtr, _DISKIO_TrackdiskIoReqPtr
 ; DESC:
@@ -176,7 +176,7 @@ _DISKIO_ProbeDrivesAndAssignPaths:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
     MOVE.L  D2,D3
@@ -235,7 +235,7 @@ _DISKIO_ProbeDrivesAndAssignPaths:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
     BRA.S   .lab_03DC
@@ -245,7 +245,7 @@ _DISKIO_ProbeDrivesAndAssignPaths:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
 .lab_03DC:

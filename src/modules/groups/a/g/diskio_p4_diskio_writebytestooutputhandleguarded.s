@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _LVOWrite
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, _ESQPARS2_ReadModeFlags, _DISKIO_WriteFileHandle, _DISKIO_SavedReadModeFlags
+;   _Global_REF_DOS_LIBRARY_2, _ESQPARS2_ReadModeFlags, _DISKIO_WriteFileHandle, _DISKIO_SavedReadModeFlags
 ; WRITES:
 ;   _ESQPARS2_ReadModeFlags, _DISKIO_SavedReadModeFlags
 ; DESC:
@@ -32,7 +32,7 @@ _DISKIO_WriteBytesToOutputHandleGuarded:
     MOVE.L  A3,D2
     MOVE.L  D0,D3
     MOVE.L  _DISKIO_WriteFileHandle,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOWrite(A6)
 
     MOVE.L  D0,D6

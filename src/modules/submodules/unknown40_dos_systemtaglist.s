@@ -15,7 +15,7 @@
 _DOS_SystemTagList:
     MOVEM.L D2/A6,-(A7)
 
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     MOVEM.L 12(A7),D1-D2
     JSR     _LVOSystemTagList(A6)
 

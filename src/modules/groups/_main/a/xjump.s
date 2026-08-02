@@ -52,16 +52,16 @@ GROUP_MAIN_A_JMPTBL_ESQ_MainEntryNoOpHook:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   MEMLIST_FreeAll
+;   _MEMLIST_FreeAll
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to MEMLIST_FreeAll.
+;   Jump stub to _MEMLIST_FreeAll.
 ;------------------------------------------------------------------------------
 GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll:
-    JMP     MEMLIST_FreeAll
+    JMP     _MEMLIST_FreeAll
 
 ;------------------------------------------------------------------------------
 ; FUNC: GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun   (JumpStub_ESQ_ParseCommandLineAndRun)

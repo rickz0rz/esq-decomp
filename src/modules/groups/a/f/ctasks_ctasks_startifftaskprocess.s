@@ -11,7 +11,7 @@
 ; CALLS:
 ;   _LVOForbid/_LVOPermit, _LVOFindTask, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOCreateProc
 ; READS:
-;   _CTASKS_IffTaskState, _ESQIFF_AssetSourceSelect, _Global_STR_IFF_TASK_1/2, Global_REF_DOS_LIBRARY_2
+;   _CTASKS_IffTaskState, _ESQIFF_AssetSourceSelect, _Global_STR_IFF_TASK_1/2, _Global_REF_DOS_LIBRARY_2
 ; WRITES:
 ;   _CTASKS_IffTaskDoneFlag, _CTASKS_IffTaskState, _Global_REF_LIST_IFF_TASK_PROC, _CTASKS_IffTaskSegListBPTR, _CTASKS_IffTaskProcPtr
 ; DESC:
@@ -78,7 +78,7 @@ _CTASKS_StartIffTaskProcess:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  #8192,D4
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6    ; spawn IFF task process
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6    ; spawn IFF task process
     JSR     _LVOCreateProc(A6)
 
     MOVE.L  D0,_CTASKS_IffTaskProcPtr

@@ -14,7 +14,7 @@
 ; CALLS:
 ;   _LVOExecute
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, _DISKIO_Pc1MountAssignFlag, _DISKIO_CMD_MOUNT_PC1, _DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT
+;   _Global_REF_DOS_LIBRARY_2, _DISKIO_Pc1MountAssignFlag, _DISKIO_CMD_MOUNT_PC1, _DISKIO_CMD_ASSIGN_GFX_PC1_EXPLICIT
 ; WRITES:
 ;   _DISKIO_Pc1MountAssignFlag
 ; DESC:
@@ -32,7 +32,7 @@ _DISKIO_EnsurePc1MountedAndGfxAssigned:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
     MOVE.L  D2,D3

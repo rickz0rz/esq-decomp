@@ -25,7 +25,7 @@
 ; CALLS:
 ;   _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _LVORead
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, _Global_STR_BRUSH_C_1, _Global_STR_BRUSH_C_2, _Global_STR_BRUSH_C_3, _Global_STR_BRUSH_C_4, MEMF_PUBLIC, Struct_ColorTextFont_Size, return
+;   _Global_REF_DOS_LIBRARY_2, _Global_STR_BRUSH_C_1, _Global_STR_BRUSH_C_2, _Global_STR_BRUSH_C_3, _Global_STR_BRUSH_C_4, MEMF_PUBLIC, Struct_ColorTextFont_Size, return
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -71,7 +71,7 @@ _BRUSH_LoadColorTextFont:
     MOVE.L  D7,D1
     MOVE.L  D6,D3
     MOVE.L  -14(A5),D2
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     CMP.L   D3,D0

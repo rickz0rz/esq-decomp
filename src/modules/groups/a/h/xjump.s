@@ -400,7 +400,7 @@ _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   PARSE_ReadSignedLongSkipClass3
+;   _PARSE_ReadSignedLongSkipClass3
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -411,4 +411,4 @@ _GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3:
-    JMP     PARSE_ReadSignedLongSkipClass3
+    JMP     _PARSE_ReadSignedLongSkipClass3

@@ -1,9 +1,9 @@
-    XDEF    Global_REF_DOS_LIBRARY_2
+    XDEF    _Global_REF_DOS_LIBRARY_2
     XDEF    _DOSBase
     XDEF    WDISP_FMT_CTRLH_STATUS_MAX
 ; Through a bit of manual work, I was able to figure out this points to dos.library
 _DOSBase:
-Global_REF_DOS_LIBRARY_2:
+_Global_REF_DOS_LIBRARY_2:
     DS.L    55
 
     if includeCustomAriAssembly

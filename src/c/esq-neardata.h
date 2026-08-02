@@ -19,11 +19,11 @@
 #ifndef ESQ_NEARDATA_H
 #define ESQ_NEARDATA_H
 
-extern unsigned char Global_REF_DOS_LIBRARY_2[];
 extern unsigned char BUFFER_5929_LONGWORDS[];
 extern unsigned char DEBUG_AbortRequesterTagChain[];
 extern unsigned char DISKIO2_QTableIniFileHandle[];
 extern unsigned char FORMAT_ScratchBuffer[];
+extern unsigned char Global_REF_DOS_LIBRARY_2[];
 extern unsigned char Global_STR_A_PLUS[];
 extern unsigned char PREALLOC_HandleNode1_InitRecord[];
 extern unsigned char PREALLOC_HandleNode2_InitRecord[];

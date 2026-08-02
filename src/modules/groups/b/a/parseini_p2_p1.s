@@ -80,7 +80,7 @@ _PARSEINI_ScanLogoDirectory:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
     PEA     _PARSEINI_STR_RB_LogoListPrimary
@@ -360,7 +360,7 @@ _PARSEINI_ScanLogoDirectory:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
 .free_secondary_entry:

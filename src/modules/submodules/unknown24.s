@@ -1,10 +1,10 @@
     XDEF    _MEMLIST_AllocTracked
-    XDEF    MEMLIST_FreeAll
-    XDEF    PARSE_ReadSignedLongSkipClass3
+    XDEF    _MEMLIST_FreeAll
+    XDEF    _PARSE_ReadSignedLongSkipClass3
     XDEF    _PARSE_ReadSignedLongSkipClass3_Alt
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSE_ReadSignedLongSkipClass3   (Parse signed long after skipping class3.)
+; FUNC: _PARSE_ReadSignedLongSkipClass3   (Parse signed long after skipping class3.)
 ; ARGS:
 ;   stack +16: A3 = input string
 ; RET:
@@ -12,11 +12,11 @@
 ; CLOBBERS:
 ;   D0/A0/A3
 ; CALLS:
-;   _STR_SkipClass3Chars (skip class3), PARSE_ReadSignedLong (parse signed decimal)
+;   _STR_SkipClass3Chars (skip class3), _PARSE_ReadSignedLong (parse signed decimal)
 ; DESC:
 ;   Skips class-3 characters, parses a signed decimal, returns the value.
 ;------------------------------------------------------------------------------
-PARSE_ReadSignedLongSkipClass3:
+_PARSE_ReadSignedLongSkipClass3:
     LINK.W  A5,#-4
     MOVE.L  A3,-(A7)
     MOVEA.L 16(A7),A3
@@ -34,7 +34,7 @@ PARSE_ReadSignedLongSkipClass3:
     MOVEA.L D0,A3
     PEA     -4(A5)
     MOVE.L  A3,-(A7)
-    JSR     PARSE_ReadSignedLong(PC)
+    JSR     _PARSE_ReadSignedLong(PC)
 
     MOVE.L  -4(A5),D0
 
@@ -54,11 +54,11 @@ PARSE_ReadSignedLongSkipClass3:
 ; CLOBBERS:
 ;   D0/A0/A3
 ; CALLS:
-;   _STR_SkipClass3Chars (skip class3), PARSE_ReadSignedLong_NoBranch (parse signed decimal)
+;   _STR_SkipClass3Chars (skip class3), _PARSE_ReadSignedLong_NoBranch (parse signed decimal)
 ; DESC:
 ;   Skips class-3 characters, parses a signed decimal, returns the value.
 ; NOTES:
-;   Uses PARSE_ReadSignedLong_NoBranch instead of PARSE_ReadSignedLong (behavior differences unknown).
+;   Uses _PARSE_ReadSignedLong_NoBranch instead of _PARSE_ReadSignedLong (behavior differences unknown).
 ;------------------------------------------------------------------------------
 _PARSE_ReadSignedLongSkipClass3_Alt:
     LINK.W  A5,#-4
@@ -78,7 +78,7 @@ _PARSE_ReadSignedLongSkipClass3_Alt:
     MOVEA.L D0,A3
     PEA     -4(A5)
     MOVE.L  A3,-(A7)
-    JSR     PARSE_ReadSignedLong_NoBranch(PC)
+    JSR     _PARSE_ReadSignedLong_NoBranch(PC)
 
     MOVE.L  -4(A5),D0
 
@@ -90,7 +90,7 @@ _PARSE_ReadSignedLongSkipClass3_Alt:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: MEMLIST_FreeAll   (Free all tracked allocations.)
+; FUNC: _MEMLIST_FreeAll   (Free all tracked allocations.)
 ; ARGS:
 ;   none
 ; RET:
@@ -106,7 +106,7 @@ _PARSE_ReadSignedLongSkipClass3_Alt:
 ; DESC:
 ;   Walks the tracked allocation list and frees each block.
 ;------------------------------------------------------------------------------
-MEMLIST_FreeAll:
+_MEMLIST_FreeAll:
     MOVEM.L A2-A3/A6,-(A7)
     MOVEA.L Global_MemListHead(A4),A3
 

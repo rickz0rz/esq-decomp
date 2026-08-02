@@ -28,7 +28,7 @@ _SCRIPT_CheckPathExists:
     MOVEQ   #0,D6
     MOVE.L  A3,D1
     MOVEQ   #-2,D2
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOLock(A6)
 
     MOVE.L  D0,D7

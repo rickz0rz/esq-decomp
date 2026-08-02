@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _LVOCreateProc
 ; READS:
-;   _Global_STR_CLOSE_TASK, Global_REF_DOS_LIBRARY_2
+;   _Global_STR_CLOSE_TASK, _Global_REF_DOS_LIBRARY_2
 ; WRITES:
 ;   _CTASKS_CloseTaskCompletionFlag, _CTASKS_CloseTaskFileHandle, _Global_REF_LIST_CLOSE_TASK_PROC, _CTASKS_CloseTaskSegListBPTR, _CTASKS_CloseTaskProcPtr
 ; DESC:
@@ -58,7 +58,7 @@ _CTASKS_StartCloseTaskProcess:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  #8192,D4
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOCreateProc(A6)
 
     MOVE.L  D0,_CTASKS_CloseTaskProcPtr

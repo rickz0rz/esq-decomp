@@ -26,7 +26,7 @@ _GCOMMAND_CopyGfxToWorkIfAvailable:
     LEA     _GCOMMAND_PATH_GFX_COLON,A0
     MOVE.L  A0,D1
     MOVEQ   #-2,D2
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOLock(A6)
 
     MOVE.L  D0,D7

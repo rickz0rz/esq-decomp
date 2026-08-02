@@ -24,7 +24,7 @@
 ; CALLS:
 ;   _BITMAP_ProcessIlbmImage, _ESQ_PackBitsDecode, _GROUP_AA_JMPTBL_STRING_CompareN, _GROUP_AA_JMPTBL_GRAPHICS_AllocRaster, _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster, _GROUP_AG_JMPTBL_MATH_DivS32, _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVOForbid, _LVOInitBitMap, _LVOInitRastPort, _LVOPermit, _LVORead, _LVOSeek
 ; READS:
-;   AbsExecBase, _BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, Global_REF_DOS_LIBRARY_2, _Global_REF_GRAPHICS_LIBRARY, _Global_STR_BRUSH_C_10, _Global_STR_BRUSH_C_11, _Global_STR_BRUSH_C_12, _Global_STR_BRUSH_C_13, _Global_STR_BRUSH_C_14, _Global_STR_BRUSH_C_15, _Global_STR_BRUSH_C_16, _BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
+;   AbsExecBase, _BRUSH_PendingAlertCode, _BRUSH_SnapshotHeader, _Global_REF_DOS_LIBRARY_2, _Global_REF_GRAPHICS_LIBRARY, _Global_STR_BRUSH_C_10, _Global_STR_BRUSH_C_11, _Global_STR_BRUSH_C_12, _Global_STR_BRUSH_C_13, _Global_STR_BRUSH_C_14, _Global_STR_BRUSH_C_15, _Global_STR_BRUSH_C_16, _BRUSH_STR_IFF_FORM, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE
 ; WRITES:
 ;   _BRUSH_PendingAlertCode, _BRUSH_SnapshotDepth, _BRUSH_SnapshotWidth
 ; DESC:
@@ -59,7 +59,7 @@ _BRUSH_LoadBrushAsset:
     LEA     -64(A5),A0
     MOVE.L  A0,D2
     MOVEQ   #6,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     SUBQ.L  #6,D0
@@ -75,7 +75,7 @@ _BRUSH_LoadBrushAsset:
     BEQ.S   .loadasset_form_header_ok
 
     MOVE.L  D7,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     BRA.S   .loadasset_after_file_stage
@@ -85,7 +85,7 @@ _BRUSH_LoadBrushAsset:
     MOVE.L  D7,D1
     MOVEQ   #0,D2
     MOVEQ   #-1,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOSeek(A6)
 
     ; Allocate 130k of memory
@@ -119,7 +119,7 @@ _BRUSH_LoadBrushAsset:
 
 .loadasset_after_ilbm_decode:
     MOVE.L  D7,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
 .loadasset_after_file_stage:

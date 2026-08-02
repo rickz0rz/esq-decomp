@@ -24,7 +24,7 @@
 ;   _LVORectFill, _LVOSetBPen, _LVOSetDrMd, _ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines, _ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths,
 ;   _GROUP_AM_JMPTBL_WDISP_SPrintf, _GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode, _GROUP_AM_JMPTBL_GCOMMAND_InitPresetDefaults, _GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch, _GROUP_AM_JMPTBL_GCOMMAND_ResetBannerFadeState
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, AbsExecBase, _Global_STR_GRAPHICS_LIBRARY,
+;   _Global_REF_DOS_LIBRARY_2, AbsExecBase, _Global_STR_GRAPHICS_LIBRARY,
 ;   _Global_STR_DISKFONT_LIBRARY, _Global_STR_DOS_LIBRARY, _Global_STR_INTUITION_LIBRARY,
 ;   _Global_STR_UTILITY_LIBRARY, _Global_STR_BATTCLOCK_RESOURCE,
 ;   _Global_STRUCT_TEXTATTR_TOPAZ_FONT, _Global_STRUCT_TEXTATTR_PREVUEC_FONT,
@@ -116,7 +116,7 @@ _ESQ_MainInitAndRun:
     MOVE.L  A0,D1       ; command string
     MOVEQ   #0,D2       ; input
     MOVE.L  D2,D3       ; output
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
     SUBA.L  A1,A1

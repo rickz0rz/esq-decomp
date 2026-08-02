@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _GROUP_AG_JMPTBL_MEMORY_AllocateMemory, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory, _GROUP_AG_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVORead
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, _Global_REF_LONG_FILE_SCRATCH, _Global_STR_DISKIO_C_3, _Global_STR_DISKIO_C_4, _Global_PTR_WORK_BUFFER, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE, return
+;   _Global_REF_DOS_LIBRARY_2, _Global_REF_LONG_FILE_SCRATCH, _Global_STR_DISKIO_C_3, _Global_STR_DISKIO_C_4, _Global_PTR_WORK_BUFFER, MEMF_CLEAR, MEMF_PUBLIC, MODE_OLDFILE, return
 ; WRITES:
 ;   _Global_REF_LONG_FILE_SCRATCH, _Global_PTR_WORK_BUFFER
 ; DESC:
@@ -51,7 +51,7 @@ _DISKIO_LoadFileToWorkBuffer:
     BGT.S   .lab_03AE
 
     MOVE.L  D7,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     MOVEQ   #-1,D0
@@ -72,7 +72,7 @@ _DISKIO_LoadFileToWorkBuffer:
     BNE.S   .lab_03AF
 
     MOVE.L  D7,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     MOVEQ   #-1,D0
@@ -82,7 +82,7 @@ _DISKIO_LoadFileToWorkBuffer:
     MOVE.L  D7,D1
     MOVE.L  _Global_PTR_WORK_BUFFER,D2
     MOVE.L  _Global_REF_LONG_FILE_SCRATCH,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     MOVE.L  _Global_REF_LONG_FILE_SCRATCH,D1
@@ -98,7 +98,7 @@ _DISKIO_LoadFileToWorkBuffer:
 
     LEA     16(A7),A7
     MOVE.L  D7,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     MOVEQ   #-1,D0

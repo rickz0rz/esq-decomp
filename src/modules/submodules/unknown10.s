@@ -1,8 +1,8 @@
     XDEF    FORMAT_U32ToHexString
     XDEF    _HANDLE_OpenEntryWithFlags
-    XDEF    PARSE_ReadSignedLong
+    XDEF    _PARSE_ReadSignedLong
     XDEF    PARSE_ReadSignedLong_NegateValue
-    XDEF    PARSE_ReadSignedLong_NoBranch
+    XDEF    _PARSE_ReadSignedLong_NoBranch
     XDEF    PARSE_ReadSignedLong_ParseDone
     XDEF    PARSE_ReadSignedLong_ParseLoop
     XDEF    PARSE_ReadSignedLong_ParseLoopEntry
@@ -64,7 +64,7 @@ FORMAT_U32ToHexString:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSE_ReadSignedLong   (Parse signed decimal into output.)
+; FUNC: _PARSE_ReadSignedLong   (Parse signed decimal into output.)
 ; ARGS:
 ;   stack +4: A0 = input string
 ;   stack +8: A0' = output pointer (stores result)
@@ -75,9 +75,9 @@ FORMAT_U32ToHexString:
 ; DESC:
 ;   Parses optional sign and decimal digits, stores the result.
 ; NOTES:
-;   Similar to PARSE_ReadSignedLong_NoBranch; exact differences are unclear.
+;   Similar to _PARSE_ReadSignedLong_NoBranch; exact differences are unclear.
 ;------------------------------------------------------------------------------
-PARSE_ReadSignedLong:
+_PARSE_ReadSignedLong:
     MOVEA.L 4(A7),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D1
@@ -226,7 +226,7 @@ PARSE_ReadSignedLong_StoreResult:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSE_ReadSignedLong_NoBranch   (Parse signed decimal into output.)
+; FUNC: _PARSE_ReadSignedLong_NoBranch   (Parse signed decimal into output.)
 ; ARGS:
 ;   stack +4: A0 = input string
 ;   stack +8: A0' = output pointer (stores result)
@@ -237,9 +237,9 @@ PARSE_ReadSignedLong_StoreResult:
 ; DESC:
 ;   Parses optional sign and decimal digits, stores the result.
 ; NOTES:
-;   Similar to PARSE_ReadSignedLong; exact differences are unclear.
+;   Similar to _PARSE_ReadSignedLong; exact differences are unclear.
 ;------------------------------------------------------------------------------
-PARSE_ReadSignedLong_NoBranch:
+_PARSE_ReadSignedLong_NoBranch:
     MOVEA.L 4(A7),A0
     MOVEA.L A0,A1
     MOVEQ   #0,D1

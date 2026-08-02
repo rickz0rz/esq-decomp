@@ -14,7 +14,7 @@
 ; CALLS:
 ;   _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning, _LVOWrite
 ; READS:
-;   _DISKIO_BufferControl, _DISKIO_BufferState, Global_REF_DOS_LIBRARY_2, Struct_DiskIoBufferControl__BufferBase, Struct_DiskIoBufferControl__ErrorFlag, Struct_DiskIoBufferState__BufferPtr, Struct_DiskIoBufferState__BufferSize, Struct_DiskIoBufferState__Remaining
+;   _DISKIO_BufferControl, _DISKIO_BufferState, _Global_REF_DOS_LIBRARY_2, Struct_DiskIoBufferControl__BufferBase, Struct_DiskIoBufferControl__ErrorFlag, Struct_DiskIoBufferState__BufferPtr, Struct_DiskIoBufferState__BufferSize, Struct_DiskIoBufferState__Remaining
 ; WRITES:
 ;   _DISKIO_BufferControl, _DISKIO_BufferState, Struct_DiskIoBufferControl__ErrorFlag, Struct_DiskIoBufferState__BufferPtr, Struct_DiskIoBufferState__Remaining
 ; DESC:
@@ -74,7 +74,7 @@ _DISKIO_WriteBufferedBytes:
     MOVE.L  D7,D1
     MOVE.L  _DISKIO_BufferControl+Struct_DiskIoBufferControl__BufferBase,D2
     MOVE.L  _DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOWrite(A6)
 
     MOVE.L  D0,D5

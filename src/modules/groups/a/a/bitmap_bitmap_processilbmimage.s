@@ -60,7 +60,7 @@ _BITMAP_ProcessIlbmImage:
     LEA     -4(A5),A0
     MOVE.L  A0,D2
     MOVEQ   #4,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     SUBQ.L  #4,D0
@@ -229,7 +229,7 @@ _BITMAP_ProcessIlbmImage:
     LEA     148(A0),A1
     MOVE.L  D7,D1
     MOVE.L  A1,D2
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     SUBQ.L  #4,D0

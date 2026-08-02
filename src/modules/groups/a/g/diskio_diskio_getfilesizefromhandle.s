@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _LVOSeek
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, OFFSET_BEGINNING, OFFSET_END
+;   _Global_REF_DOS_LIBRARY_2, OFFSET_BEGINNING, OFFSET_END
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -30,7 +30,7 @@ _DISKIO_GetFilesizeFromHandle:
     MOVE.L  D7,D1
     MOVEQ   #0,D2
     MOVEQ   #(OFFSET_END),D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOSeek(A6)
 
     ; Seek to the current (end) of the file

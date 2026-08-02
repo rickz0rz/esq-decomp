@@ -15,7 +15,7 @@
 _DOS_Delay:
     MOVE.L  A6,-(A7)
 
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     MOVE.L  8(A7),D1
     JSR     _LVODelay(A6)
 

@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _PARSEINI_JMPTBL_WDISP_SPrintf, _LVOExecute, TEST_MEMORY_AND_OPEN_TOPAZ_FONT, LAB_1429
 ; READS:
-;   Global_REF_DOS_LIBRARY_2, _Global_HANDLE_TOPAZ_FONT
+;   _Global_REF_DOS_LIBRARY_2, _Global_HANDLE_TOPAZ_FONT
 ; WRITES:
 ;   (font handles via TEST_MEMORY_AND_OPEN_TOPAZ_FONT)
 ; DESC:
@@ -57,7 +57,7 @@ _PARSEINI_HandleFontCommand:
     MOVE.L  A0,D1
     MOVEQ   #0,D2
     MOVE.L  D2,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOExecute(A6)
 
     BRA.W   .return

@@ -12,7 +12,7 @@
 ; CALLS:
 ;   _ESQIFF_JMPTBL_BRUSH_FreeBrushList, _ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle, _ESQIFF_JMPTBL_MEMORY_AllocateMemory, _ESQIFF_JMPTBL_MEMORY_DeallocateMemory, _ESQIFF_JMPTBL_DOS_OpenFileWithMode, _LVOClose, _LVOForbid, _LVOPermit, _LVORead
 ; READS:
-;   AbsExecBase, _Global_PTR_STR_DF0_LOGO_LST, _Global_PTR_STR_GFX_G_ADS, Global_REF_DOS_LIBRARY_2, _Global_REF_LONG_DF0_LOGO_LST_DATA, _Global_REF_LONG_DF0_LOGO_LST_FILESIZE, _Global_REF_LONG_GFX_G_ADS_DATA, _Global_REF_LONG_GFX_G_ADS_FILESIZE, _Global_STR_ESQIFF_C_3, _Global_STR_ESQIFF_C_4, _Global_STR_ESQIFF_C_5, _Global_STR_ESQIFF_C_6, _CTASKS_IffTaskDoneFlag, _ED_DiagGraphModeChar, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _SCRIPT_CtrlInterfaceEnabledFlag, _ESQIFF_ExternalAssetFlags, _DISKIO_Drive0WriteProtectedCode, _DISKIO_DriveWriteProtectStatusCodeDrive1, MEMF_PUBLIC, MODE_OLDFILE
+;   AbsExecBase, _Global_PTR_STR_DF0_LOGO_LST, _Global_PTR_STR_GFX_G_ADS, _Global_REF_DOS_LIBRARY_2, _Global_REF_LONG_DF0_LOGO_LST_DATA, _Global_REF_LONG_DF0_LOGO_LST_FILESIZE, _Global_REF_LONG_GFX_G_ADS_DATA, _Global_REF_LONG_GFX_G_ADS_FILESIZE, _Global_STR_ESQIFF_C_3, _Global_STR_ESQIFF_C_4, _Global_STR_ESQIFF_C_5, _Global_STR_ESQIFF_C_6, _CTASKS_IffTaskDoneFlag, _ED_DiagGraphModeChar, _ESQIFF_GAdsBrushListHead, _ESQIFF_LogoBrushListHead, _SCRIPT_CtrlInterfaceEnabledFlag, _ESQIFF_ExternalAssetFlags, _DISKIO_Drive0WriteProtectedCode, _DISKIO_DriveWriteProtectStatusCodeDrive1, MEMF_PUBLIC, MODE_OLDFILE
 ; WRITES:
 ;   _Global_REF_LONG_DF0_LOGO_LST_DATA, _Global_REF_LONG_DF0_LOGO_LST_FILESIZE, _Global_REF_LONG_GFX_G_ADS_DATA, _Global_REF_LONG_GFX_G_ADS_FILESIZE, _ESQIFF_GAdsBrushListCount, _ESQIFF_LogoBrushListCount, _ESQIFF_ExternalAssetFlags, _ESQIFF_LogoListLineIndex, _ESQIFF_GAdsListLineIndex
 ; DESC:
@@ -110,7 +110,7 @@ _ESQIFF_ReloadExternalAssetCatalogBuffers:
     MOVE.L  D6,D1
     MOVE.L  D0,D2
     MOVE.L  _Global_REF_LONG_GFX_G_ADS_FILESIZE,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     CMP.L   _Global_REF_LONG_GFX_G_ADS_FILESIZE,D0
@@ -122,7 +122,7 @@ _ESQIFF_ReloadExternalAssetCatalogBuffers:
 
 .gfxGAdsFileWithoutData:
     MOVE.L  D6,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
 .update_gads_line_cursor_shadow:
@@ -205,7 +205,7 @@ _ESQIFF_ReloadExternalAssetCatalogBuffers:
     MOVE.L  D6,D1
     MOVE.L  D0,D2
     MOVE.L  _Global_REF_LONG_DF0_LOGO_LST_FILESIZE,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     CMP.L   _Global_REF_LONG_DF0_LOGO_LST_FILESIZE,D0
@@ -217,7 +217,7 @@ _ESQIFF_ReloadExternalAssetCatalogBuffers:
 
 .df0LogoLstFileWithoutData:
     MOVE.L  D6,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
 .return:

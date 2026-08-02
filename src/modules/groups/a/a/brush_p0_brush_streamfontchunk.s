@@ -14,7 +14,7 @@
 ; CALLS:
 ;   _LVORead
 ; READS:
-;   Global_REF_DOS_LIBRARY_2
+;   _Global_REF_DOS_LIBRARY_2
 ; WRITES:
 ;   (none observed)
 ; DESC:
@@ -46,7 +46,7 @@ _BRUSH_StreamFontChunk:
     MOVE.L  D7,D1
     MOVE.L  A3,D2
     MOVE.L  #2048,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     CMPI.L  #2048,D0
@@ -64,7 +64,7 @@ _BRUSH_StreamFontChunk:
     MOVE.L  D7,D1
     MOVE.L  A3,D2
     MOVE.L  D6,D3
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVORead(A6)
 
     CMP.L   D3,D0

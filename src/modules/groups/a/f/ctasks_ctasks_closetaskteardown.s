@@ -13,7 +13,7 @@
 ; CALLS:
 ;   _LVOClose, _LVOForbid, _GROUP_AG_JMPTBL_MEMORY_DeallocateMemory
 ; READS:
-;   _CTASKS_CloseTaskFileHandle (file handle), Global_REF_DOS_LIBRARY_2, _Global_REF_LIST_CLOSE_TASK_PROC
+;   _CTASKS_CloseTaskFileHandle (file handle), _Global_REF_DOS_LIBRARY_2, _Global_REF_LIST_CLOSE_TASK_PROC
 ; WRITES:
 ;   _CTASKS_CloseTaskFileHandle, _CTASKS_CloseTaskCompletionFlag
 ; DESC:
@@ -29,7 +29,7 @@ _CTASKS_CloseTaskTeardown:
     BEQ.S   .skip_close_handle
 
     MOVE.L  _CTASKS_CloseTaskFileHandle,D1
-    MOVEA.L Global_REF_DOS_LIBRARY_2,A6
+    MOVEA.L _Global_REF_DOS_LIBRARY_2,A6
     JSR     _LVOClose(A6)
 
     MOVEQ   #0,D0
