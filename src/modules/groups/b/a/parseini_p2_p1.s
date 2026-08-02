@@ -533,14 +533,14 @@ _PARSEINI_JMPTBL_STR_FindCharPtr:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   HANDLE_OpenWithMode
+;   _HANDLE_OpenWithMode
 ; DESC:
-;   Jump stub to HANDLE_OpenWithMode.
+;   Jump stub to _HANDLE_OpenWithMode.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _PARSEINI_JMPTBL_HANDLE_OpenWithMode:
-    JMP     HANDLE_OpenWithMode
+    JMP     _HANDLE_OpenWithMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: _PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad   (JumpStub)

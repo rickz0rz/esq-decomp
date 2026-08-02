@@ -90,7 +90,7 @@ _FORMAT_RawDoFmtWithScratchBuffer:
 ; CLOBBERS:
 ;   D0/A0 uncertain
 ; CALLS:
-;   HANDLE_OpenWithMode, FORMAT_FormatToBuffer2, FORMAT_FormatToCallbackBuffer, UNKNOWN36_FinalizeRequest
+;   _HANDLE_OpenWithMode, FORMAT_FormatToBuffer2, FORMAT_FormatToCallbackBuffer, UNKNOWN36_FinalizeRequest
 ; READS:
 ;   _Global_STR_A_PLUS, _Global_STR_DF1_DEBUG_LOG, _FORMAT_ScratchBuffer
 ; WRITES:
@@ -105,7 +105,7 @@ _FORMAT_RawDoFmtWithScratchBuffer:
 
     PEA     _Global_STR_A_PLUS
     PEA     _Global_STR_DF1_DEBUG_LOG
-    JSR     HANDLE_OpenWithMode(PC)
+    JSR     _HANDLE_OpenWithMode(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-8(A5)

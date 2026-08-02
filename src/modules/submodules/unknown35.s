@@ -1,7 +1,7 @@
-    XDEF    HANDLE_OpenWithMode
+    XDEF    _HANDLE_OpenWithMode
 
 ;------------------------------------------------------------------------------
-; FUNC: HANDLE_OpenWithMode   (Allocate/locate handle struct and open by mode.)
+; FUNC: _HANDLE_OpenWithMode   (Allocate/locate handle struct and open by mode.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   D0-D1/A0-A3
 ; CALLS:
-;   _ALLOC_AllocFromFreeList (allocator), HANDLE_OpenFromModeString (parse mode/open)
+;   _ALLOC_AllocFromFreeList (allocator), _HANDLE_OpenFromModeString (parse mode/open)
 ; READS:
 ;   Global_PreallocHandleNode0
 ; DESC:
@@ -20,7 +20,7 @@
 ; NOTES:
 ;   Uses a 34-byte node; +0 links next node and +24 is open/in-use flags.
 ;------------------------------------------------------------------------------
-HANDLE_OpenWithMode:
+_HANDLE_OpenWithMode:
     LINK.W  A5,#-8
     MOVEM.L A2-A3,-(A7)
     LEA     Global_PreallocHandleNode0(A4),A3
@@ -65,7 +65,7 @@ HANDLE_OpenWithMode:
     MOVE.L  A3,-(A7)
     MOVE.L  12(A5),-(A7)
     MOVE.L  8(A5),-(A7)
-    JSR     HANDLE_OpenFromModeString(PC)
+    JSR     _HANDLE_OpenFromModeString(PC)
 
 .return:
     MOVEM.L -16(A5),A2-A3

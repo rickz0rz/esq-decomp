@@ -1,8 +1,8 @@
-    XDEF    HANDLE_OpenFromModeString
+    XDEF    _HANDLE_OpenFromModeString
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: HANDLE_OpenFromModeString   (Parse mode string, open/prepare handle.)
+; FUNC: _HANDLE_OpenFromModeString   (Parse mode string, open/prepare handle.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ; RET:
@@ -25,7 +25,7 @@
 ;   OpenFlags(+24) long carries overlaid mode/state bytes at +26/+27.
 ;   Global_DefaultHandleFlags static seed is `$00008000` in current image.
 ;------------------------------------------------------------------------------
-HANDLE_OpenFromModeString:
+_HANDLE_OpenFromModeString:
     LINK.W  A5,#-16
     MOVEM.L D4-D7/A2-A3,-(A7)
 

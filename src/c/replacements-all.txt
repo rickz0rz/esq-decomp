@@ -429,6 +429,7 @@ modules/submodules/unknown9.s                                          c/lib_for
 modules/submodules/unknown39.s                                         c/lib_graphics_blt_bitmap_rastport.c
 modules/submodules/unknown37.s                                         c/lib_handle_close_by_index.c
 modules/submodules/unknown23.s                                         c/lib_handle_get_entry_by_index.c
+modules/submodules/unknown35.s                                         c/lib_handle_open_with_mode.c
 modules/submodules/unknown22_signal_createmsgportwithsignal.s          c/lib_signal_create_msgport_with_signal.c
 modules/submodules/unknown38.s                                         c/lib_signal_poll_and_dispatch.c
 modules/submodules/unknown15.s                                         c/lib_stream_read_line_with_limit.c
