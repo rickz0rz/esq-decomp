@@ -159,3 +159,4 @@ modules/submodules/unknown12.s                                         c/lib_all
 modules/submodules/unknown33.s                                         c/lib_string_find_substring_and_insert_free.c
 modules/submodules/unknown14.s                                         c/lib_handle_open_from_mode_string.c
 modules/submodules/unknown13.s                                         c/lib_format_to_callback_buffer.c
+modules/submodules/unknown28.s                                         c/lib_wdisp_format_with_callback.c

@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   D0, D7, A2-A3
 ; CALLS:
-;   FORMAT_ParseFormatSpec, outputFunc
+;   _FORMAT_ParseFormatSpec, outputFunc
 ; READS:
 ;   [formatStr], [varArgsPtr]
 ; WRITES:
@@ -19,7 +19,7 @@
 ; DESC:
 ;   Core printf-style formatter that emits bytes via a callback.
 ; NOTES:
-;   Handles %% and delegates spec parsing to FORMAT_ParseFormatSpec.
+;   Handles %% and delegates spec parsing to _FORMAT_ParseFormatSpec.
 ;------------------------------------------------------------------------------
 _WDISP_FormatWithCallback:
     LINK.W  A5,#-12
@@ -48,7 +48,7 @@ _WDISP_FormatWithCallback:
     MOVE.L  A3,-(A7)
     PEA     -10(A5)
     MOVE.L  A2,-(A7)
-    BSR.W   FORMAT_ParseFormatSpec
+    BSR.W   _FORMAT_ParseFormatSpec
 
     LEA     12(A7),A7
     MOVE.L  D0,-6(A5)

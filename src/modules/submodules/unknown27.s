@@ -1,6 +1,6 @@
     XDEF    FORMAT_Buffer2WriteChar
     XDEF    FORMAT_FormatToBuffer2
-    XDEF    FORMAT_ParseFormatSpec
+    XDEF    _FORMAT_ParseFormatSpec
 
 ;------------------------------------------------------------------------------
 ; FUNC: FORMAT_Buffer2WriteChar   (Append a byte to format buffer #2.)
@@ -70,7 +70,7 @@ FORMAT_FormatToBuffer2:
 
 ; More core printf logic
 ;------------------------------------------------------------------------------
-; FUNC: FORMAT_ParseFormatSpec   (Core printf format parser.)
+; FUNC: _FORMAT_ParseFormatSpec   (Core printf format parser.)
 ; ARGS:
 ;   stack +92: A3 = format string pointer
 ;   stack +96: A2 = varargs pointer
@@ -85,7 +85,7 @@ FORMAT_FormatToBuffer2:
 ; NOTES:
 ;   Large routine; refine labels as needed when deeper analysis is done.
 ;------------------------------------------------------------------------------
-FORMAT_ParseFormatSpec:
+_FORMAT_ParseFormatSpec:
     LINK.W  A5,#-60
     MOVEM.L D2/D5-D7/A2-A3,-(A7)
     MOVEA.L 92(A7),A3
