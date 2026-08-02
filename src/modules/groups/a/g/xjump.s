@@ -27,7 +27,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SIGNAL_CreateMsgPortWithSignal
+;   _SIGNAL_CreateMsgPortWithSignal
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -38,7 +38,7 @@
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
-    JMP     SIGNAL_CreateMsgPortWithSignal
+    JMP     _SIGNAL_CreateMsgPortWithSignal
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AG_JMPTBL_MATH_DivS32   (Routine at _GROUP_AG_JMPTBL_MATH_DivS32)

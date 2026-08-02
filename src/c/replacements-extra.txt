@@ -140,3 +140,11 @@ modules/groups/a/a/app2_p3_p1.s                                        c/esq_dec
 modules/groups/a/d/xjump.s                                             c/jmptbl_a_d_xjump.c
 modules/groups/a/p/esqshared_p3.s                                      c/jmptbl_a_p_esqshared_p3.c
 modules/groups/a/s/xjump.s                                             c/jmptbl_a_s_xjump.c
+
+# unknown22.s was SPLIT so these three could move. What stays behind is
+# __CXD22/__CXD33, the divide helpers SAS/C emits calls to, which return the
+# quotient in D0 AND the remainder in D1 -- see the PROVEN BLOCKER in AGENTS.md.
+
+modules/submodules/unknown22_dos_closewithsignalcheck.s                c/lib_dos_close_with_signal_check.c
+modules/submodules/unknown22_allocate_allocandinitializeiostdreq.s     c/lib_allocate_alloc_and_init_iostdreq.c
+modules/submodules/unknown22_signal_createmsgportwithsignal.s          c/lib_signal_create_msgport_with_signal.c

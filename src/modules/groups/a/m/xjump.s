@@ -41,16 +41,16 @@
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   SIGNAL_CreateMsgPortWithSignal
+;   _SIGNAL_CreateMsgPortWithSignal
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to SIGNAL_CreateMsgPortWithSignal.
+;   Jump stub to _SIGNAL_CreateMsgPortWithSignal.
 ;------------------------------------------------------------------------------
 _GROUP_AM_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
-    JMP     SIGNAL_CreateMsgPortWithSignal
+    JMP     _SIGNAL_CreateMsgPortWithSignal
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AM_JMPTBL_LADFUNC_ClearBannerRectEntries   (JumpStub)

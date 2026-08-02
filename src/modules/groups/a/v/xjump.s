@@ -13,7 +13,7 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ALLOCATE_AllocAndInitializeIOStdReq
+;   _ALLOCATE_AllocAndInitializeIOStdReq
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -24,7 +24,7 @@
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq:
-    JMP     ALLOCATE_AllocAndInitializeIOStdReq
+    JMP     _ALLOCATE_AllocAndInitializeIOStdReq
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal   (Routine at _GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal)
@@ -35,7 +35,7 @@ _GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   SIGNAL_CreateMsgPortWithSignal
+;   _SIGNAL_CreateMsgPortWithSignal
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -46,7 +46,7 @@ _GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal:
-    JMP     SIGNAL_CreateMsgPortWithSignal
+    JMP     _SIGNAL_CreateMsgPortWithSignal
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths   (Routine at _GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths)
