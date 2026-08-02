@@ -957,6 +957,24 @@ machine is still nominally up.
 > /tmp/.capvenv/bin/python tools/framecolor.py kg <label>
 > ```
 >
+> **`soak_esq.sh` HAS A FALSE-FAIL MODE AND THE FROZEN-RUN LENGTH DOES NOT
+> DISTINGUISH IT.** It reports `DISPLAY FROZEN` on a healthy binary often enough
+> to send you bisecting something that is not broken. Re-run twice before
+> believing a FAIL; two of three passing means the binary is fine.
+>
+> Run length is NOT the tell. One flake showed `longest identical run: 2` and
+> another showed **10** -- every frame identical -- and both passed on re-run.
+> These two numbers are the tell, and they have held on every case measured:
+>
+> | | healthy or flake | real fault |
+> |---|---|---|
+> | `illegal/exception lines` | 1 | 2 or 3 |
+> | `log lines` | 1032-1033 | 1199-1202 |
+>
+> `frames with Amiga content` is the third: 10/10 healthy, 0/10 to 6/10 when the
+> machine died. The `data/flib.s` layout break and the strncpy overrun both moved
+> all three and reproduced every run; both flakes moved none of them.
+
 > **A MEDIAN DIFFERENCE BETWEEN THE PURE AND MAXIMUM-C BUILDS IS EXPECTED, and it
 > is not evidence of anything.** Measured 2026-08-01: the pure far build reads
 > blue 0.045 and yellow 0.017 at the median, and EVERY maximum-C build reads

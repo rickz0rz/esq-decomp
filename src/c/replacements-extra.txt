@@ -137,3 +137,6 @@ modules/groups/a/q/esqshared4_esqshared4_copyplanesfromcontexttosnapshot.s c/esq
 modules/groups/a/a/app2_esq_deccolorstep.s                             c/esq_dec_color_step.c
 modules/groups/a/a/app2_p3.s                                           c/esq_dec_copper_lists_primary.c
 modules/groups/a/a/app2_p3_p1.s                                        c/esq_dec_copper_lists_alt_skip_index4.c
+modules/groups/a/d/xjump.s                                             c/jmptbl_a_d_xjump.c
+modules/groups/a/p/esqshared_p3.s                                      c/jmptbl_a_p_esqshared_p3.c
+modules/groups/a/s/xjump.s                                             c/jmptbl_a_s_xjump.c

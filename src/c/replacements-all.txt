@@ -714,6 +714,9 @@ modules/submodules/unknown7.s                                          c/lib_str
 modules/submodules/unknown25.s                                         c/lib_struct_alloc_with_owner.c
 modules/groups/a/a/app2_esq_storectrlsampleentry.s                     c/esq_store_ctrl_sample_entry.c
 modules/groups/a/q/esqshared4_esqshared4_copyplanesfromcontexttosnapshot.s c/esqshared4_copy_planes_from_context_to_snapshot.c
+modules/groups/a/d/xjump.s                                             c/jmptbl_a_d_xjump.c
+modules/groups/a/p/esqshared_p3.s                                      c/jmptbl_a_p_esqshared_p3.c
+modules/groups/a/s/xjump.s                                             c/jmptbl_a_s_xjump.c
 modules/groups/a/a/app2_p7.s                                           c/app2_p7_merged.c
 modules/groups/a/a/app2_esq_findsubstringcasefold.s                    c/app2_esq_findsubstringcasefold_merged.c
 modules/groups/a/c/cleanup2_p1_p0_p0.s                                 c/cleanup2_p1_p0_p0_merged.c
