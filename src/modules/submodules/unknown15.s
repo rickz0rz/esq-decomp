@@ -1,7 +1,7 @@
-    XDEF    STREAM_ReadLineWithLimit
+    XDEF    _STREAM_ReadLineWithLimit
 
 ;------------------------------------------------------------------------------
-; FUNC: STREAM_ReadLineWithLimit   (Read a line into a buffer, NUL-terminate.)
+; FUNC: _STREAM_ReadLineWithLimit   (Read a line into a buffer, NUL-terminate.)
 ; ARGS:
 ;   stack +28: A3 = destination buffer
 ;   stack +32: D7 = max length (including NUL)
@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   STREAM_BufferedGetc (buffered getc/refill)
+;   _STREAM_BufferedGetc (buffered getc/refill)
 ; READS:
 ;   A2+4 (read ptr), A2+8 (remaining count)
 ; WRITES:
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Treats byte value 10 as line terminator.
 ;------------------------------------------------------------------------------
-STREAM_ReadLineWithLimit:
+_STREAM_ReadLineWithLimit:
     MOVEM.L D4-D7/A2-A3,-(A7)
 
     MOVEA.L 28(A7),A3
@@ -48,7 +48,7 @@ STREAM_ReadLineWithLimit:
 
 .refill_byte:
     MOVE.L  A2,-(A7)
-    JSR     STREAM_BufferedGetc(PC)
+    JSR     _STREAM_BufferedGetc(PC)
 
     ADDQ.W  #4,A7
 

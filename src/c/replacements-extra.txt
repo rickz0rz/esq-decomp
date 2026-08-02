@@ -152,3 +152,4 @@ modules/submodules/memory.s                                            c/lib_mem
 modules/submodules/unknown34.s                                         c/lib_dos_read_by_index.c
 modules/submodules/unknown40_dos_delay.s                               c/lib_dos_delay_and_system.c
 modules/submodules/unknown40_dos_systemtaglist.s                       c/lib_dos_system_taglist.c
+modules/submodules/unknown15.s                                         c/lib_stream_read_line_with_limit.c

@@ -1,4 +1,4 @@
-    XDEF    STREAM_BufferedGetc
+    XDEF    _STREAM_BufferedGetc
     XDEF    STREAM_BufferedPutcOrFlush
     XDEF    STREAM_BufferedWriteString
     XDEF    GRAPHICS_AllocRaster
@@ -259,7 +259,7 @@ STREAM_BufferedWriteString:
 ; CLOBBERS:
 ;   A0/A1/A3/A5/A7/D0/D1/D2/D4/D5/D6/D7
 ; CALLS:
-;   _BUFFER_EnsureAllocated, _DOS_WriteByIndex, _DOS_SeekByIndex, _DOS_ReadByIndex, STREAM_BufferedGetc
+;   _BUFFER_EnsureAllocated, _DOS_WriteByIndex, _DOS_SeekByIndex, _DOS_ReadByIndex, _STREAM_BufferedGetc
 ; READS:
 ;   Struct_PreallocHandleNode__BufferCursor/WriteRemaining/BufferBase/BufferCapacity/OpenFlags/ModeFlags/StateFlags/HandleIndex,
 ;   Global_DosIoErr(A4)
@@ -624,7 +624,7 @@ DOS_MovepWordReadCallback:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STREAM_BufferedGetc   (Buffered read/getc handler)
+; FUNC: _STREAM_BufferedGetc   (Buffered read/getc handler)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -644,7 +644,7 @@ DOS_MovepWordReadCallback:
 ;   `ModeFlags bit7` enables translated read behavior (CR/LF folding path).
 ;   `StateFlags bits6/7` are a paired pre-read flush gate (provisional names).
 ;------------------------------------------------------------------------------
-STREAM_BufferedGetc:
+_STREAM_BufferedGetc:
     MOVEM.L D5-D7/A3,-(A7)
 
     SetOffsetForStack 4
@@ -736,7 +736,7 @@ STREAM_BufferedGetc:
 
 .retry_after_empty:
     MOVE.L  A3,-(A7)
-    BSR.W   STREAM_BufferedGetc
+    BSR.W   _STREAM_BufferedGetc
 
     ADDQ.W  #4,A7
     BRA.W   .return
@@ -825,7 +825,7 @@ STREAM_BufferedGetc:
 
 .recurse_for_next:
     MOVE.L  A3,-(A7)
-    BSR.W   STREAM_BufferedGetc
+    BSR.W   _STREAM_BufferedGetc
 
     ADDQ.W  #4,A7
 

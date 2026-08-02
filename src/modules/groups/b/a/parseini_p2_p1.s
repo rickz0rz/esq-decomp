@@ -857,14 +857,14 @@ _PARSEINI_JMPTBL_WDISP_SPrintf:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STREAM_ReadLineWithLimit
+;   _STREAM_ReadLineWithLimit
 ; DESC:
-;   Jump stub to STREAM_ReadLineWithLimit.
+;   Jump stub to _STREAM_ReadLineWithLimit.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _PARSEINI_JMPTBL_STREAM_ReadLineWithLimit:
-    JMP     STREAM_ReadLineWithLimit
+    JMP     _STREAM_ReadLineWithLimit
 
 ;------------------------------------------------------------------------------
 ; FUNC: _PARSEINI_JMPTBL_STR_FindAnyCharPtr   (JumpStub_STR_FindAnyCharPtr)
