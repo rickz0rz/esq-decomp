@@ -41,7 +41,7 @@ FORMAT_Buffer2WriteChar:
 ; CLOBBERS:
 ;   D0/A0-A3
 ; CALLS:
-;   WDISP_FormatWithCallback, FORMAT_Buffer2WriteChar
+;   _WDISP_FormatWithCallback, FORMAT_Buffer2WriteChar
 ; WRITES:
 ;   Global_FormatBufferPtr2, Global_FormatByteCount2
 ;------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ FORMAT_FormatToBuffer2:
     MOVE.L  16(A5),-(A7)
     MOVE.L  A2,-(A7)
     PEA     FORMAT_Buffer2WriteChar(PC)
-    JSR     WDISP_FormatWithCallback(PC)
+    JSR     _WDISP_FormatWithCallback(PC)
 
     MOVEA.L Global_FormatBufferPtr2(A4),A0
     CLR.B   (A0)

@@ -1,7 +1,7 @@
-    XDEF    WDISP_FormatWithCallback
+    XDEF    _WDISP_FormatWithCallback
 
 ;------------------------------------------------------------------------------
-; FUNC: WDISP_FormatWithCallback   (FormatWithCallbackuncertain)
+; FUNC: _WDISP_FormatWithCallback   (FormatWithCallbackuncertain)
 ; ARGS:
 ;   stack +4: outputFunc (called with D0=byte)
 ;   stack +8: formatStr
@@ -21,7 +21,7 @@
 ; NOTES:
 ;   Handles %% and delegates spec parsing to FORMAT_ParseFormatSpec.
 ;------------------------------------------------------------------------------
-WDISP_FormatWithCallback:
+_WDISP_FormatWithCallback:
     LINK.W  A5,#-12
     MOVEM.L D7/A2-A3,-(A7)
 

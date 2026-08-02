@@ -334,7 +334,7 @@ UNKNOWN10_PrintfPutcToBuffer:
 ; CLOBBERS:
 ;   D0, A0, A2-A3
 ; CALLS:
-;   WDISP_FormatWithCallback (core formatter), UNKNOWN10_PrintfPutcToBuffer
+;   _WDISP_FormatWithCallback (core formatter), UNKNOWN10_PrintfPutcToBuffer
 ; READS:
 ;   (none)
 ; WRITES:
@@ -359,7 +359,7 @@ _WDISP_SPrintf:
     PEA     16(A5)
     MOVE.L  A2,-(A7)
     PEA     UNKNOWN10_PrintfPutcToBuffer(PC)
-    JSR     WDISP_FormatWithCallback(PC)
+    JSR     _WDISP_FormatWithCallback(PC)
 
     MOVEA.L Global_PrintfBufferPtr(A4),A0
     CLR.B   (A0)

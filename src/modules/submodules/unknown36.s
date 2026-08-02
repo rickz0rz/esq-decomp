@@ -24,7 +24,7 @@ Struct_UNKNOWN36_Request__Handler   = Struct_PreallocHandleNode__HandleIndex
 ; CLOBBERS:
 ;   A3/A7/D0/D6/D7
 ; CALLS:
-;   STREAM_BufferedPutcOrFlush, _ALLOC_InsertFreeBlock, _HANDLE_CloseByIndex
+;   _STREAM_BufferedPutcOrFlush, _ALLOC_InsertFreeBlock, _HANDLE_CloseByIndex
 ; READS:
 ;   Struct_UNKNOWN36_Request__Arg16, Struct_UNKNOWN36_Request__Arg20, Struct_UNKNOWN36_Request__FlagByte, Struct_UNKNOWN36_Request__Flags, Struct_UNKNOWN36_Request__Handler
 ; WRITES:
@@ -33,7 +33,7 @@ Struct_UNKNOWN36_Request__Handler   = Struct_PreallocHandleNode__HandleIndex
 ;   If a flag is set, calls a callback with -1, optionally runs a secondary
 ;   cleanup, clears the flags field, then invokes the struct’s handler at 28(A3).
 ; NOTES:
-;   Returns -1 if STREAM_BufferedPutcOrFlush returns -1 or if the handler returns non-zero.
+;   Returns -1 if _STREAM_BufferedPutcOrFlush returns -1 or if the handler returns non-zero.
 ;------------------------------------------------------------------------------
 _UNKNOWN36_FinalizeRequest:
     MOVEM.L D6-D7/A3,-(A7)
@@ -41,10 +41,10 @@ _UNKNOWN36_FinalizeRequest:
     BTST    #1,Struct_UNKNOWN36_Request__FlagByte(A3)
     BEQ.S   .no_abort_flag
 
-    ; If flag set, invoke STREAM_BufferedPutcOrFlush with -1 and capture result.
+    ; If flag set, invoke _STREAM_BufferedPutcOrFlush with -1 and capture result.
     MOVE.L  A3,-(A7)
     PEA     -1.W
-    JSR     STREAM_BufferedPutcOrFlush(PC)
+    JSR     _STREAM_BufferedPutcOrFlush(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D7

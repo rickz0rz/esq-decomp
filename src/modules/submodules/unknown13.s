@@ -1,8 +1,8 @@
-    XDEF    FORMAT_CallbackWriteChar
-    XDEF    FORMAT_FormatToCallbackBuffer
+    XDEF    _FORMAT_CallbackWriteChar
+    XDEF    _FORMAT_FormatToCallbackBuffer
 
 ;------------------------------------------------------------------------------
-; FUNC: FORMAT_CallbackWriteChar   (Callback writer for formatter.)
+; FUNC: _FORMAT_CallbackWriteChar   (Callback writer for formatter.)
 ; ARGS:
 ;   stack +12: D7 = byte to write
 ; RET:
@@ -10,15 +10,15 @@
 ; CLOBBERS:
 ;   D0-D1/D7/A0-A2
 ; CALLS:
-;   STREAM_BufferedPutcOrFlush (overflow handler)
+;   _STREAM_BufferedPutcOrFlush (overflow handler)
 ; READS:
 ;   Global_FormatCallbackBufferPtr, Global_FormatCallbackByteCount
 ; WRITES:
 ;   Global_FormatCallbackByteCount, buffer fields
 ; DESC:
-;   Writes a byte into a callback buffer, or falls back to STREAM_BufferedPutcOrFlush if full.
+;   Writes a byte into a callback buffer, or falls back to _STREAM_BufferedPutcOrFlush if full.
 ;------------------------------------------------------------------------------
-FORMAT_CallbackWriteChar:
+_FORMAT_CallbackWriteChar:
     MOVEM.L D7/A2,-(A7)
     MOVE.L  12(A7),D7
     ADDQ.L  #1,Global_FormatCallbackByteCount(A4)
@@ -41,7 +41,7 @@ FORMAT_CallbackWriteChar:
     MOVE.B  D0,D1
     MOVE.L  A0,-(A7)
     MOVE.L  D1,-(A7)
-    JSR     STREAM_BufferedPutcOrFlush(PC)
+    JSR     _STREAM_BufferedPutcOrFlush(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D1
@@ -53,7 +53,7 @@ FORMAT_CallbackWriteChar:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: FORMAT_FormatToCallbackBuffer   (Format string via callback buffer.)
+; FUNC: _FORMAT_FormatToCallbackBuffer   (Format string via callback buffer.)
 ; ARGS:
 ;   stack +16: A3 = callback buffer struct
 ;   stack +20: A2 = format string
@@ -63,15 +63,15 @@ FORMAT_CallbackWriteChar:
 ; CLOBBERS:
 ;   D0-D1/A0-A3
 ; CALLS:
-;   WDISP_FormatWithCallback, STREAM_BufferedPutcOrFlush
+;   _WDISP_FormatWithCallback, _STREAM_BufferedPutcOrFlush
 ; READS:
 ;   Global_FormatCallbackBufferPtr, Global_FormatCallbackByteCount
 ; WRITES:
 ;   Global_FormatCallbackBufferPtr, Global_FormatCallbackByteCount
 ; DESC:
-;   Formats into a callback buffer, then flushes with STREAM_BufferedPutcOrFlush (-1 terminator).
+;   Formats into a callback buffer, then flushes with _STREAM_BufferedPutcOrFlush (-1 terminator).
 ;------------------------------------------------------------------------------
-FORMAT_FormatToCallbackBuffer:
+_FORMAT_FormatToCallbackBuffer:
     LINK.W  A5,#0
     MOVEM.L A2-A3,-(A7)
     MOVEA.L 16(A7),A3
@@ -80,12 +80,12 @@ FORMAT_FormatToCallbackBuffer:
     MOVE.L  A3,Global_FormatCallbackBufferPtr(A4)
     PEA     16(A5)
     MOVE.L  A2,-(A7)
-    PEA     FORMAT_CallbackWriteChar(PC)
-    JSR     WDISP_FormatWithCallback(PC)
+    PEA     _FORMAT_CallbackWriteChar(PC)
+    JSR     _WDISP_FormatWithCallback(PC)
 
     MOVE.L  A3,(A7)
     PEA     -1.W
-    JSR     STREAM_BufferedPutcOrFlush(PC)
+    JSR     _STREAM_BufferedPutcOrFlush(PC)
 
     MOVE.L  Global_FormatCallbackByteCount(A4),D0
     MOVEM.L -8(A5),A2-A3

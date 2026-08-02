@@ -1,5 +1,5 @@
     XDEF    _STREAM_BufferedGetc
-    XDEF    STREAM_BufferedPutcOrFlush
+    XDEF    _STREAM_BufferedPutcOrFlush
     XDEF    STREAM_BufferedWriteString
     XDEF    GRAPHICS_AllocRaster
     XDEF    GRAPHICS_FreeRaster
@@ -180,7 +180,7 @@ ESQ_MainExitNoOpHook:
 ; CLOBBERS:
 ;   A0/A1/A3/A4/A7/D0/D1/D6/D7
 ; CALLS:
-;   STREAM_BufferedPutcOrFlush
+;   _STREAM_BufferedPutcOrFlush
 ; READS:
 ;   Global_PreallocHandleNode1_WriteRemaining(A4), Global_PreallocHandleNode1_BufferCursor(A4)
 ; WRITES:
@@ -188,7 +188,7 @@ ESQ_MainExitNoOpHook:
 ;   Global_PreallocHandleNode1_BufferCursor(A4),
 ;   Global_PreallocHandleNode1(A4)
 ; DESC:
-;   Writes a NUL-terminated string into a buffer, flushing via STREAM_BufferedPutcOrFlush on overflow.
+;   Writes a NUL-terminated string into a buffer, flushing via _STREAM_BufferedPutcOrFlush on overflow.
 ; NOTES:
 ;   Uses a byte-at-a-time loop until NUL.
 ;------------------------------------------------------------------------------
@@ -232,7 +232,7 @@ STREAM_BufferedWriteString:
     MOVE.B  D0,D1
     PEA     Global_PreallocHandleNode1(A4)
     MOVE.L  D1,-(A7)
-    JSR     STREAM_BufferedPutcOrFlush(PC)
+    JSR     _STREAM_BufferedPutcOrFlush(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D1
@@ -241,7 +241,7 @@ STREAM_BufferedWriteString:
 .done:
     PEA     Global_PreallocHandleNode1(A4)
     PEA     -1.W
-    JSR     STREAM_BufferedPutcOrFlush(PC)
+    JSR     _STREAM_BufferedPutcOrFlush(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D6,D0
@@ -250,7 +250,7 @@ STREAM_BufferedWriteString:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STREAM_BufferedPutcOrFlush   (Buffered putc/flush handler)
+; FUNC: _STREAM_BufferedPutcOrFlush   (Buffered putc/flush handler)
 ; ARGS:
 ;   stack +12: D7 = byte to write, or -1 to flush
 ;   stack +16: A3 = prealloc/dynamic handle node
@@ -274,7 +274,7 @@ STREAM_BufferedWriteString:
 ;   `ModeFlags bit7` toggles translated CR/LF mode; `ModeFlags bit6` gates
 ;   pre-write backward scan around Ctrl-Z.
 ;------------------------------------------------------------------------------
-STREAM_BufferedPutcOrFlush:
+_STREAM_BufferedPutcOrFlush:
     LINK.W  A5,#-20
     MOVEM.L D2/D4-D7/A3,-(A7)
 
@@ -354,7 +354,7 @@ STREAM_BufferedPutcOrFlush:
     MOVE.B  D0,D1
     MOVE.L  A3,-(A7)
     MOVE.L  D1,-(A7)
-    BSR.W   STREAM_BufferedPutcOrFlush
+    BSR.W   _STREAM_BufferedPutcOrFlush
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D1
@@ -434,7 +434,7 @@ STREAM_BufferedPutcOrFlush:
 
     MOVE.L  A3,-(A7)
     MOVE.L  D0,-(A7)
-    BSR.W   STREAM_BufferedPutcOrFlush
+    BSR.W   _STREAM_BufferedPutcOrFlush
 
     ADDQ.W  #8,A7
 
@@ -568,7 +568,7 @@ STREAM_BufferedPutcOrFlush:
     MOVE.B  D0,D1
     MOVE.L  A3,-(A7)
     MOVE.L  D1,-(A7)
-    BSR.W   STREAM_BufferedPutcOrFlush
+    BSR.W   _STREAM_BufferedPutcOrFlush
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D1
@@ -632,7 +632,7 @@ DOS_MovepWordReadCallback:
 ; CLOBBERS:
 ;   A0/A1/A3/A7/D0/D5/D6/D7
 ; CALLS:
-;   STREAM_BufferedPutcOrFlush, _BUFFER_EnsureAllocated, _DOS_ReadByIndex
+;   _STREAM_BufferedPutcOrFlush, _BUFFER_EnsureAllocated, _DOS_ReadByIndex
 ; READS:
 ;   Struct_PreallocHandleNode__BufferCursor/ReadRemaining/BufferBase/BufferCapacity/OpenFlags/ModeFlags/StateFlags/HandleIndex
 ; WRITES:
@@ -673,7 +673,7 @@ _STREAM_BufferedGetc:
 
     MOVE.L  A3,-(A7)
     PEA     -1.W
-    JSR     STREAM_BufferedPutcOrFlush(PC)
+    JSR     _STREAM_BufferedPutcOrFlush(PC)
 
     ADDQ.W  #8,A7
 
