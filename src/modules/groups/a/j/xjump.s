@@ -13,12 +13,12 @@
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STRING_FindSubstring
+;   _STRING_FindSubstring
 ; DESC:
-;   Jump stub to STRING_FindSubstring.
+;   Jump stub to _STRING_FindSubstring.
 ;------------------------------------------------------------------------------
 _GROUP_AJ_JMPTBL_STRING_FindSubstring:
-    JMP     STRING_FindSubstring
+    JMP     _STRING_FindSubstring
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer   (Jump stub)

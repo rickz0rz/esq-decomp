@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   STRING_FindSubstring
+;   _STRING_FindSubstring
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -21,7 +21,7 @@
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _P_TYPE_JMPTBL_STRING_FindSubstring:
-    JMP     STRING_FindSubstring
+    JMP     _STRING_FindSubstring
 
 ;!======
 

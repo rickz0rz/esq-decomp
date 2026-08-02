@@ -728,6 +728,7 @@ modules/groups/a/s/xjump.s                                             c/jmptbl_
 modules/submodules/memory.s                                            c/lib_memory_alloc_dealloc.c
 modules/submodules/unknown34.s                                         c/lib_dos_read_by_index.c
 modules/submodules/unknown21.s                                         c/lib_iostdreq_and_file_create.c
+modules/submodules/unknown33.s                                         c/lib_string_find_substring_and_insert_free.c
 modules/groups/a/a/app2_p7.s                                           c/app2_p7_merged.c
 modules/groups/a/a/app2_esq_findsubstringcasefold.s                    c/app2_esq_findsubstringcasefold_merged.c
 modules/groups/a/c/cleanup2_p1_p0_p0.s                                 c/cleanup2_p1_p0_p0_merged.c

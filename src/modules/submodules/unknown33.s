@@ -1,8 +1,8 @@
     XDEF    _ALLOC_InsertFreeBlock
-    XDEF    STRING_FindSubstring
+    XDEF    _STRING_FindSubstring
 
 ;------------------------------------------------------------------------------
-; FUNC: STRING_FindSubstring   (Find a substring within a string.)
+; FUNC: _STRING_FindSubstring   (Find a substring within a string.)
 ; ARGS:
 ;   stack +4: A0 = haystack string
 ;   stack +8: A1 = needle string
@@ -13,7 +13,7 @@
 ; DESC:
 ;   Naive substring search; returns pointer to first match.
 ;------------------------------------------------------------------------------
-STRING_FindSubstring:
+_STRING_FindSubstring:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
     MOVEM.L A2-A3,-(A7)
