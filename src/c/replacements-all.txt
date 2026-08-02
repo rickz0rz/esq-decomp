@@ -412,6 +412,7 @@ modules/groups/a/w/ladfunc_ladfunc_setpackedpenlownibble.s             c/ladfunc
 modules/groups/a/w/ladfunc_p1_ladfunc_updateentryfromtextandattrbuffers.s c/ladfunc_update_entry_from_text_and_attr_buffers.c
 modules/groups/a/w/ladfunc_p0_ladfunc_updatehighlightcycle.s           c/ladfunc_update_highlight_cycle.c
 modules/groups/a/w/ladfunc_ladfunc_updatehighlightstate.s              c/ladfunc_update_highlight_state.c
+modules/submodules/unknown12.s                                         c/lib_alloc_from_free_list.c
 modules/submodules/unknown22_allocate_allocandinitializeiostdreq.s     c/lib_allocate_alloc_and_init_iostdreq.c
 modules/submodules/unknown31.s                                         c/lib_buffer_ensure_allocated.c
 modules/submodules/unknown16.s                                         c/lib_buffer_flush_all_and_close_with_code.c

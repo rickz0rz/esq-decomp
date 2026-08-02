@@ -9,8 +9,8 @@
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _MATH_DivS32 (div helper), _MATH_Mulu32 (mul helper), MEMLIST_AllocTracked (alloc tracked),
-;   ALLOC_InsertFreeBlock (insert free block)
+;   _MATH_DivS32 (div helper), _MATH_Mulu32 (mul helper), _MEMLIST_AllocTracked (alloc tracked),
+;   _ALLOC_InsertFreeBlock (insert free block)
 ; READS:
 ;   Global_AllocListHead, Global_AllocBlockSize, Global_AllocBytesTotal
 ; WRITES:
@@ -100,7 +100,7 @@ _ALLOC_AllocFromFreeList:
     MOVE.L  D0,D6
     ANDI.W  #$fffc,D6
     MOVE.L  D6,-(A7)
-    JSR     MEMLIST_AllocTracked(PC)
+    JSR     _MEMLIST_AllocTracked(PC)
 
     ADDQ.W  #4,A7
     MOVEA.L D0,A3
@@ -109,7 +109,7 @@ _ALLOC_AllocFromFreeList:
 
     MOVE.L  D6,-(A7)
     MOVE.L  A3,-(A7)
-    JSR     ALLOC_InsertFreeBlock(PC)
+    JSR     _ALLOC_InsertFreeBlock(PC)
 
     MOVE.L  D7,(A7)
     BSR.W   _ALLOC_AllocFromFreeList

@@ -24,7 +24,7 @@ Struct_UNKNOWN36_Request__Handler   = Struct_PreallocHandleNode__HandleIndex
 ; CLOBBERS:
 ;   A3/A7/D0/D6/D7
 ; CALLS:
-;   STREAM_BufferedPutcOrFlush, ALLOC_InsertFreeBlock, _HANDLE_CloseByIndex
+;   STREAM_BufferedPutcOrFlush, _ALLOC_InsertFreeBlock, _HANDLE_CloseByIndex
 ; READS:
 ;   Struct_UNKNOWN36_Request__Arg16, Struct_UNKNOWN36_Request__Arg20, Struct_UNKNOWN36_Request__FlagByte, Struct_UNKNOWN36_Request__Flags, Struct_UNKNOWN36_Request__Handler
 ; WRITES:
@@ -63,7 +63,7 @@ UNKNOWN36_FinalizeRequest:
 
     MOVE.L  Struct_UNKNOWN36_Request__Arg20(A3),-(A7)
     MOVE.L  Struct_UNKNOWN36_Request__Arg16(A3),-(A7)
-    JSR     ALLOC_InsertFreeBlock(PC)
+    JSR     _ALLOC_InsertFreeBlock(PC)
 
     ADDQ.W  #8,A7
 

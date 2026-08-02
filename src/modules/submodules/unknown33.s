@@ -1,4 +1,4 @@
-    XDEF    ALLOC_InsertFreeBlock
+    XDEF    _ALLOC_InsertFreeBlock
     XDEF    STRING_FindSubstring
 
 ;------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ STRING_FindSubstring:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: ALLOC_InsertFreeBlock   (Insert a block into the allocation free list.)
+; FUNC: _ALLOC_InsertFreeBlock   (Insert a block into the allocation free list.)
 ; ARGS:
 ;   stack +8: A2 = block pointer
 ;   stack +52: D7 = size (bytes)
@@ -72,7 +72,7 @@ STRING_FindSubstring:
 ; NOTES:
 ;   Size is aligned to 4 bytes and clamped to a minimum of 8 bytes.
 ;------------------------------------------------------------------------------
-ALLOC_InsertFreeBlock:
+_ALLOC_InsertFreeBlock:
     LINK.W  A5,#-24
     MOVEM.L D7/A2-A3/A6,-(A7)
     MOVE.L  52(A7),D7

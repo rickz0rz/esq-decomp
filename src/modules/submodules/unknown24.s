@@ -1,4 +1,4 @@
-    XDEF    MEMLIST_AllocTracked
+    XDEF    _MEMLIST_AllocTracked
     XDEF    MEMLIST_FreeAll
     XDEF    PARSE_ReadSignedLongSkipClass3
     XDEF    _PARSE_ReadSignedLongSkipClass3_Alt
@@ -133,7 +133,7 @@ MEMLIST_FreeAll:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: MEMLIST_AllocTracked   (Allocate and track a block in the mem list.)
+; FUNC: _MEMLIST_AllocTracked   (Allocate and track a block in the mem list.)
 ; ARGS:
 ;   stack +20: D7 = requested size (bytes)
 ; RET:
@@ -149,7 +149,7 @@ MEMLIST_FreeAll:
 ; DESC:
 ;   Allocates a block (size+12), links it into the list, returns data ptr.
 ;------------------------------------------------------------------------------
-MEMLIST_AllocTracked:
+_MEMLIST_AllocTracked:
     MOVEM.L D7/A2-A3/A6,-(A7)
     MOVE.L  20(A7),D7
 
