@@ -536,6 +536,58 @@ Two cautions before assuming every one resolves:
   `Global_FormatCallbackByteCount+Type_Long_Size`. The arithmetic has to be
   evaluated before the lookup; a regex for `= <number>` sees only 14 of the 59.
 
+## PROVEN BLOCKER: `__CXD22`/`__CXD33` return TWO values, in D0 and D1
+
+`modules/submodules/unknown22.s` defines the helpers SAS/C itself emits calls to
+for 32-bit multiply and divide. They cannot be written in C, and this is not a
+matter of effort or of finding the right idiom.
+
+Compile `unsigned long r(unsigned long a, unsigned long b) { return a % b; }`
+and disassemble it:
+
+```
+  move.l   d7, d0
+  move.l   d6, d1
+  jsr      __CXD22
+  move.l   d1, d0        <-- the REMAINDER, read out of D1
+  rts
+```
+
+So the contract is: dividend in D0, divisor in D1, **quotient returned in D0 and
+remainder in D1**. A C function returns one value, in D0. There is no `__asm`
+form for a second return register -- `register __d1` names a PARAMETER, not a
+result -- so no C definition of `__CXD22` can satisfy its own compiler.
+
+It is also self-referential: any C body using `/` or `%` on a long compiles into
+a call to the very function being defined.
+
+**The escape route is worse than the disease.** Every `/` and `%` on a long
+anywhere in `src/c` would have to become a hand-written shift-subtract loop, in
+about forty files, to stop the compiler emitting the helper at all. That trades
+one small assembly module for a large amount of slower and less readable C, and
+it would still leave `__CXM33` reachable through `*`.
+
+So `unknown22.s` stays. Split the module if the rest of it is wanted: it also
+holds `_DOS_CloseWithSignalCheck`, `SIGNAL_CreateMsgPortWithSignal` and
+`ALLOCATE_AllocAndInitializeIOStdReq`, none of which has this problem.
+
+`__CXM33`, the multiply, returns only D0 and IS expressible -- but only if its
+body avoids `*` on longs and builds the product from 16-bit partial products, or
+it calls itself.
+
+### The other proven blockers, for the same reason
+
+These are not "not done yet". Each has a property C cannot express:
+
+| function | why |
+|---|---|
+| `__CXD22`, `__CXD33` | return a second value in D1 |
+| `ESQ_ReturnWithStackCode`, `ESQ_ShutdownAndReturn` | restore A7 from a global and return on the restored stack |
+| `ESQ_StartupEntry` | the OS enters it with the command line in A0/D0, and it establishes A4 |
+| the `includeCustomAriAssembly` block in `data/wdisp_p1_p1.s` | a build variant; C carries no conditional assembly |
+
+Everything else that remains is a matter of work rather than of expressibility.
+
 ## Library code is not application code
 
 `src/modules/submodules/unknown*.s` is largely SAS/C runtime library code, not
