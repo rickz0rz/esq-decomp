@@ -736,6 +736,7 @@ modules/submodules/unknown21.s                                         c/lib_ios
 modules/submodules/unknown33.s                                         c/lib_string_find_substring_and_insert_free.c
 modules/submodules/unknown13.s                                         c/lib_format_to_callback_buffer.c
 modules/submodules/unknown24.s                                         c/lib_memlist_and_parse_skip.c
+modules/submodules/unknown10.s                                         c/lib_hex_parse_sprintf.c
 modules/groups/a/a/app2_p7.s                                           c/app2_p7_merged.c
 modules/groups/a/a/app2_esq_findsubstringcasefold.s                    c/app2_esq_findsubstringcasefold_merged.c
 modules/groups/a/c/cleanup2_p1_p0_p0.s                                 c/cleanup2_p1_p0_p0_merged.c

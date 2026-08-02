@@ -1093,6 +1093,8 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/submodules/unknown8.s"
     include "modules/submodules/unknown9.s"
     include "modules/submodules/unknown10.s"
+    include "modules/submodules/unknown10_handle_openentrywithflags.s"
+    include "modules/submodules/unknown10_p1.s"
     include "modules/submodules/unknown11.s"
     include "modules/submodules/unknown12.s"
     include "modules/submodules/unknown13.s"

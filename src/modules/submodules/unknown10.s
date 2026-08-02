@@ -1,25 +1,25 @@
-    XDEF    FORMAT_U32ToHexString
-    XDEF    _HANDLE_OpenEntryWithFlags
+    XDEF    _FORMAT_U32ToHexString
     XDEF    _PARSE_ReadSignedLong
-    XDEF    PARSE_ReadSignedLong_NegateValue
+    XDEF    _PARSE_ReadSignedLong_NegateValue
     XDEF    _PARSE_ReadSignedLong_NoBranch
-    XDEF    PARSE_ReadSignedLong_ParseDone
-    XDEF    PARSE_ReadSignedLong_ParseLoop
-    XDEF    PARSE_ReadSignedLong_ParseLoopEntry
-    XDEF    PARSE_ReadSignedLong_StoreResult
-    XDEF    UNKNOWN10_PrintfPutcToBuffer
+    XDEF    _PARSE_ReadSignedLong_ParseDone
+    XDEF    _PARSE_ReadSignedLong_ParseLoop
+    XDEF    _PARSE_ReadSignedLong_ParseLoopEntry
+    XDEF    _PARSE_ReadSignedLong_StoreResult
+    XDEF    _UNKNOWN10_PrintfPutcToBuffer
     XDEF    _WDISP_SPrintf
+
 
 ;------------------------------------------------------------------------------
 ; SYM: kHexDigitTable   (Hex digit lookup bytesuncertain)
 ; TYPE: array<u8>
-; PURPOSE: Used by FORMAT_U32ToHexString to map nibbles to ASCII.
+; PURPOSE: Used by _FORMAT_U32ToHexString to map nibbles to ASCII.
 ;------------------------------------------------------------------------------
 kHexDigitTable:
     DC.B    "0123456789abcdef"
 
 ;------------------------------------------------------------------------------
-; FUNC: FORMAT_U32ToHexString   (Format an unsigned value as hex ASCII.)
+; FUNC: _FORMAT_U32ToHexString   (Format an unsigned value as hex ASCII.)
 ; ARGS:
 ;   stack +4: A0 = destination buffer
 ;   stack +8: D0 = value
@@ -36,7 +36,7 @@ kHexDigitTable:
 ;   to A1's dest and A1 is incremented. The number is then left shifted by 4 bits, and
 ;   the digit conversion runs again. This happens in a loop while D0 doesn't equal zero.
 ;------------------------------------------------------------------------------
-FORMAT_U32ToHexString:
+_FORMAT_U32ToHexString:
     MOVE.L  8(A7),D0
     MOVEA.L 4(A7),A0
     LEA     4(A7),A1
@@ -87,13 +87,13 @@ _PARSE_ReadSignedLong:
     BEQ.S   .lab_PARSE_ReadSignedLong_SkipSign
 
     CMPI.B  #'-',(A0)
-    BNE.S   PARSE_ReadSignedLong_ParseLoop
+    BNE.S   _PARSE_ReadSignedLong_ParseLoop
 
 .lab_PARSE_ReadSignedLong_SkipSign:
     ADDQ.W  #1,A0
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSE_ReadSignedLong_ParseLoop   (Routine at PARSE_ReadSignedLong_ParseLoop)
+; FUNC: _PARSE_ReadSignedLong_ParseLoop   (Routine at _PARSE_ReadSignedLong_ParseLoop)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -111,16 +111,16 @@ _PARSE_ReadSignedLong:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-PARSE_ReadSignedLong_ParseLoop:
+_PARSE_ReadSignedLong_ParseLoop:
     MOVE.B  (A0)+,D0
 
-    ; Jump to PARSE_ReadSignedLong_ParseDone if value is below 0
+    ; Jump to _PARSE_ReadSignedLong_ParseDone if value is below 0
     SUBI.B  #'0',D0
-    BLT.S   PARSE_ReadSignedLong_ParseDone
+    BLT.S   _PARSE_ReadSignedLong_ParseDone
 
-    ; Jump to PARSE_ReadSignedLong_ParseDone if value is above 9
+    ; Jump to _PARSE_ReadSignedLong_ParseDone if value is above 9
     CMPI.B  #('9'-'0'),D0
-    BGT.S   PARSE_ReadSignedLong_ParseDone
+    BGT.S   _PARSE_ReadSignedLong_ParseDone
 
     MOVE.L  D1,D2
     ASL.L   #2,D1
@@ -129,7 +129,7 @@ PARSE_ReadSignedLong_ParseLoop:
     ADD.L   D0,D1
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSE_ReadSignedLong_ParseLoopEntry   (Routine at PARSE_ReadSignedLong_ParseLoopEntry)
+; FUNC: _PARSE_ReadSignedLong_ParseLoopEntry   (Routine at _PARSE_ReadSignedLong_ParseLoopEntry)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -147,11 +147,11 @@ PARSE_ReadSignedLong_ParseLoop:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-PARSE_ReadSignedLong_ParseLoopEntry:
-    BRA.S   PARSE_ReadSignedLong_ParseLoop
+_PARSE_ReadSignedLong_ParseLoopEntry:
+    BRA.S   _PARSE_ReadSignedLong_ParseLoop
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSE_ReadSignedLong_ParseDone   (Routine at PARSE_ReadSignedLong_ParseDone)
+; FUNC: _PARSE_ReadSignedLong_ParseDone   (Routine at _PARSE_ReadSignedLong_ParseDone)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -169,12 +169,12 @@ PARSE_ReadSignedLong_ParseLoopEntry:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-PARSE_ReadSignedLong_ParseDone:
+_PARSE_ReadSignedLong_ParseDone:
     CMPI.B  #'-',(A1)
-    BNE.S   PARSE_ReadSignedLong_StoreResult
+    BNE.S   _PARSE_ReadSignedLong_StoreResult
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSE_ReadSignedLong_NegateValue   (Routine at PARSE_ReadSignedLong_NegateValue)
+; FUNC: _PARSE_ReadSignedLong_NegateValue   (Routine at _PARSE_ReadSignedLong_NegateValue)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -192,11 +192,11 @@ PARSE_ReadSignedLong_ParseDone:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-PARSE_ReadSignedLong_NegateValue:
+_PARSE_ReadSignedLong_NegateValue:
     NEG.L   D1
 
 ;------------------------------------------------------------------------------
-; FUNC: PARSE_ReadSignedLong_StoreResult   (Routine at PARSE_ReadSignedLong_StoreResult)
+; FUNC: _PARSE_ReadSignedLong_StoreResult   (Routine at _PARSE_ReadSignedLong_StoreResult)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -214,7 +214,7 @@ PARSE_ReadSignedLong_NegateValue:
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-PARSE_ReadSignedLong_StoreResult:
+_PARSE_ReadSignedLong_StoreResult:
     MOVE.L  (A7)+,D2
     MOVE.L  A0,D0
     SUBQ.L  #1,D0
@@ -290,7 +290,7 @@ _PARSE_ReadSignedLong_NoBranch:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN10_PrintfPutcToBuffer   (PrintfPutcToBuffer)
+; FUNC: _UNKNOWN10_PrintfPutcToBuffer   (PrintfPutcToBuffer)
 ; ARGS:
 ;   D0.b: character to append
 ; RET:
@@ -308,7 +308,7 @@ _PARSE_ReadSignedLong_NoBranch:
 ; NOTES:
 ;   Uses A4-relative globals for the buffer pointer and byte count.
 ;------------------------------------------------------------------------------
-UNKNOWN10_PrintfPutcToBuffer:
+_UNKNOWN10_PrintfPutcToBuffer:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
 
@@ -334,7 +334,7 @@ UNKNOWN10_PrintfPutcToBuffer:
 ; CLOBBERS:
 ;   D0, A0, A2-A3
 ; CALLS:
-;   _WDISP_FormatWithCallback (core formatter), UNKNOWN10_PrintfPutcToBuffer
+;   _WDISP_FormatWithCallback (core formatter), _UNKNOWN10_PrintfPutcToBuffer
 ; READS:
 ;   (none)
 ; WRITES:
@@ -358,7 +358,7 @@ _WDISP_SPrintf:
     MOVE.L  A3,Global_PrintfBufferPtr(A4)
     PEA     16(A5)
     MOVE.L  A2,-(A7)
-    PEA     UNKNOWN10_PrintfPutcToBuffer(PC)
+    PEA     _UNKNOWN10_PrintfPutcToBuffer(PC)
     JSR     _WDISP_FormatWithCallback(PC)
 
     MOVEA.L Global_PrintfBufferPtr(A4),A0
@@ -370,218 +370,3 @@ _WDISP_SPrintf:
     RTS
 
 ;!======
-
-;------------------------------------------------------------------------------
-; FUNC: _HANDLE_OpenEntryWithFlags   (Allocate/open entry in handle table.)
-; ARGS:
-;   stack +10: arg_1 (via 14(A5))
-;   stack +12: arg_2 (via 16(A5))
-;   stack +14: arg_3 (via 18(A5))
-;   stack +15: arg_4 (via 19(A5))
-; RET:
-;   D0: slot/index on success, -1 on failure
-; CLOBBERS:
-;   A0/A2/A3/A4/A5/A7/D0/D1/D4/D5/D6/D7
-; CALLS:
-;   _DOS_OpenWithErrorState, _DOS_OpenNewFileIfMissing, _DOS_DeleteAndRecreateFile, _DOS_CloseWithSignalCheck
-; READS:
-;   Global_HandleTableCount(A4), Global_HandleTableBase(A4) (table), Global_HandleTableFlags(A4) (flags), Global_AppErrorCode(A4)
-; WRITES:
-;   Global_AppErrorCode(A4), Global_DosIoErr(A4), (A2), 4(A2)
-; DESC:
-;   Finds a free entry in the handle table, validates mode bits, and performs
-;   setup/open work via helper calls; stores entry data on success.
-; NOTES:
-;   Uses SEQ/NEG/EXT booleanization in callers; sets error code in Global_AppErrorCode(A4).
-;------------------------------------------------------------------------------
-_HANDLE_OpenEntryWithFlags:
-    LINK.W  A5,#-26
-    MOVEM.L D4-D7/A2-A3,-(A7)
-    MOVEA.L 58(A7),A3
-    MOVE.L  62(A7),D7
-
-    CLR.B   -1(A5)
-    CLR.L   Global_DosIoErr(A4)
-    MOVE.L  Global_AppErrorCode(A4),-14(A5)
-    MOVEQ   #3,D5
-
-.find_free_slot:
-    CMP.L   Global_HandleTableCount(A4),D5
-    BGE.S   .have_slot_index
-
-    MOVE.L  D5,D0
-    ASL.L   #3,D0
-    LEA     Global_HandleTableBase(A4),A0
-    TST.L   Struct_HandleEntry__Flags(A0,D0.L)
-    BEQ.S   .have_slot_index
-
-    ADDQ.L  #1,D5
-    BRA.S   .find_free_slot
-
-.have_slot_index:
-    MOVE.L  Global_HandleTableCount(A4),D0
-    CMP.L   D5,D0
-    BNE.S   .init_slot
-
-    ; Set 24 in the AppErrorCode and return -1
-    MOVEQ   #24,D0
-    MOVE.L  D0,Global_AppErrorCode(A4)
-    MOVEQ   #-1,D0
-    BRA.W   .return
-
-.init_slot:
-    MOVE.L  D5,D0
-    ASL.L   #3,D0
-    LEA     Global_HandleTableBase(A4),A0
-    ADDA.L  D0,A0
-    MOVEA.L A0,A2
-    TST.L   16(A5)
-    BEQ.S   .set_errcode_default
-
-    BTST    #2,19(A5)
-    BEQ.S   .set_errcode_alt
-
-.set_errcode_default:
-    MOVE.L  #$3ec,-18(A5)
-    BRA.S   .normalize_flags
-
-.set_errcode_alt:
-    MOVE.L  #$3ee,-18(A5)
-
-.normalize_flags:
-    MOVE.L  #$8000,D0
-    AND.L   Global_HandleTableFlags(A4),D0
-    EOR.L   D0,D7
-    BTST    #3,D7
-    BEQ.S   .normalize_access_bits
-
-    MOVE.L  D7,D0
-    ANDI.W  #$fffc,D0
-    MOVE.L  D0,D7
-    ORI.W   #2,D7
-
-.normalize_access_bits:
-    MOVE.L  D7,D0
-    MOVEQ   #3,D1
-    AND.L   D1,D0
-    CMPI.L  #$2,D0
-    BEQ.S   .access_ok
-
-    CMPI.L  #$1,D0
-    BEQ.S   .access_ok
-
-    TST.L   D0
-    BNE.S   .access_invalid
-
-.access_ok:
-    MOVE.L  D7,D6
-    ADDQ.L  #1,D6
-    BRA.S   .open_by_mode
-
-.access_invalid:
-    MOVEQ   #22,D0
-    MOVE.L  D0,Global_AppErrorCode(A4)
-    MOVEQ   #-1,D0
-    BRA.W   .return
-
-.open_by_mode:
-    MOVE.L  D7,D0
-    ANDI.L  #$300,D0
-    BEQ.W   .simple_open
-
-    BTST    #10,D7
-    BEQ.S   .open_mode_bit10
-
-    MOVE.B  #$1,-1(A5)
-    MOVE.L  -18(A5),-(A7)
-    MOVE.L  A3,-(A7)
-    JSR     _DOS_OpenNewFileIfMissing(PC)
-
-    ADDQ.W  #8,A7
-    MOVE.L  D0,D4
-    BRA.S   .post_open_adjust
-
-.open_mode_bit10:
-    BTST    #9,D7
-    BNE.S   .open_mode_bit9
-
-    PEA     1005.W
-    MOVE.L  A3,-(A7)
-    JSR     _DOS_OpenWithErrorState(PC)
-
-    ADDQ.W  #8,A7
-    MOVE.L  D0,D4
-    TST.L   D4
-    BPL.S   .open_mode_bit9
-
-    BSET    #9,D7
-
-.open_mode_bit9:
-    BTST    #9,D7
-    BEQ.S   .post_open_adjust
-
-    MOVE.B  #$1,-1(A5)
-    MOVE.L  -14(A5),Global_AppErrorCode(A4)
-    MOVE.L  -18(A5),-(A7)
-    MOVE.L  A3,-(A7)
-    JSR     _DOS_DeleteAndRecreateFile(PC)
-
-    ADDQ.W  #8,A7
-    MOVE.L  D0,D4
-
-.post_open_adjust:
-    TST.B   -1(A5)
-    BEQ.S   .check_ioerr
-
-    MOVE.L  D7,D0
-    MOVEQ   #120,D1
-    ADD.L   D1,D1
-    AND.L   D1,D0
-    TST.L   D0
-    BEQ.S   .check_ioerr
-
-    TST.L   D4
-    BMI.S   .check_ioerr
-
-    MOVE.L  D4,-(A7)
-    JSR     _DOS_CloseWithSignalCheck(PC)
-
-    PEA     1005.W
-    MOVE.L  A3,-(A7)
-    JSR     _DOS_OpenWithErrorState(PC)
-
-    LEA     12(A7),A7
-    MOVE.L  D0,D4
-    BRA.S   .check_ioerr
-
-.simple_open:
-    PEA     1005.W
-    MOVE.L  A3,-(A7)
-    JSR     _DOS_OpenWithErrorState(PC)
-
-    ADDQ.W  #8,A7
-    MOVE.L  D0,D4
-
-.check_ioerr:
-    TST.L   Global_DosIoErr(A4)
-    BEQ.S   .store_entry
-
-    MOVEQ   #-1,D0
-    BRA.S   .return
-
-.store_entry:
-    MOVE.L  D6,(A2)
-    MOVE.L  D4,4(A2)
-    MOVE.L  D5,D0
-
-.return:
-    MOVEM.L (A7)+,D4-D7/A2-A3
-    UNLK    A5
-    RTS
-
-;!======
-
-    ; Alignment
-    ORI.B   #0,D0
-    DC.W    $0000
-    MOVEQ   #97,D0

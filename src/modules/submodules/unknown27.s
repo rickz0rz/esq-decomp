@@ -79,7 +79,7 @@ FORMAT_FormatToBuffer2:
 ; CLOBBERS:
 ;   D0-D7/A0-A3
 ; CALLS:
-;   _PARSE_ReadSignedLong_NoBranch, FORMAT_U32ToHexString, _FORMAT_U32ToDecimalString, _FORMAT_U32ToOctalString, etc.
+;   _PARSE_ReadSignedLong_NoBranch, _FORMAT_U32ToHexString, _FORMAT_U32ToDecimalString, _FORMAT_U32ToOctalString, etc.
 ; DESC:
 ;   Parses flags/width/precision/length and emits formatted output via callback.
 ; NOTES:
@@ -446,7 +446,7 @@ _FORMAT_ParseFormatSpec:
 .hex_alt_prefix:
     MOVE.L  D0,-(A7)
     MOVE.L  -52(A5),-(A7)
-    JSR     FORMAT_U32ToHexString(PC)
+    JSR     _FORMAT_U32ToHexString(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,-56(A5)

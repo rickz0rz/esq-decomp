@@ -164,3 +164,4 @@ modules/submodules/unknown24.s                                         c/lib_mem
 modules/submodules/unknown41.s                                         c/lib_clock_convert_amiga_seconds.c
 modules/submodules/unknown40_battclock_getsecondsfrombatterybackedclock.s c/lib_battclock.c
 modules/submodules/unknown40_battclock_writesecondstobatterybackedclock.s c/lib_battclock_write.c
+modules/submodules/unknown10.s                                         c/lib_hex_parse_sprintf.c
