@@ -1,10 +1,10 @@
-    XDEF    DOS_DeleteAndRecreateFile
-    XDEF    DOS_OpenNewFileIfMissing
-    XDEF    IOSTDREQ_CleanupSignalAndMsgport
-    XDEF    IOSTDREQ_Free
+    XDEF    _DOS_DeleteAndRecreateFile
+    XDEF    _DOS_OpenNewFileIfMissing
+    XDEF    _IOSTDREQ_CleanupSignalAndMsgport
+    XDEF    _IOSTDREQ_Free
 
 ;------------------------------------------------------------------------------
-; FUNC: IOSTDREQ_Free   (Free IOStdReq-like struct.)
+; FUNC: _IOSTDREQ_Free   (Free IOStdReq-like struct.)
 ; ARGS:
 ;   stack +12: A3 = struct pointer
 ; RET:
@@ -18,7 +18,7 @@
 ; NOTES:
 ;   Assumes 48-byte size; likely IOStdReq.
 ;------------------------------------------------------------------------------
-IOSTDREQ_Free:
+_IOSTDREQ_Free:
     MOVEM.L A3/A6,-(A7)
 
     MOVEA.L 12(A7),A3
@@ -38,7 +38,7 @@ IOSTDREQ_Free:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: IOSTDREQ_CleanupSignalAndMsgport   (Remove MsgPort and free signal.)
+; FUNC: _IOSTDREQ_CleanupSignalAndMsgport   (Remove MsgPort and free signal.)
 ; ARGS:
 ;   stack +12: A3 = MsgPort pointer
 ; RET:
@@ -50,7 +50,7 @@ IOSTDREQ_Free:
 ; DESC:
 ;   Removes the port if registered, frees its signal, and releases memory.
 ;------------------------------------------------------------------------------
-IOSTDREQ_CleanupSignalAndMsgport:
+_IOSTDREQ_CleanupSignalAndMsgport:
     MOVEM.L A3/A6,-(A7)
 
     MOVEA.L 12(A7),A3
@@ -80,7 +80,7 @@ IOSTDREQ_CleanupSignalAndMsgport:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DOS_OpenNewFileIfMissing   (Open new file if it doesn't already exist.)
+; FUNC: _DOS_OpenNewFileIfMissing   (Open new file if it doesn't already exist.)
 ; ARGS:
 ;   stack +24: A3 = filename
 ; RET:
@@ -96,7 +96,7 @@ IOSTDREQ_CleanupSignalAndMsgport:
 ; DESC:
 ;   If file exists (lock succeeds), returns -1. Otherwise opens MODE_NEWFILE.
 ;------------------------------------------------------------------------------
-DOS_OpenNewFileIfMissing:
+_DOS_OpenNewFileIfMissing:
     LINK.W  A5,#-4
     MOVEM.L D2/D7/A3,-(A7)
     MOVEA.L 24(A7),A3
@@ -150,7 +150,7 @@ DOS_OpenNewFileIfMissing:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: DOS_DeleteAndRecreateFile   (Delete existing file, then open new.)
+; FUNC: _DOS_DeleteAndRecreateFile   (Delete existing file, then open new.)
 ; ARGS:
 ;   stack +24: A3 = filename
 ; RET:
@@ -166,7 +166,7 @@ DOS_OpenNewFileIfMissing:
 ; DESC:
 ;   Deletes the file if it exists, then opens MODE_NEWFILE.
 ;------------------------------------------------------------------------------
-DOS_DeleteAndRecreateFile:
+_DOS_DeleteAndRecreateFile:
     LINK.W  A5,#-4
     MOVEM.L D2/D7/A3,-(A7)
     MOVEA.L 24(A7),A3

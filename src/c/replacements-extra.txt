@@ -154,3 +154,4 @@ modules/submodules/unknown40_dos_delay.s                               c/lib_dos
 modules/submodules/unknown40_dos_systemtaglist.s                       c/lib_dos_system_taglist.c
 modules/submodules/unknown15.s                                         c/lib_stream_read_line_with_limit.c
 modules/submodules/unknown35.s                                         c/lib_handle_open_with_mode.c
+modules/submodules/unknown21.s                                         c/lib_iostdreq_and_file_create.c

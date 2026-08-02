@@ -137,7 +137,7 @@ _GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   IOSTDREQ_CleanupSignalAndMsgport
+;   _IOSTDREQ_CleanupSignalAndMsgport
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -148,7 +148,7 @@ _GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport:
-    JMP     IOSTDREQ_CleanupSignalAndMsgport
+    JMP     _IOSTDREQ_CleanupSignalAndMsgport
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning   (Routine at _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning)

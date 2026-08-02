@@ -194,7 +194,7 @@ _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   IOSTDREQ_Free
+;   _IOSTDREQ_Free
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -205,7 +205,7 @@ _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AB_JMPTBL_IOSTDREQ_Free:
-    JMP     IOSTDREQ_Free
+    JMP     _IOSTDREQ_Free
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode   (Routine at _GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode)

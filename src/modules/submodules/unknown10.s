@@ -383,7 +383,7 @@ _WDISP_SPrintf:
 ; CLOBBERS:
 ;   A0/A2/A3/A4/A5/A7/D0/D1/D4/D5/D6/D7
 ; CALLS:
-;   _DOS_OpenWithErrorState, DOS_OpenNewFileIfMissing, DOS_DeleteAndRecreateFile, _DOS_CloseWithSignalCheck
+;   _DOS_OpenWithErrorState, _DOS_OpenNewFileIfMissing, _DOS_DeleteAndRecreateFile, _DOS_CloseWithSignalCheck
 ; READS:
 ;   Global_HandleTableCount(A4), Global_HandleTableBase(A4) (table), Global_HandleTableFlags(A4) (flags), Global_AppErrorCode(A4)
 ; WRITES:
@@ -495,7 +495,7 @@ HANDLE_OpenEntryWithFlags:
     MOVE.B  #$1,-1(A5)
     MOVE.L  -18(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     DOS_OpenNewFileIfMissing(PC)
+    JSR     _DOS_OpenNewFileIfMissing(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D4
@@ -524,7 +524,7 @@ HANDLE_OpenEntryWithFlags:
     MOVE.L  -14(A5),Global_AppErrorCode(A4)
     MOVE.L  -18(A5),-(A7)
     MOVE.L  A3,-(A7)
-    JSR     DOS_DeleteAndRecreateFile(PC)
+    JSR     _DOS_DeleteAndRecreateFile(PC)
 
     ADDQ.W  #8,A7
     MOVE.L  D0,D4
