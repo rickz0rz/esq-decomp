@@ -905,6 +905,25 @@ machine is still nominally up.
 > /tmp/.capvenv/bin/python tools/framecolor.py kg <label>
 > ```
 >
+> **A MEDIAN DIFFERENCE BETWEEN THE PURE AND MAXIMUM-C BUILDS IS EXPECTED, and it
+> is not evidence of anything.** Measured 2026-08-01: the pure far build reads
+> blue 0.045 and yellow 0.017 at the median, and EVERY maximum-C build reads
+> 0.026 and 0.012 -- the 713-entry build and the 642-entry build from many
+> commits earlier give the same two numbers. The MINIMA and MAXIMA agree, so the
+> same screens are being drawn; the maximum-C image is about 8% larger and slower,
+> so over a 150-second sample it sits in different proportions of ESQ's display
+> cycle.
+>
+> So before treating a median gap as a defect, **compare an OLDER maximum-C build
+> against the same pure build.** If the gap is already there, it belongs to the
+> build class and not to the change under test. The pure build compared against
+> ITSELF is the other control worth having: its medians reproduce to within 0.003.
+>
+> The gap that DID mean something looked different -- the clock-format defect had
+> yellow at half on all three of min, median and max, and the register-argument
+> defect had green at 0.328 against 0.000, which is disjoint rather than merely
+> shifted.
+
 > It bins every pixel of every frame into six coarse colours and prints the
 > min, median and max share per bin per label. **Read the RANGES, not the
 > medians.** Two ranges that overlap are the display cycle and mean nothing. A

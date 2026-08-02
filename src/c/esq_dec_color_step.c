@@ -1,11 +1,27 @@
 /* RESTORES: ESQ_DecColorStep
  * MODULE:   modules/groups/a/a/app2.s
  * STATUS:   behavioural
- * DO-NOT-LINK: takes its arguments in REGISTERS, so the compiled C reads the
- *   stack and gets garbage. Proven: esq_dec_color_step.c linked alone over a
- *   clean 356-entry build paints a green panel over the grid area, and
- *   ESQ_SetCopperEffect_Custom compiles to 610000004e75 -- a call and a
- *   return, doing none of the work. Kept for the analysis, never linked.
+ * LINKABLE SINCE 2026-08-01, AS AN `__asm` REGISTER FUNCTION, and that form
+ *   solves both halves of the problem at once.
+ *
+ *   The original takes its colour in D0 and returns in D0, and it uses D1 and D2
+ *   as scratch WITHOUT SAVING THEM. Two things followed from that. A plain C
+ *   function could not be called by the assembly callers, because they pass in a
+ *   register. And the C callers -- esq_dec_copper_lists_primary.c and its
+ *   sibling -- carried DO-NOT-LINK of their own, because SAS/C assumes D2
+ *   survives a call and this callee destroyed it.
+ *
+ *   `register __d0` fixes the first. The second fixes ITSELF: a C callee that
+ *   uses D2 SAVES D2, so the caller's assumption becomes true. The restoration is
+ *   strictly safer than the original here, and the original's own callers open
+ *   `MOVEM.L D2-D5/A2-A3` anyway, so nothing depends on the clobber.
+ *
+ *   AGENTS.md notes that `__asm` does not rescue the register-argument FAMILY,
+ *   because SAS/C copies the arguments into its own callee-saved registers
+ *   rather than working in them. That is a byte-exactness point, not a
+ *   correctness one: the values arrive and leave in the right registers either
+ *   way.
+
  *
  * SASC-MISMATCH: register-argument-convention
  *   ref:     3200340002410f00024200f00240000f4a416704044101004a426704044200104a4067025340d041d0424e75
@@ -15,7 +31,7 @@
  *            SAS/C version; see docs/compiler-version.md.
  */
 /* Register-argument function: colour arrives in D0. Documented, not linkable. */
-long ESQ_DecColorStep(unsigned short colour)
+unsigned short __asm ESQ_DecColorStep(register __d0 unsigned short colour)
 {
     unsigned short r = colour & 0x0f00;
     unsigned short g = colour & 0x00f0;

@@ -128,3 +128,12 @@ modules/submodules/unknown25.s                                         c/lib_str
 modules/groups/a/a/app2_esq_storectrlsampleentry.s                     c/esq_store_ctrl_sample_entry.c
 modules/groups/a/a/app2_esq_updatemonthdayfromdayofyear.s              c/esq_update_month_day_from_day_of_year.c
 modules/groups/a/q/esqshared4_esqshared4_copyplanesfromcontexttosnapshot.s c/esqshared4_copy_planes_from_context_to_snapshot.c
+
+# The colour-step family. The callee keeps the ORIGINAL's register convention
+# through `__asm register __d0`, so its assembly callers still work, and a C
+# callee saves D2 where the assembly one destroyed it -- which is what lifts the
+# DO-NOT-LINK from the two callers.
+
+modules/groups/a/a/app2_esq_deccolorstep.s                             c/esq_dec_color_step.c
+modules/groups/a/a/app2_p3.s                                           c/esq_dec_copper_lists_primary.c
+modules/groups/a/a/app2_p3_p1.s                                        c/esq_dec_copper_lists_alt_skip_index4.c

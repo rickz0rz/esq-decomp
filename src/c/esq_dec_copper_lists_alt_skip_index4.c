@@ -1,12 +1,16 @@
 /* RESTORES: ESQ_DecCopperListsAltSkipIndex4
- * MODULE:   modules/groups/a/a/app2_p3.s
+ * MODULE:   modules/groups/a/a/app2_p3_p1.s   (the header said app2_p3.s and was wrong)
  * STATUS:   behavioural
- * DO-NOT-LINK: _ESQ_DecColorStep clobbers D2 and does not restore it. SAS/C
- *   treats D2 as callee-saved, so it neither keeps a value there across the
- *   call nor saves it in the prologue -- and D2 then leaks out to whoever
- *   called this function. The original's MOVEM.L D2-D5/A2-A3 covers exactly
- *   that: it saves D2 and D3, which its own body never touches. Read the
- *   callee before assuming a saved register is redundant.
+ * LINKABLE SINCE 2026-08-01. The marker that used to sit here said
+ *   _ESQ_DecColorStep clobbers D2 and does not restore it, so SAS/C's assumption
+ *   that D2 survives a call was false and this caller would leak a corrupted D2
+ *   to whoever called IT. That was true of the ASSEMBLY callee.
+ *
+ *   That callee is now C, declared `__asm register __d0` so the assembly callers
+ *   it also has keep working. A C function that uses D2 SAVES D2, so the
+ *   assumption became true and the hazard went away by itself. Verified in the
+ *   emitted object: the restoration saves D4-D7, which it uses as scratch, and
+ *   never touches D2 or D3.
  *
  * This block is dead code: nothing calls it. It also carried no label until
  * 2026-07-30, which made the preceding 2-byte ESQ_NoOp_006A read as 58 bytes.
@@ -50,7 +54,7 @@ extern char ESQ_BannerPaletteWordsA[];
 extern char ESQ_BannerPaletteWordsB[];
 
 /* Register-argument helper: the colour arrives in D0 and comes back in D0.
- * It also destroys D1 and D2 -- see DO-NOT-LINK above. */
+ * The ASSEMBLY callee destroyed D1 and D2; the C one does not -- see above. */
 unsigned short __asm ESQ_DecColorStep(register __d0 unsigned short colour);
 
 void ESQ_DecCopperListsAltSkipIndex4(void)

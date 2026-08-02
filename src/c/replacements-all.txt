@@ -233,6 +233,9 @@ modules/groups/_main/b/bb.s                                            c/esq_che
 modules/groups/a/a/app2_esq_clampbannercharrange.s                     c/esq_clamp_banner_char_range.c
 modules/groups/a/a/app2_p2.s                                           c/esq_clear_copper_list_flags.c
 modules/groups/a/a/app2_p9.s                                           c/esq_cold_reboot.c
+modules/groups/a/a/app2_esq_deccolorstep.s                             c/esq_dec_color_step.c
+modules/groups/a/a/app2_p3_p1.s                                        c/esq_dec_copper_lists_alt_skip_index4.c
+modules/groups/a/a/app2_p3.s                                           c/esq_dec_copper_lists_primary.c
 modules/groups/_main/b/bb_esq_formatdiskerrormessage.s                 c/esq_format_disk_error_message.c
 modules/groups/a/a/app2_p6.s                                           c/esq_format_time_stamp.c
 modules/groups/a/a/app2_esq_generatexorchecksumbyte.s                  c/esq_generate_xor_checksum_byte.c
