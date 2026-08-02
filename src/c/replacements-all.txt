@@ -127,6 +127,7 @@ modules/groups/a/g/diskio_p1.s                                         c/diskio_
 modules/groups/a/i/displib_displib_applyinlinealignmentpadding.s       c/displib_apply_inline_alignment_padding.c
 modules/groups/a/i/displibb_p0.s                                       c/displib_commit_current_line_pen_and_advance.c
 modules/groups/a/i/displib_displib_displaytextatposition.s             c/displib_display_text_at_position.c
+modules/groups/a/i/displib.s                                           c/displib_find_previous_valid_entry_index.c
 modules/groups/a/i/displib_displib_normalizevaluebystep.s              c/displib_normalize_value_by_step.c
 modules/groups/a/i/displib_displibresetlinetables.s                    c/displib_reset_line_tables.c
 modules/groups/a/i/displibb_displib_resettextbufferandlinetables.s     c/displib_reset_text_buffer_and_line_tables.c
@@ -274,7 +275,9 @@ modules/groups/a/n/esqdispb_p0_p1_p0_esqdisp_propagateprimarytitlemetadatatoseco
 modules/groups/a/n/esqdisp_esqdisp_queuehighlightdrawmessage.s         c/esqdisp_queue_highlight_draw_message.c
 modules/groups/a/n/esqdisp_esqdisprefreshstatusindicatorsfromcurrentmask.s c/esqdisp_refresh_status_indicators.c
 modules/groups/a/n/esqdisp_p1_esqdisp_setstatusindicatorcolorslot.s    c/esqdisp_set_status_indicator_color_slot.c
+modules/groups/a/n/esqdispb_p0_p1_2.s                                  c/esqdisp_test_entry_grid_eligibility.c
 modules/groups/a/n/esqdispb_p1.s                                       c/esqdisp_test_word_is_zero_booleanize.c
+modules/groups/a/n/esqdisp_p1_p0_esqdisp_updatestatusmaskandrefresh.s  c/esqdisp_update_status_mask_and_refresh.c
 modules/groups/a/n/esqfunc_esqfunc_allocatelinetextbuffers.s           c/esqfunc_allocate_line_text_buffers.c
 modules/groups/a/n/esqfunc_p1_esqfunc_commitsecondarystateandpersist.s c/esqfunc_commit_secondary_state_and_persist.c
 modules/groups/a/n/esqfunc_p4_esqfunc_drawdiagnosticsscreen.s          c/esqfunc_draw_diagnostics_screen.c
@@ -286,6 +289,7 @@ modules/groups/a/n/esqfunc_p1_esqfunc_processuiframetick.s             c/esqfunc
 modules/groups/a/n/esqfunc_esqfunc_rebuildpwbrushlistfromtagtable.s    c/esqfunc_rebuild_pw_brush_list_from_tag_table.c
 modules/groups/a/n/esqfunc_p4_p0_esqfunc_selectandapplybrushforcurrententry.s c/esqfunc_select_and_apply_brush_for_current_entry.c
 modules/groups/a/n/esqfunc_esqfunc_serviceuitickifrunning.s            c/esqfunc_service_ui_tick_if_running.c
+modules/groups/a/n/esqfunc_p5.s                                        c/esqfunc_trim_text_to_pixel_width_word_boundary.c
 modules/groups/a/n/esqfunc_esqfunc_updatediskwarningandrefreshtick.s   c/esqfunc_update_disk_warning_and_refresh_tick.c
 modules/groups/a/n/esqfunc_p3.s                                        c/esqfunc_update_refresh_mode_state.c
 modules/groups/a/n/esqfunc_esqfunc_waitforclockchangeandserviceui.s    c/esqfunc_wait_for_clock_change_and_service_ui.c
@@ -355,6 +359,7 @@ modules/groups/a/t/gcommand2_gcommand_copygfxtoworkifavailable.s       c/gcomman
 modules/groups/a/u/gcommand3b_p3_p1_gcommand_copyimagedatatobitmap.s   c/gcommand_copy_image_data_to_bitmap.c
 modules/groups/a/u/gcommand3b_gcommand_disablehighlight.s              c/gcommand_disable_highlight.c
 modules/groups/a/u/gcommand3_gcommandenablehighlight.s                 c/gcommand_enable_highlight.c
+modules/groups/a/u/gcommand3b_p0_gcommand_expandpresetblock.s          c/gcommand_expand_preset_block.c
 modules/groups/a/t/gcommand2.s                                         c/gcommand_find_path_separator.c
 modules/groups/a/u/gcommand3b_p2_gcommand_getbannerchar.s              c/gcommand_get_banner_char.c
 modules/groups/a/u/gcommand3b_gcommand_initpresetdefaults.s            c/gcommand_init_preset_defaults.c
@@ -387,10 +392,12 @@ modules/groups/a/u/gcommand3b_p2_gcommand_tickpresetworkentries.s      c/gcomman
 modules/groups/a/u/gcommand3b_p2_p0_gcommand_updatebannerbounds.s      c/gcommand_update_banner_bounds.c
 modules/groups/a/u/gcommand3b_p4_p0.s                                  c/gcommand_update_banner_offset.c
 modules/groups/a/u/gcommand3b_p2_p1.s                                  c/gcommand_update_banner_row_pointers.c
+modules/groups/a/u/gcommand3b_p1.s                                     c/gcommand_update_preset_entry_cache.c
 modules/groups/b/a/script3.s                                           c/generate_grid_date_string.c
 modules/groups/a/v/kybd.s                                              c/kybd_initialize_input_devices.c
 modules/groups/a/x/ladfunc2_ladfunc2_emitescapedchartoscratch.s        c/ladfunc2_emit_escaped_char_to_scratch.c
 modules/groups/a/x/ladfunc2_ladfunc2_emitescapedstringtoscratch.s      c/ladfunc2_emit_escaped_string_to_scratch.c
+modules/groups/a/x/ladfunc2.s                                          c/ladfunc2_emit_escaped_string_variants.c
 modules/groups/a/w/ladfunc_ladfunc_allocbannerrectentries.s            c/ladfunc_alloc_banner_rect_entries.c
 modules/groups/a/w/ladfunc_p1_ladfunc_buildentrybuffersordefault.s     c/ladfunc_build_entry_buffers_or_default.c
 modules/groups/a/w/ladfunc_ladfunc_buildhighlightlinesfromtext.s       c/ladfunc_build_highlight_lines_from_text.c
@@ -452,6 +459,7 @@ modules/groups/a/y/locavail_p0.s                                       c/locavai
 modules/groups/a/y/locavail_locavail_getfilterwindowhalfspan.s         c/locavail_get_filter_window_half_span.c
 modules/groups/a/y/locavail_locavail_getnodedurationbyindex.s          c/locavail_get_node_duration_by_index.c
 modules/groups/a/y/locavail_p3_locavail_loadavailabilitydatafile.s     c/locavail_load_availability_data_file.c
+modules/groups/a/y/locavail_p2_p0.s                                    c/locavail_map_filter_token_char_to_class.c
 modules/groups/a/y/locavail_p2_locavail_parsefilterstatefrombuffer.s   c/locavail_parse_filter_state_from_buffer.c  SHORTINT
 modules/groups/a/y/locavail_locavail_rebuildfilterstatefromcurrentgroup.s c/locavail_rebuild_filter_state_from_current_group.c
 modules/groups/a/y/locavail_locavail_resetfiltercursorstate.s          c/locavail_reset_filter_cursor_state.c
@@ -738,6 +746,10 @@ modules/submodules/unknown33.s                                         c/lib_str
 modules/submodules/unknown13.s                                         c/lib_format_to_callback_buffer.c
 modules/submodules/unknown24.s                                         c/lib_memlist_and_parse_skip.c
 modules/submodules/unknown10.s                                         c/lib_hex_parse_sprintf.c
+modules/groups/a/k/ed1b_p0.s                                           c/jmptbl_groups_a_k_ed1b_p0.c
+modules/groups/b/a/script_p1_p0.s                                      c/jmptbl_groups_b_a_script_p1_p0.c
+modules/groups/a/t/xjump.s                                             c/jmptbl_groups_a_t_xjump.c
+modules/groups/b/a/p_typebb_p0_p0.s                                    c/jmptbl_groups_b_a_p_typebb_p0_p0.c
 modules/groups/a/a/app2_p7.s                                           c/app2_p7_merged.c
 modules/groups/a/a/app2_esq_findsubstringcasefold.s                    c/app2_esq_findsubstringcasefold_merged.c
 modules/groups/a/c/cleanup2_p1_p0_p0.s                                 c/cleanup2_p1_p0_p0_merged.c
