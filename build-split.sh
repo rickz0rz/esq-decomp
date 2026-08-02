@@ -28,7 +28,12 @@ ESQ_FIX_ESCMENU="${ESQ_FIX_ESCMENU:-$(sed -n 's/^ *fixEscMenuExitDisplayMode *= 
 ESQ_FIX_ESCMENU="${ESQ_FIX_ESCMENU:-0}"
 VASM_DEFS=()
 [ "$ESQ_FIX_ESCMENU" = "1" ] && VASM_DEFS=(-DfixEscMenuExitDisplayMode=1)
-SCOPTS="${SCOPTS:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128} DEFINE=ESQ_EXACT=$ESQ_EXACT DEFINE=ESQ_FIX_ESCMENU=$ESQ_FIX_ESCMENU"   # options MUST precede the filename;
+# Ari's debug instrumentation. The C arm of data/wdisp_p1_p1.s carries the same
+# variant, so the equate is read here and passed to sc -- exactly as
+# ESQ_FIX_ESCMENU is, and for the same reason: the two arms cannot disagree.
+ESQ_CUSTOM_ARI="$(sed -n 's/^ *includeCustomAriAssembly *= *\([0-9]\).*/\1/p' src/Prevue.asm)"
+ESQ_CUSTOM_ARI="${ESQ_CUSTOM_ARI:-0}"
+SCOPTS="${SCOPTS:-NOSTKCHK DATA=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128} DEFINE=ESQ_EXACT=$ESQ_EXACT DEFINE=ESQ_FIX_ESCMENU=$ESQ_FIX_ESCMENU DEFINE=ESQ_CUSTOM_ARI=$ESQ_CUSTOM_ARI"   # options MUST precede the filename;
                                                           # CODENAME/DATANAME make sc emit into the
                                                           # same sections as the asm, so PC-relative
                                                           # calls into C resolve at link time. See AGENTS.md

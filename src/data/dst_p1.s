@@ -28,3 +28,10 @@ _ED_MenuDispatchReentryGuard:
 ;------------------------------------------------------------------------------
 _ED_TextModeReinitPendingFlag:
     DC.L    1
+
+; ---- joined from data/ed2.s by tools/data_merge.py ----
+    XDEF    _ED2_STR_PAGE
+; ========== ED2.c ==========
+
+_ED2_STR_PAGE:
+    NStr    " Page"

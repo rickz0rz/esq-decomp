@@ -31,22 +31,22 @@ _Global_STR_TEXTDISP_C_4:
 _TEXTDISP_ActiveGroupId:
     DC.W    $0001
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_FormatEntryFallbackWord0   (fallback table word 0??)
+; SYM: _TEXTDISP_FormatEntryFallbackWord0   (fallback table word 0??)
 ; TYPE: u32
 ; PURPOSE: First literal word consumed by TEXTDISP fallback format-entry table.
 ; USED BY: _TEXTDISP_FormatEntryFallbackTable
 ; NOTES: Field-level semantics are still unresolved; kept as table-member alias.
 ;------------------------------------------------------------------------------
-TEXTDISP_FormatEntryFallbackWord0:
+_TEXTDISP_FormatEntryFallbackWord0:
     DC.B    TextAlignLeft,"   ",0,0
 ;------------------------------------------------------------------------------
-; SYM: TEXTDISP_FormatEntryFallbackWord1   (fallback table word 1??)
+; SYM: _TEXTDISP_FormatEntryFallbackWord1   (fallback table word 1??)
 ; TYPE: u32
 ; PURPOSE: Second literal word consumed by TEXTDISP fallback format-entry table.
 ; USED BY: _TEXTDISP_FormatEntryFallbackTable
 ; NOTES: Field-level semantics are still unresolved; kept as table-member alias.
 ;------------------------------------------------------------------------------
-TEXTDISP_FormatEntryFallbackWord1:
+_TEXTDISP_FormatEntryFallbackWord1:
     DC.B    TextAlignCenter,TextAlignLeft,TextAlignLeft,TextAlignLeft,0,0
 ;------------------------------------------------------------------------------
 ; SYM: _TEXTDISP_FormatEntryFallbackTable   (format entry fallback table)
@@ -56,8 +56,8 @@ TEXTDISP_FormatEntryFallbackWord1:
 ; NOTES: Includes pointers to Word0/Word1 followed by packed literal rows.
 ;------------------------------------------------------------------------------
 _TEXTDISP_FormatEntryFallbackTable:
-    DC.L    TEXTDISP_FormatEntryFallbackWord0
-    DC.L    TEXTDISP_FormatEntryFallbackWord1
+    DC.L    _TEXTDISP_FormatEntryFallbackWord0
+    DC.L    _TEXTDISP_FormatEntryFallbackWord1
     DC.L    $7f020408,$10204001,$3e3e0000,$00000024
     DC.L    $42617f7f,$00000000,$7e1e3e3e,$14001819
     DC.B    0

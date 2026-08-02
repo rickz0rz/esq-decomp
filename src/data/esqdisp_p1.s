@@ -8,3 +8,10 @@
 ;------------------------------------------------------------------------------
 _ESQDISP_SecondaryPropagationDoneFlag:
     DC.W    $0001
+
+; ---- joined from data/esqfunc.s by tools/data_merge.py ----
+    XDEF    _Global_STR_ESQFUNC_C_1
+; ========== ESQFUNC.c ==========
+
+_Global_STR_ESQFUNC_C_1:
+    NStr    "ESQFUNC.c"

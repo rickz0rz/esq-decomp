@@ -8,3 +8,10 @@
 ;------------------------------------------------------------------------------
 _NEWGRID_GridResourcesInitializedFlag:
     DS.W    1
+
+; ---- joined from data/newgrid.s by tools/data_merge.py ----
+    XDEF    _Global_STR_NEWGRID_C_1
+; ========== NEWGRID.c ==========
+
+_Global_STR_NEWGRID_C_1:
+    NStr    "NEWGRID.c"

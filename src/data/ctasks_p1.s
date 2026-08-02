@@ -15,3 +15,10 @@ _CONFIG_RefreshIntervalSeconds:
     DC.L    120
 _DISKIO_OpenCount:
     DS.L    1
+
+; ---- joined from data/diskio.s by tools/data_merge.py ----
+    XDEF    _Global_STR_DISKIO_C_1
+; ========== DISKIO.c ==========
+
+_Global_STR_DISKIO_C_1:
+    NStr    "DISKIO.c"
