@@ -441,16 +441,16 @@ _GROUP_AM_JMPTBL_ESQ_InitAudio1Dma:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   LIST_InitHeader
+;   _LIST_InitHeader
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to LIST_InitHeader.
+;   Jump stub to _LIST_InitHeader.
 ;------------------------------------------------------------------------------
 _GROUP_AM_JMPTBL_LIST_InitHeader:
-    JMP     LIST_InitHeader
+    JMP     _LIST_InitHeader
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight   (JumpStub_ESQ_SetCopperEffect_OnEnableHighlight)

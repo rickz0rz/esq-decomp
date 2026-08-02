@@ -148,3 +148,5 @@ modules/groups/a/s/xjump.s                                             c/jmptbl_
 modules/submodules/unknown22_dos_closewithsignalcheck.s                c/lib_dos_close_with_signal_check.c
 modules/submodules/unknown22_allocate_allocandinitializeiostdreq.s     c/lib_allocate_alloc_and_init_iostdreq.c
 modules/submodules/unknown22_signal_createmsgportwithsignal.s          c/lib_signal_create_msgport_with_signal.c
+modules/submodules/memory.s                                            c/lib_memory_alloc_dealloc.c
+modules/submodules/unknown34.s                                         c/lib_dos_read_by_index.c

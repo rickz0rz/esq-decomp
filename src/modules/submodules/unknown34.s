@@ -1,9 +1,9 @@
-    XDEF    DOS_ReadByIndex
-    XDEF    LIST_InitHeader
+    XDEF    _DOS_ReadByIndex
+    XDEF    _LIST_InitHeader
     XDEF    _MEM_Move
 
 ;------------------------------------------------------------------------------
-; FUNC: DOS_ReadByIndex   (Read using a handle index.)
+; FUNC: _DOS_ReadByIndex   (Read using a handle index.)
 ; ARGS:
 ;   stack +24: D7 = handle index
 ;   stack +28: A3 = buffer pointer
@@ -19,7 +19,7 @@
 ; DESC:
 ;   Resolves a handle index to its entry and reads through it.
 ;------------------------------------------------------------------------------
-DOS_ReadByIndex:
+_DOS_ReadByIndex:
     MOVEM.L D5-D7/A2-A3,-(A7)
 
     MOVE.L  24(A7),D7
@@ -65,7 +65,7 @@ DOS_ReadByIndex:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: LIST_InitHeader   (Initialize a list header/anchor.)
+; FUNC: _LIST_InitHeader   (Initialize a list header/anchor.)
 ; ARGS:
 ;   stack +4: A0 = list header pointer
 ; RET:
@@ -77,7 +77,7 @@ DOS_ReadByIndex:
 ; NOTES:
 ;   Structure layout still unknown.
 ;------------------------------------------------------------------------------
-LIST_InitHeader:
+_LIST_InitHeader:
     MOVEA.L 4(A7),A0
     MOVE.L  A0,(A0)
     ADDQ.L  #4,(A0)
