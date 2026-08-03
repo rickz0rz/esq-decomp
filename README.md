@@ -30,7 +30,7 @@ Run `python3 tools/coverage.py` to regenerate every number in this section.
 |---|---|
 | application functions | 732 (194,408 bytes) |
 | restored to C | 702 (190,474 bytes, 98.0% by byte, 96% by count) |
-| byte-exact restorations | 29 |
+| byte-exact restorations | 29 application functions, plus 1 library function (30 files) |
 | source modules | 1,015, coalesced into 531 link units |
 | assembly remaining | 14,102 of 267,168 bytes (5.3%), in 246 modules |
 | DATA section in C | 55,820 of 55,820 bytes (100%) |
