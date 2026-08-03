@@ -166,6 +166,12 @@ echo "==> linking"
 # and contributes no bytes, so it cannot affect layout.
 python3 tools/mkabsdefs.py "$OBJ/absdefs.o" _VPOSR=0xDFF004 _CIAB_PRA=0xBFD000 _SERDAT=0xDFF030 _INTENA=0xDFF09A _COP1LCH=0xDFF080 _SysBase=0x4
 echo "$OBJ/absdefs.o" >> "$BUILD/objlist"
+# Prevue.asm declares S_1 CHIP, and a C data object cannot. Every data module is
+# C now, so without this the DATA hunk links MEMF_ANY and the custom chips read
+# nothing. The stub is a zero-length CHIP section: vlink ORs the attribute in and
+# the image does not move. See tools/mkchipflag.py.
+python3 tools/mkchipflag.py "$OBJ/chipflag.o" S_1
+echo "$OBJ/chipflag.o" >> "$BUILD/objlist"
 # SCLIB pulls in SAS/C's runtime helpers (__CXD33 and friends -- the 32-bit
 # divide routines the compiler calls for `/` and `%`). Only a maximum-C build
 # needs it; the byte-exact manifest never reaches code that calls them, and
@@ -235,6 +241,19 @@ if < "$BUILD/objlist" xargs "$VLINK_BIN" -bamigahunk -Rstd ${SCLIB_ARGS[@]+"${SC
     fi
 else
     echo "  (map link failed -- range check skipped; see $BUILD/ESQ.map)"
+fi
+
+# A converted DATA module can measure the right TOTAL and still place its
+# symbols wrong: 6.51 pads a struct holding a `long` to an even size, so a
+# 41-byte span is emitted as 42 and everything after it in the module moves.
+# data_to_c.py cross-checks its arithmetic against vasm, which cannot see this,
+# and no byte gate reads a C build. Only run it when C is in play.
+if [ -n "${C_REPLACEMENTS:-}" ]; then
+    echo "==> checking converted DATA module symbol offsets"
+    if ! python3 tools/data_offset_audit.py "$C_REPLACEMENTS"; then
+        echo "*** ABORT: a converted data module lays its symbols out differently. ***"
+        exit 1
+    fi
 fi
 
 echo "==> verifying split build against reference"

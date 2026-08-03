@@ -11,23 +11,6 @@
  * rule that a data module must be a multiple of 4 bytes.
  */
 
-/* Struct types are hoisted so a forward reference can name them. A tag
- * declared at its point of use is too late for a span whose own
- * initialiser holds its own address. */
-struct TEXTDISP_FormatEntryFallbackTable_t {
-    char * f0;
-    char * f4;
-    long f8;
-    long f12;
-    long f16;
-    long f20;
-    long f24;
-    long f28;
-    long f32;
-    long f36;
-    unsigned char f40;
-};
-
 /* Forward declarations. The type has to match the definition exactly
  * or 6.51 rejects the pair. */
 extern unsigned char TEXTDISP_FormatEntryFallbackWord0[];
@@ -47,7 +30,12 @@ unsigned char TEXTDISP_FormatEntryFallbackWord0[6] = {
 unsigned char TEXTDISP_FormatEntryFallbackWord1[6] = {
     0x18, 0x19, 0x19, 0x19, 0x00, 0x00
 };
-struct TEXTDISP_FormatEntryFallbackTable_t TEXTDISP_FormatEntryFallbackTable = { (char *)TEXTDISP_FormatEntryFallbackWord0, (char *)TEXTDISP_FormatEntryFallbackWord1, 0x7f020408L, 0x10204001L, 0x3e3e0000L, 0x00000024L, 0x42617f7fL, 0x00000000L, 0x7e1e3e3eL, 0x14001819L, 0 };
+long TEXTDISP_FormatEntryFallbackTable[10] = {
+    (long)TEXTDISP_FormatEntryFallbackWord0, (long)TEXTDISP_FormatEntryFallbackWord1, 0x7f020408L, 0x10204001L,
+    0x3e3e0000L, 0x00000024L, 0x42617f7fL, 0x00000000L,
+    0x7e1e3e3eL, 0x14001819L
+};
+unsigned char TEXTDISP_FormatEntryFallbackTable_Tail = 0;
 unsigned char TEXTDISP_CenterAlignToken[2] = {
     0x18, 0x00
 };

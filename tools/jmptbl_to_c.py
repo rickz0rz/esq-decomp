@@ -135,6 +135,17 @@ def main():
         ' */',
         '',
     ]
+    # A parameter list copied from a target's restoration can name an Amiga
+    # typedef, and without the header SAS/C reports "comma expected" on the
+    # parameter rather than an unknown type. BPTR and BSTR come from the DOS
+    # headers; everything else comes from <exec/types.h>, which esq-dos.h also
+    # includes. The thunks call no OS function, so the volatile base that
+    # esq-dos.h declares emits nothing.
+    sig = '\n'.join(protos + body)
+    if re.search(r'\b(BPTR|BSTR)\b', sig):
+        head += ['#include "esq-dos.h"', '']
+    elif re.search(r'\b(APTR|BOOL|ULONG|UWORD|UBYTE|LONG|WORD|BYTE|STRPTR)\b', sig):
+        head += ['#include <exec/types.h>', '']
     text = '\n'.join(head + protos + [''] + body)
     if '--write' in sys.argv:
         dst = os.path.join(ROOT, 'src', 'c', 'jmptbl_%s.c' % name)

@@ -18,7 +18,29 @@
  * emits one '0' because the loop is a do-while.
  *
  * THE HEX TABLE IS LOWERCASE and is reached PC-relative from inside the
- * function, with no XDEF -- it is private to it.
+ * function, with no XDEF -- it is private to it. It lives in the CODE section,
+ * and that is why this restoration computes the digit instead of reading a
+ * table. See the mismatch entry below.
+ *
+ * SASC-MISMATCH: hex-table-lands-in-data
+ *   ref:     the 16 digits sit in CODE, reached PC-relative from the loop
+ *   got:     a `static char[16]` is emitted into the DATA section
+ *   summary: SAS/C 6.51 places every initialised static in `data`, so writing
+ *            the original's table added 16 bytes to the DATA hunk. On the CODE
+ *            side padding is inert, but DATA growth moves every symbol after
+ *            the insertion point, and this object links BEFORE the converted
+ *            data modules -- so all 55,820 bytes of real data shifted by 16.
+ *            The digit is therefore computed: `d < 10 ? '0'+d : 'a'+d-10`.
+ *            Measured: table form CODE 320 / DATA 16, computed form
+ *            CODE 332 / DATA 0. It costs 12 inert CODE bytes and returns the
+ *            DATA hunk to its reference size.
+ *   tried:   `static const char[16]` -- 6.51 still emits it into DATA
+ *            (CODE 320 / DATA 16, unchanged).
+ *   scope:   any restoration holding an initialised static. This is the only
+ *            one so far. tools/data_offset_audit.py and the hunk1 size in
+ *            build-split.sh are what catch the next.
+ *   retest:  a compiler that pools a function-private constant into CODE, or
+ *            an option that does. Then restore the table and the lookup.
  *
  * _PARSE_ReadSignedLong AND _PARSE_ReadSignedLong_NoBranch ARE THE SAME FUNCTION,
  * assembled twice. A diff of the two bodies shows only the label names: one
@@ -57,15 +79,15 @@
 
 extern void WDISP_FormatWithCallback(long (*put)(long ch), char *fmt, void *args);
 
-static char kHexDigitTable[16] = "0123456789abcdef";
-
 long FORMAT_U32ToHexString(char *buf, unsigned long value)
 {
     char tmp[12];
     long n = 0;
 
     do {
-        tmp[n++] = kHexDigitTable[value & 15];
+        /* Computed, not looked up. See hex-table-lands-in-data below. */
+        long d = (long)(value & 15);
+        tmp[n++] = (char)(d < 10 ? '0' + d : 'a' + d - 10);
         value >>= 4;
     } while (value != 0);
 

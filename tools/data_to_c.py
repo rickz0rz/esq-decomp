@@ -271,7 +271,44 @@ def span_bytes(items):
     return n
 
 
+def split_odd_structs(spans):
+    """Peel the trailing byte off an ODD-sized struct span, into its own symbol.
+
+    A struct that holds a `long` gets 2-byte alignment from 6.51, so a 41-byte
+    span is emitted as 42 and EVERY symbol after it in the module moves by one.
+    The module still measures 144 against vasm's 144, because the parser sums
+    the spans it read rather than what the compiler emits, so the total agrees
+    while the layout does not.
+
+    data/textdisp_p2.s is the case: `_TEXTDISP_FormatEntryFallbackTable` is two
+    pointers, eight longs and one trailing `DC.B 0`. Splitting that byte into
+    its own global leaves a 40-byte struct, which needs no padding, and puts
+    `_TEXTDISP_CenterAlignToken` back at 41.
+
+    The split is byte-neutral. It adds a NAME, the way labelling an unnamed
+    block elsewhere in this project does, and the bytes and their order do not
+    change. Nothing references the new symbol.
+    """
+    out = []
+    for label, items in spans:
+        kinds = {k for k, _ in items}
+        is_struct = ('l' in kinds
+                     and any(isinstance(v, str) for k, v in items if k == 'l')
+                     and bool(kinds - {'l'}))
+        if is_struct and span_bytes(items) % 2:
+            body, tail = list(items), []
+            while body and span_bytes(body) % 2 and body[-1][0] in ('b', 'pad'):
+                tail.insert(0, body.pop())
+            if body and tail and span_bytes(body) % 2 == 0:
+                out.append((label, body))
+                out.append((label + '_Tail', tail))
+                continue
+        out.append((label, items))
+    return out
+
+
 def to_c(path, spans, total):
+    spans = split_odd_structs(spans)
     name = os.path.basename(path)[:-2]
     out = []
     out.append('/* RESTORES: (data module -- no function)')
