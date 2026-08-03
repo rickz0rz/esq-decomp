@@ -19,6 +19,8 @@
  *   retest:  a compiler that turns a call in return position into a jump.
  */
 
+#include "esq-dos.h"
+
 extern void MEMORY_DeallocateMemory(char *who, long line, void *block, long size);
 extern long DISKIO_WriteBufferedBytes(BPTR fh, char *src, long len);
 extern void DISKIO_CloseBufferedFileAndFlush(BPTR fh);

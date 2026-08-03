@@ -427,7 +427,7 @@ _LADFUNC_LineSlotWriteIndex:
 ; SYM: _DISPLIB_PreviousSearchWrappedFlag   (displib previous-search wrapped flag)
 ; TYPE: u16
 ; PURPOSE: Latches whether previous-index scan hit the lower-bound clamp path.
-; USED BY: DISPLIB_FindPreviousValidEntryIndex
+; USED BY: _DISPLIB_FindPreviousValidEntryIndex
 ; NOTES: Set when non-wide scans keep decrementing and clear when clamped to index 0.
 ;   No external readers found yet; likely a legacy/debug side-channel.
 ;------------------------------------------------------------------------------

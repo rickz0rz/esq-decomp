@@ -184,16 +184,16 @@ _TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold:
 ; CLOBBERS:
 ;   (none)
 ; CALLS:
-;   DISPLIB_FindPreviousValidEntryIndex
+;   _DISPLIB_FindPreviousValidEntryIndex
 ; READS:
 ;   (none)
 ; WRITES:
 ;   (none)
 ; DESC:
-;   Jump stub to DISPLIB_FindPreviousValidEntryIndex.
+;   Jump stub to _DISPLIB_FindPreviousValidEntryIndex.
 ;------------------------------------------------------------------------------
 _TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex:
-    JMP     DISPLIB_FindPreviousValidEntryIndex
+    JMP     _DISPLIB_FindPreviousValidEntryIndex
 
 ;------------------------------------------------------------------------------
 ; FUNC: _TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble   (JumpStub)

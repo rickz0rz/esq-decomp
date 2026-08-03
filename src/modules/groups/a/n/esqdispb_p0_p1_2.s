@@ -1,9 +1,9 @@
-    XDEF    ESQDISP_TestEntryGridEligibility
+    XDEF    _ESQDISP_TestEntryGridEligibility
     XDEF    ESQDISP_TestEntryGridEligibility_Return
 
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQDISP_TestEntryGridEligibility   (Test per-slot grid eligibility)
+; FUNC: _ESQDISP_TestEntryGridEligibility   (Test per-slot grid eligibility)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -22,7 +22,7 @@
 ; NOTES:
 ;   Valid slot range is 1..48; otherwise returns 0.
 ;------------------------------------------------------------------------------
-ESQDISP_TestEntryGridEligibility:
+_ESQDISP_TestEntryGridEligibility:
     MOVEM.L D6-D7/A3,-(A7)
     MOVEA.L 16(A7),A3
     MOVE.W  22(A7),D7
@@ -76,7 +76,7 @@ ESQDISP_TestEntryGridEligibility:
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Shared return tail for ESQDISP_TestEntryGridEligibility.
+;   Shared return tail for _ESQDISP_TestEntryGridEligibility.
 ; NOTES:
 ;   Returns D6 in D0.
 ;------------------------------------------------------------------------------

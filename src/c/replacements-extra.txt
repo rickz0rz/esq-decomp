@@ -166,10 +166,10 @@ modules/submodules/unknown40_battclock_getsecondsfrombatterybackedclock.s c/lib_
 modules/submodules/unknown40_battclock_writesecondstobatterybackedclock.s c/lib_battclock_write.c
 modules/submodules/unknown10.s                                         c/lib_hex_parse_sprintf.c
 modules/submodules/unknown10_handle_openentrywithflags.s               c/lib_handle_open_entry_with_flags.c
-modules/groups/a/k/ed1b_p0.s                                           c/jmptbl_groups_a_k_ed1b_p0.c
-modules/groups/b/a/script_p1_p0.s                                      c/jmptbl_groups_b_a_script_p1_p0.c
-modules/groups/a/t/xjump.s                                             c/jmptbl_groups_a_t_xjump.c
-modules/groups/b/a/p_typebb_p0_p0.s                                    c/jmptbl_groups_b_a_p_typebb_p0_p0.c
+modules/groups/a/k/ed1b_p0.s                                           c/jmptbl_a_k_ed1b_p0.c
+modules/groups/b/a/script_p1_p0.s                                      c/jmptbl_b_a_script_p1_p0.c
+modules/groups/a/t/xjump.s                                             c/jmptbl_a_t_xjump.c
+modules/groups/b/a/p_typebb_p0_p0.s                                    c/jmptbl_b_a_p_typebb_p0_p0.c
 modules/groups/a/i/displib.s                                           c/displib_find_previous_valid_entry_index.c
 modules/groups/a/n/esqfunc_p5.s                                        c/esqfunc_trim_text_to_pixel_width_word_boundary.c
 modules/groups/a/y/locavail_p2_p0.s                                    c/locavail_map_filter_token_char_to_class.c

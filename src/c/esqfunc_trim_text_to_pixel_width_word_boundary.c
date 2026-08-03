@@ -24,6 +24,7 @@
  * SASC-MISMATCH: cross-unit-call-encoding
  *   scope:   program-wide under SAS/C 6.51. See AGENTS.md.
  */
+#include <string.h>
 #include "esq-graphics.h"
 
 extern unsigned char WDISP_CharClassTable[];

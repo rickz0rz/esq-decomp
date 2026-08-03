@@ -679,6 +679,8 @@ modules/groups/b/a/tliba3_tliba3_initruntimeentry.s                    c/tliba3_
 modules/groups/b/a/tliba3_tliba3_selectnextviewmode.s                  c/tliba3_select_next_view_mode.c
 modules/groups/b/a/tliba3_p5_p0.s                                      c/tliba3_set_font_for_all_view_modes.c
 modules/groups/b/a/tliba2_p1.s                                         c/tliba_find_first_wildcard_match_index.c
+modules/groups/b/a/wdisp_wdisp_drawweatherstatusdayentry.s             c/wdisp_draw_weather_status_day_entry.c
+modules/groups/b/a/wdisp_wdisp_drawweatherstatusoverlay.s              c/wdisp_draw_weather_status_overlay.c
 modules/groups/b/a/wdisp_p0.s                                          c/wdisp_draw_weather_status_summary.c
 modules/groups/b/a/wdisp_wdisp_handleweatherstatuscommand.s            c/wdisp_handle_weather_status_command.c
 modules/groups/b/a/wdisp_p1_wdisp_updateselectionpreviewpanel.s        c/wdisp_update_selection_preview_panel.c
@@ -748,10 +750,10 @@ modules/submodules/unknown33.s                                         c/lib_str
 modules/submodules/unknown13.s                                         c/lib_format_to_callback_buffer.c
 modules/submodules/unknown24.s                                         c/lib_memlist_and_parse_skip.c
 modules/submodules/unknown10.s                                         c/lib_hex_parse_sprintf.c
-modules/groups/a/k/ed1b_p0.s                                           c/jmptbl_groups_a_k_ed1b_p0.c
-modules/groups/b/a/script_p1_p0.s                                      c/jmptbl_groups_b_a_script_p1_p0.c
-modules/groups/a/t/xjump.s                                             c/jmptbl_groups_a_t_xjump.c
-modules/groups/b/a/p_typebb_p0_p0.s                                    c/jmptbl_groups_b_a_p_typebb_p0_p0.c
+modules/groups/a/k/ed1b_p0.s                                           c/jmptbl_a_k_ed1b_p0.c
+modules/groups/b/a/script_p1_p0.s                                      c/jmptbl_b_a_script_p1_p0.c
+modules/groups/a/t/xjump.s                                             c/jmptbl_a_t_xjump.c
+modules/groups/b/a/p_typebb_p0_p0.s                                    c/jmptbl_b_a_p_typebb_p0_p0.c
 data/coi_p1.s                                                          c/data_coi_p1.c
 data/ctasks_p1.s                                                       c/data_ctasks_p1.c
 data/diskio_p1.s                                                       c/data_diskio_p1.c

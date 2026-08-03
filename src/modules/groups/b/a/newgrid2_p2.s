@@ -513,12 +513,12 @@ _NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame:
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   DISPLIB_FindPreviousValidEntryIndex
+;   _DISPLIB_FindPreviousValidEntryIndex
 ; DESC:
-;   Jump table entry that forwards to DISPLIB_FindPreviousValidEntryIndex.
+;   Jump table entry that forwards to _DISPLIB_FindPreviousValidEntryIndex.
 ;------------------------------------------------------------------------------
 _NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex:
-    JMP     DISPLIB_FindPreviousValidEntryIndex
+    JMP     _DISPLIB_FindPreviousValidEntryIndex
 
 ;------------------------------------------------------------------------------
 ; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths   (Jump stub)

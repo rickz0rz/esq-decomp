@@ -1,4 +1,4 @@
-    XDEF    DISPLIB_FindPreviousValidEntryIndex
+    XDEF    _DISPLIB_FindPreviousValidEntryIndex
     XDEF    DISPLIB_FindPreviousValidEntryIndex_Return
 
 
@@ -6,7 +6,7 @@
 
 
 ;------------------------------------------------------------------------------
-; FUNC: DISPLIB_FindPreviousValidEntryIndex   (Routine at DISPLIB_FindPreviousValidEntryIndex)
+; FUNC: _DISPLIB_FindPreviousValidEntryIndex   (Routine at _DISPLIB_FindPreviousValidEntryIndex)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -24,7 +24,7 @@
 ; NOTES:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
-DISPLIB_FindPreviousValidEntryIndex:
+_DISPLIB_FindPreviousValidEntryIndex:
     MOVEM.L D5-D7/A2-A3,-(A7)
 
     MOVEA.L 24(A7),A3

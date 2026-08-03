@@ -25,14 +25,14 @@ _TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor:
 ;------------------------------------------------------------------------------
 ; FUNC: _TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility   (JumpStub)
 ; ARGS:
-;   see ESQDISP_TestEntryGridEligibility
+;   see _ESQDISP_TestEntryGridEligibility
 ; RET:
-;   see ESQDISP_TestEntryGridEligibility
+;   see _ESQDISP_TestEntryGridEligibility
 ; DESC:
-;   Jump stub to ESQDISP_TestEntryGridEligibility.
+;   Jump stub to _ESQDISP_TestEntryGridEligibility.
 ;------------------------------------------------------------------------------
 _TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility:
-    JMP     ESQDISP_TestEntryGridEligibility
+    JMP     _ESQDISP_TestEntryGridEligibility
 
 ;------------------------------------------------------------------------------
 ; FUNC: _TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition   (JumpStub)
