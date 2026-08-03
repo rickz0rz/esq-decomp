@@ -16,8 +16,8 @@ that broke it.
 Both byte gates pass on the current tree.
 
 ```
-assembly converted to C   97.9%   [#######################################.]
-                                  190,358 of 194,408 application bytes
+assembly converted to C   98.0%   [#######################################.]
+                                  190,474 of 194,408 application bytes
 ```
 
 Count the bytes, not the functions. The easy targets are small, so a function
@@ -29,11 +29,11 @@ Run `python3 tools/coverage.py` to regenerate every number in this section.
 | measure | value |
 |---|---|
 | application functions | 732 (194,408 bytes) |
-| restored to C | 701 (190,358 bytes, 97.9% by byte, 96% by count) |
+| restored to C | 702 (190,474 bytes, 98.0% by byte, 96% by count) |
 | byte-exact restorations | 29 |
-| source modules | 1,014, coalesced into 527 link units |
-| assembly remaining | 26,122 of 267,168 bytes (9.8%) |
-| DATA section in C | 54,968 of 55,820 bytes (98.5%) |
+| source modules | 1,015, coalesced into 531 link units |
+| assembly remaining | 14,102 of 267,168 bytes (5.3%), in 246 modules |
+| DATA section in C | 55,820 of 55,820 bytes (100%) |
 | linked size | CODE 211,348 bytes, DATA 55,820 bytes |
 
 A restoration is **exact** when the compiler emits the original bytes. It is
@@ -118,7 +118,7 @@ builds cannot disagree about content or ordering.
 Hunk objects store section sizes in longwords. An object whose content is 2
 modulo 4 bytes gets padded, which shifts everything after it. `gen_units.py`
 therefore joins consecutive modules until each unit lands on a 4-byte boundary.
-That is why 981 source modules become 494 link units. You can still edit any
+That is why 1,015 source modules become 531 link units. You can still edit any
 module on its own.
 
 ## The C phase

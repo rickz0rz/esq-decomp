@@ -1,7 +1,18 @@
 /* RESTORES: WDISP_DrawWeatherStatusOverlay
  * MODULE:   modules/groups/b/a/wdisp.s
  * STATUS:   behavioural
- * DO-NOT-LINK: address error (Guru 8000 0003) within 50 seconds of boot
+ * RETESTED 2026-08-02: the address error NO LONGER REPRODUCES, so the
+ * DO-NOT-LINK marker is lifted and this file is in `replacements-all.txt`.
+ * Linked at 770 entries it survives two 150-second soaks and one of 300 -- all
+ * far past the 50-second window in which the guru used to be certain -- plus
+ * the ESC open/close/open probe and a sweep of all six ESC-menu items.
+ * `guru_detect.py` exits 0 on every shot set. Nothing in this file changed, so
+ * the cause was elsewhere. Between the two measurements this project fixed the
+ * register-argument class, the extern-width class, the extern-shape class and
+ * the far-call branch-target defect. Any of them could have been the cause.
+ * The analysis below is kept because it is still the record of what was ruled
+ * out, and because a fault that stopped reproducing is not a fault that was
+ * understood. If the guru returns, start here.
  *
  * MEASURED, NOT SUSPECTED. tools/bisect_added.sh over the 14 entries this
  * tranche added named this file, and the confirmation build -- the 272-entry
@@ -24,8 +35,7 @@
  * emulator rather than by reading more assembly.
  *
  * The restoration stays here because the analysis above is worth keeping and
- * because it still counts toward coverage, which is read from these headers.
- * It must not go into a manifest until the address error is found and fixed.
+ * because it counts toward coverage, which is read from these headers.
  *
  * The weather overlay: a status brush, one status line above it, and up to ten
  * body lines laid out in left/right pairs below it. When no weather data is

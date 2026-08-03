@@ -1,7 +1,14 @@
 /* RESTORES: WDISP_DrawWeatherStatusDayEntry
  * MODULE:   modules/groups/b/a/wdisp.s
  * STATUS:   behavioural
- * DO-NOT-LINK: address error (Guru 8000 0003) within 50 seconds of boot
+ * RETESTED 2026-08-02: the address error NO LONGER REPRODUCES, so the
+ * DO-NOT-LINK marker is lifted and this file is in `replacements-all.txt`.
+ * See the fuller note in wdisp_draw_weather_status_overlay.c, which was
+ * measured separately and retested in the same builds: two 150-second soaks,
+ * one of 300, the ESC open/close/open probe and all six ESC-menu items, with
+ * `guru_detect.py` exiting 0 on every shot set. Nothing in this file changed,
+ * so the cause was elsewhere. A fault that stopped reproducing is not a fault
+ * that was understood -- if the guru returns, start with the analysis below.
  *
  * MEASURED, NOT SUSPECTED, and measured SEPARATELY from its sibling. After
  * src/c/wdisp_draw_weather_status_overlay.c was excluded the build still
@@ -23,8 +30,7 @@
  * they are right -- AGENTS.md warns that DATA=FAR hides a wrong struct offset
  * from cdiff entirely.
  *
- * It still counts toward coverage, which is read from these headers. It must
- * not go into a manifest until the address error is found and fixed.
+ * It counts toward coverage, which is read from these headers.
  *
  * One of the four day panels of the weather display. The panel is a third of
  * the total width, positioned by the day index, and it holds a condition

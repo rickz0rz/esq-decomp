@@ -130,8 +130,8 @@ Both were discovered the hard way; both are enforced by `build-split.sh`.
 **1. Objects are longword-sized.** Hunk objects store section sizes in
 longwords, so an object whose content is 2 (mod 4) bytes gets padded, shifting
 everything after it. `gen_units.py` therefore coalesces consecutive modules
-until each unit lands on a 4-byte boundary — which is why 981 source modules
-become 494 link units. Source files stay fine-grained; only the assembly grouping
+until each unit lands on a 4-byte boundary — which is why 1,015 source modules
+become 531 link units. Source files stay fine-grained. Only the assembly grouping
 is coarser. **You can still edit any module in isolation.**
 
 **2. vasm rewrites branches based on what is visible.** A bare
@@ -767,7 +767,7 @@ Known divergences so far are written up in `docs/compiler-version.md`.
 
 ## Progress is measured in BYTES, not function count
 
-**Coverage is 97.9% by byte, 701 restorations, both gates green. The
+**Coverage is 98.0% by byte, 702 restorations, both gates green. The
 push-to-the-ceiling run of 2026-07-31 is DONE.** It took coverage from 75.3% by
 working the worklist straight down, largest first, and by LABELLING four blocks
 the disassembly had documented but left unnamed -- `ESQIFF_NoOpFrame`,
@@ -798,8 +798,8 @@ is work; it regenerates from `coverage.survey()`, so it cannot go stale.
 
 Function count flatters: the easy targets are small, so a high count can sit on a
 tiny fraction of the program. 202 restorations once read as 28% of the program
-and was 5.2% of it by byte. At 701 restorations the two readings have converged
--- 96% by count against 97.9% by byte -- because the large end has been worked.
+and was 5.2% of it by byte. At 702 restorations the two readings have converged
+-- 96% by count against 98.0% by byte -- because the large end has been worked.
 
 ```sh
 python3 tools/coverage.py             # progress by byte and by count
@@ -1022,9 +1022,34 @@ machine is still nominally up.
 > bin whose ranges are DISJOINT is a real difference in what the program drew,
 > and the tool exits nonzero on one.
 
+> **THE GREEN BIN IS AN EXTERNAL AD BRUSH AND IT IS INTERMITTENT. Do not read
+> it as a regression.** ESQ loads IFF advertisements from disk on its own
+> schedule, and the "sportsview" brush fills a third of the screen with green
+> when it is up. On 2026-08-02 a pure far build showed it in 6 of 10 frames
+> (green 0.285) while every maximum-C build showed 0.000 across 20 frames, and
+> that reads exactly like a broken asset path. It is not. **The pristine
+> `ESQ.known-good-36cf56ed` also shows 0.000**, and so did a 300-second run and
+> a build with all 49 `esqiff`/`brush`/`ctasks` restorations removed. The brush
+> appeared in ONE run out of six.
+>
+> The general rule this is a case of: a bin that is present in one build and
+> absent in another is only evidence once the KNOWN-GOOD build has been soaked
+> in the same session and agrees with the candidate. Soaking it costs two and a
+> half minutes and settles the question. A bisect started on this signal costs
+> hours and finds nothing.
+
 `~/Downloads/Prevue/ESQ.known-good-36cf56ed` is the pristine byte-exact build.
 **Probe it first whenever a FAIL looks surprising**, since every harness copies
 the candidate over `~/Downloads/Prevue/ESQ`.
+
+**A run stuck at the BOOT LOADER passes the statistics table.** One 300-second
+soak captured 10 identical frames of Workbench showing `Loading PREVUE Software
+/ PLEASE WAIT..... / ROM version 2.04` -- ESQ never started. It reported
+`frames with Amiga content: 10/10`, `illegal/exception lines: 1` and
+`log lines: 1032`, which is the HEALTHY signature in the table above, under a
+`DISPLAY FROZEN` verdict that would otherwise read as a flake. The same binary
+booted normally on the next run. **Look at one frame before believing either
+the verdict or the statistics.**
 
 Three properties of this setup are not guessable and cost real time to learn:
 
@@ -1150,15 +1175,41 @@ far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
 BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
 278-entry parent, also clean and additionally proven on all six ESC-menu items.
 
-`src/c/replacements-all.txt` is the one to grow. It stands at **686 entries**
-after the push-to-the-ceiling run, with 28 restorations held out as unsafe to
-link. It went 440 -> 464 from new restorations and 464 -> 614 from SPLITTING
-modules, which is the cheaper lever of the two and was sitting unused. **That size is NOT yet proven.** The last size proven end to end is
-**440 entries**, which was clean on every check there is: `check_pcrel_range`
-0 truncated of 202 calls, `a6_audit` 0 of 440, `soak_esq.sh` 10 of 10 distinct
-frames, `menusweep_esq.sh` clean on all six ESC-menu items with no guru, and
-`framecolor.py` every colour bin overlapping the known-good build. Re-run that
-whole sequence on the 614-entry manifest before you call it good.
+`src/c/replacements-all.txt` is the one to grow. It stands at **770 entries**,
+every DATA module among them, with 28 restorations held out as unsafe to link.
+It went 440 -> 464 from new restorations and 464 -> 614 from SPLITTING modules,
+which is the cheaper lever of the two and was sitting unused.
+
+**At 770 it is PROVEN END TO END** (2026-08-02), on the same sequence that
+proved 440: `check_pcrel_range` 0 truncated of 55 calls, `a6_audit` 0 of 769,
+`data_shape_audit` and `extern_width_audit` clean, `data_offset_audit` 50 data
+modules in agreement, `soak_esq.sh` PASS at 150 seconds twice and at 300 once
+(10 of 10 distinct frames, 10 of 10 holding Amiga content, 1 exception line,
+1032 log lines), `keyprobe_esq.sh <bin> <label> 53:6 53:6 53:6` alternating
+menu-open / closed / open with three distinct pixel hashes,
+`menusweep_esq.sh` clean on all six ESC-menu items, `guru_detect.py` exit 0 on
+every shot set, and `framecolor.py` every bin overlapping the pure far build.
+
+> **The two weather brush drawers are LINKED again.** Both carried
+> `DO-NOT-LINK: address error (Guru 8000 0003) within 50 seconds of boot`, and
+> at 770 entries the guru NO LONGER REPRODUCES -- 300 seconds of soak plus the
+> menu sweep, against a fault that used to be certain inside 50. Neither file
+> changed, so the cause was elsewhere. The register-argument, extern-width,
+> extern-shape and far-call branch-target fixes all landed in between. **A fault
+> that stopped reproducing is not a fault that was understood.** Both headers
+> keep their original analysis for whoever meets it next.
+
+**Four defects had to be fixed before it would link at all**, and every one was
+invisible to the byte gates. Read these before growing the manifest again:
+
+1. A manifest row named a C file that is not on disk. Four jump tables stayed in
+   assembly and nothing reported it.
+2. A missing `<string.h>` turned an inlined `strlen` into a call to an undefined
+   symbol.
+3. The DATA hunk lost its CHIP flag.
+4. The DATA hunk grew 20 bytes.
+
+The last two have their own sections below.
 
 **Growing the manifest past a proven point is safe for the byte gates, which do
 not read it. A manifest that has only been LINKED is not a manifest that has
@@ -1325,6 +1376,80 @@ Three traps, each of which cost a build to find:
 The remaining 220 PC-relative calls are same-unit branches that vasm chose to
 keep short. `check_pcrel_range` still runs on every build and still aborts on a
 wrap, so this is a smaller haystack rather than a removed check.
+
+## SOLVED: an all-C DATA section loses the CHIP flag (2026-08-02)
+
+`src/Prevue.asm` line 1148 is `SECTION S_1,DATA,CHIP`. The DATA hunk holds the
+copper lists and the bitplanes, so the custom chips DMA from it and it must be
+chip RAM.
+
+**A C object cannot say that.** SAS/C emits a plain `data` hunk with no memory
+attribute. While even one data module was still assembly the flag arrived from
+that module and the hunk was correct. When the last one was converted, nothing
+contributed it and the DATA hunk linked MEMF_ANY -- so on any machine with fast
+RAM the program loads its data where the chips cannot read it.
+
+**`hunkcmp.py` is the ONLY thing that sees this**, as one line:
+
+```
+hunk1 MISMATCH mem: 1 vs 0
+```
+
+The link succeeds. Both byte gates ignore a C build. `check_pcrel_range`,
+`a6_audit`, `data_shape_audit` and `extern_width_audit` all pass.
+
+**Fix.** `tools/mkchipflag.py` synthesises a HUNK_DATA of length ZERO with the
+CHIP bit set, named `S_1`. vlink merges input sections by name and ORs their
+memory attributes, so the flag arrives and the image does not move -- measured
+byte-identical, with the size-table entry going `0x00000001` -> `0x40000001`.
+`build-split.sh` passes it unconditionally, because CHIP OR CHIP is CHIP, so a
+build whose data is still assembly is unaffected.
+
+Two other ways were measured and both are wrong. An assembly stub
+`SECTION S_1,DATA,CHIP` with no content makes vasm emit a size-0 **CODE** hunk
+instead, which does nothing at all. The same stub with a `DC.W 0` in it brings
+the flag and 2 bytes, and on the DATA side bytes are not inert.
+
+## SOLVED: a data module can measure right and still lay out wrong (2026-08-02)
+
+`data_to_c.py` cross-checks its arithmetic against vasm, so it knows
+`data/textdisp_p2.s` is 144 bytes. That is the sum of the spans it PARSED, not
+what the compiler EMITS.
+
+`_TEXTDISP_FormatEntryFallbackTable` is two pointers, eight longs and a trailing
+`DC.B 0` -- 41 bytes. SAS/C 6.51 gives a struct holding a `long` an alignment of
+2, so it emitted 42, and every symbol after it in the module moved by one byte
+while the total still agreed. The DATA hunk grew 4.
+
+**The rule this project already had was right and was not being checked.**
+AGENTS.md says "Compare the OFFSETS, not the total" for exactly this reason.
+Nothing enforced it.
+
+```sh
+python3 tools/data_offset_audit.py [manifest]
+```
+
+It assembles each converted data module alone, reads its label offsets, reads
+the symbol offsets out of the compiled object, and reports every disagreement.
+`build-split.sh` runs it on any build that sets `C_REPLACEMENTS` and aborts on a
+hit. Offsets are compared RELATIVE to the module's first symbol, because a
+replaced module can sit at a nonzero offset inside a coalesced object, and the
+candidate objects come from `build/objlist` -- `build/obj` is never cleaned, and
+matching against stale objects from earlier builds reported four modules as
+shifted by thousands of bytes when nothing was wrong with them.
+
+`data_to_c.py` now peels the trailing byte off an odd-sized struct span into its
+own symbol, which is byte-neutral and leaves a 40-byte struct needing no
+padding.
+
+**A second source of DATA growth is an initialised static in ORDINARY C code.**
+`lib_hex_parse_sprintf.c` held `static char kHexDigitTable[16]`. The original
+keeps those digits in the CODE section, reached PC-relative. 6.51 puts every
+initialised static in `data`, and that object links BEFORE the converted data
+modules, so all 55,820 bytes of real data shifted by 16. `static const` does not
+help -- measured, still DATA. The digit is now computed rather than looked up,
+which costs 12 inert CODE bytes and returns the DATA hunk to its reference size.
+**Watch the hunk1 size on any restoration that holds an initialised static.**
 
 ## Verifying a C build
 
