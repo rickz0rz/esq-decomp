@@ -31,8 +31,14 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import sclib
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LIB_DIR = os.path.expanduser('~/Downloads/SAS-C-hdd/sc/lib')
-LIBS = ['sc.lib', 'amiga.lib', 'scnb.lib', 'small.lib']
+
+# --libdir points this at any candidate version's library directory, which is
+# the whole point: testing a new compiler costs one command and no compile.
+#   6.51     ~/Downloads/SAS-C-hdd/sc/lib
+#   6.00     ~/Downloads/SAS-C-6-hdd/sc/lib
+#   Lattice  ~/Downloads/LATTICE-C-hdd/LC/Lib      (lc.lib, not sc.lib)
+LIB_DIR = os.path.expanduser(os.environ.get('LIB_DIR', '~/Downloads/SAS-C-hdd/sc/lib'))
+LIBS = ['sc.lib', 'lc.lib', 'amiga.lib', 'scnb.lib', 'small.lib']
 
 
 def refbytes(label):
@@ -87,6 +93,13 @@ def find(raw, libs, everywhere=True):
                     continue
                 shifted = {(o - off, w) for o, w in m.relocs
                            if off <= o < off + n}
+                # A region that is mostly relocation is not evidence. Lattice's
+                # `_sys_errlist` is a pointer table, so masking covered every
+                # byte and it "matched" 20 unrelated routines at one offset.
+                # Require that most of the window is actually compared.
+                masked = len({k for o, w in shifted for k in range(o, min(o + w, n))})
+                if n - masked < max(16, n // 2):
+                    continue
                 if sclib.masked_equal(raw, m.data[off:off + n], shifted):
                     at = [(v, s) for s, v in m.defs.items() if v <= off]
                     sym = max(at)[1] if at else '(no symbol)'
@@ -128,6 +141,11 @@ def remaining_submodules():
 
 def main():
     args = [a for a in sys.argv[1:]]
+    global LIB_DIR
+    if '--libdir' in args:
+        i = args.index('--libdir')
+        LIB_DIR = os.path.expanduser(args[i + 1])
+        del args[i:i + 2]
     labels = []
     if '--all-remaining' in args:
         for m in remaining_submodules():

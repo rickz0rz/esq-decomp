@@ -676,11 +676,25 @@ which is what makes the comparison honest. The commonest relocation in a
 near-data library is the A4-relative DREL16, and masking 4 bytes there would
 hide two bytes of real opcode and manufacture a match.
 
-**It finds 2 of the 51 remaining routines, and that low rate is the point.** The
-original linked ITS OWN library version, which the compiler hunt puts between
-Lattice 5.10 and SAS/C 6.00 -- so 6.51's members are not expected to match, and
-`__CXD22` shows exactly the small divergence that predicts. A future run against
-the right version is a good test of a version candidate.
+**It finds 3 of the 51 remaining routines under 6.51, and that low rate is the
+point.** The original linked ITS OWN library version, so 6.51's members are not
+expected to match.
+
+**All three installed libraries have now been compared, and the library brackets
+the version from both sides:**
+
+| routine | size | Lattice 5.10 | SAS/C 6.00 | SAS/C 6.51 |
+|---|---:|---|---|---|
+| `MATH_DivS32` = `_CXD33` | 50 | identical | identical | identical |
+| `MATH_Mulu32` = `_CXM33` | 32 | 8 differ | identical | identical |
+| `MATH_DivU32` = `_CXD22` | 146 | **2 differ** | 20 differ | 20 differ |
+
+ESQ has 6.x's multiply helper, which Lattice 5.10 does not, and a divide helper
+two bytes from Lattice's against twenty from 6.x's. That is a library BETWEEN
+the two, which is the same window the codegen tests give. 6.00 and 6.51 are
+indistinguishable on this test. The whole Lattice difference is one instruction:
+ESQ has `exg.l d0,d1` where Lattice has `exg.l d1,d0`. Full write-up and the
+one-command recipe: `docs/compiler-version.md`.
 
 **A short match is not an identification, and the tool says so.** Every AmigaOS
 stub in `amiga.lib` is the same three instructions -- load the base into A6,

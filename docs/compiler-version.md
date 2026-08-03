@@ -637,34 +637,63 @@ python3 tools/libmatch.py --all-remaining     # submodules vs the installed libr
 python3 tools/sclib.py <lib> --symbol __CXD22
 ```
 
-Measured against SAS/C 6.51 on 2026-08-03, over the 51 routines still in
-`modules/submodules/`:
+All three installed libraries were compared on 2026-08-03. The three arithmetic
+helpers sit in one member in every one of them -- 196 bytes, the signed divide
+at offset 0 and the unsigned at offset 50 -- so the comparison is like for like.
 
-| routine | ours | 6.51 | verdict |
-|---|---:|---:|---|
-| `MATH_DivS32` = `__CXD33` | 50 | 50 | **byte-identical** |
-| `MATH_Mulu32` = `__CXM33` | 32 | 32 | **byte-identical** |
-| `MATH_DivU32` = `__CXD22` | 146 | 146 | same length, agrees for 121, then 20 bytes differ |
+| routine | size | Lattice C 5.10 | SAS/C 6.00 | SAS/C 6.51 |
+|---|---:|---|---|---|
+| `MATH_DivS32` = `_CXD33` | 50 | **identical** | **identical** | **identical** |
+| `MATH_Mulu32` = `_CXM33` | 32 | 8 bytes differ | **identical** | **identical** |
+| `MATH_DivU32` = `_CXD22` | 146 | **2 bytes differ** | 20 bytes differ | 20 bytes differ |
 
-That pattern is the useful part. Two helpers identical and the third differing
-only in a tail says the original's library is CLOSE to 6.51 rather than
-unrelated, which is what the codegen evidence says as well. The divergence
-starts at byte 121:
+**This brackets the library from BOTH sides, and it agrees with the codegen
+bracket.** ESQ has 6.x's `_CXM33`, which Lattice 5.10 does not -- Lattice opens
+that routine `2042 2243` where ESQ and 6.x open `48e7 3000`. But ESQ's `_CXD22`
+is two bytes from Lattice's and twenty from 6.x's. A library holding the new
+multiply and the old divide is one BETWEEN the two, which is exactly the
+`Lattice 5.10 < ORIGINAL < SAS/C 6.00` window the codegen tests give.
+
+**6.00 and 6.51 are indistinguishable here.** All three helpers are identical
+between them, so this test cannot separate 6.x versions. It separates eras.
+
+The whole `_CXD22` difference against Lattice is ONE INSTRUCTION at offset 138:
 
 ```
-ours:  ... 8264 0000 08 5343 d081 64fe 7200 3203 48
-6.51:  ... 8264 0000 06 5343 d081 7200 3203 4843 e7
+ESQ      c141   exg.l d0, d1
+Lattice  c340   exg.l d1, d0
 ```
 
-**This is a one-command test for any version candidate.** Install it, point
-`LIB_DIR` in `tools/libmatch.py` at its `lib` directory, and re-run. A version
-whose `__CXD22` matches all 146 bytes is a much stronger signal than a single
-function reaching byte-exactness, because a library member is compiled code
-nobody chose the source form of.
+Same operation, operands encoded the other way round, and the other 144 bytes
+agree. Against 6.x the divergence is larger and starts at byte 121.
 
-Only 2 of 51 routines match 6.51 at all. Read that as a version gap rather than
-as evidence the routines are not library code -- `libmatch.py` masks every
+**This is a one-command test for any version candidate, and it needs no
+compile:**
+
+```sh
+python3 tools/libmatch.py --libdir <candidate>/lib --all-remaining
+python3 tools/sclib.py <candidate>/lib/sc.lib --symbol __CXD22
+```
+
+A version whose `_CXD22` matches all 146 bytes is a much stronger signal than
+one function reaching byte-exactness, because a library member is compiled code
+whose source form nobody chose. Read the `_CXM33` row at the same time: a
+candidate must match ESQ there as well, which is what rules Lattice 5.10 out.
+
+Match counts over the 51 routines still in `modules/submodules/` are 3 for both
+6.x versions and 1 for Lattice. Read a low count as a version gap rather than as
+evidence the routines are not library code -- `libmatch.py` masks every
 relocated field, so a mismatch is a real difference in the instruction stream.
+
+> **Two false-positive classes had to be excluded before these counts meant
+> anything, and both were found by testing the tool rather than trusting it.**
+> A short routine matches by accident, because every AmigaOS stub in `amiga.lib`
+> is the same three instructions, so anything under 24 bytes is reported apart
+> from the count. And a region that is mostly relocation is not evidence at all:
+> Lattice's `_sys_errlist` is a pointer table, and masking covered every byte of
+> it, so it "matched" 20 unrelated routines at one offset and turned 1 real hit
+> into 20. `libmatch.py` now requires that at least half the window, and at
+> least 16 bytes, are actually compared.
 
 ## Reproducing
 
