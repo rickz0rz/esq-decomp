@@ -621,9 +621,84 @@ this way, since those are resolved at link time and absent from the reloc
 table — the 5% verbatim-match figure is a floor, not a ceiling.)
 
 **Do not hand-decompile these.** No C fed to `sc` reproduces them, because they
-were built from SAS's own library sources. The faithful route is to link
-`sc.lib`. Treat a stubborn mismatch in a `submodules/` function as a signal that
-it is library code.
+were built from SAS's own library sources. Treat a stubborn mismatch in a
+`submodules/` function as a signal that it is library code.
+
+### ...but LINKING sc.lib is not the answer, and this was measured (2026-08-03)
+
+An earlier version of this section said the faithful route is to link `sc.lib`.
+Three measurements say otherwise, and all three point the same way.
+
+**sc.lib CANNOT be added to the link. It collides on exactly 9 symbols**, which
+are the 9 vlink reports. ESQ defines all of them itself: the six AmigaOS library
+bases (`_DOSBase`, `_DiskfontBase`, `_GfxBase`, `_IntuitionBase`, `_SysBase`,
+`_UtilityBase`) and the three SAS/C arithmetic helpers (`__CXD22`, `__CXD33`,
+`__CXM33`). The bases became C definitions when the DATA section converted, so
+this collision grew as the C lane advanced.
+
+**It is not needed either.** Across the whole 770-entry link, exactly ONE symbol
+is undefined -- `_LinkerDB`, the near-data base, which vlink supplies itself. So
+the library has nothing to contribute.
+
+**The helpers are already handled better than sc.lib could.**
+`src/modules/submodules/unknown22_p0.s` exports the ORIGINAL's own routines
+under SAS/C's names: `__CXM33` is `MATH_Mulu32`, `__CXD33` is `MATH_DivS32`,
+`__CXD22` is `MATH_DivU32`. Every `/` and `%` a restoration compiles therefore
+lands on the original's code. Linking 6.51 would replace it.
+
+**And replacing it would LOSE fidelity, by a measured 20 bytes.** Our `__CXD33`
+(50 bytes) and `__CXM33` (32) are byte-identical to 6.51's. Our `__CXD22` is the
+same length as 6.51's, 146 bytes, agrees for 121 of them, and then differs in a
+20-byte tail. Two routines identical and a third differing slightly is the
+signature of a NEARBY library version, and it belongs with the version evidence
+in `docs/compiler-version.md`.
+
+So `SCLIB=` stays available for a future need and must not be set today. The
+comment in `build-split.sh` used to call an unnecessary library "harmless but
+noisy"; it is not harmless, it fails the link.
+
+### Reading the library, and matching a routine to a member
+
+```sh
+python3 tools/sclib.py <lib>                 # every member and its symbols
+python3 tools/sclib.py <lib> --symbol __CXD22
+python3 tools/libmatch.py --all-remaining    # which submodules ARE library members
+python3 tools/libmatch.py <Label> ...
+```
+
+`sc.lib` is not an `ar` archive. Each block is HUNK_LIB, a body of concatenated
+hunks with NO HUNK_UNIT or HUNK_END between units, then a HUNK_INDEX naming
+them. 6.51's sc.lib holds TWO such blocks. Symbol definitions live in the index,
+so a parser that walks only the body finds 528 hunks and zero symbols.
+
+`libmatch.py` masks the fields a relocation patches, at each one's own width,
+which is what makes the comparison honest. The commonest relocation in a
+near-data library is the A4-relative DREL16, and masking 4 bytes there would
+hide two bytes of real opcode and manufacture a match.
+
+**It finds 2 of the 51 remaining routines, and that low rate is the point.** The
+original linked ITS OWN library version, which the compiler hunt puts between
+Lattice 5.10 and SAS/C 6.00 -- so 6.51's members are not expected to match, and
+`__CXD22` shows exactly the small divergence that predicts. A future run against
+the right version is a good test of a version candidate.
+
+**A short match is not an identification, and the tool says so.** Every AmigaOS
+stub in `amiga.lib` is the same three instructions -- load the base into A6,
+`JSR` a negative offset, `RTS` -- so a 20-byte routine "matching"
+`_FreeVisualInfo` means nothing. Anything under 24 bytes is listed separately
+rather than counted.
+
+**But short matches that CORROBORATE each other are evidence, and one settled a
+module.** `modules/submodules/unknown36.s` is SAS/C's `_cxbrk.c`, the Ctrl-C
+break requester. Its strings appear in that member at 258, 286, 296 and 302,
+which is exactly their order and spacing in our module: `** User Abort Requested
+**`, `CONTINUE`, `ABORT`, `*** Break: `. The string block is identical and only
+the code differs, 416 bytes against 332 -- the version gap seen from the other
+side.
+
+Note `amiga.lib` and `small.lib` are NOT HUNK_LIB. They are plain object units
+concatenated, with their symbols in a HUNK_EXT per unit, so a HUNK_LIB-only
+parser reports 0 members and that reads exactly like an empty library.
 
 ## Alignment limits which functions can be byte-exact end to end
 

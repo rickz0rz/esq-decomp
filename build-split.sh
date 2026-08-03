@@ -172,11 +172,18 @@ echo "$OBJ/absdefs.o" >> "$BUILD/objlist"
 # the image does not move. See tools/mkchipflag.py.
 python3 tools/mkchipflag.py "$OBJ/chipflag.o" S_1
 echo "$OBJ/chipflag.o" >> "$BUILD/objlist"
-# SCLIB pulls in SAS/C's runtime helpers (__CXD33 and friends -- the 32-bit
-# divide routines the compiler calls for `/` and `%`). Only a maximum-C build
-# needs it; the byte-exact manifest never reaches code that calls them, and
-# linking a library that contributes nothing is harmless but noisy, so it is
-# opt-in. See AGENTS.md, "Library code is not application code".
+# SCLIB links a SAS/C library. LEAVE IT UNSET.
+#
+# It used to say that linking a library which contributes nothing is harmless
+# but noisy. That is wrong, and it was measured on 2026-08-03: sc.lib collides
+# on exactly 9 symbols and the link FAILS. ESQ defines all nine itself -- the
+# six AmigaOS library bases, which became C definitions when the DATA section
+# converted, and the three arithmetic helpers __CXD22/__CXD33/__CXM33, which
+# modules/submodules/unknown22_p0.s exports from the ORIGINAL's own routines.
+#
+# Nor is it needed. One symbol is undefined across the whole link, _LinkerDB,
+# and vlink supplies that itself. See AGENTS.md, "Library code is not
+# application code", for the fidelity argument against 6.51's version.
 # Accept either a bare library name (resolved by vlink's -l search) or a full
 # path to a .lib, which vlink takes as an ordinary input file. The datetime
 # restorations need this: their `/` and `%` on longs compile to calls to __CXD22,

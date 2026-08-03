@@ -626,6 +626,46 @@ emits zeros. `tools/cmatch.sh` strips either, but only when doing so makes the
 lengths agree. Before that fix, 6.00's zero pad made genuine matches read as
 mismatches — the first pass over 6.00 undercounted its matches by six.
 
+## The LIBRARY narrows the version too, and it is cheaper to test than codegen
+
+A compile tests the code generator. The linked runtime tests the LIBRARY, and
+the original linked its own version of `sc.lib`. Comparing the two is a second,
+independent line of evidence, and it needs no compile at all.
+
+```sh
+python3 tools/libmatch.py --all-remaining     # submodules vs the installed libraries
+python3 tools/sclib.py <lib> --symbol __CXD22
+```
+
+Measured against SAS/C 6.51 on 2026-08-03, over the 51 routines still in
+`modules/submodules/`:
+
+| routine | ours | 6.51 | verdict |
+|---|---:|---:|---|
+| `MATH_DivS32` = `__CXD33` | 50 | 50 | **byte-identical** |
+| `MATH_Mulu32` = `__CXM33` | 32 | 32 | **byte-identical** |
+| `MATH_DivU32` = `__CXD22` | 146 | 146 | same length, agrees for 121, then 20 bytes differ |
+
+That pattern is the useful part. Two helpers identical and the third differing
+only in a tail says the original's library is CLOSE to 6.51 rather than
+unrelated, which is what the codegen evidence says as well. The divergence
+starts at byte 121:
+
+```
+ours:  ... 8264 0000 08 5343 d081 64fe 7200 3203 48
+6.51:  ... 8264 0000 06 5343 d081 7200 3203 4843 e7
+```
+
+**This is a one-command test for any version candidate.** Install it, point
+`LIB_DIR` in `tools/libmatch.py` at its `lib` directory, and re-run. A version
+whose `__CXD22` matches all 146 bytes is a much stronger signal than a single
+function reaching byte-exactness, because a library member is compiled code
+nobody chose the source form of.
+
+Only 2 of 51 routines match 6.51 at all. Read that as a version gap rather than
+as evidence the routines are not library code -- `libmatch.py` masks every
+relocated field, so a mismatch is a real difference in the instruction stream.
+
 ## Reproducing
 
 ```sh
