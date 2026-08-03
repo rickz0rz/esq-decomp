@@ -14,7 +14,7 @@
 modules/groups/b/a/script4_scriptresetbannerchardefaults.s       c/script_reset_banner_char_defaults.c
 modules/groups/b/a/script3_scriptclearsearchtextsandchannels.s   c/script_clear_search_texts_and_channels.c
 modules/groups/a/w/ladfunc_ladfuncgetpackedpenhighnibble.s       c/ladfunc_get_packed_pen_high_nibble.c
-modules/groups/a/l/ed3_edisconfirmkey.s                          c/ed_is_confirm_key.c                     SHORTINT
+modules/groups/a/l/ed3_edisconfirmkey_ed_isconfirmkey.s                          c/ed_is_confirm_key.c                     SHORTINT
 modules/groups/_main/b/b_esqcheckcompatiblevideochip.s           c/esq_check_compatible_video_chip.c
 modules/groups/b/a/script2_scriptwritectrlshadowtoserdat.s     c/script_write_ctrl_shadow_to_serdat.c
 modules/groups/a/n/esqiff_esqiffrestorebasepalettetriples.s    c/esqiff_restore_base_palette_triples.c
@@ -33,3 +33,4 @@ modules/groups/a/l/ed3bbb_eddecrementadnumber.s               c/ed_decrement_ad_
 modules/groups/b/a/p_typeb_ptypepromotesecondarylist.s        c/p_type_promote_secondary_list.c
 modules/groups/a/k/ed1_ed1clearescmenumode.s                    c/ed1_clear_esc_menu_mode.c
 modules/groups/a/a/app3_esqtryromwritetest.s                    c/esq_try_rom_write_test.c
+modules/submodules/unknown40_battclock_getsecondsfrombatterybackedclock.s c/lib_battclock.c

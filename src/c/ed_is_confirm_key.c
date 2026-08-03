@@ -1,5 +1,5 @@
 /* RESTORES: _ED_IsConfirmKey
- * MODULE:   modules/groups/a/l/ed3_edisconfirmkey.s
+ * MODULE:   modules/groups/a/l/ed3_edisconfirmkey_ed_isconfirmkey.s
  * STATUS:   exact
  * OPTIONS:  SHORTINT
  *

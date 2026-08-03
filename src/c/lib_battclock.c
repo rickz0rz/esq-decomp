@@ -1,6 +1,14 @@
 /* RESTORES: BATTCLOCK_GetSecondsFromBatteryBackedClock
  * MODULE:   modules/submodules/unknown40_battclock_getsecondsfrombatterybackedclock.s
- * STATUS:   behavioural
+ * STATUS:   exact
+ *
+ * BYTE-IDENTICAL at 16 bytes, with the one relocated field compared
+ * positionally. 16 is a multiple of 4, so the object needs no padding and this
+ * restoration costs the linked image nothing. It is in src/c/replacements.txt.
+ *
+ * Its sibling `lib_battclock_write.c` does NOT match -- 28 bytes against 20 --
+ * because the original saves and restores A6 by hand around the call. Leave it
+ * behavioural.
  *
  * SAS/C library code: a thin wrapper on battclock.resource's ReadBattClock.
  *
