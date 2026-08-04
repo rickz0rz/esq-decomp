@@ -1264,15 +1264,15 @@ far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
 BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
 278-entry parent, also clean and additionally proven on all six ESC-menu items.
 
-`src/c/replacements-all.txt` is the one to grow. It stands at **802 entries**,
+`src/c/replacements-all.txt` is the one to grow. It stands at **806 entries**,
 every DATA module among them, with 28 restorations held out as unsafe to link.
 It went 440 -> 464 from new restorations and 464 -> 614 from SPLITTING modules,
 which is the cheaper lever of the two and was sitting unused. It went 770 -> 790
 on 2026-08-03 from CONVERTING JUMP TABLES and from the alias forwarders that
 unblocked them. Both are described under "The last mile to 100% C" below.
 
-**At 802 it is PROVEN END TO END** (2026-08-03), on the same sequence that
-proved 440: `check_pcrel_range` 0 truncated of 50 calls, `a6_audit` 0 of 801,
+**At 806 it is PROVEN END TO END** (2026-08-03), on the same sequence that
+proved 440: `check_pcrel_range` 0 truncated of 50 calls, `a6_audit` 0 of 805,
 `data_shape_audit` and `extern_width_audit` clean, `data_offset_audit` 50 data
 modules in agreement, `soak_esq.sh` PASS at 150 seconds twice and at 300 once
 (10 of 10 distinct frames, 10 of 10 holding Amiga content, 1 exception line,
@@ -1312,8 +1312,8 @@ been RUN.** Soak before treating a new size as good.
 still assembly and that is misleading: 150 of them are EMPTY files and 10 hold
 only an alignment pad. The honest number comes from the link map.
 
-**The maximum-C build is 95.7% C by CODE byte.** 223,380 bytes of 233,352 come
-from compiled C. 9,972 bytes are assembly.
+**The maximum-C build is 95.9% C by CODE byte.** 223,768 bytes of 233,444 come
+from compiled C. 9,676 bytes are assembly.
 
 ```sh
 python3 tools/lastmile.py                  # module buckets, plus the code worklist
@@ -1511,6 +1511,19 @@ same block.
 The convention the tool looks for is a `V` after the module prefix:
 `WDISP_SPrintf` -> `WDISP_VSPrintf`. A variadic target with no such sibling is
 still refused, with a message naming the v-form it wanted.
+
+**IT GENERALISES. `FORMAT_RawDoFmtWithScratchBuffer` has the identical shape** --
+`LEA 12(A5),A0` for the argument pointer, then a worker that takes one
+(`FORMAT_FormatToBuffer2`, which is to it what `WDISP_FormatWithCallback` is to
+sprintf). It took the same treatment and freed three more tables. When a
+variadic function computes an argument pointer and hands it to a worker, the
+worker IS the v-form and the split is already there in the original.
+
+**But the v-form must be LINKED, and that is the catch.** `lib_hex_parse_sprintf.c`
+was already in the manifest, so adding `WDISP_VSPrintf` to it produced a real
+symbol immediately. `unknown2a.s` was NOT, so the whole module had to be
+converted first -- which was only possible because its two unlabelled blocks are
+dead. Check that the module can be linked before counting on a v-form.
 
 `WDISP_VSPrintf` IS A NEW SYMBOL that the original does not have. That is the
 price, along with one extra call for callers that reach sprintf through a thunk.

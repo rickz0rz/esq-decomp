@@ -4,7 +4,7 @@
     XDEF    PARALLEL_CheckReadyStub
     XDEF    PARALLEL_RawDoFmt
     XDEF    PARALLEL_RawDoFmtCommon
-    XDEF    PARALLEL_RawDoFmtStackArgs
+    XDEF    _PARALLEL_RawDoFmtStackArgs
     XDEF    PARALLEL_WaitReady
     XDEF    PARALLEL_WriteCharD0
     XDEF    PARALLEL_WriteCharHw
@@ -257,7 +257,7 @@ PARALLEL_CheckReady:
     BRA.S   PARALLEL_RawDoFmtCommon
 
 ;------------------------------------------------------------------------------
-; FUNC: PARALLEL_RawDoFmtStackArgs   (RawDoFmtStackArgsuncertain)
+; FUNC: _PARALLEL_RawDoFmtStackArgs   (RawDoFmtStackArgsuncertain)
 ; ARGS:
 ;   stack +4: fmtPtr
 ;   stack +8: first arg on stack
@@ -276,7 +276,7 @@ PARALLEL_CheckReady:
 ; NOTES:
 ;   Uses A1 = &stack+8 for RawDoFmt argument stream.
 ;------------------------------------------------------------------------------
-PARALLEL_RawDoFmtStackArgs:
+_PARALLEL_RawDoFmtStackArgs:
     MOVEA.L 4(A7),A0
     LEA     8(A7),A1
 

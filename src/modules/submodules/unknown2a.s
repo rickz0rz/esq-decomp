@@ -3,7 +3,7 @@
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: uncertain   (Dead code: _FORMAT_FormatToBuffer2/PARALLEL_RawDoFmtStackArgs wrapperuncertain)
+; FUNC: uncertain   (Dead code: _FORMAT_FormatToBuffer2/_PARALLEL_RawDoFmtStackArgs wrapperuncertain)
 ; ARGS:
 ;   stack +8: uncertain (arg for _FORMAT_FormatToBuffer2)
 ;   stack +12: uncertain (arg for _FORMAT_FormatToBuffer2)
@@ -12,14 +12,14 @@
 ; CLOBBERS:
 ;   D0/A0 uncertain
 ; CALLS:
-;   _FORMAT_FormatToBuffer2, PARALLEL_RawDoFmtStackArgs
+;   _FORMAT_FormatToBuffer2, _PARALLEL_RawDoFmtStackArgs
 ; READS:
 ;   _FORMAT_ScratchBuffer
 ; WRITES:
 ;   _FORMAT_ScratchBuffer
 ; DESC:
 ;   Dead code wrapper that formats/updates _FORMAT_ScratchBuffer and then calls
-;   PARALLEL_RawDoFmtStackArgs.
+;   _PARALLEL_RawDoFmtStackArgs.
 ; NOTES:
 ;   Entry label not present in source.
 ;------------------------------------------------------------------------------
@@ -34,7 +34,7 @@
     JSR     _FORMAT_FormatToBuffer2(PC)
 
     PEA     _FORMAT_ScratchBuffer
-    JSR     PARALLEL_RawDoFmtStackArgs(PC)
+    JSR     _PARALLEL_RawDoFmtStackArgs(PC)
 
     UNLK    A5
     RTS
@@ -52,13 +52,13 @@
 ; CLOBBERS:
 ;   A0/A5/A7
 ; CALLS:
-;   _FORMAT_FormatToBuffer2, PARALLEL_RawDoFmtStackArgs
+;   _FORMAT_FormatToBuffer2, _PARALLEL_RawDoFmtStackArgs
 ; READS:
 ;   _FORMAT_ScratchBuffer
 ; WRITES:
 ;   _FORMAT_ScratchBuffer
 ; DESC:
-;   Wrapper that formats/updates _FORMAT_ScratchBuffer and then calls PARALLEL_RawDoFmtStackArgs.
+;   Wrapper that formats/updates _FORMAT_ScratchBuffer and then calls _PARALLEL_RawDoFmtStackArgs.
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ _FORMAT_RawDoFmtWithScratchBuffer:
     JSR     _FORMAT_FormatToBuffer2(PC)
 
     PEA     _FORMAT_ScratchBuffer
-    JSR     PARALLEL_RawDoFmtStackArgs(PC)
+    JSR     _PARALLEL_RawDoFmtStackArgs(PC)
 
     UNLK    A5
     RTS

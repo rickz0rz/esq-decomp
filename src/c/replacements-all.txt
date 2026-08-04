@@ -762,9 +762,13 @@ modules/groups/b/a/script_p1_p0.s                                      c/jmptbl_
 modules/groups/a/t/xjump.s                                             c/jmptbl_a_t_xjump.c
 modules/groups/b/a/p_typebb_p0_p0.s                                    c/jmptbl_b_a_p_typebb_p0_p0.c
 modules/submodules/unknown22_p0.s                                      c/lib_math_helpers.c
+modules/submodules/unknown2a.s                                         c/lib_format_rawdofmt_scratch.c
 modules/groups/a/a/app2_p8_esq_tickglobalcounters.s                    c/esq_tick_global_counters.c
 modules/groups/a/a/xjump.s                                             c/jmptbl_a_a_xjump.c
+modules/groups/a/b/xjump.s                                             c/jmptbl_a_b_xjump.c
 modules/groups/a/c/xjump.s                                             c/jmptbl_a_c_xjump.c
+modules/groups/a/j/xjump.s                                             c/jmptbl_a_j_xjump.c
+modules/groups/a/x/xjump.s                                             c/jmptbl_a_x_xjump.c
 modules/groups/a/e/xjump.s                                             c/jmptbl_a_e_xjump.c
 modules/groups/a/g/xjump.s                                             c/jmptbl_a_g_xjump.c
 modules/groups/a/m/xjump.s                                             c/jmptbl_a_m_xjump.c

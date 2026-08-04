@@ -182,6 +182,13 @@ modules/groups/b/a/p_typebb_p0_p0.s                                    c/jmptbl_
 # return the remainder in D1, so every `%` in src/c was rewritten first.
 modules/submodules/unknown22_p0.s                                      c/lib_math_helpers.c
 
+# unknown2a.s: two live functions and two DEAD unlabelled blocks. The dead
+# blocks are not reproduced -- neither carries a label and neither can be
+# reached by fall-through, which was checked in the link order. The C file
+# records the reasoning. Linking this makes FORMAT_VRawDoFmtWithScratchBuffer a
+# real symbol, which is what lets the variadic thunks in front of it be C.
+modules/submodules/unknown2a.s                                         c/lib_format_rawdofmt_scratch.c
+
 # THE VERTICAL-BLANK INTERRUPT SERVER, IN C. gen_all_manifest.py screens this as
 # "entered by the OS with a register convention", and for this function that is
 # wrong. It was checked three ways rather than assumed:
@@ -199,7 +206,10 @@ modules/submodules/unknown22_p0.s                                      c/lib_mat
 # It also returns `MOVEQ #0,D0` before its RTS, matching the original's D0=0.
 modules/groups/a/a/app2_p8_esq_tickglobalcounters.s                    c/esq_tick_global_counters.c
 modules/groups/a/a/xjump.s                                             c/jmptbl_a_a_xjump.c
+modules/groups/a/b/xjump.s                                             c/jmptbl_a_b_xjump.c
 modules/groups/a/c/xjump.s                                             c/jmptbl_a_c_xjump.c
+modules/groups/a/j/xjump.s                                             c/jmptbl_a_j_xjump.c
+modules/groups/a/x/xjump.s                                             c/jmptbl_a_x_xjump.c
 modules/groups/a/e/xjump.s                                             c/jmptbl_a_e_xjump.c
 modules/groups/a/g/xjump.s                                             c/jmptbl_a_g_xjump.c
 modules/groups/a/m/xjump.s                                             c/jmptbl_a_m_xjump.c
