@@ -763,7 +763,10 @@ modules/groups/a/t/xjump.s                                             c/jmptbl_
 modules/groups/b/a/p_typebb_p0_p0.s                                    c/jmptbl_b_a_p_typebb_p0_p0.c
 modules/submodules/unknown22_p0.s                                      c/lib_math_helpers.c
 modules/groups/a/a/app2_p8_esq_tickglobalcounters.s                    c/esq_tick_global_counters.c
+modules/groups/a/a/xjump.s                                             c/jmptbl_a_a_xjump.c
 modules/groups/a/c/xjump.s                                             c/jmptbl_a_c_xjump.c
+modules/groups/a/g/xjump.s                                             c/jmptbl_a_g_xjump.c
+modules/groups/a/n/esqiffbb_p1_p0.s                                    c/jmptbl_a_n_esqiffbb_p1_p0.c
 modules/groups/a/y/xjump.s                                             c/jmptbl_a_y_xjump.c
 modules/groups/b/a/newgrid_p4_p1_p0.s                                  c/jmptbl_b_a_newgrid_p4_p1_p0.c
 modules/groups/b/a/script3b_p1.s                                       c/jmptbl_b_a_script3b_p1.c

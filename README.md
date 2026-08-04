@@ -43,14 +43,14 @@ map for that. A contributor in `build/ESQ.map` whose name ends `.asm` is
 assembly and everything else is C.
 
 ```
-maximum-C build, CODE hunk   95.3%   [######################################..]
-                                     220,300 of 231,108 bytes come from C
+maximum-C build, CODE hunk   95.5%   [######################################..]
+                                     221,732 of 232,204 bytes come from C
 ```
 
 | measure | value |
 |---|---|
-| maximum-C manifest | 795 entries (`src/c/replacements-all.txt`) |
-| assembly remaining | 10,808 of 231,108 CODE bytes (4.7%) |
+| maximum-C manifest | 798 entries (`src/c/replacements-all.txt`) |
+| assembly remaining | 10,472 of 232,204 CODE bytes (4.5%) |
 | module includes still assembly | 236, of which 150 are EMPTY and 10 are pads |
 | modules holding real code | 76 (`python3 tools/lastmile.py`) |
 
