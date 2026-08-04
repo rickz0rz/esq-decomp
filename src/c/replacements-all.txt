@@ -854,3 +854,4 @@ modules/groups/b/a/textdisp_p2_p1.s                                    c/textdis
 modules/groups/b/a/textdisp2_p0_p0.s                                   c/textdisp2_p0_p0_merged.c
 modules/groups/b/a/textdisp3_p1_p1_p0.s                                c/textdisp3_p1_p1_p0_merged.c
 modules/groups/b/a/tliba1_p1.s                                         c/tliba1_p1_merged.c
+modules/submodules/unknown.s                                           c/unknown_merged.c

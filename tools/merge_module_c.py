@@ -57,10 +57,30 @@ def restores_map():
         if fn.endswith('_merged.c'):
             continue
         head = open(os.path.join(C_DIR, fn), errors='replace').read(4000)
+        # A RESTORES: list can run over several lines, and a continuation is a
+        # comment line holding names and nothing else:
+        #
+        #   /* RESTORES: ESQPROTO_VerifyChecksumAndParseRecord,
+        #    *           ESQPROTO_VerifyChecksumAndParseList,
+        #
+        # Reading only the first line saw one label of four. That was invisible
+        # while `/submodules/` was skipped outright, because the two files with
+        # long lists both live there. A continuation stops at the first line
+        # that is not a bare comma-separated name list -- MODULE:, STATUS: and
+        # ordinary prose all end it.
         m = re.search(r'RESTORES:\s*(.+)', head)
         if not m:
             continue
-        for name in re.split(r'[,\s]+', m.group(1).strip()):
+        names = m.group(1).strip()
+        rest = head[m.end():].split('\n')
+        for line in rest[1:] if names.endswith(',') else []:
+            body = line.strip().lstrip('*').strip()
+            if not re.match(r'^[A-Za-z_]\w*(\s*,\s*[A-Za-z_]\w*)*,?$', body):
+                break
+            names += ' ' + body
+            if not body.endswith(','):
+                break
+        for name in re.split(r'[,\s]+', names):
             name = name.strip().lstrip('_')
             if name and re.match(r'^[A-Za-z_]\w*$', name):
                 out.setdefault(name, fn)
@@ -261,8 +281,14 @@ def main():
 
     ready, blocked = [], []
     for mod in module_list():
-        if (mod in done and mod not in already_merged) \
-                or '/submodules/' in mod:
+        # `/submodules/` used to be skipped outright, on the assumption that
+        # everything there is SAS/C runtime that must never be decompiled. That
+        # is no longer true and the exclusion was doing no work anyway: the
+        # `all(l in restores)` test below already refuses a module whose labels
+        # are not every one restored, which is the real gate. Lifting it is what
+        # let modules/submodules/unknown.s -- the RBF protocol, and the largest
+        # single item of assembly left -- become one unit.
+        if mod in done and mod not in already_merged:
             continue
         labels = labels_of(mod)
         if len(labels) < 2:
