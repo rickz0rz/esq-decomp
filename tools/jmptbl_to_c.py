@@ -66,6 +66,14 @@ def thunks(path):
     return pairs
 
 
+def vform_name(name):
+    """WDISP_SPrintf -> WDISP_VSPrintf: insert a V after the module prefix."""
+    if '_' in name:
+        head, rest = name.split('_', 1)
+        return '%s_V%s' % (head, rest)
+    return 'V' + name
+
+
 def params_and_args(plist):
     """('long a, char *b', 'a, b') from a definition's parameter list."""
     plist = plist.strip()
@@ -91,18 +99,65 @@ def main():
     pairs = thunks(path)
 
     body, protos, skipped = [], [], []
+    variadic_used = {}
     for label, target in pairs:
         key = target.lstrip('_')
         if key not in defs:
             skipped.append((label, target, 'target has no C restoration'))
             continue
         ret, plist = defs[key]
+        ret = ret.strip()
+
+        if '...' in plist:
+            # A VARIADIC TARGET NEEDS A V-FORM, and C gives no other way. There
+            # is no syntax for "pass on the arguments I was given", so a thunk in
+            # front of a variadic function can only be written if the work is
+            # also reachable through an entry that takes an ARGUMENT POINTER.
+            # By convention that sibling is the target with a V after the module
+            # prefix: WDISP_SPrintf -> WDISP_VSPrintf.
+            #
+            # This is sound on this toolchain because SAS/C's va_list on the
+            # 68000 IS that pointer -- `va_start(ap, fmt)` compiles to
+            # `LEA d16(A7),An`, which is what the original's `PEA 16(A5)`
+            # computes. No argument is copied and the callee sees the same block.
+            vname = vform_name(key)
+            if vname not in defs:
+                skipped.append((label, target,
+                                'variadic, and no v-form %s() to forward through'
+                                % vname))
+                continue
+            vret, vplist = defs[vname]
+            named = plist.split('...')[0].rstrip().rstrip(',')
+            try:
+                nnames = params_and_args(named)[1]
+            except ValueError as e:
+                skipped.append((label, target, str(e)))
+                continue
+            last = nnames.split(',')[-1].strip()
+            decl = named + ', ...'
+            protos.append('extern %s %s(%s);' % (vret.strip(), vname, vplist.strip()))
+            call = '%s(%s, (void *)ap);' % (vname, nnames)
+            inner = ('    va_list ap;\n'
+                     '%s'
+                     '\n'
+                     '    va_start(ap, %s);\n'
+                     '%s'
+                     '    va_end(ap);\n'
+                     % ('' if ret == 'void' else '    %s n;\n' % ret,
+                        last,
+                        ('    %s\n' % call) if ret == 'void'
+                        else '    n = %s\n' % call))
+            if ret != 'void':
+                inner += '\n    return n;\n'
+            body.append('%s %s(%s)\n{\n%s}\n' % (ret, label.lstrip('_'), decl, inner))
+            variadic_used[True] = True
+            continue
+
         try:
             decl, args = params_and_args(plist)
         except ValueError as e:
             skipped.append((label, target, str(e)))
             continue
-        ret = ret.strip()
         call = '%s(%s);' % (key, args)
         stmt = ('    %s\n' % call) if ret == 'void' else ('    return %s\n' % call)
         protos.append('extern %s %s(%s);' % (ret, key, decl))
@@ -152,6 +207,9 @@ def main():
         head += ['#include "esq-dos.h"', '']
     elif re.search(r'\b(APTR|BOOL|ULONG|UWORD|UBYTE|LONG|WORD|BYTE|STRPTR)\b', sig):
         head += ['#include <exec/types.h>', '']
+    # A variadic forwarder needs va_list, va_start and va_end.
+    if variadic_used:
+        head += ['#include <stdarg.h>', '']
     text = '\n'.join(head + protos + [''] + body)
     if '--write' in sys.argv:
         dst = os.path.join(ROOT, 'src', 'c', 'jmptbl_%s.c' % name)

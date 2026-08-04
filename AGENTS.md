@@ -1264,15 +1264,15 @@ far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
 BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
 278-entry parent, also clean and additionally proven on all six ESC-menu items.
 
-`src/c/replacements-all.txt` is the one to grow. It stands at **799 entries**,
+`src/c/replacements-all.txt` is the one to grow. It stands at **802 entries**,
 every DATA module among them, with 28 restorations held out as unsafe to link.
 It went 440 -> 464 from new restorations and 464 -> 614 from SPLITTING modules,
 which is the cheaper lever of the two and was sitting unused. It went 770 -> 790
 on 2026-08-03 from CONVERTING JUMP TABLES and from the alias forwarders that
 unblocked them. Both are described under "The last mile to 100% C" below.
 
-**At 799 it is PROVEN END TO END** (2026-08-03), on the same sequence that
-proved 440: `check_pcrel_range` 0 truncated of 50 calls, `a6_audit` 0 of 798,
+**At 802 it is PROVEN END TO END** (2026-08-03), on the same sequence that
+proved 440: `check_pcrel_range` 0 truncated of 50 calls, `a6_audit` 0 of 801,
 `data_shape_audit` and `extern_width_audit` clean, `data_offset_audit` 50 data
 modules in agreement, `soak_esq.sh` PASS at 150 seconds twice and at 300 once
 (10 of 10 distinct frames, 10 of 10 holding Amiga content, 1 exception line,
@@ -1312,8 +1312,8 @@ been RUN.** Soak before treating a new size as good.
 still assembly and that is misleading: 150 of them are EMPTY files and 10 hold
 only an alignment pad. The honest number comes from the link map.
 
-**The maximum-C build is 95.6% C by CODE byte.** 222,296 bytes of 232,580 come
-from compiled C. 10,284 bytes are assembly.
+**The maximum-C build is 95.7% C by CODE byte.** 223,380 bytes of 233,352 come
+from compiled C. 9,972 bytes are assembly.
 
 ```sh
 python3 tools/lastmile.py                  # module buckets, plus the code worklist
@@ -1472,6 +1472,49 @@ lane never changed. `check_pcrel_range` still guards both.
 The thunks themselves STAY in assembly. Assembly modules still call them, and
 `jmptbl_to_c.py` still converts whole tables where every target is restored.
 
+### A VARIADIC TARGET NEEDS A V-FORM, and that is all it needs
+
+A jump-table thunk in front of a VARIADIC function cannot be written in plain C:
+there is no way to say "pass on the arguments I was given". `jmptbl_to_c.py`
+used to refuse such a target outright, and `WDISP_SPrintf` alone blocked FOUR
+tables.
+
+**The answer is the standard C one.** Split the work into a form that takes an
+argument POINTER, and make every variadic entry a thin wrapper over it --
+`vsprintf` to `sprintf`. `src/c/lib_hex_parse_sprintf.c` now exposes
+`WDISP_VSPrintf(buf, fmt, args)` and `WDISP_SPrintf` is four lines on top of it.
+The generator emits the same wrapper for each thunk:
+
+```c
+long GROUP_AE_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, ...)
+{
+    va_list ap;
+    long n;
+    va_start(ap, fmt);
+    n = WDISP_VSPrintf(buf, fmt, (void *)ap);
+    va_end(ap);
+    return n;
+}
+```
+
+**This is sound on this toolchain because SAS/C's `va_list` on the 68000 IS the
+pointer the original passes.** Measured rather than assumed:
+
+```
+va_start(ap, fmt)   ->   lea.l $14(a7), a5
+```
+
+a plain address just past the last named parameter, which is exactly what the
+original's `PEA 16(A5)` computes. No argument is copied and the callee sees the
+same block.
+
+The convention the tool looks for is a `V` after the module prefix:
+`WDISP_SPrintf` -> `WDISP_VSPrintf`. A variadic target with no such sibling is
+still refused, with a message naming the v-form it wanted.
+
+`WDISP_VSPrintf` IS A NEW SYMBOL that the original does not have. That is the
+price, along with one extra call for callers that reach sprintf through a thunk.
+
 ### Aliases: five modules name one function twice
 
 A module can carry two labels on ONE address, with only a comment between them:
@@ -1520,12 +1563,12 @@ Eighteen tables still refuse, and every one refuses for the same reason: a thunk
 points at a function that has no C restoration. Two groups cause it, and only one
 of them is work.
 
-- **SAS/C runtime routines** -- `MATH_DivS32`, `MATH_Mulu32`, `MATH_DivU32`,
-  `WDISP_SPrintf`, `FORMAT_RawDoFmtWithScratchBuffer` and others. These live in
-  `modules/submodules/`. **Most of these are a HARD floor, not a backlog.** The
-  arithmetic helpers take register arguments and `MATH_DivS32` also returns the
-  remainder in D1, so a C thunk silently breaks `%`. `WDISP_SPrintf` is variadic
-  and `jmptbl_to_c.py` refuses a variadic target by design.
+- **SAS/C runtime routines** in `modules/submodules/`. The arithmetic helpers
+  and `WDISP_SPrintf` USED to be listed here as a hard floor. Both were solved:
+  see "SOLVED: the divide helpers are C" and "A VARIADIC TARGET NEEDS A V-FORM"
+  below. What is left in this group is `FORMAT_RawDoFmtWithScratchBuffer`,
+  `FORMAT_FormatToBuffer2`, `UNKNOWN36_FinalizeRequest`, `UNKNOWN2A_Stub0`,
+  `EXEC_CallVector_48` and `STREAM_BufferedWriteString`.
 - **Real ESQ functions nobody has written yet** -- `GRAPHICS_AllocRaster`,
   `CLOCK_CheckDateOrSecondsFromEpoch`, `LOCAVAIL_SaveAvailabilityDataFile`,
   `LADFUNC_SaveTextAdsToFile` and `TLIBA_FindFirstWildcardMatchIndex` among them.

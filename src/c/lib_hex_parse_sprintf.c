@@ -145,18 +145,45 @@ long UNKNOWN10_PrintfPutcToBuffer(long ch)
     return ch;
 }
 
-long WDISP_SPrintf(char *buf, char *fmt, ...)
+/* WDISP_VSPrintf IS A NEW SYMBOL. The original has no such entry -- it has only
+ * the variadic WDISP_SPrintf, whose body is what appears below.
+ *
+ * It exists so the JUMP-TABLE THUNKS that forward to WDISP_SPrintf can be
+ * written in C. A thunk is `JMP _WDISP_SPrintf`, and C cannot forward a
+ * variadic call: there is no way to say "pass on the arguments I was given".
+ * The standard C answer is the one used here -- split the work into a form that
+ * takes an argument POINTER, and make every variadic entry a thin wrapper that
+ * calls it. `tools/jmptbl_to_c.py` emits exactly that wrapper for a variadic
+ * target once a `V`-named sibling exists.
+ *
+ * This works because SAS/C's `va_list` on the 68000 IS the pointer the original
+ * passes. Measured: `va_start(ap, fmt)` compiles to `LEA $14(A7),A5`, a plain
+ * address just past the last named parameter, which is what the original's
+ * `PEA 16(A5)` computes. So the pointer handed to WDISP_FormatWithCallback is
+ * identical either way, and no argument is copied.
+ *
+ * The cost is one extra call for callers that reach sprintf through a thunk,
+ * and one symbol the original does not have. */
+long WDISP_VSPrintf(char *buf, char *fmt, void *args)
 {
-    va_list ap;
-
     Global_PrintfByteCount_A4 = 0;
     Global_PrintfBufferPtr_A4 = (long)buf;
 
-    va_start(ap, fmt);
-    WDISP_FormatWithCallback(UNKNOWN10_PrintfPutcToBuffer, fmt, (void *)ap);
-    va_end(ap);
+    WDISP_FormatWithCallback(UNKNOWN10_PrintfPutcToBuffer, fmt, args);
 
     *(char *)Global_PrintfBufferPtr_A4 = 0;  /* terminated through the global */
 
     return Global_PrintfByteCount_A4;
+}
+
+long WDISP_SPrintf(char *buf, char *fmt, ...)
+{
+    va_list ap;
+    long    n;
+
+    va_start(ap, fmt);
+    n = WDISP_VSPrintf(buf, fmt, (void *)ap);
+    va_end(ap);
+
+    return n;
 }

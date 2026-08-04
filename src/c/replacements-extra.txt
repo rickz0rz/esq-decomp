@@ -200,7 +200,10 @@ modules/submodules/unknown22_p0.s                                      c/lib_mat
 modules/groups/a/a/app2_p8_esq_tickglobalcounters.s                    c/esq_tick_global_counters.c
 modules/groups/a/a/xjump.s                                             c/jmptbl_a_a_xjump.c
 modules/groups/a/c/xjump.s                                             c/jmptbl_a_c_xjump.c
+modules/groups/a/e/xjump.s                                             c/jmptbl_a_e_xjump.c
 modules/groups/a/g/xjump.s                                             c/jmptbl_a_g_xjump.c
+modules/groups/a/m/xjump.s                                             c/jmptbl_a_m_xjump.c
+modules/groups/a/w/xjump.s                                             c/jmptbl_a_w_xjump.c
 modules/groups/a/n/esqiffbb_p1_p0.s                                    c/jmptbl_a_n_esqiffbb_p1_p0.c
 modules/groups/a/o/esqpars_p1.s                                        c/jmptbl_a_o_esqpars_p1.c
 modules/groups/a/y/xjump.s                                             c/jmptbl_a_y_xjump.c
