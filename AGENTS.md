@@ -1482,15 +1482,38 @@ everything else is C.
 Two things this table used to call impossible are now DONE and linked. What is
 left is smaller and better understood.
 
+Measured 2026-08-04 from `build/ESQ.map` on the 824-entry manifest. 48
+contributors, 6,664 bytes.
+
 | bytes | share | why it is still assembly |
 |---:|---:|---|
-| 2,572 | 1.1% | SAS/C runtime and protocol code in `submodules/` |
-| ~1,560 | 0.7% | headless continuation modules and small pads |
-| ~1,000 | 0.4% | jump tables blocked on VARIADIC or unrestored targets |
-| 660 | 0.3% | register-argument helpers, marked `DO-NOT-LINK` |
-| 564 | 0.2% | the `_ED1_EnterEscMenu` fall-through pair |
-| 464 | 0.2% | one body with several entry points |
-| 460 | 0.2% | the startup and shutdown entry |
+| 2,572 | 1.1% | SAS/C library and RBF protocol in `submodules/` |
+| 1,104 | 0.5% | jump-table thunks on unrestored targets, pads, unwritten |
+| 1,064 | 0.5% | `esqshared4` multi-entry bodies and unwritten routines |
+| 792 | 0.3% | register-argument helpers, marked `DO-NOT-LINK` |
+| 564 | 0.2% | the `_ED1_EnterEscMenu` fall-through pair, all three RESTORED |
+| 452 | 0.2% | the startup and shutdown entry |
+| 116 | 0.0% | OS register-convention entries, RESTORED but held out |
+
+The five biggest single modules:
+
+| bytes | module | note |
+|---:|---|---|
+| 1,356 | `submodules/unknown.s` | the RBF protocol parsers, 12 labels |
+| 572 | `submodules/unknown29.s` | `_ESQ_ParseCommandLineAndRun` |
+| 564 | `groups/a/k/ed1_p0.s` | restored, blocked by the fall-through |
+| 464 | `groups/a/q/esqshared4_p5.s` | several entry points into one body |
+| 452 | `groups/_main/a/a.s` | `ESQ_StartupEntry`, `ESQ_ShutdownAndReturn` |
+
+**`submodules/unknown.s` IS THE LARGEST SINGLE ITEM LEFT, at 20% of all
+remaining assembly.** It holds `_ESQPROTO_VerifyChecksumAndParseRecord` and
+`_ESQPROTO_VerifyChecksumAndParseList`, which are the `'W'` and `'w'` handlers
+and sit on the LISTINGS path. A listings feed therefore exercises assembly at
+that point and compiled C everywhere downstream of it.
+
+**A module count badly overstates what is left.** 208 module includes are still
+assembly and only 48 contribute a byte: 150 are empty files and 10 are alignment
+pads.
 
 Regenerate it from `build/ESQ.map`; a contributor whose name ends `.asm` is
 assembly.
