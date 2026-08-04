@@ -130,7 +130,7 @@ Both were discovered the hard way; both are enforced by `build-split.sh`.
 **1. Objects are longword-sized.** Hunk objects store section sizes in
 longwords, so an object whose content is 2 (mod 4) bytes gets padded, shifting
 everything after it. `gen_units.py` therefore coalesces consecutive modules
-until each unit lands on a 4-byte boundary — which is why 1,031 source modules
+until each unit lands on a 4-byte boundary — which is why 1,033 source modules
 become 539 link units. Source files stay fine-grained. Only the assembly grouping
 is coarser. **You can still edit any module in isolation.**
 
@@ -881,7 +881,8 @@ Known divergences so far are written up in `docs/compiler-version.md`.
 
 ## Progress is measured in BYTES, not function count
 
-**Coverage is 98.0% by byte, 702 restorations, both gates green. The
+**Coverage is 99.4% by byte, 732 restorations, both gates green, and
+`tools/worklist.py 99999` reports ZERO functions remaining. The
 push-to-the-ceiling run of 2026-07-31 is DONE.** It took coverage from 75.3% by
 working the worklist straight down, largest first, and by LABELLING four blocks
 the disassembly had documented but left unnamed -- `ESQIFF_NoOpFrame`,
@@ -898,22 +899,36 @@ Read the arms by ADDRESS ARITHMETIC on the `BEQ.W` displacements rather than by
 the label names: several labels in that module name the wrong command, and
 `.processCommand_D_Diagnostics` is in fact the 'K' clock handler.
 
-**Three unblocked functions remain, 398 bytes, and all three were read and
-confirmed NOT restorable as C**: `ESQ_ShutdownAndReturn` (76 bytes, restores A7
-from a global), `ESQSHARED4_LoadCopperColorWordsFromNibbleTable` (92, D3/A2/A3
-live on entry) and `ESQSHARED4_ApplyBannerColorStep` (230, several entry points
-branching back into its own head). `coverage.py` does not screen these because
-each blocker is a shape its rules do not cover. **So 97.2% is the practical
-ceiling, not a waypoint.** Everything else that is left carries a blocker:
-1,148 bytes of interior labels and the rest register-argument or falls-through
-shapes. Run `python3 tools/worklist.py 99999` to confirm before assuming there
-is work; it regenerates from `coverage.survey()`, so it cannot go stale.
+**THE THREE FUNCTIONS THIS SECTION CALLED "CONFIRMED NOT RESTORABLE AS C" ARE
+ALL RESTORED, AND SO IS A 97.2% "PRACTICAL CEILING" THAT WAS NEVER ONE.** The
+claim is kept here because it was believed and acted on, and because each of
+the three failed for a different reason that is worth naming:
+
+- `ESQ_ShutdownAndReturn` (76 bytes) restores A7 from a global. That part is
+  true and no C statement expresses it. What was wrong was treating it as the
+  end of the enquiry: the OS has a primitive for the same effect. See "SOLVED:
+  the startup and shutdown are C" below. It is the one live ANALOGUE in the
+  program and its file says so.
+- `ESQSHARED4_LoadCopperColorWordsFromNibbleTable` (92 bytes) was called
+  unrestorable for taking D3, A1, A2 and A3 on entry. `__asm` register
+  parameters express exactly that, and it has been restored since the
+  banner-blit work.
+- `ESQSHARED4_ApplyBannerColorStep` (230 bytes) was called unrestorable for
+  "several entry points branching back into its own head". Once the ten
+  UNLABELLED blocks in its module were named, it turned out to be a 6-byte
+  function with a colour byte in D0 and four dead neighbours. The blocker was a
+  labelling gap, not a shape.
+
+The pattern in all three is the same and it is the one this file already warns
+about elsewhere: **test the specific claim before recording a blocker.** Run
+`python3 tools/worklist.py 99999` before assuming there is or is not work; it
+regenerates from `coverage.survey()`, so it cannot go stale.
 
 
 Function count flatters: the easy targets are small, so a high count can sit on a
 tiny fraction of the program. 202 restorations once read as 28% of the program
-and was 5.2% of it by byte. At 702 restorations the two readings have converged
--- 96% by count against 98.0% by byte -- because the large end has been worked.
+and was 5.2% of it by byte. At 732 restorations the two readings have converged
+-- 97% by count against 99.4% by byte -- because the large end has been worked.
 
 ```sh
 python3 tools/coverage.py             # progress by byte and by count
@@ -940,11 +955,11 @@ The restoration record says so unambiguously:
 
 | bucket | exact | behavioural | exact rate |
 |---|---:|---:|---:|
-| intra-unit (`6100`) | **13** | 274 | 5% |
-| no-calls | **16** | 131 | 11% |
-| cross-unit (`4EBA`) | **0** | 255 | **0%** |
+| intra-unit (`6100`) | **13** | 280 | 4% |
+| no-calls | **16** | 141 | 10% |
+| cross-unit (`4EBA`) | **0** | 260 | **0%** |
 
-Zero of 255. Every function whose original calls are `4EBA` is capped at
+Zero of 260. Every function whose original calls are `4EBA` is capped at
 `behavioural` under 6.51, and the cap is the call opcode alone — same size, same
 displacement, same semantics, different byte. `src/c/script_read_next_rbf_byte.c`
 is the whole class in six bytes.
@@ -1417,7 +1432,7 @@ far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
 BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
 278-entry parent, also clean and additionally proven on all six ESC-menu items.
 
-`src/c/replacements-all.txt` is the one to grow. It stands at **824 entries**,
+`src/c/replacements-all.txt` is the one to grow. It stands at **861 entries**,
 every DATA module among them, with 28 restorations held out as unsafe to link.
 It went 440 -> 464 from new restorations and 464 -> 614 from SPLITTING modules,
 which is the cheaper lever of the two and was sitting unused. It went 770 -> 790
@@ -1465,58 +1480,141 @@ been RUN.** Soak before treating a new size as good.
 still assembly and that is misleading: 150 of them are EMPTY files and 10 hold
 only an alignment pad. The honest number comes from the link map.
 
-**The maximum-C build is 97.2% C by CODE byte.** 227,504 bytes of 234,168 come
-from compiled C. 6,664 bytes are assembly, of which 2,572 are in `submodules/`.
+**The maximum-C build is 99.93% C by CODE byte, and NO EXECUTABLE ASSEMBLY IS
+LEFT.** 235,168 bytes of 235,328 come from compiled C. The 160 bytes that remain
+are 104 bytes of string constants and 56 bytes of alignment padding.
 
 ```sh
 python3 tools/lastmile.py                  # module buckets, plus the code worklist
-python3 tools/lastmile.py --list jumptable # the modules in one bucket
+python3 tools/lastmile.py --list library   # the modules in one bucket
 ```
 
 It reads `src/Prevue.asm` and the manifest, so it cannot go stale. For the byte
 split, read `build/ESQ.map`: a contributor whose name ends `.asm` is assembly and
 everything else is C.
 
-### The floor, re-measured after the divide-helper and interrupt work
+### The floor, and why it is a real one
 
-Two things this table used to call impossible are now DONE and linked. What is
-left is smaller and better understood.
+Measured 2026-08-04 from `build/ESQ.map` on the 861-entry manifest. 16
+contributors, 160 bytes, not one of them a function.
 
-Measured 2026-08-04 from `build/ESQ.map` on the 824-entry manifest. 48
-contributors, 6,664 bytes.
-
-| bytes | share | why it is still assembly |
-|---:|---:|---|
-| 2,572 | 1.1% | SAS/C library and RBF protocol in `submodules/` |
-| 1,104 | 0.5% | jump-table thunks on unrestored targets, pads, unwritten |
-| 1,064 | 0.5% | `esqshared4` multi-entry bodies and unwritten routines |
-| 792 | 0.3% | register-argument helpers, marked `DO-NOT-LINK` |
-| 564 | 0.2% | the `_ED1_EnterEscMenu` fall-through pair, all three RESTORED |
-| 452 | 0.2% | the startup and shutdown entry |
-| 116 | 0.0% | OS register-convention entries, RESTORED but held out |
-
-The five biggest single modules:
-
-| bytes | module | note |
+| bytes | what | why it cannot be C |
 |---:|---|---|
-| 1,356 | `submodules/unknown.s` | the RBF protocol parsers, 12 labels |
-| 572 | `submodules/unknown29.s` | `_ESQ_ParseCommandLineAndRun` |
-| 564 | `groups/a/k/ed1_p0.s` | restored, blocked by the fall-through |
-| 464 | `groups/a/q/esqshared4_p5.s` | several entry points into one body |
-| 452 | `groups/_main/a/a.s` | `ESQ_StartupEntry`, `ESQ_ShutdownAndReturn` |
+| 84 | five strings in `submodules/unknown36_p0_strings.s` | CODE-section data |
+| 12 | `"dos.library"` in `groups/_main/a/a_strings.s` | CODE-section data |
+| 8 | `_DOS_STR_CRLF` in `submodules/unknown2b_p1_p0.s` | CODE-section data |
+| 8 | `submodules/unknown10_p1.s` | padding the disassembler read as code |
+| 48 | twelve four-byte `ALIGN_WORD` pads | padding |
 
-**`submodules/unknown.s` IS THE LARGEST SINGLE ITEM LEFT, at 20% of all
-remaining assembly.** It holds `_ESQPROTO_VerifyChecksumAndParseRecord` and
-`_ESQPROTO_VerifyChecksumAndParseList`, which are the `'W'` and `'w'` handlers
-and sit on the LISTINGS path. A listings feed therefore exercises assembly at
-that point and compiled C everywhere downstream of it.
+**THE STRING FLOOR IS STRUCTURAL, NOT UNFINISHED WORK.** Each of these blocks
+lives in the CODE section in the original and is reached PC-relative -- which is
+how the original keeps a constant out of its data image. SAS/C 6.51 puts every
+string literal and every initialised static in `data`, with no option to place
+it otherwise. And a DATA hunk that grows by even four bytes shifts every symbol
+after it: AGENTS.md records that `data/flib.s` did exactly that and froze the
+display, twice, reproducibly.
 
-**A module count badly overstates what is left.** 208 module includes are still
-assembly and only 48 contribute a byte: 150 are empty files and 10 are alignment
+So the answer was to SPLIT the strings out of their modules and convert the
+FUNCTIONS around them. That is byte-neutral -- both gates pass across every
+split -- and it is what took `unknown36_p0.s`, `_main/a/a.s` and `unknown2b`
+from "blocked by a string" to "one module of pure data".
+
+Two ways out exist and neither is taken. A string could be built a character at
+a time into a local, which is what `lib_parse_command_line_and_run.c` does for
+`"con.10/10/320/80/"` and `"*"` -- correct where the string is short and used
+once, and absurd for a 26-character requester message. Or the DATA hunk could be
+allowed to grow, and the display would stop.
+
+**A module count badly overstates what is left.** 173 module includes are still
+assembly and only 16 contribute a byte: 150 are empty files and 10 are alignment
 pads.
 
 Regenerate it from `build/ESQ.map`; a contributor whose name ends `.asm` is
 assembly.
+
+### SOLVED: the startup and shutdown are C, and the unwind is an analogue
+
+`ESQ_StartupEntry`, `ESQ_ShutdownAndReturn` and `ESQ_ReturnWithStackCode` are
+now `src/c/lib_esq_startup_entry.c` and `src/c/lib_esq_shutdown_and_return.c`.
+The entry is an `__asm` function with `register __a0` and `register __d0`, which
+is what this file always said it needed.
+
+**THE UNWIND IS THE ONE LIVE ANALOGUE IN THE PROGRAM.** The shutdown restores A7
+from a global and returns on the restored stack, so the program can leave from
+any depth -- and three callers do, through `HANDLE_CloseAllAndReturnWithCode`.
+No C statement expresses a stack switch.
+
+**setjmp/longjmp IS THE RIGHT ANSWER AND IS NOT AVAILABLE.** This file proposed
+it and the reasoning was sound. It fails on two independent counts, both
+measured rather than assumed: `sc.lib` cannot be linked at all, because it
+collides on nine symbols ESQ defines itself; and the one member cannot be lifted
+out either, because `tools/sclib.py sc.lib --symbol ___setjmp` reports
+`setjmp.o` at 176 bytes with unresolved references to `___base` and `___top`,
+the stack-check bounds a `NOSTKCHK` build never defines.
+
+`dos.library Exit()` is used instead. It is the OS's own primitive for what the
+saved-A7 restore accomplishes. Two differences are real and both are in the
+file's header: the thirteen registers the entry saved are not restored, and
+`Exit()` is CLI-only. ESQ is launched from a Shell by the drive's
+`S/uv-startup`, so the supported case is the one that happens.
+
+**THE COMMAND-LINE BUFFER IS AN alloca IN THE ORIGINAL** -- `SUBA.L D0,A7` with
+a computed size -- and SAS/C 6.51 has no such construct. The C uses a fixed
+1024-byte local. AmigaDOS caps a Shell command line at 512 bytes, so the cap
+cannot be reached, and it is recorded rather than buried.
+
+### TWO MORE LVO NAMES WERE FROM THE WRONG LIBRARY
+
+The class this file already documents for `_EXEC_CallVector_48` turned up twice
+more, and in both cases the REGISTER SPEC settled it where the offset could not.
+
+`EXEC_CallVector_348` is `AutoRequest` on intuition, not `FreeTrap` on exec.
+Both live at -348. The stock pragmas are:
+
+    #pragma libcall SysBase       FreeTrap    15c 001
+    #pragma libcall IntuitionBase AutoRequest 15c 3210BA9808
+
+`08` is the argument count and the nibbles before it read right to left as A0,
+A1, A2, A3, D0, D1, D2, D3 -- exactly what the stub loads, in exactly that
+order. `FreeTrap` takes one argument in D0 and cannot be it.
+
+**ITS LIBRARY BASE IS AN ARGUMENT, AND SAS/C CAN EXPRESS THAT.** The caller
+opens intuition.library, uses it once and closes it, so there is no
+program-wide base. A `libcall` pragma resolves its base by ordinary C scoping,
+so a LOCAL variable named `IntuitionBase` shadows the global from
+`esq-intuition.h` and the emitted call uses the parameter. Verified rather than
+assumed: the stream carries `4eaefea4`, `JSR -348(A6)`, with A6 from the
+caller's slot.
+
+`_LVOSupervisor` at -30 in the startup is dos `Open`, not exec `Supervisor`.
+A6 holds DOSBase there. The whole block corroborates it: D1 comes from
+WBStartup+32, which is `sm_ToolWindow`; D2 is 1005, which is `MODE_OLDFILE`;
+and the result's +8 field, `fh_Type`, goes to Process+164, which is
+`pr_ConsoleTask`. That is the standard Workbench startup opening its tool
+window.
+
+### YOU CAN DECLARE YOUR OWN `#pragma libcall`
+
+`_LVOexecPrivate1` at -36 has no stock name to call. Rather than guess at one or
+leave the module in assembly, `src/c/lib_esq_shutdown_and_return.c` declares the
+vector itself:
+
+    void ESQ_ExecVector36(long d1);
+    #pragma libcall SysBase ESQ_ExecVector36 24 101
+
+`24` hex is 36 decimal and `101` is one argument in D1, the same spelling as the
+stock `FreeTrap` line. This is the general escape hatch for an unnamed vector,
+and it needs no inline assembly.
+
+### LABELLING INSIDE A MODULE CAN BREAK A LOCAL LABEL'S SCOPE
+
+Adding a global label between a local label's definition and its use puts the
+two in different scopes, and vasm then reports
+`undefined symbol <_NEW_LABEL .old_label>`. It happened once, in
+`submodules/unknown42.s`. Promoting the local to a global is byte-neutral --
+a label emits nothing, and the branch width was already explicit -- but it has
+to be done in the same change, or the build breaks in a way that reads like a
+typo.
 
 ### SOLVED: the SAS/C stdio read and write layer is C (2026-08-04)
 

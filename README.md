@@ -16,22 +16,28 @@ that broke it.
 Both byte gates pass on the current tree.
 
 ```
-assembly converted to C   98.0%   [#######################################.]
-                                  190,474 of 194,408 application bytes
+assembly converted to C   99.4%   [########################################]
+                                  193,894 of 195,146 application bytes
 ```
+
+`tools/worklist.py 99999` now reports **0 functions and 0 bytes remaining**.
+Every unrestored label left in `coverage.py`'s survey is an interior branch
+target or a fall-through fragment inside a function that IS restored -- twenty
+of the twenty-one are in `diskio1.s`, the module this project already documents
+as "26 labels and ONE function".
 
 Count the bytes, not the functions. The easy targets are small, so a function
 count reads higher than the real progress. By function count the same work is
-96%, which flatters it.
+97%, which flatters it.
 
 Run `python3 tools/coverage.py` to regenerate every number in this section.
 
 | measure | value |
 |---|---|
-| application functions | 732 (194,408 bytes) |
-| restored to C | 702 (190,474 bytes, 98.0% by byte, 96% by count) |
+| application functions | 753 (195,146 bytes) |
+| restored to C | 732 (193,894 bytes, 99.4% by byte, 97% by count) |
 | byte-exact restorations | 29 application functions, plus 1 library function (30 files) |
-| source modules | 1,015, coalesced into 531 link units |
+| source modules | 1,033, coalesced into 539 link units |
 | DATA section in C | 55,820 of 55,820 bytes (100%) |
 | linked size | CODE 211,348 bytes, DATA 55,820 bytes |
 
@@ -43,22 +49,44 @@ map for that. A contributor in `build/ESQ.map` whose name ends `.asm` is
 assembly and everything else is C.
 
 ```
-maximum-C build, CODE hunk   97.2%   [#######################################.]
-                                     227,504 of 234,168 bytes come from C
+maximum-C build, CODE hunk   99.9%   [########################################]
+                                     235,168 of 235,328 bytes come from C
 ```
 
 | measure | value |
 |---|---|
-| maximum-C manifest | 824 entries (`src/c/replacements-all.txt`) |
-| assembly remaining | 6,664 of 234,168 CODE bytes (2.8%) |
-| module includes still assembly | 236, of which 150 are EMPTY and 10 are pads |
-| modules holding real code | 32, and NO jump tables (`python3 tools/lastmile.py`) |
+| maximum-C manifest | 861 entries (`src/c/replacements-all.txt`) |
+| assembly remaining | 160 of 235,328 CODE bytes (0.07%) |
+| module includes still assembly | 173, of which 150 are EMPTY and 10 are pads |
+| modules holding real code | ZERO (`python3 tools/lastmile.py`) |
 
-Two things once recorded as impossible are now done. The SAS/C arithmetic
+**No executable assembly is left.** Every function in the program is compiled
+C. The 160 bytes that remain are 104 bytes of string constants and 56 bytes of
+alignment padding, spread over 16 modules.
+
+The strings are the floor, and it is a real one rather than an unfinished
+job. Each lives in the CODE section in the original, reached PC-relative, and
+SAS/C 6.51 puts every string literal and every initialised static in `data`
+instead. AGENTS.md records that growing the DATA hunk by even four bytes
+shifts every symbol after it and froze the display, reproducibly. So the
+strings stay where the original put them and the FUNCTIONS around them moved
+to C.
+
+Three things once recorded as impossible are now done. The SAS/C arithmetic
 helpers are C (`src/c/lib_math_helpers.c`), so every divide and multiply in the
 program runs through compiled code. The vertical-blank interrupt server is C as
-well, and it needed no special keyword. Both are written up under "The last mile
-to 100% C" in `AGENTS.md`.
+well, and it needed no special keyword. And the startup and shutdown pair is C,
+which AGENTS.md had identified as a setjmp/longjmp problem. All three are
+written up under "The last mile to 100% C" in `AGENTS.md`.
+
+ONE LIVE FUNCTION IS AN ANALOGUE RATHER THAN A TRANSCRIPTION, and it is the
+only one. `ESQ_ShutdownAndReturn` restores the stack pointer the entry saved
+and returns on the restored stack, so the program can leave from any depth. No
+C statement expresses that. setjmp/longjmp is the right answer and is not
+available: `sc.lib` cannot be linked at all, and its `setjmp.o` needs
+`___base` and `___top`, which a NOSTKCHK build never defines. It uses
+dos.library `Exit()` instead, and `src/c/lib_esq_shutdown_and_return.c` states
+the two behavioural differences that costs.
 
 Moving the divide helpers meant removing a hidden dependency first: they return
 the quotient in D0 **and the remainder in D1**, which is how SAS/C implements

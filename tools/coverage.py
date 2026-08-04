@@ -77,10 +77,33 @@ def survey():
         if not f.endswith('.c'):
             continue
         txt = open(os.path.join(cdir, f)).read()
-        m = re.search(r'RESTORES:\s*(\S+)', txt)
+        # A RESTORES: list can name SEVERAL labels and can run over several
+        # lines. Reading `(\S+)` off the first line got one of them AND KEPT ITS
+        # TRAILING COMMA, so a multi-label file registered under a key like
+        # "ESQ_ShutdownAndReturn," that nothing can ever match -- every label it
+        # restored counted as unrestored. That is why the worklist went on
+        # listing functions this file's own prose called done.
+        #
+        # A continuation is a comment line holding names and nothing else, so it
+        # stops at the first line that is not one: MODULE:, STATUS: and ordinary
+        # prose all end it. Same rule as merge_module_c.py's restores_map().
+        m = re.search(r'RESTORES:\s*(.+)', txt)
         s = re.search(r'STATUS:\s*(\S+)', txt)
         if m:
-            done[m.group(1).lstrip('_')] = (s.group(1).lower() if s else 'unknown')
+            names = m.group(1).strip()
+            rest = txt[m.end():].split('\n')
+            for line in (rest[1:] if names.endswith(',') else []):
+                bare = line.strip().lstrip('*').strip()
+                if not re.match(r'^[A-Za-z_]\w*(\s*,\s*[A-Za-z_]\w*)*,?$', bare):
+                    break
+                names += ' ' + bare
+                if not bare.endswith(','):
+                    break
+            status = s.group(1).lower() if s else 'unknown'
+            for name in re.split(r'[,\s]+', names):
+                name = name.strip().lstrip('_')
+                if name and re.match(r'^[A-Za-z_]\w*$', name):
+                    done.setdefault(name, status)
 
     fns = []
     for label, (srcf, hexb, lines) in table.items():
