@@ -150,6 +150,7 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
 
     include "modules/c-exports.s"
     include "modules/groups/_main/a/a.s"
+    include "modules/groups/_main/a/a_strings.s"
     include "modules/groups/_main/a/xjump.s"
     include "modules/groups/_main/b/b.s"
     include "modules/groups/_main/b/b_esqcheckcompatiblevideochip.s"

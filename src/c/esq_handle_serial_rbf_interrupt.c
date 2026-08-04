@@ -1,11 +1,16 @@
 /* RESTORES: ESQ_HandleSerialRbfInterrupt
  * MODULE:   modules/groups/a/a/app.s
  * STATUS:   behavioural
- * DO-NOT-LINK: takes its arguments in REGISTERS, so the compiled C reads the
- *   stack and gets garbage. Proven: esq_dec_color_step.c linked alone over a
- *   clean 356-entry build paints a green panel over the grid area, and
- *   ESQ_SetCopperEffect_Custom compiles to 610000004e75 -- a call and a
- *   return, doing none of the work. Kept for the analysis, never linked.
+ * LINKABLE SINCE 2026-08-04, AS AN `__asm` REGISTER FUNCTION. It is the serial
+ *   RBF interrupt server: the custom-chip base arrives in A0 and the ring
+ *   buffer in A1, because that is what the interrupt dispatcher leaves there.
+ *   `register __a0` and `register __a1` state the convention exactly.
+ *
+ *   The clobber direction is safe. The original destroys D0, D1 and A1 and
+ *   nothing else, all scratch under the standard convention, and a compiled C
+ *   body saves every callee-saved register it touches -- which is what an
+ *   AmigaOS interrupt server is allowed to do. See esq_tick_global_counters.c
+ *   for the same reasoning on the VERTB server.
  *
  * SASC-MISMATCH: register-argument-convention
  *   ref:     700030390000a33ad3c03228001812810801000f670e32390000a33e524133c10000a33e52400c40fa006602700033c00000a33a32390000a33c9041640000060640fa0033c00000a342b0790000a3406500000833c00000a3400c40dac06500001c0c79010200005e8e6700001033fc010200005e8e52b9000070b8317c0800009c4e75
@@ -22,14 +27,14 @@
  *
  * This class is what hung the machine on the first whole-program C run.
  */
-/* Register-argument function: the custom-chip base arrives in A0 and the ring
- * buffer pointer in A1; it is a serial RBF interrupt handler. Documented only. */
+/* The custom-chip base arrives in A0 and the ring buffer pointer in A1. */
 extern short Global_WORD_H_VALUE, Global_WORD_T_VALUE, Global_WORD_MAX_VALUE;
 extern short ESQ_SerialRbfErrorCount, ESQ_SerialRbfFillLevel;
 extern short ESQPARS2_ReadModeFlags;
 extern long  SCRIPT_SerialReadModeOverflowCount;
 
-void ESQ_HandleSerialRbfInterrupt(volatile short *custom, unsigned char *ring)
+void __asm ESQ_HandleSerialRbfInterrupt(register __a0 volatile short *custom,
+                                        register __a1 unsigned char *ring)
 {
     unsigned short h = Global_WORD_H_VALUE;
     unsigned short serdatr = custom[12];

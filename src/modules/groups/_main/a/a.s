@@ -14,7 +14,7 @@
 ;   _LVOSupervisor, _LVOFindTask, _LVOCloseLibrary, _LVOReplyMsg,
 ;   _GROUP_MAIN_A_JMPTBL_ESQ_MainEntryNoOpHook, _GROUP_MAIN_A_JMPTBL_ESQ_ParseCommandLineAndRun, _GROUP_MAIN_A_JMPTBL_MEMLIST_FreeAll, _GROUP_MAIN_A_JMPTBL_ESQ_MainExitNoOpHook
 ; READS:
-;   AbsExecBase, ESQ_STR_DosLibrary
+;   AbsExecBase, _ESQ_STR_DosLibrary
 ; WRITES:
 ;   Global_SavedStackPointer, Global_SavedExecBase, Global_SavedMsg, Global_DosLibrary
 ; DESC:
@@ -53,7 +53,7 @@ ESQ_StartupEntry:
     MOVE.L  #$3000,D1                       ; New signal mask: 0x00003000 into D1
     JSR     _LVOSetSignal(A6)
 
-    LEA     ESQ_STR_DosLibrary(PC),A1    ; LEA.L (PC,$0158) == $0021eff2,A1
+    LEA     _ESQ_STR_DosLibrary(PC),A1    ; LEA.L (PC,$0158) == $0021eff2,A1
     MOVEQ   #0,D0
     JSR     _LVOOpenLibrary(A6)             ; Open dos.library version 0 (any) locally...
 
@@ -244,6 +244,3 @@ ESQ_ShutdownAndReturn:
     RTS
 
 ;!======
-
-ESQ_STR_DosLibrary:
-    NStr    "dos.library"

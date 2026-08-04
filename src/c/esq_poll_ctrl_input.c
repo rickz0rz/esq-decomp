@@ -21,7 +21,7 @@ extern char ESQ_STR_B[];
 extern void ESQ_CaptureCtrlBit4Stream(void);
 extern void ESQ_CaptureCtrlBit3Stream(void);
 #define INTREQW (*(volatile unsigned short *)0xDFF09CL)
-void ESQ_PollCtrlInput(void)
+void __saveds ESQ_PollCtrlInput(void)
 {
     ESQ_CaptureCtrlBit4Stream();
     if (ESQ_STR_B[6] == 'N')

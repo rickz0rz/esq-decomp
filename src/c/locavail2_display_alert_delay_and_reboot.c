@@ -18,7 +18,7 @@
  * This class is what hung the machine on the first whole-program C run.
  */
 extern void ESQ_ColdReboot(void);
-long LOCAVAIL2_DisplayAlertDelayAndReboot(void)
+long __saveds LOCAVAIL2_DisplayAlertDelayAndReboot(void)
 {
     long i;
 

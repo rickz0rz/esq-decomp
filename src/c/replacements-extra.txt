@@ -282,3 +282,26 @@ data/tliba1_p1.s                                                       c/data_tl
 data/wdisp_p1_p1.s                                                     c/data_wdisp_p1_p1.c
 modules/groups/a/o/esqiff2_p1.s                                        c/esqiff2_parse_line_head_tail_record.c
 modules/groups/a/q/esqshared4_p1.s                                     c/esqshared4_init_banner_copper_system.c
+
+# --- Entered by the OS with a register convention, and now expressing it -----
+#
+# gen_all_manifest.py's register_entry_abi() finds these structurally: the
+# installing module reaches them with `LEA sym(PC),An` and stores the result
+# into an Interrupt's is_Code or hands it to SetFunction. That detector is
+# right about what they are and says nothing about whether the C can express
+# it, which is why the exclusion is an override rather than a rule change.
+#
+# All three now carry `__saveds`, which is the keyword AGENTS.md prescribes for
+# a callback whose original opens `MOVE.L A4,-(A7)` / `LEA <data>,A4` -- it
+# reproduces the near-data base setup exactly. LOCAVAIL2_AutoRequestNoOp is
+# BYTE-EXACT with it, 14 bytes against 14, which is the strongest evidence the
+# keyword is the right one. ESQ_PollCtrlInput lands at 44 against 44.
+# LOCAVAIL2_DisplayAlertDelayAndReboot is 36 against 42, and its million-cycle
+# delay loop is emitted verbatim -- 7e00 / 0c87000f4240 / 6c04 / 5287 / 60f4 --
+# so the six bytes are the LINK/UNLK frame the C does not need.
+#
+# esq_tick_global_counters.c is in this file for the same reason and has been
+# linked and soaked since 2026-08-03.
+modules/groups/a/a/app_esq_pollctrlinput.s                             c/esq_poll_ctrl_input.c
+modules/groups/a/z/locavail2_locavail2_autorequestnoop.s               c/locavail2_auto_request_noop.c
+modules/groups/a/z/locavail2_locavail2_displayalertdelayandreboot.s    c/locavail2_display_alert_delay_and_reboot.c

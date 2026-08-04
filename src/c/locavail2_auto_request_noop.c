@@ -18,7 +18,7 @@
  * This class is what hung the machine on the first whole-program C run.
  */
 extern char Global_REF_LONG_FILE_SCRATCH[];
-long LOCAVAIL2_AutoRequestNoOp(void)
+long __saveds LOCAVAIL2_AutoRequestNoOp(void)
 {
     return 0;
 }

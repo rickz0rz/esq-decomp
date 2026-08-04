@@ -244,6 +244,7 @@ modules/groups/_main/b/bb_esq_formatdiskerrormessage.s                 c/esq_for
 modules/groups/a/a/app2_p6.s                                           c/esq_format_time_stamp.c
 modules/groups/a/a/app2_esq_generatexorchecksumbyte.s                  c/esq_generate_xor_checksum_byte.c
 modules/groups/a/a/app2_esq_gethalfhourslotindex.s                     c/esq_get_half_hour_slot_index.c
+modules/groups/a/a/app_esq_handleserialrbfinterrupt.s                  c/esq_handle_serial_rbf_interrupt.c
 modules/groups/a/a/app2_p4_p1.s                                        c/esq_inc_copper_lists_alt_skip_index4.c
 modules/groups/a/a/app2_p4.s                                           c/esq_inc_copper_lists_towards_targets.c
 modules/groups/a/a/app_esq_initaudio1dma.s                             c/esq_init_audio1_dma.c
@@ -839,6 +840,10 @@ data/textdisp_p2.s                                                     c/data_te
 data/tliba1_p1.s                                                       c/data_tliba1_p1.c
 data/wdisp_p1_p1.s                                                     c/data_wdisp_p1_p1.c
 modules/groups/a/q/esqshared4_p1.s                                     c/esqshared4_init_banner_copper_system.c
+modules/groups/a/a/app_esq_pollctrlinput.s                             c/esq_poll_ctrl_input.c
+modules/groups/a/z/locavail2_locavail2_autorequestnoop.s               c/locavail2_auto_request_noop.c
+modules/groups/a/z/locavail2_locavail2_displayalertdelayandreboot.s    c/locavail2_display_alert_delay_and_reboot.c
+modules/groups/_main/a/a.s                                             c/a_merged.c
 modules/groups/a/a/app2_p7.s                                           c/app2_p7_merged.c
 modules/groups/a/a/app2_esq_findsubstringcasefold.s                    c/app2_esq_findsubstringcasefold_merged.c
 modules/groups/a/c/cleanup2_p1_p0_p0.s                                 c/cleanup2_p1_p0_p0_merged.c
