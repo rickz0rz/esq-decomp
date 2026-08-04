@@ -1207,25 +1207,62 @@ tools/fileio_esq.sh <candidate>  cand 90 53:5 19:3 36:6 36:4 53:6 53:10
 python3 tools/fileiodiff.py pure cand
 ```
 
-**IT CURRENTLY CAPTURES NOTHING, AND THAT IS THE FINDING.** Measured 2026-08-04:
-an idle soak changes no file; driving the ad editor changes none; driving Edit
-Attributes and exiting the ESC menu changes none, even though that path sets
-`ED_SaveTextAdsOnExitFlag` and `ED1_ExitEscMenu` calls
-`LADFUNC_SaveTextAdsToFile` when it is 1.
+**`df0:` IS NOT THE FLOPPY. It is the same host directory the harness watches.**
+ESQ's data paths all start `df0:` -- `"df0:config.dat"`, `"df0:err.log"`,
+`"DF0:LocAvail.dat"` -- and reading that as the floppy drive is wrong. The drive's
+own `S/Startup-Sequence` reassigns it before ESQ ever starts:
 
-ESQ's data paths are all `df0:` -- `"df0:locavail.dat"`, `"df0:config.dat"`,
-`"df0:err.log"`. **`df0:` is the FLOPPY**, and the fs-uae config mounts
-`BLANK.ADF` there, unchanged since May 2025. The startup assigns only redirect
-`SYS:`, `C:`, `FONTS:` and friends to `DH2:` -- none redirects `DF0:`.
+```
+assign df0: dismount
+assign df0: dh1:
+```
 
-So in this emulator setup ESQ's writes appear to go to a blank floppy and fail.
-That also explains why no harness ever caught a file-I/O defect: there has never
-been a file to catch one in. **`fileiodiff.py` exits 2 rather than 0 when neither
-build wrote anything**, because a clean result there proves nothing.
+`dh1:` is `hard_drive_1` in the fs-uae config, which is `~/Downloads/Prevue`. So
+every `df0:` path lands in the directory `fileio_esq.sh` snapshots, and
+`BLANK.ADF` only exists to let the boot finish. The drive holds `config.dat` and
+`LocAvail.dat` under exactly the names ESQ opens, which is the corroboration.
 
-Settle it before restoring `STREAM_BufferedPutcOrFlush`: diff `BLANK.ADF` around
-a run, and check whether the `DF0:`->`DH2:` patch in `docs/reference-binary.md`
-covers the DATA paths or only the program's own path.
+**The assign lives OUTSIDE this repository**, in the emulated drive's startup
+script. Nothing in `src/` records it, so a grep of the sources for `dh2:` finds
+zero data paths and the floppy reading looks correct. An earlier version of this
+section drew that conclusion and it was wrong. **Read the drive's
+`S/Startup-Sequence` before concluding anything about where a path resolves.**
+
+**An empty capture can be a HARNESS result**, and the first thing to suspect is
+the boot delay. Keys sent before ESQ is up go nowhere and the run then reads as a
+program that wrote nothing. Pass `BOOT=95`, the value `keyprobe_esq.sh` needs.
+`fileiodiff.py` exits 2 rather than 0 when neither build wrote anything, because
+a clean result there proves nothing.
+
+**BUT THE EMPTY CAPTURE HERE IS REAL, AND THE CAUSE IS THE MISSING SERIAL FEED.**
+Measured 2026-08-04 on `ESQ.known-good-36cf56ed`, 150 seconds, six menu keys at
+`BOOT=95`: **no file on the drive changed at all.** Confirmed independently of
+the harness by mtime, including the `.uaem` metadata the snapshot excludes and
+the restore never touches. Only `ESQ` itself changed, which is the harness
+staging the binary.
+
+Every data write is gated behind a pending flag, and the listing data path sets
+those flags:
+
+```
+DISKIO2_FlushDataFilesIfNeeded
+    -> if (CTASKS_PrimaryOiWritePendingFlag)   COI_WriteOiDataFile(...)
+    -> if (CTASKS_SecondaryOiWritePendingFlag) ...
+```
+
+`CTASKS_PrimaryOiWritePendingFlag` is set by `CLEANUP_ParseAlignedListingBlock`
+and `DISKIO2_LoadCurDayDataFile`, and `DISKIO_SaveConfigToFileHandle` is called
+from `ESQPARS_ConsumeRbfByteAndDispatchCommand` -- the RBF **serial** command
+interpreter. **ESQ is a broadcast receiver.** With no head-end feeding it
+listings, nothing marks data dirty, so nothing is written, and a keyboard-only
+harness cannot reach the write path however it is driven.
+
+So `fileio_esq.sh` is correct and currently has nothing to measure. **The SAS/C
+stdio write layer -- `STREAM_BufferedPutcOrFlush` and `STREAM_BufferedGetc` --
+therefore has NO runtime coverage of any kind, and restoring it would be both
+unverifiable and unexercised.** Getting coverage means driving the SERIAL port
+(`serial_port` in the fs-uae config, ESQ opens it at baud 2400) with RBF
+commands. That is a new harness, not a longer key sequence.
 
 ```sh
 tools/menusweep_esq.sh <binary> <label> [items] [reps]   # all six ESC-menu items

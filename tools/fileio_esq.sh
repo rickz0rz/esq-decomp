@@ -33,44 +33,57 @@
 # candidate over $PREVUE/ESQ, so it always "changes" and would drown the diff.
 #
 # A KEY SEQUENCE IS USUALLY REQUIRED, and that is the whole point. ESQ writes
-# nothing on its own -- a 90-second idle soak touches NO file, measured. The
-# write path is reached through the editor and the menu, so pass the same
-# `key:wait` pairs keyprobe_esq.sh takes to drive it there:
+# nothing on its own, so the write path has to be reached through the editor and
+# the menu. Pass the same `key:wait` pairs keyprobe_esq.sh takes:
 #
-#   tools/fileio_esq.sh build/ESQ cand 90 53:6 18:4 36:6 53:6
+#   BOOT=95 tools/fileio_esq.sh build/ESQ cand 150 53:5 19:3 36:6 36:4 53:6 53:10
 #
 # Sending keys needs the Accessibility grant, exactly as keyprobe does, and the
 # script checks for it rather than failing silently.
 #
-# OPEN QUESTION: WHERE DO ESQ'S WRITES ACTUALLY GO?
+# SET BOOT=95, OR THE KEYS ARRIVE BEFORE ESQ IS UP. This is the first thing to
+# suspect when a capture comes back empty. A key sent to the boot loader goes
+# nowhere, the run completes, and the result reads exactly like a program that
+# wrote nothing. keyprobe_esq.sh needs the same value for the same reason.
 #
-# Nothing found so far makes this build write a file, and the reason looks
-# structural rather than a missing keystroke. Measured on 2026-08-04:
+# WHERE ESQ'S WRITES GO: THE SAME DIRECTORY THIS WATCHES.
 #
-#   - an idle 90-second soak changes NO file on the drive
-#   - driving the ad editor changes none
-#   - driving Edit Attributes and exiting the ESC menu changes none, even though
-#     ED_HandleEditAttributesInput sets ED_SaveTextAdsOnExitFlag on key 13 or 27
-#     and ED1_ExitEscMenu calls LADFUNC_SaveTextAdsToFile when it is 1
+# ESQ's data paths all start `df0:` -- "df0:config.dat", "df0:err.log",
+# "DF0:LocAvail.dat". That is NOT the floppy drive. The emulated drive's own
+# S/Startup-Sequence reassigns it before ESQ starts:
 #
-# ESQ's data paths are all `df0:` -- "df0:locavail.dat", "df0:config.dat",
-# "df0:err.log" and so on. `df0:` is the FLOPPY, and the fs-uae config mounts
-# $HOME/Downloads/BLANK.ADF there. That image has not changed since May 2025.
-# The assigns ESQ issues at startup only redirect SYS:, C:, FONTS:, LIBS: and
-# friends to DH2:; none of them redirects DF0:.
+#     assign df0: dismount
+#     assign df0: dh1:
 #
-# So the likely reading is that in THIS emulator setup ESQ's writes go to a
-# blank floppy and fail, which would also explain why no harness has ever caught
-# a file-I/O defect: there has never been a file to catch one in.
+# `dh1:` is hard_drive_1 in the fs-uae config, which is $HOME/Downloads/Prevue.
+# So `df0:config.dat` resolves into the directory snapshotted here, and the
+# BLANK.ADF floppy only exists to let the boot finish.
 #
-# Two things would settle it, and neither is guesswork:
-#   1. diff BLANK.ADF around a run -- if the image changes, point the capture at
-#      the floppy instead of the drive
-#   2. check whether the DF0:->DH2: patch AGENTS.md describes for the reference
-#      binary actually covers the data paths, or only the program's own path
+# THAT ASSIGN IS NOT IN THIS REPOSITORY. It lives in the emulated drive's
+# startup script, so grepping src/ for `dh2:` finds no data paths at all and the
+# floppy reading looks right. An earlier version of this header drew exactly that
+# wrong conclusion. Read the drive's S/Startup-Sequence before deciding where a
+# path resolves.
 #
-# Until one of those lands, a clean result from fileiodiff.py means NOTHING, and
-# it says so rather than reporting a pass.
+# WHY IT STILL CAPTURES NOTHING: NO SERIAL FEED.
+#
+# Measured 2026-08-04 on ESQ.known-good-36cf56ed, 150 seconds, six menu keys at
+# BOOT=95: no file on the drive changed at all. That was confirmed WITHOUT this
+# harness, by mtime, including the .uaem metadata the snapshot excludes and the
+# restore never touches.
+#
+# Every data write is gated behind a pending flag that the LISTING DATA path
+# sets. DISKIO2_FlushDataFilesIfNeeded writes only when
+# CTASKS_PrimaryOiWritePendingFlag or its secondary is set; those are set by
+# CLEANUP_ParseAlignedListingBlock and DISKIO2_LoadCurDayDataFile; and
+# DISKIO_SaveConfigToFileHandle is called from
+# ESQPARS_ConsumeRbfByteAndDispatchCommand, the RBF SERIAL command interpreter.
+#
+# ESQ is a broadcast receiver. With no head end feeding it listings nothing is
+# ever marked dirty, so nothing is written, and NO keyboard sequence can reach
+# the write path. Coverage needs the serial port driven with RBF commands
+# (`serial_port` in the fs-uae config; ESQ opens it at baud 2400). That is a new
+# harness, not a longer key sequence.
 set -uo pipefail
 
 BIN="${1:?usage: fileio_esq.sh <binary> <label> [secs]}"
@@ -133,7 +146,9 @@ pkill -f 'fs-uae' 2>/dev/null; sleep 1
 fs-uae "$CONFIG" >/dev/null 2>&1 &
 UAE=$!
 
-BOOT="${BOOT:-45}"
+# 95, not 50: a key sent before ESQ is up reaches the boot loader and is lost,
+# and the run then reads as a program that wrote nothing. See the header.
+BOOT="${BOOT:-95}"
 if [ ${#KEYS[@]} -gt 0 ]; then
     sleep "$BOOT"
     osascript -e 'tell application "System Events" to set frontmost of process "fs-uae" to true' >/dev/null 2>&1
