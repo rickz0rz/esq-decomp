@@ -350,11 +350,38 @@ def main():
                 skipped.append((f, 'module holds %d labels and is entered by '
                                    'fall-through from its predecessor' % n))
                 continue
+        # An `__asm` DEFINITION of the restored function IS the expression of a
+        # register calling convention, so it clears the two blockers that are
+        # about where the arguments arrive.
+        #
+        # `register __d0` / `register __a1` put each parameter in the named
+        # register with no stack traffic, which is exactly what a register-args
+        # or live-register-on-entry callee needs, and it works for an assembly
+        # caller and a C caller alike. AGENTS.md notes that __asm does not make
+        # such a function BYTE-EXACT -- SAS/C still copies the arguments into
+        # its own callee-saved registers -- but that is a fidelity point, not a
+        # correctness one, and this generator decides linkability.
+        #
+        # Requiring the `__asm` to sit on the DEFINITION, not merely somewhere
+        # in the file, is what keeps this honest: most of these files also
+        # declare __asm PROTOTYPES for helpers they call, and matching those
+        # would clear the blocker on files that never fixed it.
+        #
+        # interior-label is deliberately NOT clearable. It is not a convention
+        # problem: the label is reached by branch or fall-through and runs on
+        # another routine's frame, so there is no function to declare.
+        asm_def = re.search(
+            r'\b__asm\b[^;{]*\b' + re.escape(bare)
+            + r'\s*\([^)]*register\s+__[^)]*\)\s*\{',
+            text, re.S)
+        clearable = {'register-args', 'live-register-on-entry'}
         blockers = set(fns.get(bare, {}).get('blockers', []))
+        if asm_def:
+            blockers -= clearable
         if blockers & ABI_BLOCKERS:
             skipped.append((f, 'ABI: ' + ','.join(sorted(blockers & ABI_BLOCKERS))))
             continue
-        if bare in reg_abi:
+        if bare in reg_abi and not asm_def:
             skipped.append((f, 'entered by the OS with a register convention'))
             continue
         # This manifest mandates ESQ_FARCALLS=1, which rewrites every `BSR.S sym`

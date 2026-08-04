@@ -38,14 +38,15 @@
  *   retest:  a compiler that keeps short-lived locals in D0/D1/A0/A1 would
  *            drop the MOVEM pair and land within the remaining 6 bytes.
  */
-extern unsigned char CIAB_PRA;
+/* ESQ_SetCopperEffectParams reads its two bytes from D0 and D1. A plain
+ * prototype makes SAS/C push them on the stack, and the callee then reads
+ * whatever is there. The __asm register form in esq-copper.h puts them where
+ * the callee looks. That prototype used to live in this file; it moved to the
+ * header on 2026-08-04, when the other four callers in the family were
+ * unblocked and needed the same declaration. */
+#include "esq-copper.h"
 
-/* _ESQ_SetCopperEffectParams reads its two bytes from D0 and D1. A plain
- * prototype makes SAS/C push them on the stack, and the assembly callee then
- * reads whatever is there. The __asm register form puts them where the callee
- * looks. */
-void __asm ESQ_SetCopperEffectParams(register __d0 unsigned char a,
-                                     register __d1 unsigned char b);
+extern unsigned char CIAB_PRA;
 
 void ESQ_SetCopperEffect_AllOn(void)
 {

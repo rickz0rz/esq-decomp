@@ -43,7 +43,10 @@ extern void DISKIO_ProbeDrivesAndAssignPaths(void);
 extern void *SIGNAL_CreateMsgPortWithSignal(char *name, long sig);
 extern struct IOStdReq *ALLOCATE_AllocAndInitializeIOStdReq(void *port);
 extern void *MEMORY_AllocateMemory(char *who, long line, long size, long flags);
-extern void ESQ_InvokeGcommandInit(void);
+/* Installed as an input.device handler below, so it is entered with the
+ * InputEvent list in A0 and is_Data in A1. See esq_invoke_gcommand_init.c. */
+extern long __asm ESQ_InvokeGcommandInit(register __a0 void *events,
+                                         register __a1 void *userData);
 
 extern void *Global_REF_INPUTDEVICE_MSGPORT;
 extern void *Global_REF_CONSOLEDEVICE_MSGPORT;
@@ -85,7 +88,10 @@ void KYBD_InitializeInputDevices(void)
     Global_REF_DATA_INPUT_BUFFER =
         MEMORY_AllocateMemory(Global_STR_KYBD_C, 121, 22, MEMF_PUBLIC);
     Global_REF_DATA_INPUT_BUFFER->is_Data = &INPUTDEVICE_HandlerUserDataLong;
-    Global_REF_DATA_INPUT_BUFFER->is_Code = ESQ_InvokeGcommandInit;
+    /* is_Code is declared VOID (*)() by exec, and the handler is an __asm
+     * register function, so the cast is the only way to store it. */
+    Global_REF_DATA_INPUT_BUFFER->is_Code =
+        (void (*)())ESQ_InvokeGcommandInit;
     Global_REF_DATA_INPUT_BUFFER->is_Node.ln_Pri = 0x33;
 
     Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE->io_Command = 9;

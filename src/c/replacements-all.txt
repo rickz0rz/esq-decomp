@@ -227,6 +227,7 @@ modules/groups/a/l/ed3bbbb_p2_ed_transformlinespacing_mode3.s          c/ed_tran
 modules/groups/a/l/ed3bbbb_ed_updateactiveinactiveindicator.s          c/ed_update_active_inactive_indicator.c
 modules/groups/a/l/ed3bbbb.s                                           c/ed_update_ad_number_display.c
 modules/groups/a/l/ed3bb_p3_ed_updatecursorposfromindex.s              c/ed_update_cursor_pos_from_index.c
+modules/groups/a/a/app2_esq_bumpcolortowardtargets.s                   c/esq_bump_color_toward_targets.c
 modules/groups/a/a/app2_esq_calcdayofyearfrommonthday.s                c/esq_calc_day_of_year_from_month_day.c
 modules/groups/a/a/app_esq_capturectrlbit4streambufferbyte.s           c/esq_capture_ctrl_bit4_stream_buffer_byte.c
 modules/groups/_main/b/b.s                                             c/esq_check_available_fast_memory.c
@@ -242,8 +243,13 @@ modules/groups/_main/b/bb_esq_formatdiskerrormessage.s                 c/esq_for
 modules/groups/a/a/app2_p6.s                                           c/esq_format_time_stamp.c
 modules/groups/a/a/app2_esq_generatexorchecksumbyte.s                  c/esq_generate_xor_checksum_byte.c
 modules/groups/a/a/app2_esq_gethalfhourslotindex.s                     c/esq_get_half_hour_slot_index.c
+modules/groups/a/a/app2_p4_p1.s                                        c/esq_inc_copper_lists_alt_skip_index4.c
+modules/groups/a/a/app2_p4.s                                           c/esq_inc_copper_lists_towards_targets.c
 modules/groups/a/a/app_esq_initaudio1dma.s                             c/esq_init_audio1_dma.c
+modules/groups/a/a/app3b.s                                             c/esq_invoke_gcommand_init.c
 modules/groups/a/m/esq.s                                               c/esq_main_init_and_run.c
+modules/groups/a/a/app2_esq_movecopperentrytowardend.s                 c/esq_move_copper_entry_toward_end.c
+modules/groups/a/a/app2_esq_movecopperentrytowardstart.s               c/esq_move_copper_entry_toward_start.c
 modules/groups/a/a/app2_esq_noop.s                                     c/esq_noop.c
 modules/groups/a/a/app2_p3_esq_noop_006a.s                             c/esq_noop_006a.c
 modules/groups/a/a/app2_p4_esq_noop_0074.s                             c/esq_noop_0074.c
@@ -253,6 +259,11 @@ modules/groups/a/a/app2_esq_reversebitsin6bytes.s                      c/esq_rev
 modules/groups/a/a/app2_esq_seedminuteeventthresholds.s                c/esq_seed_minute_event_thresholds.c
 modules/groups/a/a/app2_esq_setbit1based.s                             c/esq_set_bit_1based.c
 modules/groups/a/a/app2_p0.s                                           c/esq_set_copper_effect_all_on.c
+modules/groups/a/a/app2_esq_setcoppereffect_custom.s                   c/esq_set_copper_effect_custom.c
+modules/groups/a/a/app2_esq_setcoppereffect_default.s                  c/esq_set_copper_effect_default.c
+modules/groups/a/a/app2_esq_setcoppereffect_offdisablehighlight.s      c/esq_set_copper_effect_off_disable_highlight.c
+modules/groups/a/a/app2_esq_setcoppereffect_onenablehighlight.s        c/esq_set_copper_effect_on_enable_highlight.c
+modules/groups/a/a/app2_esq_setcoppereffectparams.s                    c/esq_set_copper_effect_params.c
 modules/groups/a/a/app3.s                                              c/esq_supervisor_cold_reboot.c
 modules/groups/a/a/app2_esq_terminateaftersecondquote.s                c/esq_terminate_after_second_quote.c
 modules/groups/a/a/app2_esq_testbit1based.s                            c/esq_test_bit_1based.c

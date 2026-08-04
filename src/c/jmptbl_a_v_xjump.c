@@ -22,7 +22,11 @@
 extern struct IOStdReq * ALLOCATE_AllocAndInitializeIOStdReq(struct MsgPort *replyPort);
 extern struct MsgPort * SIGNAL_CreateMsgPortWithSignal(char *name, long pri);
 extern void DISKIO_ProbeDrivesAndAssignPaths(void);
-extern void ESQ_InvokeGcommandInit(void *a, void *b);
+/* An input-device handler: A0 carries the InputEvent list and A1 carries
+ * is_Data. The thunk must keep that convention, because the ORIGINAL installs
+ * the THUNK as is_Code, not the target. See esq_invoke_gcommand_init.c. */
+extern long __asm ESQ_InvokeGcommandInit(register __a0 void *events,
+                                         register __a1 void *userData);
 extern long EXEC_CallVector_48(struct InputEvent *event, char *buffer, long length,
                         struct KeyMap *keyMap);
 
@@ -41,9 +45,10 @@ void GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(void)
     DISKIO_ProbeDrivesAndAssignPaths();
 }
 
-void GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit(void *a, void *b)
+long __asm GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit(register __a0 void *events,
+                                                  register __a1 void *userData)
 {
-    ESQ_InvokeGcommandInit(a, b);
+    return ESQ_InvokeGcommandInit(events, userData);
 }
 
 long GROUP_AV_JMPTBL_EXEC_CallVector_48(struct InputEvent *event, char *buffer, long length,

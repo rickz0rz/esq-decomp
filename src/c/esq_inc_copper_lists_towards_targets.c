@@ -1,11 +1,18 @@
 /* RESTORES: ESQ_IncCopperListsTowardsTargets
  * MODULE:   modules/groups/a/a/app2_p4.s
  * STATUS:   behavioural
- * DO-NOT-LINK: _ESQ_BumpColorTowardTargets clobbers D2 and D3 and does not
- *   restore them. SAS/C treats both as callee-saved, so it neither keeps a
- *   value there across the call nor saves them in the prologue, and they leak
- *   out to whoever called this function. The original's MOVEM.L D2-D6/A2-A3
- *   covers exactly that.
+ * LINKABLE SINCE 2026-08-04. The DO-NOT-LINK was about the CALLEE, and the
+ *   callee changed. It used to read: "_ESQ_BumpColorTowardTargets clobbers D2
+ *   and D3 and does not restore them. SAS/C treats both as callee-saved, so it
+ *   neither keeps a value there across the call nor saves them in the
+ *   prologue, and they leak out to whoever called this function." That was
+ *   true of the assembly helper. The helper is now compiled C
+ *   (esq_bump_color_toward_targets.c), so it saves D2 and D3 like every other
+ *   C function and the assumption this file relied on became true. Nothing in
+ *   the body below had to change.
+ *
+ *   The register-threaded-pointer divergence recorded next is UNAFFECTED by
+ *   that and still stands: it is about A1 on the way out, not D2/D3.
  *
  * SASC-MISMATCH: register-threaded-pointer
  *   ref:     43f90000a356 ... 6160 ... 614a       LEA targets,A1 once, then
@@ -43,15 +50,11 @@
  * Note the two extra items are per CALL SITE, not per iteration -- the loops
  * run 8 and 24 times and the code is written once.
  */
+#include "esq-copper.h"
+
 extern char ESQ_CopperStatusDigitsA[];
 extern char ESQ_CopperStatusDigitsB[];
 extern char WDISP_PaletteTriplesRBase[];
-
-/* Register-argument helper: the colour arrives in D0 and comes back in D0,
- * and the target triple is read through A1. It also destroys D1, D2 and D3 --
- * see DO-NOT-LINK above. */
-unsigned short __asm ESQ_BumpColorTowardTargets(register __d0 unsigned short c,
-                                                register __a1 char *targets);
 
 void ESQ_IncCopperListsTowardsTargets(void)
 {

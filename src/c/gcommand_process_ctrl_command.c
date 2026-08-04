@@ -59,10 +59,17 @@ extern long ED_StateRingWriteIndex;
 extern char ED_StateRingTable[][5];
 extern short GCOMMAND_DriveProbeRequestedFlag;
 
+/* Guarded so a forward `struct CtrlCommand;` can precede it. SAS/C 6.51
+ * accepts a tag declaration BEFORE the definition and rejects the reverse with
+ * Error 63, so an unguarded pair compiles or not depending on merge order --
+ * see AGENTS.md. esq_invoke_gcommand_init.c is the file that needs it. */
+#ifndef CTRLCOMMAND_DEFINED
+#define CTRLCOMMAND_DEFINED
 struct CtrlCommand {
     char pad[4];
     char type;
 };
+#endif
 
 long __saveds GCOMMAND_ProcessCtrlCommand(struct CtrlCommand *cmd)
 {

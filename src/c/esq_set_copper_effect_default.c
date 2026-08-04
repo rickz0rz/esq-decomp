@@ -1,22 +1,28 @@
 /* RESTORES: ESQ_SetCopperEffect_Default
  * MODULE:   modules/groups/a/a/app2.s
  * STATUS:   behavioural
- * DO-NOT-LINK: takes its arguments in REGISTERS, so the compiled C reads the
- *   stack and gets garbage. Proven: esq_dec_color_step.c linked alone over a
- *   clean 356-entry build paints a green panel over the grid area, and
- *   ESQ_SetCopperEffect_Custom compiles to 610000004e75 -- a call and a
- *   return, doing none of the work. Kept for the analysis, never linked.
+ * LINKABLE SINCE 2026-08-04. This file is a CALLER of a register-argument
+ *   function, not a register-argument function itself: it takes nothing and
+ *   only PUTS two bytes in D0 and D1. The `__asm` prototype in esq-copper.h
+ *   does that. See esq_set_copper_effect_custom.c for the full note on why the
+ *   old blanket DO-NOT-LINK was wrong for this half of the family.
  *
- * SASC-MISMATCH: register-argument-convention
- *   ref:     103c0000123c003f6100008a4e75
- *   got:     610000004e75
- *   summary: The original passes its arguments in REGISTERS (D0/D1) rather than on the stack, so it is callable only from assembly. Documented, not linkable.
- *   retest:  re-run tools/mismatches.py --recheck against a different
- *            SAS/C version; see docs/compiler-version.md.
+ *   The body it guarded was a bare call that passed no arguments at all, so
+ *   linking it as written would have left both effect bytes undefined.
+ *
+ * SASC-MISMATCH: immediate-load-idiom
+ *   ref:     103c0000123c003f6100008a4e75   (14)
+ *   summary: the original loads each argument register with its own
+ *            MOVE.B #imm. SAS/C materialises the pair with a MOVEQ where the
+ *            values allow it, and reaches the callee with BSR.W where the
+ *            original had room for a shorter displacement.
+ *   scope:   every caller in this family; the same two items are itemised in
+ *            esq_set_copper_effect_all_on.c.
+ *   retest:  a compiler that loads each argument register separately matches.
  */
-/* Register-argument function: the effect parameters arrive in D0/D1. */
-extern void ESQ_SetCopperEffectParams(void);
+#include "esq-copper.h"
+
 void ESQ_SetCopperEffect_Default(void)
 {
-    ESQ_SetCopperEffectParams();
+    ESQ_SetCopperEffectParams(0x00, 0x3f);
 }

@@ -1,37 +1,65 @@
 /* RESTORES: ESQ_MoveCopperEntryTowardStart
  * MODULE:   modules/groups/a/a/app2.s
  * STATUS:   behavioural
- * DO-NOT-LINK: takes its arguments in REGISTERS, so the compiled C reads the
- *   stack and gets garbage. Proven: esq_dec_color_step.c linked alone over a
- *   clean 356-entry build paints a green panel over the grid area, and
- *   ESQ_SetCopperEffect_Custom compiles to 610000004e75 -- a call and a
- *   return, doing none of the work. Kept for the analysis, never linked.
+ * LINKABLE SINCE 2026-08-04. THE OLD DO-NOT-LINK WAS SIMPLY WRONG. It said the
+ *   function "takes its arguments in REGISTERS", and it does not: the first
+ *   two instructions are `MOVE.L 4(A7),D1` and `MOVE.L 8(A7),D0`, which is an
+ *   ordinary stack frame read. The note was copied across the whole copper
+ *   family from the routines that really do read registers, and it kept an
+ *   ordinary C function out of every manifest for no reason.
  *
- * SASC-MISMATCH: register-argument-convention
- *   ref:     222f0004202f000848e7380024000242001f0241001fe549e54a43f900002d2a41f90000414a0641000006420000383c001c3602594330312000b4416b00001a33b130002000b8426b00000831b1300020005942594360e233801000b8426b00000a67000006318010004cdf001c4e75
- *   got:     594f48e72f202c2f00242e2f00202007721fc081e5802a002006c081e580280030055940320548c1e2812401d48241f900000000d1c23f5000183f40001aba446f56300548c0e2802200d28141f9000000002248d3c1302f001a48c0e2802200d2812448d5c132927020ba406c22300548c0e2802200d28143f900000000d3c1302f001a48c0e2802200d281d1c132905945596f001a60a6300548c0e2802200d28141f900000000d1c1302f001830807220ba416c14320548c1e2812401d48241f900000000d1c230804cdf04f4584f4e75
- *   summary: The original takes its arguments in REGISTERS rather than on the stack, so it is callable only from assembly. No C function can express that convention; this restoration documents the logic but cannot be linked in.
- *   retest:  re-run tools/mismatches.py --recheck against a different
- *            SAS/C version; see docs/compiler-version.md.
+ * THE ARGUMENTS WERE ALSO THE WRONG WAY ROUND, and being unlinked is why
+ *   nothing caught it. The original loads the LIMIT from 4(A7) into D1 and the
+ *   WALKER from 8(A7) into D2, so the entry that moves is the SECOND argument
+ *   and it moves down to the first. The previous body used the first argument
+ *   as the walker, which reverses the routine. Its sibling
+ *   esq_move_copper_entry_toward_end.c has the opposite assignment in the
+ *   original -- walker in D1, limit in D2 -- and was already correct, which is
+ *   how the disagreement showed up.
+ *
+ *   Every caller passes (start, end): esqiff_service_pending_copper_palette_-
+ *   moves.c four times, and ed2_handle_menu_actions.c as (0, 31) on the
+ *   TowardEnd side. So TowardStart moves the entry at `end` down to `start`
+ *   and TowardEnd moves the entry at `start` up to `end`, which is the
+ *   symmetry the pair of names claims.
+ *
+ * SASC-MISMATCH: scratch-register-allocation
+ *   ref:     222f0004202f000848e7380024000242001f0241001fe549e54a43f900002d2a41f90000414a0641000006420000383c001c3602594330312000b4416b00001a33b130002000b8426b00000831b1300020005942594360e233801000b8426b00000a67000006318010004cdf001c4e75   (150)
+ *   summary: the original keeps both list bases in address registers across
+ *            the whole routine and indexes them with `0(An,Dn.W)`. SAS/C
+ *            recomputes an effective address per access, and it materialises
+ *            each `<< 2` with a shift into a fresh register rather than
+ *            folding it. The loop structure, the two comparisons per iteration
+ *            and the guarded secondary write are the same.
+ *   tried:   indexing a `short *` at `off >> 1` rather than casting a `char *`
+ *            makes SAS/C emit the divide-by-two as a real ASR at every site.
+ *            Holding the two bases in locals is what gets closest.
+ *   scope:   program-wide; this is the ordinary DATA=FAR addressing cost.
+ *   retest:  a compiler that pins the bases in address registers for the
+ *            function's lifetime lands much closer.
  */
-/* Register-argument function: the copper entry indices arrive in D0/D1. */
 extern short ESQ_CopperStatusDigitsA[], ESQ_CopperStatusDigitsB[];
 
-void ESQ_MoveCopperEntryTowardStart(long from, long to)
+/* The entry at `end` moves down to `start`; everything between shifts up one
+ * slot. The secondary list only mirrors slots below 0x1c. */
+void ESQ_MoveCopperEntryTowardStart(long start, long end)
 {
-    short src = (short)((from & 0x1f) << 2);
-    short dst = (short)((to & 0x1f) << 2);
+    char *a = (char *)ESQ_CopperStatusDigitsA;
+    char *b = (char *)ESQ_CopperStatusDigitsB;
+    short lim = (short)((start & 0x1f) << 2);
+    short src = (short)((end & 0x1f) << 2);
     short prv = src - 4;
-    short held = ESQ_CopperStatusDigitsA[src >> 1];
+    short top = 0x1c;
+    short held = *(short *)(a + src);
 
-    while (src > dst) {
-        ESQ_CopperStatusDigitsA[src >> 1] = ESQ_CopperStatusDigitsA[prv >> 1];
-        if (src < 0x20)
-            ESQ_CopperStatusDigitsB[src >> 1] = ESQ_CopperStatusDigitsA[prv >> 1];
+    while (src >= lim) {
+        *(short *)(a + src) = *(short *)(a + prv);
+        if (top >= src)
+            *(short *)(b + src) = *(short *)(a + prv);
         src -= 4;
         prv -= 4;
     }
-    ESQ_CopperStatusDigitsA[src >> 1] = held;
-    if (src < 0x20)
-        ESQ_CopperStatusDigitsB[src >> 1] = held;
+    *(short *)(a + lim) = held;
+    if (top > src)
+        *(short *)(b + lim) = held;
 }

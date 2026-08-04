@@ -1,23 +1,38 @@
 /* RESTORES: ESQ_SetCopperEffect_Custom
  * MODULE:   modules/groups/a/a/app2.s
  * STATUS:   behavioural
- * DO-NOT-LINK: takes its arguments in REGISTERS, so the compiled C reads the
- *   stack and gets garbage. Proven: esq_dec_color_step.c linked alone over a
- *   clean 356-entry build paints a green panel over the grid area, and
- *   ESQ_SetCopperEffect_Custom compiles to 610000004e75 -- a call and a
- *   return, doing none of the work. Kept for the analysis, never linked.
+ * LINKABLE SINCE 2026-08-04. This file is a CALLER of a register-argument
+ *   function, not a register-argument function itself. It takes nothing, and
+ *   it only PUTS two bytes in D0 and D1 before the call. The `__asm` prototype
+ *   in esq-copper.h does that, exactly as esq_set_copper_effect_all_on.c has
+ *   done since 2026-08-01.
  *
- * SASC-MISMATCH: register-argument-convention
- *   ref:     227c00bfd000121108c1000608c100071281103c003f1239000000f661684e75
- *   got:     610000004e75
- *   summary: The original takes its arguments in REGISTERS rather than on the stack, so it is callable only from assembly. Documented, not linkable.
- *   retest:  re-run tools/mismatches.py --recheck against a different
- *            SAS/C version; see docs/compiler-version.md.
+ *   The DO-NOT-LINK this file used to carry was copied across the whole copper
+ *   family from the routines that really do read registers, and it was wrong
+ *   here. Worse, the body it guarded was a bare call: it dropped the CIAB_PRA
+ *   bits and both argument bytes, so linking it as written would have done
+ *   none of the work. The body below is the whole routine.
+ *
+ * SASC-MISMATCH: scratch-register-allocation
+ *   ref:     227c00bfd000121108c1000608c100071281103c003f1239000000f661684e75   (32)
+ *   summary: same shape as esq_set_copper_effect_all_on.c -- SAS/C allocates
+ *            the CIA pointer and the byte to callee-saved registers because
+ *            the function makes a call, so it pays a MOVEM pair the original
+ *            does not. The original sets the two bits with two BSETs where
+ *            `|= 0xc0` is one ORI.
+ *   scope:   program-wide; every restoration that holds a local across a call.
+ *   retest:  a compiler that keeps short-lived locals in D0/D1/A0/A1 drops the
+ *            MOVEM pair.
  */
-extern short ESQPARS2_BannerColorStepCounter;
-extern void  ESQ_SetCopperEffectParams(void);
-/* Register-argument function: the two effect bytes arrive in D0/D1. */
+#include "esq-copper.h"
+
+extern volatile unsigned char CIAB_PRA;
+extern unsigned char HIGHLIGHT_CustomValue;
+
 void ESQ_SetCopperEffect_Custom(void)
 {
-    ESQ_SetCopperEffectParams();
+    volatile unsigned char *p = &CIAB_PRA;
+
+    *p = (unsigned char)(*p | 0xc0);
+    ESQ_SetCopperEffectParams(0x3f, HIGHLIGHT_CustomValue);
 }
