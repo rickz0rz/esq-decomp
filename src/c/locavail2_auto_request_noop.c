@@ -1,6 +1,12 @@
 /* RESTORES: LOCAVAIL2_AutoRequestNoOp
  * MODULE:   modules/groups/a/z/locavail2_locavail2_autorequestnoop.s
- * STATUS:   behavioural
+ * STATUS:   exact
+ *
+ * BYTE-EXACT, confirmed by `tools/mismatches.py --recheck` on 2026-08-04:
+ * 14 bytes against 14. It became exact when `__saveds` was added, which is
+ * the strongest evidence that the keyword is the right one for an
+ * OS-entered callback whose original opens MOVE.L A4,-(A7) / LEA <data>,A4.
+ *
  *
  * SASC-MISMATCH: unused-a4-setup
  *   ref:     2f0c49f9000080007000285f4e75

@@ -1,6 +1,6 @@
 /* RESTORES: _ESQ_MainExitNoOpHook
  * MODULE:   modules/submodules/unknown2b_esq_mainexitnoophook.s
- * STATUS:   behavioural
+ * STATUS:   exact
  *
  * A bare RTS in the original, reached through the `_main` jump table, so the
  * symbol must exist even though it does nothing.

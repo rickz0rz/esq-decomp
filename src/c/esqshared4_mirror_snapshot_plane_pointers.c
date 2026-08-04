@@ -1,6 +1,12 @@
 /* RESTORES: ESQSHARED4_MirrorSnapshotPlanePointers
  * MODULE:   modules/groups/a/q/esqshared4_p3_p0.s   (1 of its 3 blocks)
- * STATUS:   behavioural
+ * STATUS:   exact
+ *
+ * BYTE-EXACT, confirmed by `tools/mismatches.py --recheck` on 2026-08-04.
+ * The memory-to-memory-move divergence recorded below did NOT happen: 6.51
+ * emits the original's six `MOVE.W abs,abs` instructions. The note is kept
+ * because it is what was expected and it was wrong, which is worth knowing
+ * before predicting the same thing elsewhere.
  *
  * Copies the three banner snapshot destination pointers from the copper-list
  * words into the ESQPARS2 mirrors, one 16-bit half at a time.
