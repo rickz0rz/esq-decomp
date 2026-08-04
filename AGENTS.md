@@ -1899,32 +1899,32 @@ seven tables that were pure jump tables. It now accepts both spellings and skips
 comment lines. All 17 tables converted before the change regenerate
 byte-identically, so the change is safe.
 
-### The remaining tables are blocked by their TARGETS, not by themselves
+### The tables were blocked by their TARGETS, not by themselves
 
-Eighteen tables still refuse, and every one refuses for the same reason: a thunk
-points at a function that has no C restoration. Two groups cause it, and only one
-of them is work.
+**NONE REFUSE ANY MORE.** Every jump table in the program is C, and so is every
+target any of them points at -- there is no assembly left for a thunk to
+forward to. The section below is kept because the DEPENDENCY it describes is
+the thing to remember, not the list.
 
-- **SAS/C runtime routines** in `modules/submodules/`. The arithmetic helpers
-  and `WDISP_SPrintf` USED to be listed here as a hard floor. Both were solved:
-  see "SOLVED: the divide helpers are C" and "A VARIADIC TARGET NEEDS A V-FORM"
-  below. What is left in this group is `FORMAT_RawDoFmtWithScratchBuffer`,
-  `FORMAT_FormatToBuffer2`, `UNKNOWN36_FinalizeRequest`, `UNKNOWN2A_Stub0`,
-  `EXEC_CallVector_48` and `STREAM_BufferedWriteString`.
-- **Real ESQ functions nobody has written yet** -- `GRAPHICS_AllocRaster`,
-  `CLOCK_CheckDateOrSecondsFromEpoch`, `LOCAVAIL_SaveAvailabilityDataFile`,
-  `LADFUNC_SaveTextAdsToFile` and `TLIBA_FindFirstWildcardMatchIndex` among them.
-  These ARE reachable.
+A table refused when a thunk pointed at a function with no C restoration, and
+the list of refusals was therefore a list of unwritten CODE modules wearing a
+different hat. Two groups caused it: SAS/C runtime routines in
+`modules/submodules/`, and real ESQ functions nobody had written yet.
 
-So the order of work is fixed by a dependency. Write the code modules first. Each
-one that lands releases every jump table that points at it. Do not attack the
-tables directly -- that only re-reads the same refusals.
+So the order of work was fixed by a dependency, and this is the part worth
+keeping: **write the code modules first.** Each one that lands releases every
+jump table that points at it. Attacking the tables directly only re-reads the
+same refusals. The last eleven tables fell out of the code work rather than
+being worked on.
 
 **Check the target's ARITY against a real caller before writing a thunk for it.**
 `GRAPHICS_AllocRaster` reads its width and height from `16(A5)` and `20(A5)`, not
 from `8(A5)` and `12(A5)`, so it is not the two-argument function its name
 suggests. A thunk written from the name would pass the wrong slots and no byte
-check would see it.
+check would see it. `jmptbl_to_c.py` copies the parameter list from the target's
+own restoration for exactly this reason, and the two hand-written thunk files --
+`jmptbl_b_a_parseini2_p1.c` and `jmptbl_a_n_esqdispb_p0.c`, needed because their
+modules are not PURE jump tables -- do the same by hand.
 
 **Byte-exactness is not a goal on this lane.** A converted thunk costs two bytes
 and one extra frame, which the `tail-jump` divergence records. Chase the byte
