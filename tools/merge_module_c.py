@@ -230,6 +230,25 @@ def falls_through(mod, restores=None):
             op = text.strip().split(None, 1)[0].upper().split('.')[0]
             if op in ('XDEF', 'XREF', 'INCLUDE', 'IF', 'ENDIF', 'ALIGN_WORD'):
                 continue
+            # DATA IS NOT AN INSTRUCTION, and counting it as one manufactures a
+            # fall-through that cannot happen. A CODE module may hold constants
+            # after a function's RTS -- the original addresses them PC-relative,
+            # which is how it keeps a string out of the DATA section -- and they
+            # sit under local labels, so the scan walks straight past the labels
+            # and lands on the DC or NStr.
+            #
+            # modules/submodules/unknown29.s is the case: SAS/C's _main ends in
+            # RTS, then "con.10/10/320/80/" and "*" under .loc and .loc_1, then
+            # the jump-table thunk. The scan saw NSTR as the last operation
+            # before the thunk's label and reported a fall-through into it.
+            # Control cannot reach the thunk that way; the RTS ended the block.
+            #
+            # Leaving `last_op` alone is what makes the directive transparent.
+            # A block whose last INSTRUCTION is non-terminal is still flagged,
+            # data or no data, which is the case the check is for.
+            if op in ('DC', 'DS', 'DCB', 'NSTR', 'STR', 'CNOP', 'EVEN',
+                      'EQU', 'SET', 'RS', 'ALIGN'):
+                continue
             last_op = op
     return None
 

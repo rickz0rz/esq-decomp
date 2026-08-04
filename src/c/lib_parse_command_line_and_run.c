@@ -40,21 +40,27 @@
  * and `*` is opened for the third. With none it was started from Workbench, so
  * a console window is opened instead, and the task's pr_CIS is patched.
  *
- * NOT LINKED, AND DELIBERATELY SO. Two reasons, either of which is enough:
+ * LINKED SINCE 2026-08-04. It used to carry two reasons not to be, and both
+ * are now settled:
  *
  *   1. `unknown29.s` also holds `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun`, and a C
- *      file replaces a whole module. That one is easy to add.
- *   2. THE CONSOLE NAME WOULD GROW THE DATA HUNK. The original keeps
+ *      file replaces a whole module. jmptbl_submodules_unknown29.c restores it
+ *      and merge_module_c.py joins the two into one unit.
+ *   2. THE CONSOLE NAME WOULD HAVE GROWN THE DATA HUNK. The original keeps
  *      "con.10/10/320/80/" as a PC-relative template in the CODE section and
  *      copies it with four MOVE.L and a MOVE.W. SAS/C 6.51 puts a string
- *      literal in `data`, and AGENTS.md records that a DATA hunk that grows by
- *      even four bytes shifts every symbol after it and froze the display,
- *      reproducibly. Writing the name a character at a time would keep it in
- *      CODE, which is what this file does -- but the whole module still has to
- *      be measured against `hunkcmp` before it may be linked.
+ *      literal in `data`, and AGENTS.md records that a DATA hunk which grows
+ *      by even four bytes shifts every symbol after it and froze the display,
+ *      reproducibly. Both strings here are therefore built a character at a
+ *      time into a local, which keeps them in CODE. `hunkcmp` confirms it: the
+ *      DATA hunk is the same size with this module linked as without, and the
+ *      six differing DATA bytes are the pre-existing relocated ones.
  *
- * It is written now because `jmptbl_to_c.py` reads the signature from here,
- * which unblocks `modules/groups/_main/a/xjump.s`.
+ * MERGING IT NEEDED A FALL-THROUGH FIX IN THE TOOL, and the fall-through was
+ * not real. The two `NStr` constants sit between this function's RTS and the
+ * thunk's label, under local labels the scan walks past, so merge_module_c.py
+ * saw NSTR as the last operation before the thunk and called it a
+ * fall-through. Data is not an instruction; the RTS ended the block.
  *
  * SASC-MISMATCH: pc-relative-template-vs-data-literal
  *   ref:     LEA .loc(PC),A1 / four MOVE.L and a MOVE.W into the buffer
