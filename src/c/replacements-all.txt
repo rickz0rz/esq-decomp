@@ -838,6 +838,7 @@ modules/groups/a/e/coi_p3_coi_getanimfieldpointerbymode_coi_getanimfieldpointerb
 modules/groups/a/e/coi_p3_coi_formatentrydisplaytext_coi_renderclockformatentryvariant.s c/coi_p3_coi_formatentrydisplaytext_coi_renderclockformatentryvariant_merged.c
 modules/groups/a/e/coi_p4_coi_testentrywithintimewindow_coi_processentryselectionstate.s c/coi_p4_coi_testentrywithintimewindow_coi_processentryselectionstate_merged.c
 modules/groups/a/g/diskio1_p1.s                                        c/diskio1_p1_merged.c
+modules/groups/a/k/ed1_p0.s                                            c/ed1_p0_merged.c
 modules/groups/a/l/ed3bb_p0.s                                          c/ed3bb_p0_merged.c
 modules/groups/a/l/ed3bbbb_p1.s                                        c/ed3bbbb_p1_merged.c
 modules/groups/a/n/esqdispb_p0_esqdisp_testentrybits0and2_core_esqdisp_testentrybits0and2.s c/esqdispb_p0_esqdisp_testentrybits0and2_core_esqdisp_testentrybits0and2_merged.c

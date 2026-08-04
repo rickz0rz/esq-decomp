@@ -120,7 +120,66 @@ def labels_of(mod):
 TERMINAL = ('RTS', 'RTE', 'RTR', 'JMP', 'BRA')
 
 
-def falls_through(mod):
+def function_body(text, label):
+    """The braced body of `label`'s definition in `text`, or None.
+
+    Matched by brace counting from the definition's opening brace, so a nested
+    block or a string holding a brace cannot end it early.
+    """
+    m = re.search(r'^[A-Za-z_].*\b' + re.escape(label) + r'\s*\([^;{]*\)\s*\{',
+                  text, re.M | re.S)
+    if not m:
+        return None
+    depth, i = 0, m.end() - 1
+    while i < len(text):
+        if text[i] == '{':
+            depth += 1
+        elif text[i] == '}':
+            depth -= 1
+            if depth == 0:
+                return text[m.end():i]
+        i += 1
+    return None
+
+
+def bridged(mod, prev_label, name, restores):
+    """True when the C restoration of `prev_label` ENDS BY CALLING `name`.
+
+    A fall-through blocks a merge because the earlier restoration stops where
+    the assembly does not, so the later block's work would silently never run.
+    Writing the call at the end of the earlier function restores exactly that
+    ordering: the fall-through becomes a call, which costs the call itself and
+    one stack frame for its duration, and nothing else changes.
+
+    So the block is not "a fall-through cannot be merged" but "a fall-through
+    must be BRIDGED before it is merged", and this is the machine check for it.
+    Requiring the call to be the LAST statement is the part that matters -- a
+    call anywhere in the body would satisfy a looser test while running the
+    later block at the wrong point.
+
+    _ED1_EnterEscMenu is the worked example, and the whole reason the check
+    exists. It ends at the copper rise and the assembly runs straight into
+    _ED1_EnterEscMenu_AfterVersionText, which resets the filter cursor.
+    """
+    # falls_through() reads labels straight out of the assembly, so they keep
+    # the leading underscore that restores_map() strips.
+    prev_label = prev_label.lstrip('_')
+    name = name.lstrip('_')
+    f = restores.get(prev_label)
+    if not f:
+        return False
+    text = open(os.path.join(C_DIR, f), errors='replace').read()
+    body = function_body(text, prev_label)
+    if body is None:
+        return False
+    body = re.sub(r'/\*.*?\*/', '', body, flags=re.S)
+    stmts = [s.strip() for s in body.split(';') if s.strip()]
+    if not stmts:
+        return False
+    return re.match(r'^' + re.escape(name) + r'\s*\(', stmts[-1]) is not None
+
+
+def falls_through(mod, restores=None):
     """Name the first label whose block runs into the next one.
 
     THIS IS THE CHECK THAT MAKES MERGING SAFE, and it is not optional. When one
@@ -160,7 +219,8 @@ def falls_through(mod):
             if (prev_label is not None and not name.startswith('.')
                     and not name.endswith('_Return')
                     and last_op is not None
-                    and last_op not in TERMINAL):
+                    and last_op not in TERMINAL
+                    and not bridged(mod, prev_label, name, restores or {})):
                 return '%s falls through into %s' % (prev_label, name)
             if not name.startswith('.') and not name.endswith('_Return'):
                 prev_label = name
@@ -300,7 +360,7 @@ def main():
             f = restores[l]
             if f not in files:
                 files.append(f)
-        why = falls_through(mod) or collides(files)
+        why = falls_through(mod, restores) or collides(files)
         if why:
             blocked.append((mod, why))
             continue

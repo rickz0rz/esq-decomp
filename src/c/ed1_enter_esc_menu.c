@@ -71,6 +71,10 @@ extern long Global_LONG_PATCH_VERSION_NUMBER;
 extern char Global_STR_NINE_POINT_ZERO[];
 extern char Global_STR_VER_PERCENT_S_PERCENT_L_D[];
 
+/* The original falls through into this; the tail of the body below is that
+ * fall-through written as a call. See the note at the end of the function. */
+extern void ED1_EnterEscMenu_AfterVersionText(void);
+
 void ED1_EnterEscMenu(void)
 {
     char versionBanner[41];
@@ -125,4 +129,21 @@ void ED1_EnterEscMenu(void)
     SetAPen(Global_REF_RASTPORT_1, 1L);
     SetDrMd(Global_REF_RASTPORT_1, 1L);
     ESQIFF_RunCopperRiseTransition();
+
+    /* THE ORIGINAL FALLS THROUGH HERE. There is no branch and no return: the
+     * copper rise is the last instruction before the
+     * _ED1_EnterEscMenu_AfterVersionText label, and execution simply carries
+     * on into it and out through the epilogue the two share.
+     *
+     * This call is that fall-through, written down. It is what makes the
+     * module mergeable -- as two independent C functions the filter-cursor
+     * reset would never run on the ESC-menu path, silently, which is the case
+     * merge_module_c.py's fall-through check exists to catch. The check now
+     * accepts the module because this call is the LAST statement here; a call
+     * anywhere else in the body would run the block at the wrong point.
+     *
+     * It costs the call and one stack frame for its duration. Nothing else
+     * changes: nothing outside this module names the second label, so no other
+     * caller can tell the two apart. */
+    ED1_EnterEscMenu_AfterVersionText();
 }
