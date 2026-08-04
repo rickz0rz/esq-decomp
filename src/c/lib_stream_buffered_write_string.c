@@ -30,7 +30,7 @@
  * flush sentinel, the same one `UNKNOWN36_FinalizeRequest` uses.
  *
  * SPLIT OUT OF unknown2b.s. That module held nine labels, and the three that
- * remain -- `STREAM_BufferedPutcOrFlush`, `DOS_MovepWordReadCallback` and
+ * remain -- `STREAM_BufferedPutcOrFlush`, the CRLF constant `DOS_STR_CRLF` and
  * `STREAM_BufferedGetc` -- are several hundred lines of SAS/C stdio that are not
  * restored yet. `tools/split_module.py` cut this onto its own `;!======`
  * boundary, byte-neutral, so it links while they stay in assembly.
