@@ -11,10 +11,10 @@
  */
 extern long Global_REF_LONG_CURRENT_EDITING_AD_NUMBER;
 extern char ED_EditBufferLive[], ED_EditBufferScratch[];
-extern void GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex(long idx, char *a, char *b);
+extern void LADFUNC_UpdateEntryFromTextAndAttrBuffers(long idx, char *a, char *b);
 void ED_CommitCurrentAdEdits(void)
 {
-    GROUP_AL_JMPTBL_LADFUNC_UpdateEntryBuffersForAdIndex(
+    LADFUNC_UpdateEntryFromTextAndAttrBuffers(
         Global_REF_LONG_CURRENT_EDITING_AD_NUMBER - 1,
         ED_EditBufferScratch, ED_EditBufferLive);
 }

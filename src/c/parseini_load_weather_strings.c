@@ -48,8 +48,8 @@
 #define ESQ_EXACT 1
 #endif
 
-extern long  PARSEINI_JMPTBL_STRING_CompareNoCase(char *a, char *b);
-extern void *PARSEINI_JMPTBL_BRUSH_AllocBrushNode(char *s, void *prev);
+extern long  STRING_CompareNoCase(char *a, char *b);
+extern void *BRUSH_AllocBrushNode(char *s, void *prev);
 extern void *PARSEINI_BannerBrushResourceHead;
 extern void *PARSEINI_WeatherBrushNodePtr;
 extern long  P_TYPE_WeatherBrushRefreshPendingFlag;
@@ -66,9 +66,9 @@ void PARSEINI_LoadWeatherStrings(char *key, char *value)
     if (PARSEINI_BannerBrushResourceHead == 0)
         PARSEINI_WeatherBrushNodePtr = 0;
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key,
+    if (STRING_CompareNoCase(key,
             PARSEINI_TAG_FILENAME_WeatherString) == 0) {
-        node = PARSEINI_JMPTBL_BRUSH_AllocBrushNode(value, PARSEINI_WeatherBrushNodePtr);
+        node = BRUSH_AllocBrushNode(value, PARSEINI_WeatherBrushNodePtr);
         node[190] = 10;
         PARSEINI_WeatherBrushNodePtr = node;
         if (PARSEINI_BannerBrushResourceHead == 0)
@@ -82,9 +82,9 @@ void PARSEINI_LoadWeatherStrings(char *key, char *value)
        is what stops the compiler folding the block away -- see AGENTS.md. */
     enabled = 0;
     if (enabled) {
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_TAG_WEATHER) == 0) {
+        if (STRING_CompareNoCase(key, PARSEINI_TAG_WEATHER) == 0) {
             P_TYPE_WeatherBrushRefreshPendingFlag = 1;
-            node = PARSEINI_JMPTBL_BRUSH_AllocBrushNode(key, PARSEINI_WeatherBrushNodePtr);
+            node = BRUSH_AllocBrushNode(key, PARSEINI_WeatherBrushNodePtr);
             node[190] = 10;
             PARSEINI_WeatherBrushNodePtr = node;
             if (PARSEINI_BannerBrushResourceHead == 0)

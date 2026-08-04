@@ -46,7 +46,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
-extern void SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine(void *ctx,
+extern void LOCAVAIL_UpdateFilterStateMachine(void *ctx,
                                                              char *state);
 extern void SCRIPT_LoadCtrlContextSnapshot(void *ctx);
 extern void SCRIPT_SaveCtrlContextSnapshot(void *ctx);
@@ -65,7 +65,7 @@ extern short TEXTDISP_CurrentMatchIndexSaved;
 
 void SCRIPT_ProcessCtrlContextPlaybackTick(void *ctx)
 {
-    SCRIPT3_JMPTBL_LOCAVAIL_UpdateFilterStateMachine(ctx,
+    LOCAVAIL_UpdateFilterStateMachine(ctx,
                                                      LOCAVAIL_PrimaryFilterState);
     SCRIPT_LoadCtrlContextSnapshot(ctx);
 

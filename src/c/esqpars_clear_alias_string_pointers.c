@@ -52,7 +52,7 @@ struct EsqParsAlias {
 };
 
 extern char *ESQPARS_ReplaceOwnedString(char *newStr, char *old);
-extern void  ESQIFF_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                    void *p, long size);
 
 extern short TEXTDISP_AliasCount;
@@ -70,7 +70,7 @@ void ESQPARS_ClearAliasStringPointers(void)
             a->first  = ESQPARS_ReplaceOwnedString(0, a->first);
             a->second = ESQPARS_ReplaceOwnedString(0, a->second);
 
-            ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_1, 945L,
+            MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_1, 945L,
                                                   a, 8L);
             TEXTDISP_AliasPtrTable[i] = 0;
         }

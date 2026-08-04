@@ -113,25 +113,25 @@ struct NgShowReq {
     short  rowLimit;                    /* +24 */
 };
 
-extern char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(void *entry, long idx,
+extern char *COI_SelectAnimFieldPointer(void *entry, long idx,
                                                         long field);
 extern void  TEXTDISP_FormatEntryTimeForIndex(char *buf, long idx, void *aux);
 extern void  NEWGRID_ResetShowtimeBuckets(void);
 extern short NEWGRID_UpdatePresetEntry(struct NgShowEntry **e,
                                        struct NgShowAux **a, long row,
                                        long col);
-extern short NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(void *e,
+extern short DISPLIB_FindPreviousValidEntryIndex(void *e,
                                                                  void *a,
                                                                  long idx);
-extern long  NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(void *e, void *a,
+extern long  COI_ProcessEntrySelectionState(void *e, void *a,
                                                             long idx,
                                                             long window,
                                                             long tolerance);
-extern long  NEWGRID2_JMPTBL_ESQ_TestBit1Based(char *bits, long idx);
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
+extern long  ESQ_TestBit1Based(char *bits, long idx);
+extern char *STR_SkipClass3Chars(char *s);
 extern long  NEWGRID_AddShowtimeBucketEntry(char *text, long key);
 extern void  NEWGRID_AppendShowtimeBuckets(char *out);
-extern void  PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern void  STRING_AppendAtNull(char *dst, char *src);
 
 extern char  TEXTDISP_PrimaryGroupPresentFlag;
 extern short TEXTDISP_PrimaryGroupEntryCount;
@@ -205,13 +205,13 @@ void NEWGRID_BuildShowtimesText(struct NgShowCtx *ctx, struct NgShowReq *req,
         titlePtr = 0;
     }
 
-    field1 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(req->entry,
+    field1 = COI_SelectAnimFieldPointer(req->entry,
                                                         (long)slot, 1L);
-    field2 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(req->entry,
+    field2 = COI_SelectAnimFieldPointer(req->entry,
                                                         (long)slot, 2L);
-    field6 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(req->entry,
+    field6 = COI_SelectAnimFieldPointer(req->entry,
                                                         (long)slot, 6L);
-    field7 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(req->entry,
+    field7 = COI_SelectAnimFieldPointer(req->entry,
                                                         (long)slot, 7L);
 
     TEXTDISP_FormatEntryTimeForIndex(timeBuf, (long)slot, req->aux);
@@ -266,10 +266,10 @@ void NEWGRID_BuildShowtimesText(struct NgShowCtx *ctx, struct NgShowReq *req,
 
             if (row == req->rowStart) {
 
-                idx = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(
+                idx = DISPLIB_FindPreviousValidEntryIndex(
                           entry2, aux2, (long)idx);
 
-                if (NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(
+                if (COI_ProcessEntrySelectionState(
                         entry2, aux2, (long)idx,
                         GCOMMAND_PpvSelectionWindowMinutes,
                         GCOMMAND_PpvSelectionToleranceMinutes) == 0)
@@ -285,7 +285,7 @@ void NEWGRID_BuildShowtimesText(struct NgShowCtx *ctx, struct NgShowReq *req,
             if (aux2->flags[idx] & 0xa0)
                 continue;
 
-            if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry2->bits,
+            if (ESQ_TestBit1Based(entry2->bits,
                                                   (long)idx) != -1)
                 continue;
 
@@ -296,13 +296,13 @@ void NEWGRID_BuildShowtimesText(struct NgShowCtx *ctx, struct NgShowReq *req,
                 off = 0;
             title2 = aux2->slots[idx] + off;
 
-            g1 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry2, (long)idx,
+            g1 = COI_SelectAnimFieldPointer(entry2, (long)idx,
                                                             1L);
-            g2 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry2, (long)idx,
+            g2 = COI_SelectAnimFieldPointer(entry2, (long)idx,
                                                             2L);
-            g6 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry2, (long)idx,
+            g6 = COI_SelectAnimFieldPointer(entry2, (long)idx,
                                                             6L);
-            g7 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry2, (long)idx,
+            g7 = COI_SelectAnimFieldPointer(entry2, (long)idx,
                                                             7L);
 
             if (title2 == 0)
@@ -351,7 +351,7 @@ void NEWGRID_BuildShowtimesText(struct NgShowCtx *ctx, struct NgShowReq *req,
 
                 strcpy(out, Global_STR_SHOWTIMES_AND_SINGLE_SPACE);
 
-                textPtr = NEWGRID2_JMPTBL_STR_SkipClass3Chars(timeBuf);
+                textPtr = STR_SkipClass3Chars(timeBuf);
                 NEWGRID_AddShowtimeBucketEntry(textPtr, (long)rawSlot);
 
                 widthLeft -= TextLength(
@@ -362,7 +362,7 @@ void NEWGRID_BuildShowtimesText(struct NgShowCtx *ctx, struct NgShowReq *req,
             }
 
             TEXTDISP_FormatEntryTimeForIndex(timeBuf, (long)idx, aux2);
-            textPtr = NEWGRID2_JMPTBL_STR_SkipClass3Chars(timeBuf);
+            textPtr = STR_SkipClass3Chars(timeBuf);
 
             w    = TextLength(&ctx->rp, textPtr, strlen(textPtr));
             need = commaWidth + w;
@@ -383,8 +383,8 @@ void NEWGRID_BuildShowtimesText(struct NgShowCtx *ctx, struct NgShowReq *req,
 
     if (*out == 0) {
         strcpy(out, Global_STR_SHOWING_AT_AND_SINGLE_SPACE);
-        textPtr = NEWGRID2_JMPTBL_STR_SkipClass3Chars(timeBuf);
-        PARSEINI_JMPTBL_STRING_AppendAtNull(out, textPtr);
+        textPtr = STR_SkipClass3Chars(timeBuf);
+        STRING_AppendAtNull(out, textPtr);
     } else {
         NEWGRID_AppendShowtimeBuckets(out);
     }
@@ -394,6 +394,6 @@ void NEWGRID_BuildShowtimesText(struct NgShowCtx *ctx, struct NgShowReq *req,
     if (*field2 == 0)
         return;
 
-    PARSEINI_JMPTBL_STRING_AppendAtNull(out, NEWGRID_ShowtimeGenreSpacer);
-    PARSEINI_JMPTBL_STRING_AppendAtNull(out, field2);
+    STRING_AppendAtNull(out, NEWGRID_ShowtimeGenreSpacer);
+    STRING_AppendAtNull(out, field2);
 }

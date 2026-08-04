@@ -40,17 +40,17 @@ struct GridCtx {
 };
 
 extern long NEWGRID_SetRowColor(struct GridCtx *ctx, long a, long pen);
-extern long NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
-extern long NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(void);
-extern long NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(void);
-extern long NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount(void);
-extern long NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength(
+extern long DISPTEXT_IsCurrentLineLast(void);
+extern long DISPTEXT_HasMultipleLines(void);
+extern long DISPTEXT_IsLastLineSelected(void);
+extern long DISPTEXT_GetTotalLineCount(void);
+extern long DISPTEXT_MeasureCurrentLineLength(
                                                        struct RastPort *rp);
-extern void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(struct RastPort *rp,
+extern void DISPTEXT_RenderCurrentLine(struct RastPort *rp,
                                                        long x, long y);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(struct RastPort *rp,
+extern void BEVEL_DrawVerticalBevel(struct RastPort *rp,
                             long x0, long y0, long x1, long y1);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(struct RastPort *rp,
+extern void BEVEL_DrawHorizontalBevel(struct RastPort *rp,
                             long x0, long y0, long x1, long y1);
 
 extern unsigned short NEWGRID_RowHeightPx;
@@ -61,45 +61,45 @@ long NEWGRID_DrawGridFrameAndRows(struct GridCtx *ctx, long pen)
     struct RastPort *rp;
     long last, x, y, top, row, multiLine, baseline;
 
-    if (NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0) {
+    if (DISPTEXT_IsCurrentLineLast() == 0) {
         rp = &ctx->rp;
         SetAPen(rp, NEWGRID_SetRowColor(ctx, 0L, pen));
         RectFill(rp, 0L, 0L, 695L, (long)NEWGRID_RowHeightPx + 3);
 
         x = 42;
         top = 0;
-        if (NEWGRID2_JMPTBL_DISPTEXT_GetTotalLineCount() == 1) {
-            x += (612 - NEWGRID2_JMPTBL_DISPTEXT_MeasureCurrentLineLength(rp))
+        if (DISPTEXT_GetTotalLineCount() == 1) {
+            x += (612 - DISPTEXT_MeasureCurrentLineLength(rp))
                  / 2;
             top = 4;
         }
 
-        multiLine = NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines();
+        multiLine = DISPTEXT_HasMultipleLines();
         row = 0;
-        while (row < 2 && NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0) {
+        while (row < 2 && DISPTEXT_IsCurrentLineLast() == 0) {
             baseline = ctx->rp.Font->tf_Baseline;
             if (row == 0 && multiLine != 0)
                 y = ((long)NEWGRID_RowHeightPx / 2 - baseline - 4) / 2
                     + baseline + 3;
-            else if (NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected() != 0)
+            else if (DISPTEXT_IsLastLineSelected() != 0)
                 y = ((long)NEWGRID_RowHeightPx / 2 - baseline - 4) / 2
                     + baseline + top - 1;
             else
                 y = top + ((long)NEWGRID_RowHeightPx / 2 - baseline) / 2
                     + baseline - 1;
 
-            NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(rp, x, y);
+            DISPTEXT_RenderCurrentLine(rp, x, y);
             row++;
             top += (long)NEWGRID_RowHeightPx / 2
                    + DISPTEXT_ControlMarkerXOffsetPx;
         }
 
-        last = NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast();
+        last = DISPTEXT_IsCurrentLineLast();
         if (multiLine != 0)
-            NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(rp, 0L, 0L, 695L,
+            BEVEL_DrawVerticalBevel(rp, 0L, 0L, 695L,
                                         (long)NEWGRID_RowHeightPx + 3);
         if (last != 0)
-            NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(rp, 0L, 0L, 695L,
+            BEVEL_DrawHorizontalBevel(rp, 0L, 0L, 695L,
                                                       top - 1);
         ctx->headerHalf = (short)(top / 2);
     }

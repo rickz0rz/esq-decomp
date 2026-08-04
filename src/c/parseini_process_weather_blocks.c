@@ -89,12 +89,12 @@ struct WeatherBlock {
     struct WeatherSource *sourceHead;   /* +230 */
 };
 
-extern long  PARSEINI_JMPTBL_STRING_CompareNoCase(char *a, char *b);
-extern void *PARSEINI_JMPTBL_BRUSH_AllocBrushNode(char *name, void *prev);
-extern long  SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
-extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern long  STRING_CompareNoCase(char *a, char *b);
+extern void *BRUSH_AllocBrushNode(char *name, void *prev);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                  long size, long flags);
-extern void  SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
+extern void  STRING_CopyPadNul(char *dst, char *src, long n);
 
 extern struct WeatherBlock  *PARSEINI_CurrentWeatherBlockPtr;
 extern struct WeatherSource *PARSEINI_CurrentWeatherBlockTempPtr;
@@ -136,12 +136,12 @@ void PARSEINI_ProcessWeatherBlocks(char *key, char *value)
         PARSEINI_CurrentWeatherBlockPtr     = 0;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(
+    if (STRING_CompareNoCase(
             key, PARSEINI_TAG_FILENAME_WeatherBlock) == 0) {
 
         PARSEINI_CurrentWeatherBlockTempPtr = 0;
 
-        PARSEINI_CurrentWeatherBlockPtr = PARSEINI_JMPTBL_BRUSH_AllocBrushNode(
+        PARSEINI_CurrentWeatherBlockPtr = BRUSH_AllocBrushNode(
             value, PARSEINI_CurrentWeatherBlockPtr);
 
         PARSEINI_CurrentWeatherBlockPtr->type = 1;
@@ -153,15 +153,15 @@ void PARSEINI_ProcessWeatherBlocks(char *key, char *value)
     if (PARSEINI_CurrentWeatherBlockPtr == 0)
         return;
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_STR_LOADCOLOR)
+    if (STRING_CompareNoCase(key, PARSEINI_STR_LOADCOLOR)
         == 0) {
 
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(value, PARSEINI_TAG_ALL) == 0)
+        if (STRING_CompareNoCase(value, PARSEINI_TAG_ALL) == 0)
             PARSEINI_CurrentWeatherBlockPtr->colorMode = 0;
-        else if (PARSEINI_JMPTBL_STRING_CompareNoCase(value,
+        else if (STRING_CompareNoCase(value,
                                                       PARSEINI_TAG_NONE) == 0)
             PARSEINI_CurrentWeatherBlockPtr->colorMode = 2;
-        else if (PARSEINI_JMPTBL_STRING_CompareNoCase(value,
+        else if (STRING_CompareNoCase(value,
                                                       PARSEINI_TAG_TEXT) == 0)
             PARSEINI_CurrentWeatherBlockPtr->colorMode = 3;
         else
@@ -169,53 +169,53 @@ void PARSEINI_ProcessWeatherBlocks(char *key, char *value)
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_TAG_XPOS) == 0) {
+    if (STRING_CompareNoCase(key, PARSEINI_TAG_XPOS) == 0) {
         PARSEINI_CurrentWeatherBlockPtr->xpos =
-            SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(value);
+            PARSE_ReadSignedLongSkipClass3_Alt(value);
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_TAG_TYPE) == 0) {
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(value, PARSEINI_TAG_DITHER)
+    if (STRING_CompareNoCase(key, PARSEINI_TAG_TYPE) == 0) {
+        if (STRING_CompareNoCase(value, PARSEINI_TAG_DITHER)
             == 0)
             PARSEINI_CurrentWeatherBlockPtr->type = 2;
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_TAG_YPOS) == 0) {
+    if (STRING_CompareNoCase(key, PARSEINI_TAG_YPOS) == 0) {
         PARSEINI_CurrentWeatherBlockPtr->ypos =
-            SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(value);
+            PARSE_ReadSignedLongSkipClass3_Alt(value);
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_TAG_XSOURCE) == 0) {
+    if (STRING_CompareNoCase(key, PARSEINI_TAG_XSOURCE) == 0) {
         PARSEINI_CurrentWeatherBlockPtr->xsource =
-            SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(value);
+            PARSE_ReadSignedLongSkipClass3_Alt(value);
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_TAG_YSOURCE) == 0) {
+    if (STRING_CompareNoCase(key, PARSEINI_TAG_YSOURCE) == 0) {
         PARSEINI_CurrentWeatherBlockPtr->ysource =
-            SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(value);
+            PARSE_ReadSignedLongSkipClass3_Alt(value);
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_TAG_SIZEX) == 0) {
+    if (STRING_CompareNoCase(key, PARSEINI_TAG_SIZEX) == 0) {
         PARSEINI_CurrentWeatherBlockPtr->sizex =
-            SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(value);
+            PARSE_ReadSignedLongSkipClass3_Alt(value);
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_TAG_SIZEY) == 0) {
+    if (STRING_CompareNoCase(key, PARSEINI_TAG_SIZEY) == 0) {
         PARSEINI_CurrentWeatherBlockPtr->sizey =
-            SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(value);
+            PARSE_ReadSignedLongSkipClass3_Alt(value);
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_TAG_SOURCE) == 0
+    if (STRING_CompareNoCase(key, PARSEINI_TAG_SOURCE) == 0
         && strlen(value) > 0) {
 
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(value, PARSEINI_TAG_PPV)
+        if (STRING_CompareNoCase(value, PARSEINI_TAG_PPV)
             == 0) {
             PARSEINI_CurrentWeatherBlockPtr->type = 3;
             return;
@@ -223,7 +223,7 @@ void PARSEINI_ProcessWeatherBlocks(char *key, char *value)
 
         prev = PARSEINI_CurrentWeatherBlockTempPtr;
 
-        node = SCRIPT_JMPTBL_MEMORY_AllocateMemory(Global_STR_PARSEINI_C_3,
+        node = MEMORY_AllocateMemory(Global_STR_PARSEINI_C_3,
                                                    670L, 12L,
                                                    MEMF_PUBLIC | MEMF_CLEAR);
         PARSEINI_CurrentWeatherBlockTempPtr = node;
@@ -243,13 +243,13 @@ void PARSEINI_ProcessWeatherBlocks(char *key, char *value)
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_STR_HORIZONTAL)
+    if (STRING_CompareNoCase(key, PARSEINI_STR_HORIZONTAL)
         == 0) {
 
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(value, PARSEINI_TAG_RIGHT)
+        if (STRING_CompareNoCase(value, PARSEINI_TAG_RIGHT)
             == 0)
             PARSEINI_CurrentWeatherBlockPtr->hAlign = 2;
-        else if (PARSEINI_JMPTBL_STRING_CompareNoCase(
+        else if (STRING_CompareNoCase(
                      value, PARSEINI_TAG_CENTER_HorizontalAlign) == 0)
             PARSEINI_CurrentWeatherBlockPtr->hAlign = 1;
         else
@@ -257,13 +257,13 @@ void PARSEINI_ProcessWeatherBlocks(char *key, char *value)
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_TAG_VERTICAL)
+    if (STRING_CompareNoCase(key, PARSEINI_TAG_VERTICAL)
         == 0) {
 
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(value, PARSEINI_TAG_BOTTOM)
+        if (STRING_CompareNoCase(value, PARSEINI_TAG_BOTTOM)
             == 0)
             PARSEINI_CurrentWeatherBlockPtr->vAlign = 2;
-        else if (PARSEINI_JMPTBL_STRING_CompareNoCase(
+        else if (STRING_CompareNoCase(
                      value, PARSEINI_TAG_CENTER_VerticalAlign) == 0)
             PARSEINI_CurrentWeatherBlockPtr->vAlign = 1;
         else
@@ -271,10 +271,10 @@ void PARSEINI_ProcessWeatherBlocks(char *key, char *value)
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_TAG_ID) != 0)
+    if (STRING_CompareNoCase(key, PARSEINI_TAG_ID) != 0)
         return;
 
-    SCRIPT3_JMPTBL_STRING_CopyPadNul(PARSEINI_CurrentWeatherBlockPtr->id,
+    STRING_CopyPadNul(PARSEINI_CurrentWeatherBlockPtr->id,
                                      value, 2L);
     PARSEINI_CurrentWeatherBlockPtr->idTerm = 0;
 }

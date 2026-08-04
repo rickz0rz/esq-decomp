@@ -23,9 +23,9 @@
  *   summary: 4EBA against 6100 for the two cross-unit calls.
  */
 
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size,
+extern void *MEMORY_AllocateMemory(char *who, long line, long size,
                                                    long flags);
-extern void GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray(void *table, long size,
+extern void SCRIPT_AllocateBufferArray(void *table, long size,
                                                        long count);
 
 extern char Global_STR_COI_C_5[];
@@ -56,9 +56,9 @@ void COI_AllocSubEntryTable(struct CoiEntry *entry)
         return;
 
     anim->subEntryTable =
-        GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_COI_C_5, 1123L,
+        MEMORY_AllocateMemory(Global_STR_COI_C_5, 1123L,
                                               (long)anim->subEntryCount * 4,
                                               0x00010001L);
-    GROUP_AE_JMPTBL_SCRIPT_AllocateBufferArray(anim->subEntryTable, 30L,
+    SCRIPT_AllocateBufferArray(anim->subEntryTable, 30L,
                                                (long)anim->subEntryCount);
 }

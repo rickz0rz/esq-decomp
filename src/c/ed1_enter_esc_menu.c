@@ -43,11 +43,11 @@
 extern void ESQIFF_RunCopperDropTransition(void);
 extern void ESQIFF_RunCopperRiseTransition(void);
 extern void ED_DrawESCMenuBottomHelp(void);
-extern void GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(long v);
-extern void GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(void);
-extern void ED1_JMPTBL_GCOMMAND_SeedBannerDefaults(void);
-extern void ED1_JMPTBL_CLEANUP_DrawDateTimeBannerRow(void);
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, char *s, long v);
+extern void SCRIPT_UpdateSerialShadowFromCtrlByte(long v);
+extern void ESQ_SetCopperEffect_OffDisableHighlight(void);
+extern void GCOMMAND_SeedBannerDefaults(void);
+extern void CLEANUP_DrawDateTimeBannerRow(void);
+extern void WDISP_SPrintf(char *buf, char *fmt, char *s, long v);
 extern void DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
 
 extern struct RastPort *Global_REF_RASTPORT_1;
@@ -93,10 +93,10 @@ void ED1_EnterEscMenu(void)
     Disable();
     ESQPARS2_ReadModeFlags = 0x100;
     ESQSHARED_BannerColorModeWord = 0;
-    GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(3);
-    GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight();
+    SCRIPT_UpdateSerialShadowFromCtrlByte(3);
+    ESQ_SetCopperEffect_OffDisableHighlight();
     ED_SaveTextAdsOnExitFlag = 0;
-    ED1_JMPTBL_GCOMMAND_SeedBannerDefaults();
+    GCOMMAND_SeedBannerDefaults();
     Enable();
 
     ED_MaxAdNumber = (ESQ_TAG_36[0] - '0') * 10 + ESQ_TAG_36[1] - '0';
@@ -109,11 +109,11 @@ void ED1_EnterEscMenu(void)
     Global_REF_LONG_CURRENT_EDITING_AD_NUMBER = 1;
     ED_DrawESCMenuBottomHelp();
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(versionBanner,
+    WDISP_SPrintf(versionBanner,
                                   Global_STR_VER_PERCENT_S_PERCENT_L_D,
                                   Global_STR_NINE_POINT_ZERO,
                                   Global_LONG_PATCH_VERSION_NUMBER);
-    ED1_JMPTBL_CLEANUP_DrawDateTimeBannerRow();
+    CLEANUP_DrawDateTimeBannerRow();
 
     SetAPen(Global_REF_RASTPORT_1, 3L);
     SetDrMd(Global_REF_RASTPORT_1, 0L);

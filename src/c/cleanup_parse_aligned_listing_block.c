@@ -104,7 +104,7 @@ extern short ESQIFF_RecordLength;
 extern char  CLOCK_STR_MISSING_TITLE_TEMPLATE[];
 
 extern short COI_CountEscape14BeforeNull(char *p, long len);
-extern short GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(char *input, short *out,
+extern short SCRIPT_BuildTokenIndexMap(char *input, short *out,
                                                        long tokenCount,
                                                        char *tokenTable,
                                                        long maxScan,
@@ -114,10 +114,10 @@ extern char  ESQ_WildcardMatch(char *pattern, char *text);
 extern void  COI_ClearAnimObjectStrings(struct TextEntry *e);
 extern void  COI_FreeSubEntryTableEntries(struct TextEntry *e);
 extern void  COI_AllocSubEntryTable(struct TextEntry *e);
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *newText,
+extern char *ESQPARS_ReplaceOwnedString(char *newText,
                                                         char *oldText);
 extern void  CLEANUP_FormatEntryStringTokens(char **a, char **b, char *src);
-extern long  GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 
 long CLEANUP_ParseAlignedListingBlock(char *block)
 {
@@ -186,7 +186,7 @@ long CLEANUP_ParseAlignedListingBlock(char *block)
 
     fieldCount = COI_CountEscape14BeforeNull(&block[pos],
                                             (long)ESQIFF_RecordLength - pos);
-    tokenResult = GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(
+    tokenResult = SCRIPT_BuildTokenIndexMap(
         &block[pos], fieldMap, 9L, separators,
         (long)ESQIFF_RecordLength - pos, 0L, 1L);
 
@@ -221,19 +221,19 @@ long CLEANUP_ParseAlignedListingBlock(char *block)
     COI_FreeSubEntryTableEntries(entry);
 
     rec = entry->rec;
-    rec->text4 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+    rec->text4 = ESQPARS_ReplaceOwnedString(
         &block[pos + fieldMap[2]], rec->text4);
     rec->code[0] = block[pos + fieldMap[3]];
     rec->code[1] = block[pos + fieldMap[3] + 1];
     rec->code[2] = block[pos + fieldMap[3] + 2];
     rec->code[3] = 0;
-    rec->text12 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+    rec->text12 = ESQPARS_ReplaceOwnedString(
         &block[pos + fieldMap[3] + fieldMap[4]], rec->text12);
-    rec->text20 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+    rec->text20 = ESQPARS_ReplaceOwnedString(
         &block[pos + fieldMap[5]], rec->text20);
-    rec->text8 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+    rec->text8 = ESQPARS_ReplaceOwnedString(
         &block[pos + fieldMap[6]], rec->text8);
-    rec->text16 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+    rec->text16 = ESQPARS_ReplaceOwnedString(
         &block[pos + fieldMap[7]], rec->text16);
     rec->subCount = (short)fieldCount;
 
@@ -241,14 +241,14 @@ long CLEANUP_ParseAlignedListingBlock(char *block)
         CLEANUP_FormatEntryStringTokens(&rec->text24, &rec->text28,
                                         &block[pos + fieldMap[0]]);
     } else {
-        rec->text24 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0,
+        rec->text24 = ESQPARS_ReplaceOwnedString(0,
                                                                  rec->text24);
-        rec->text28 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+        rec->text28 = ESQPARS_ReplaceOwnedString(
             CLOCK_STR_MISSING_TITLE_TEMPLATE, rec->text28);
     }
 
     if (block[pos + fieldMap[1]] != 0)
-        rec->value32 = GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(
+        rec->value32 = PARSE_ReadSignedLongSkipClass3_Alt(
             &block[pos + fieldMap[1]]);
     else
         rec->value32 = -1;
@@ -264,7 +264,7 @@ long CLEANUP_ParseAlignedListingBlock(char *block)
         sub = rec->subs[j];
         sub->numField = (short)(unsigned char)block[pos];
         pos = pos + 1;
-        GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(
+        SCRIPT_BuildTokenIndexMap(
             &block[pos], subFieldMap, 7L, subSeparators,
             (long)ESQIFF_RecordLength - pos, 0L, 0L);
 
@@ -272,32 +272,32 @@ long CLEANUP_ParseAlignedListingBlock(char *block)
             src = rec->text12;
         else
             src = &block[pos + subFieldMap[2]];
-        sub->text6 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(src, sub->text6);
+        sub->text6 = ESQPARS_ReplaceOwnedString(src, sub->text6);
 
         if (subFieldMap[3] == -1)
             src = rec->text20;
         else
             src = &block[pos + subFieldMap[3]];
-        sub->text14 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(src,
+        sub->text14 = ESQPARS_ReplaceOwnedString(src,
                                                                  sub->text14);
 
         if (subFieldMap[4] == -1)
             src = rec->text8;
         else
             src = &block[pos + subFieldMap[4]];
-        sub->text2 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(src, sub->text2);
+        sub->text2 = ESQPARS_ReplaceOwnedString(src, sub->text2);
 
         if (subFieldMap[5] == -1)
             src = rec->text16;
         else
             src = &block[pos + subFieldMap[5]];
-        sub->text10 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(src,
+        sub->text10 = ESQPARS_ReplaceOwnedString(src,
                                                                  sub->text10);
 
         if (subFieldMap[0] == -1) {
-            sub->text18 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            sub->text18 = ESQPARS_ReplaceOwnedString(
                 rec->text24, sub->text18);
-            sub->text22 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            sub->text22 = ESQPARS_ReplaceOwnedString(
                 rec->text28, sub->text22);
         } else {
             CLEANUP_FormatEntryStringTokens(&sub->text18, &sub->text22,
@@ -307,7 +307,7 @@ long CLEANUP_ParseAlignedListingBlock(char *block)
         if (subFieldMap[1] == -1)
             sub->value26 = rec->value32;
         else
-            sub->value26 = GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(
+            sub->value26 = PARSE_ReadSignedLongSkipClass3_Alt(
                 &block[pos + subFieldMap[1]]);
 
         pos = pos + subFieldMap[6];
@@ -334,24 +334,24 @@ long CLEANUP_ParseAlignedListingBlock(char *block)
         COI_ClearAnimObjectStrings(entry2);
         COI_FreeSubEntryTableEntries(entry2);
 
-        rec2->text4 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(rec->text4,
+        rec2->text4 = ESQPARS_ReplaceOwnedString(rec->text4,
                                                                  rec2->text4);
         rec2->code[0] = rec->code[0];
         rec2->code[1] = rec->code[1];
         rec2->code[2] = rec->code[2];
         rec2->code[3] = rec->code[3];
-        rec2->text12 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(rec->text12,
+        rec2->text12 = ESQPARS_ReplaceOwnedString(rec->text12,
                                                                   rec2->text12);
-        rec2->text20 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(rec->text20,
+        rec2->text20 = ESQPARS_ReplaceOwnedString(rec->text20,
                                                                   rec2->text20);
-        rec2->text8 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(rec->text8,
+        rec2->text8 = ESQPARS_ReplaceOwnedString(rec->text8,
                                                                  rec2->text8);
-        rec2->text16 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(rec->text16,
+        rec2->text16 = ESQPARS_ReplaceOwnedString(rec->text16,
                                                                   rec2->text16);
         rec2->subCount = rec->subCount;
-        rec2->text24 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(rec->text24,
+        rec2->text24 = ESQPARS_ReplaceOwnedString(rec->text24,
                                                                   rec2->text24);
-        rec2->text28 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(rec->text28,
+        rec2->text28 = ESQPARS_ReplaceOwnedString(rec->text28,
                                                                   rec2->text28);
         rec2->value32 = rec->value32;
 
@@ -361,17 +361,17 @@ long CLEANUP_ParseAlignedListingBlock(char *block)
             sub = rec->subs[j];
             sub2 = rec2->subs[j];
             sub2->numField = sub->numField;
-            sub2->text6 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            sub2->text6 = ESQPARS_ReplaceOwnedString(
                 sub->text6, sub2->text6);
-            sub2->text14 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            sub2->text14 = ESQPARS_ReplaceOwnedString(
                 sub->text14, sub2->text14);
-            sub2->text2 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            sub2->text2 = ESQPARS_ReplaceOwnedString(
                 sub->text2, sub2->text2);
-            sub2->text10 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            sub2->text10 = ESQPARS_ReplaceOwnedString(
                 sub->text10, sub2->text10);
-            sub2->text18 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            sub2->text18 = ESQPARS_ReplaceOwnedString(
                 sub->text18, sub2->text18);
-            sub2->text22 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            sub2->text22 = ESQPARS_ReplaceOwnedString(
                 sub->text22, sub2->text22);
             sub2->value26 = sub->value26;
         }

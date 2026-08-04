@@ -40,15 +40,15 @@ extern struct StatusDayEntry WDISP_StatusDayEntry1;
 extern struct StatusDayEntry WDISP_StatusDayEntry2;
 extern struct StatusDayEntry WDISP_StatusDayEntry3;
 
-extern short ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex(char *daySlot);
-extern void  ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange(long slot, long lo,
+extern short ESQ_GetHalfHourSlotIndex(char *daySlot);
+extern void  ESQ_ClampBannerCharRange(long slot, long lo,
                                                      long hi);
-extern void  ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(void);
-extern long __asm ESQIFF_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern void  LADFUNC_UpdateHighlightState(void);
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
 extern void  ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void);
-extern void  ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup(void);
-extern void  ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList(void);
+extern void  LOCAVAIL_SyncSecondaryFilterForCurrentGroup(void);
+extern void  P_TYPE_EnsureSecondaryList(void);
 
 void ESQDISP_DrawStatusBanner_Impl(short highlight)
 {
@@ -61,13 +61,13 @@ void ESQDISP_DrawStatusBanner_Impl(short highlight)
 
     SetAPen(Global_REF_RASTPORT_1, 1);
     CLOCK_HalfHourSlotIndex =
-        ESQFUNC_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex);
+        ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex);
 
     if (ESQDISP_StatusBannerClampGateFlag != 0)
-        ESQFUNC_JMPTBL_ESQ_ClampBannerCharRange((long)CLOCK_HalfHourSlotIndex,
+        ESQ_ClampBannerCharRange((long)CLOCK_HalfHourSlotIndex,
             (long)ESQ_STR_B, (long)ESQ_STR_E);
 
-    ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState();
+    LADFUNC_UpdateHighlightState();
 
     if (highlight != 0)
         BANNER_ResetPendingFlag = 1;
@@ -136,8 +136,8 @@ void ESQDISP_DrawStatusBanner_Impl(short highlight)
     if (CLOCK_HalfHourSlotIndex >= 45
         && ESQDISP_SecondaryPropagationDoneFlag == 0) {
         ESQDISP_PropagatePrimaryTitleMetadataToSecondary();
-        ESQFUNC_JMPTBL_LOCAVAIL_SyncSecondaryFilterForCurrentGroup();
-        ESQFUNC_JMPTBL_P_TYPE_EnsureSecondaryList();
+        LOCAVAIL_SyncSecondaryFilterForCurrentGroup();
+        P_TYPE_EnsureSecondaryList();
         ESQDISP_SecondaryPropagationDoneFlag = 1;
     }
 }

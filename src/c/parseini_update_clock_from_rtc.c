@@ -82,10 +82,10 @@ struct AmigaClockData {
     short weekday;              /* +12 */
 };
 
-extern long PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock(void);
-extern void PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData(
+extern long BATTCLOCK_GetSecondsFromBatteryBackedClock(void);
+extern void CLOCK_ConvertAmigaSecondsToClockData(
     long seconds, struct AmigaClockData *out);
-extern long PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(
+extern long CLOCK_CheckDateOrSecondsFromEpoch(
     struct AmigaClockData *c);
 extern void PARSEINI_NormalizeClockData(struct ParseIniClockData *dst,
                                         struct ParseIniClockData *src);
@@ -108,10 +108,10 @@ void PARSEINI_UpdateClockFromRtc(void)
     if (Global_REF_BATTCLOCK_RESOURCE == 0)
         return;
 
-    seconds = PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock();
-    PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData(seconds, &cd);
+    seconds = BATTCLOCK_GetSecondsFromBatteryBackedClock();
+    CLOCK_ConvertAmigaSecondsToClockData(seconds, &cd);
 
-    if (PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(&cd)) {
+    if (CLOCK_CheckDateOrSecondsFromEpoch(&cd)) {
 
         rec.weekday   = cd.weekday;
         rec.month     = cd.month - 1;

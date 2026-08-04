@@ -44,7 +44,7 @@
  */
 #include <exec/memory.h>
 
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
 extern void  DISPLIB_ResetLineTables(void);
 
@@ -64,8 +64,8 @@ void DISPTEXT_InitBuffers(void)
     DISPLIB_ResetLineTables();
     DISPTEXT_InitBuffersPending = 0;
 
-    Global_REF_1000_BYTES_ALLOCATED_1 = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+    Global_REF_1000_BYTES_ALLOCATED_1 = MEMORY_AllocateMemory(
         Global_STR_DISPTEXT_C_2, 320L, 1000L, MEMF_PUBLIC | MEMF_CLEAR);
-    Global_REF_1000_BYTES_ALLOCATED_2 = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+    Global_REF_1000_BYTES_ALLOCATED_2 = MEMORY_AllocateMemory(
         Global_STR_DISPTEXT_C_3, 321L, 1000L, MEMF_PUBLIC | MEMF_CLEAR);
 }

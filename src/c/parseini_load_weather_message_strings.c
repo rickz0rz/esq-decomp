@@ -41,8 +41,8 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
-extern long  PARSEINI_JMPTBL_STRING_CompareNoCase(char *a, char *b);
-extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(char *newStr, char *old);
+extern long  STRING_CompareNoCase(char *a, char *b);
+extern char *ESQPARS_ReplaceOwnedString(char *newStr, char *old);
 
 extern char *P_TYPE_WeatherCurrentMsgPtr;
 extern char *P_TYPE_WeatherForecastMsgPtr;
@@ -53,18 +53,18 @@ extern char  PARSEINI_STR_BOTTOMLINETAG[];
 
 void PARSEINI_LoadWeatherMessageStrings(char *key, char *value)
 {
-    if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_STR_WEATHERCURRENT) == 0)
+    if (STRING_CompareNoCase(key, PARSEINI_STR_WEATHERCURRENT) == 0)
         P_TYPE_WeatherCurrentMsgPtr =
-            PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(value,
+            ESQPARS_ReplaceOwnedString(value,
                                                        P_TYPE_WeatherCurrentMsgPtr);
 
-    else if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_STR_WEATHERFORECAST) == 0)
+    else if (STRING_CompareNoCase(key, PARSEINI_STR_WEATHERFORECAST) == 0)
         P_TYPE_WeatherForecastMsgPtr =
-            PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(value,
+            ESQPARS_ReplaceOwnedString(value,
                                                        P_TYPE_WeatherForecastMsgPtr);
 
-    else if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, PARSEINI_STR_BOTTOMLINETAG) == 0)
+    else if (STRING_CompareNoCase(key, PARSEINI_STR_BOTTOMLINETAG) == 0)
         P_TYPE_WeatherBottomLineMsgPtr =
-            PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(value,
+            ESQPARS_ReplaceOwnedString(value,
                                                        P_TYPE_WeatherBottomLineMsgPtr);
 }

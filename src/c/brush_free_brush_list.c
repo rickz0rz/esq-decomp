@@ -26,9 +26,9 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the three cross-unit calls.
  */
-extern void GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(char *who, long line, void *p,
+extern void GRAPHICS_FreeRaster(char *who, long line, void *p,
                                                 long w, long h);
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p,
+extern void MEMORY_DeallocateMemory(char *who, long line, void *p,
                                                     long size);
 extern char Global_STR_BRUSH_C_5[];
 extern char Global_STR_BRUSH_C_6[];
@@ -53,7 +53,7 @@ void BRUSH_FreeBrushList(unsigned char **head, long mode)
         nextBrush = *(unsigned char **)(brush + 368);
 
         for (i = 0; i < brush[184]; i++)
-            GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(Global_STR_BRUSH_C_5, 549,
+            GRAPHICS_FreeRaster(Global_STR_BRUSH_C_5, 549,
                                                 ((void **)(brush + 144))[i],
                                                 (long)*(short *)(brush + 176),
                                                 (long)*(short *)(brush + 178));
@@ -61,11 +61,11 @@ void BRUSH_FreeBrushList(unsigned char **head, long mode)
         node = *(unsigned char **)(brush + 364);
         while (node) {
             next = *(unsigned char **)(node + 8);
-            GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_6, 561, node, 12);
+            MEMORY_DeallocateMemory(Global_STR_BRUSH_C_6, 561, node, 12);
             node = next;
         }
 
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_7, 567, brush, 372);
+        MEMORY_DeallocateMemory(Global_STR_BRUSH_C_7, 567, brush, 372);
         brush = nextBrush;
 
         if (mode == 1)

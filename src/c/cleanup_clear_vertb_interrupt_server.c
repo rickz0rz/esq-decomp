@@ -12,10 +12,10 @@
 #include "esq-exec.h"
 extern struct Interrupt *Global_REF_INTERRUPT_STRUCT_INTB_VERTB;
 extern char Global_STR_CLEANUP_C_1[];
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
+extern void MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
 void CLEANUP_ClearVertbInterruptServer(void)
 {
     RemIntServer(5, Global_REF_INTERRUPT_STRUCT_INTB_VERTB);
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_1, 57,
+    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_1, 57,
                                             Global_REF_INTERRUPT_STRUCT_INTB_VERTB, 22);
 }

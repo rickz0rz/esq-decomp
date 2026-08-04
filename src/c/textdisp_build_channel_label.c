@@ -32,7 +32,7 @@
  */
 #include <string.h>
 
-extern unsigned char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(long i, long mode);
+extern unsigned char *ESQDISP_GetEntryPointerByMode(long i, long mode);
 extern void STRING_AppendAtNull(char *dst, char *src);
 extern short TEXTDISP_CurrentMatchIndex;
 extern short TEXTDISP_ActiveGroupId;
@@ -48,7 +48,7 @@ void TEXTDISP_BuildChannelLabel(short mode)
     unsigned char *entry;
     register long len;
 
-    entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((long)TEXTDISP_CurrentMatchIndex,
+    entry = ESQDISP_GetEntryPointerByMode((long)TEXTDISP_CurrentMatchIndex,
                                                         TEXTDISP_ActiveGroupId ? 1 : 2);
     if (entry)
         strcpy(name, (char *)entry + 1);

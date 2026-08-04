@@ -35,7 +35,7 @@ struct CoiEntry {
 
 extern short CLOCK_HalfHourSlotIndex;
 
-extern long GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(long kind, void *aux,
+extern long TEXTDISP_ComputeTimeOffset(long kind, void *aux,
                                                        long slot);
 extern long COI_ComputeEntryTimeDeltaMinutes(void *aux, long slot);
 
@@ -59,7 +59,7 @@ long COI_TestEntryWithinTimeWindow(struct CoiEntry *entry, void *aux,
         return 0;
 
     if (slot > 0 && slot < 49)
-        offs = GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset((long)entry->kind,
+        offs = TEXTDISP_ComputeTimeOffset((long)entry->kind,
                                                           aux, (long)slot);
     else
         offs = ((long)slot - CLOCK_HalfHourSlotIndex) * half;

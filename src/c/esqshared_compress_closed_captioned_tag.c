@@ -45,14 +45,14 @@
 #include "esq-exec.h"
 #include <string.h>
 
-extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(char *hay, char *needle);
+extern char *ESQ_FindSubstringCaseFold(char *hay, char *needle);
 extern char  Global_STR_CLOSED_CAPTIONED[];
 
 void ESQSHARED_CompressClosedCaptionedTag(char *s)
 {
     char *p;
 
-    p = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(s, Global_STR_CLOSED_CAPTIONED);
+    p = ESQ_FindSubstringCaseFold(s, Global_STR_CLOSED_CAPTIONED);
     if (p != 0) {
         *p++ = '|';
         CopyMem(p + 3, p, (long)strlen(p + 3) + 1);

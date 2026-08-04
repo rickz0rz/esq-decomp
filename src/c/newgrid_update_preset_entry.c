@@ -17,11 +17,11 @@ extern long *NEWGRID_SecondaryIndexCachePtr;
 extern unsigned short TEXTDISP_SecondaryGroupEntryCount;
 extern char *TEXTDISP_SecondaryEntryPtrTable[];
 
-extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(long index, long kind);
-extern char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(long index,
+extern char *ESQDISP_GetEntryPointerByMode(long index, long kind);
+extern char *ESQDISP_GetEntryAuxPointerByMode(long index,
                                                               long kind);
-extern short NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(char *daySlot);
-extern long  NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(char *aux);
+extern short ESQ_GetHalfHourSlotIndex(char *daySlot);
+extern long  TLIBA_FindFirstWildcardMatchIndex(char *aux);
 
 short NEWGRID_UpdatePresetEntry(char **outEntry, char **outAux, short sel,
                                 long index)
@@ -40,12 +40,12 @@ short NEWGRID_UpdatePresetEntry(char **outEntry, char **outAux, short sel,
         alt = 1;
     }
 
-    entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(index, 1);
-    aux   = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(index, 1);
+    entry = ESQDISP_GetEntryPointerByMode(index, 1);
+    aux   = ESQDISP_GetEntryAuxPointerByMode(index, 1);
 
     if (entry != 0 && aux != 0) {
         if (sel == 1
-            || NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) == 1
+            || ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) == 1
             || alt != 0) {
             if (TEXTDISP_SecondaryGroupPresentFlag != 0) {
                 if (NEWGRID_SecondaryIndexCachePtr != 0) {
@@ -54,14 +54,14 @@ short NEWGRID_UpdatePresetEntry(char **outEntry, char **outAux, short sel,
                         || cached >= (long)TEXTDISP_SecondaryGroupEntryCount
                         || strcmp(entry + 12,
                                   TEXTDISP_SecondaryEntryPtrTable[cached] + 12) != 0) {
-                        cached = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
+                        cached = TLIBA_FindFirstWildcardMatchIndex(aux);
                         NEWGRID_SecondaryIndexCachePtr[index] = cached;
                     }
                 } else {
-                    cached = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
+                    cached = TLIBA_FindFirstWildcardMatchIndex(aux);
                 }
-                entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(cached, 2);
-                aux   = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(cached, 2);
+                entry = ESQDISP_GetEntryPointerByMode(cached, 2);
+                aux   = ESQDISP_GetEntryAuxPointerByMode(cached, 2);
             }
         }
     }

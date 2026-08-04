@@ -16,7 +16,7 @@ extern long ED_EditCursorOffset;
 extern char ED_EditBufferScratch[];
 extern char ED_EditBufferLive[];
 
-extern void ESQFUNC_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
+extern void STRING_CopyPadNul(char *dst, char *src, long n);
 
 void ED_TransformLineSpacing_Mode2(void)
 {
@@ -28,7 +28,7 @@ void ED_TransformLineSpacing_Mode2(void)
 
     stride = 40;
 
-    ESQFUNC_JMPTBL_STRING_CopyPadNul(text,
+    STRING_CopyPadNul(text,
         ED_EditBufferScratch + ED_ViewportOffset * stride, 40);
     memcpy(attr, ED_EditBufferLive + ED_ViewportOffset * stride, 40);
 

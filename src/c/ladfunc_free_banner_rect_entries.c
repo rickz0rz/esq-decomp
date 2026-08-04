@@ -51,7 +51,7 @@ struct BannerEntry {
 
 extern struct BannerEntry *LADFUNC_EntryPtrTable[];
 extern char *ESQPARS_ReplaceOwnedString(char *newstr, char *old);
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                     void *ptr, long size);
 extern char  Global_STR_LADFUNC_C_2[];
 extern char  Global_STR_LADFUNC_C_3[];
@@ -73,10 +73,10 @@ void LADFUNC_FreeBannerRectEntries(void)
         }
 
         if (len > 0 && LADFUNC_EntryPtrTable[i]->buf)
-            NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_2, 147,
+            MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_2, 147,
                                                    LADFUNC_EntryPtrTable[i]->buf, len);
 
-        NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_3, 150,
+        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_3, 150,
                                                LADFUNC_EntryPtrTable[i], 14);
         LADFUNC_EntryPtrTable[i] = 0;
     }

@@ -41,7 +41,7 @@
 #include "esq-exec.h"
 #include "esq-graphics.h"
 
-extern void ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(void *msg, long code);
+extern void NEWGRID_ValidateSelectionCode(void *msg, long code);
 extern void ESQDISP_InitHighlightMessagePattern(void *msg);
 extern void *ESQ_HighlightReplyPort;
 extern struct MsgPort *ESQ_HighlightMsgPort;
@@ -83,7 +83,7 @@ void ESQDISP_QueueHighlightDrawMessage(unsigned char *msgp, unsigned char *srcp)
     m->f28 = s->f16;
     m->f52 = 0;
 
-    ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(m, 0);
+    NEWGRID_ValidateSelectionCode(m, 0);
     m->f32 = 0;
     ESQDISP_InitHighlightMessagePattern(m);
 

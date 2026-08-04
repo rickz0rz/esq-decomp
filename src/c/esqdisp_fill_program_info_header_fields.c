@@ -50,7 +50,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
-extern void ESQFUNC_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
+extern void STRING_CopyPadNul(char *dst, char *src, long n);
 
 struct EsqDispProgramInfo {
     char          pad0[40];
@@ -73,6 +73,6 @@ void ESQDISP_FillProgramInfoHeaderFields(struct EsqDispProgramInfo *e, char kind
     e->value46 = value;
     e->flag41  = flag41;
     e->flag42  = flag42;
-    ESQFUNC_JMPTBL_STRING_CopyPadNul(e->tag, src, 2L);
+    STRING_CopyPadNul(e->tag, src, 2L);
     e->tagPad  = 0;
 }

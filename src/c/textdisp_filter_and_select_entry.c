@@ -88,22 +88,22 @@ struct TdAux {
     char *slots[50];                    /* +56 */
 };
 
-extern char  UNKNOWN_JMPTBL_ESQ_WildcardMatch(char *pattern, char *s);
+extern char  ESQ_WildcardMatch(char *pattern, char *s);
 extern short TEXTDISP_GetGroupEntryCount(long mode);
-extern struct TdEntry *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(long i,
+extern struct TdEntry *ESQDISP_GetEntryPointerByMode(long i,
                                                                    long mode);
-extern struct TdAux *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(long i,
+extern struct TdAux *ESQDISP_GetEntryAuxPointerByMode(long i,
                                                                     long mode);
 extern long  TEXTDISP_ShouldOpenEditorForEntry(struct TdEntry *e);
-extern long  TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(struct TdEntry *e,
+extern long  COI_TestEntryWithinTimeWindow(struct TdEntry *e,
                                                          struct TdAux *aux,
                                                          long ch, long span,
                                                          long window);
 extern char *TEXTDISP_SkipControlCodes(char *s);
-extern long  TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(struct TdAux *aux,
+extern long  ESQDISP_TestEntryGridEligibility(struct TdAux *aux,
                                                               long ch);
 extern long  STRING_CompareNoCaseN(char *a, char *b, long n);
-extern long  TLIBA2_JMPTBL_ESQ_TestBit1Based(char *bits, long ch);
+extern long  ESQ_TestBit1Based(char *bits, long ch);
 extern void  TEXTDISP_SetSelectionFields(void *rec, long mode, long index,
                                          long ch);
 extern void  TEXTDISP_BuildEntryDetailLine(void *rec);
@@ -161,9 +161,9 @@ handleModeF:
     TEXTDISP_FilterChannelSlotIndex = 0;
     TEXTDISP_FilterModeId           = 1;
 
-    if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(SCRIPT_FilterTag_PPV, namePtr) == 0)
+    if (ESQ_WildcardMatch(SCRIPT_FilterTag_PPV, namePtr) == 0)
         t = 1;
-    else if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(SCRIPT_FilterTag_SBE,
+    else if (ESQ_WildcardMatch(SCRIPT_FilterTag_SBE,
                                               namePtr) == 0)
         t = 1;
     else
@@ -172,7 +172,7 @@ handleModeF:
     TEXTDISP_FilterPpvSbeMatchFlag = (short)t;
 
     TEXTDISP_FilterSportsMatchFlag =
-        (short)(UNKNOWN_JMPTBL_ESQ_WildcardMatch(SCRIPT_FilterTag_SPORTS,
+        (short)(ESQ_WildcardMatch(SCRIPT_FilterTag_SPORTS,
                                                  namePtr) == 0);
 
 ensureFilterReady:
@@ -190,7 +190,7 @@ ensureFilterReady:
 
     for (i = 0; i < count; i++) {
 
-        e = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
+        e = ESQDISP_GetEntryPointerByMode(
                 i, (long)TEXTDISP_FilterModeId);
 
         if (e->b27 & 8)
@@ -203,7 +203,7 @@ ensureFilterReady:
             && TEXTDISP_ShouldOpenEditorForEntry(e) != 0)
             goto record;
 
-        if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(e->name, namePtr) != 0)
+        if (ESQ_WildcardMatch(e->name, namePtr) != 0)
             continue;
 
 record:
@@ -236,7 +236,7 @@ cursorLoop:
         >= (unsigned short)TEXTDISP_FilterMatchCount)
         goto advanceChannelIndex;
 
-    aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
+    aux = ESQDISP_GetEntryAuxPointerByMode(
               (long)TEXTDISP_CandidateIndexList[TEXTDISP_FilterCandidateCursor],
               (long)TEXTDISP_FilterModeId);
 
@@ -255,12 +255,12 @@ cursorLoop:
         }
 
         if (str != 0) {
-            e = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
+            e = ESQDISP_GetEntryPointerByMode(
                     (long)TEXTDISP_CandidateIndexList[
                               TEXTDISP_FilterCandidateCursor],
                     (long)TEXTDISP_FilterModeId);
 
-            if (TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(
+            if (COI_TestEntryWithinTimeWindow(
                     e, aux, (long)ch, 1440L, CONFIG_TimeWindowMinutes) == 0)
                 str = 0;
         }
@@ -276,7 +276,7 @@ cursorLoop:
     str = TEXTDISP_SkipControlCodes(str);
 
     if (TEXTDISP_FilterSportsMatchFlag != 0) {
-        if (TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(aux,
+        if (ESQDISP_TestEntryGridEligibility(aux,
                                                              (long)ch) == 0)
             goto nextCursorEntry;
     }
@@ -284,11 +284,11 @@ cursorLoop:
     if (STRING_CompareNoCaseN(tagPtr, str, strlen(tagPtr)) != 0)
         goto nextCursorEntry;
 
-    e = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
+    e = ESQDISP_GetEntryPointerByMode(
             (long)TEXTDISP_CandidateIndexList[TEXTDISP_FilterCandidateCursor],
             (long)TEXTDISP_FilterModeId);
 
-    if (TLIBA2_JMPTBL_ESQ_TestBit1Based(e->bits, (long)ch) != -1)
+    if (ESQ_TestBit1Based(e->bits, (long)ch) != -1)
         goto nextCursorEntry;
 
     found = 1;

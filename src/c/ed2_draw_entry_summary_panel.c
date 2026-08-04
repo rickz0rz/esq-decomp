@@ -98,11 +98,11 @@ extern char ED2_STR_DNICHE[];
 extern char ED2_STR_DMPLEX[];
 extern char ED2_STR_CF2_DPPV[];
 
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf();
-extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(void *rp,
+extern void WDISP_SPrintf();
+extern void TLIBA3_DrawCenteredWrappedTextLines(void *rp,
                                                                char *text,
                                                                long y);
-extern void GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern void STRING_AppendAtNull(char *dst, char *src);
 
 void ED2_DrawEntrySummaryPanel(void)
 {
@@ -126,56 +126,56 @@ void ED2_DrawEntrySummaryPanel(void)
 
     SetRast(&WDISP_DisplayContextBase->rp2, 2L);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(panelText, Global_STR_CLU_CLU_POS1,
+    WDISP_SPrintf(panelText, Global_STR_CLU_CLU_POS1,
                                   (long)ED2_SelectedEntryIndex,
                                   (long)TEXTDISP_PrimaryGroupEntryCount);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         &WDISP_DisplayContextBase->rp2, panelText, 120L);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(panelText, Global_STR_CHAN_SOURCE_CALLLTRS_2,
+    WDISP_SPrintf(panelText, Global_STR_CHAN_SOURCE_CALLLTRS_2,
                                   ED2_SelectedEntryDataPtr->channel,
                                   ED2_SelectedEntryDataPtr->source,
                                   ED2_SelectedEntryDataPtr->callSign);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         &WDISP_DisplayContextBase->rp2, panelText, 150L);
 
     panelText[0] = 0;
 
     if ((ED2_SelectedEntryDataPtr->byteFlags & 1) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText,
+        STRING_AppendAtNull(panelText,
                                             ED2_STR_NONE_SourceFlagSummary);
     if ((ED2_SelectedEntryDataPtr->byteFlags & 2) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_HILITESRC);
+        STRING_AppendAtNull(panelText, ED2_STR_HILITESRC);
     if ((ED2_SelectedEntryDataPtr->byteFlags & 4) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_SUMBYSRC);
+        STRING_AppendAtNull(panelText, ED2_STR_SUMBYSRC);
     if ((ED2_SelectedEntryDataPtr->byteFlags & 8) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText,
+        STRING_AppendAtNull(panelText,
                                             ED2_STR_VIDEO_TAG_DISABLE);
     if ((ED2_SelectedEntryDataPtr->byteFlags & 16) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_CAF_PPVSRC);
+        STRING_AppendAtNull(panelText, ED2_STR_CAF_PPVSRC);
     if ((ED2_SelectedEntryDataPtr->byteFlags & 32) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_DITTO);
+        STRING_AppendAtNull(panelText, ED2_STR_DITTO);
     if ((ED2_SelectedEntryDataPtr->byteFlags & 64) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_ALTHILITESRC);
+        STRING_AppendAtNull(panelText, ED2_STR_ALTHILITESRC);
     if ((ED2_SelectedEntryDataPtr->byteFlags & 128) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_STEREO);
+        STRING_AppendAtNull(panelText, ED2_STR_STEREO);
 
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         &WDISP_DisplayContextBase->rp2, panelText, 180L);
 
     panelText[0] = 0;
 
     if ((ED2_SelectedEntryDataPtr->wordFlags & 1) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_GRID);
+        STRING_AppendAtNull(panelText, ED2_STR_GRID);
     if ((ED2_SelectedEntryDataPtr->wordFlags & 2) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_MR);
+        STRING_AppendAtNull(panelText, ED2_STR_MR);
     if ((ED2_SelectedEntryDataPtr->wordFlags & 4) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_DNICHE);
+        STRING_AppendAtNull(panelText, ED2_STR_DNICHE);
     if ((ED2_SelectedEntryDataPtr->wordFlags & 8) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_DMPLEX);
+        STRING_AppendAtNull(panelText, ED2_STR_DMPLEX);
     if ((ED2_SelectedEntryDataPtr->wordFlags & 16) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_CF2_DPPV);
+        STRING_AppendAtNull(panelText, ED2_STR_CF2_DPPV);
 
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         &WDISP_DisplayContextBase->rp2, panelText, 210L);
 }

@@ -39,7 +39,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
-extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(long index, long mode);
+extern void *ESQDISP_GetEntryPointerByMode(long index, long mode);
 extern void  TEXTDISP_ApplySourceConfigToEntry(void *entry);
 
 extern unsigned short TEXTDISP_PrimaryGroupEntryCount;
@@ -51,9 +51,9 @@ void TEXTDISP_ApplySourceConfigAllEntries(void)
 
     for (i = 0; i < TEXTDISP_PrimaryGroupEntryCount; i++)
         TEXTDISP_ApplySourceConfigToEntry(
-            TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(i, 1L));
+            ESQDISP_GetEntryPointerByMode(i, 1L));
 
     for (i = 0; i < TEXTDISP_SecondaryGroupEntryCount; i++)
         TEXTDISP_ApplySourceConfigToEntry(
-            TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(i, 2L));
+            ESQDISP_GetEntryPointerByMode(i, 2L));
 }

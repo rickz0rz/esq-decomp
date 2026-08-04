@@ -29,8 +29,8 @@
 #include "esq-exec.h"
 #include "esq-graphics.h"
 
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
-extern void GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(char *who, long line, void *p, long w, long h);
+extern void MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
+extern void GRAPHICS_FreeRaster(char *who, long line, void *p, long w, long h);
 extern void *Global_REF_96_BYTES_ALLOCATED;
 extern struct RastPort *Global_REF_RASTPORT_1;
 extern void *WDISP_LivePlaneRasterTable0[];
@@ -55,23 +55,23 @@ void CLEANUP_ReleaseDisplayResources(void)
 {
     register long i;
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_6, 148,
+    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_6, 148,
                                             Global_REF_96_BYTES_ALLOCATED, 96);
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_7, 152,
+    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_7, 152,
                                             Global_REF_RASTPORT_1, 100);
     for (i = 0; i < 3; i++)
-        GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_8, 160,
+        GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_8, 160,
                                             WDISP_LivePlaneRasterTable0[i], 696, 2);
     for (i = 0; i < 4; i++)
-        GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_9, 169,
+        GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_9, 169,
                                             WDISP_352x240RasterPtrTable[i], 352, 240);
     for (i = 0; i < 3; i++)
-        GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_10, 178,
+        GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_10, 178,
                                             WDISP_BannerRowScratchRasterTable0[i], 696, 509);
     for (i = 3; i < 5; i++)
-        GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_11, 187,
+        GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_11, 187,
                                             WDISP_DisplayContextPlanePointer0[i], 696, 241);
-    GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_12, 200,
+    GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_12, 200,
                                         WDISP_BannerWorkRasterPtr, 696, 15);
 
     if (Global_HANDLE_PREVUE_FONT)  CloseFont(Global_HANDLE_PREVUE_FONT);

@@ -97,12 +97,12 @@ extern long  DISKIO_OpenFileWithBuffer(char *name, long mode);
 extern void  DISKIO_WriteBufferedBytes(long fh, char *p, long n);
 extern void  DISKIO_WriteDecimalField(long fh, long v);
 extern void  DISKIO_CloseBufferedFileAndFlush(long fh);
-extern long  GROUP_AH_JMPTBL_ESQ_TestBit1Based(char *bits, long index);
+extern long  ESQ_TestBit1Based(char *bits, long index);
 extern char *DISKIO2_CopyAndSanitizeSlotString(char *buf, struct DkEntry *e,
                                                struct DkTitle *t, long slot);
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                      void *p, long size);
 
 long DISKIO2_WriteCurDayDataFile(void)
@@ -123,7 +123,7 @@ long DISKIO2_WriteCurDayDataFile(void)
     DISKIO_SaveOperationReadyFlag = 0;
     emptyText = 0;
 
-    scratch = (char *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+    scratch = (char *)MEMORY_AllocateMemory(
         Global_STR_DISKIO2_C_1, 152, 1000, MEMF_PUBLIC | MEMF_CLEAR);
     if (scratch == 0) {
         DISKIO_SaveOperationReadyFlag = 1;
@@ -133,7 +133,7 @@ long DISKIO2_WriteCurDayDataFile(void)
     DISKIO2_OutputFileHandle = DISKIO_OpenFileWithBuffer(CTASKS_PATH_CURDAY_DAT,
                                                         MODE_NEWFILE);
     if (DISKIO2_OutputFileHandle == 0) {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_2, 176,
+        MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_2, 176,
                                                 scratch, 1000);
         DISKIO_SaveOperationReadyFlag = 1;
         return -1;
@@ -173,7 +173,7 @@ long DISKIO2_WriteCurDayDataFile(void)
         for (s = 0; s < 49; s++) {
             if (title->slotText[s] == 0)
                 continue;
-            if (GROUP_AH_JMPTBL_ESQ_TestBit1Based(entry->bits28, (long)s) != -1)
+            if (ESQ_TestBit1Based(entry->bits28, (long)s) != -1)
                 continue;
 
             DISKIO_WriteDecimalField(DISKIO2_OutputFileHandle, (long)s);
@@ -201,7 +201,7 @@ long DISKIO2_WriteCurDayDataFile(void)
 
     DISKIO_CloseBufferedFileAndFlush(DISKIO2_OutputFileHandle);
     DISKIO_SaveOperationReadyFlag = 1;
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_3, 275, scratch,
+    MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_3, 275, scratch,
                                             1000);
     return 0;
 }

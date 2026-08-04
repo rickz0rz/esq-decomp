@@ -32,11 +32,11 @@
 #include <exec/memory.h>
 #include "esq-dos.h"
 
-extern BPTR  GROUP_AG_JMPTBL_DOS_OpenFileWithMode(char *path, long mode);
+extern BPTR  DOS_OpenFileWithMode(char *path, long mode);
 extern long  DISKIO_GetFilesizeFromHandle(BPTR fh);
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                      void *p, long size);
 
 extern long  Global_REF_LONG_FILE_SCRATCH;
@@ -48,7 +48,7 @@ long DISKIO_LoadFileToWorkBuffer(char *path)
 {
     BPTR fh;
 
-    fh = GROUP_AG_JMPTBL_DOS_OpenFileWithMode(path, 0x3edL);
+    fh = DOS_OpenFileWithMode(path, 0x3edL);
     if (fh == 0)
         return -1;
 
@@ -58,7 +58,7 @@ long DISKIO_LoadFileToWorkBuffer(char *path)
         return -1;
     }
 
-    Global_PTR_WORK_BUFFER = (char *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+    Global_PTR_WORK_BUFFER = (char *)MEMORY_AllocateMemory(
         Global_STR_DISKIO_C_3, 472L, Global_REF_LONG_FILE_SCRATCH + 1,
         MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -70,7 +70,7 @@ long DISKIO_LoadFileToWorkBuffer(char *path)
     if (Read(fh, Global_PTR_WORK_BUFFER, Global_REF_LONG_FILE_SCRATCH)
         != Global_REF_LONG_FILE_SCRATCH) {
 
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+        MEMORY_DeallocateMemory(
             Global_STR_DISKIO_C_4, 492L, Global_PTR_WORK_BUFFER,
             Global_REF_LONG_FILE_SCRATCH + 1);
 

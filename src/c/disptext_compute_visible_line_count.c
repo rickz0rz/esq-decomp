@@ -47,9 +47,9 @@
  *            version; see docs/compiler-version.md.
  */
 extern void  DISPTEXT_FinalizeLineTable(void);
-extern long __asm GROUP_AG_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
-extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *s, long ch);
+extern char *STR_FindCharPtr(char *s, long ch);
 
 extern unsigned short DISPTEXT_TargetLineIndex;
 extern unsigned short NEWGRID_RowHeightPx;
@@ -76,8 +76,8 @@ long DISPTEXT_ComputeVisibleLineCount(long minLines)
         text = DISPTEXT_TextBufferPtr[DISPTEXT_TargetLineIndex];
 
         if (text != 0
-            && GROUP_AI_JMPTBL_STR_FindCharPtr(text, 19L) != 0
-            && GROUP_AI_JMPTBL_STR_FindCharPtr(text, 20L) != 0)
+            && STR_FindCharPtr(text, 19L) != 0
+            && STR_FindCharPtr(text, 20L) != 0)
             lines += 2;
     }
 

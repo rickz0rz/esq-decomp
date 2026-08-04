@@ -25,8 +25,8 @@ extern unsigned char DISPTEXT_InsetNibblePrimary;
 extern unsigned char DISPTEXT_InsetNibbleSecondary;
 
 extern void  DISPTEXT_FinalizeLineTable(void);
-extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *s, long c);
-extern void  GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments(
+extern char *STR_FindCharPtr(char *s, long c);
+extern void  TLIBA1_DrawTextWithInsetSegments(
                 struct RastPort *rp, long x, long y, long secondary,
                 long primary, char *text);
 
@@ -57,9 +57,9 @@ void DISPTEXT_RenderCurrentLine(struct RastPort *rp, long x, long y)
     text[len] = 0;
 
     if (DISPTEXT_ControlMarkersEnabledFlag != 0
-        && GROUP_AI_JMPTBL_STR_FindCharPtr(text, 19) != 0
-        && GROUP_AI_JMPTBL_STR_FindCharPtr(text, 20) != 0) {
-        GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments(rp, x, y,
+        && STR_FindCharPtr(text, 19) != 0
+        && STR_FindCharPtr(text, 20) != 0) {
+        TLIBA1_DrawTextWithInsetSegments(rp, x, y,
             (long)DISPTEXT_InsetNibbleSecondary,
             (long)DISPTEXT_InsetNibblePrimary, text);
         DISPTEXT_ControlMarkerXOffsetPx = 4;

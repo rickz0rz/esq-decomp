@@ -33,9 +33,9 @@
 #include "esq-exec.h"
 #include <string.h>
 
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size, long flags);
-extern void  GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *newstr, char *old);
+extern void *MEMORY_AllocateMemory(char *who, long line, long size, long flags);
+extern void  STRING_AppendAtNull(char *dst, char *src);
+extern char *ESQPARS_ReplaceOwnedString(char *newstr, char *old);
 extern char *DISPTEXT_TextBufferPtr;
 extern char Global_STR_DISPTEXT_C_1[];
 
@@ -49,17 +49,17 @@ long DISPTEXT_AppendToBuffer(char *src)
     if (DISPTEXT_TextBufferPtr) {
         total = (long)strlen(DISPTEXT_TextBufferPtr) + (long)strlen(src) + 1;
         if ((long)AvailMem(MEMF_PUBLIC) > 0x2710)
-            newBuf = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_DISPTEXT_C_1,
+            newBuf = MEMORY_AllocateMemory(Global_STR_DISPTEXT_C_1,
                                                            127, total, MEMF_PUBLIC);
         if (newBuf) {
             strcpy(newBuf, DISPTEXT_TextBufferPtr);
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(newBuf, src);
-            GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, DISPTEXT_TextBufferPtr);
+            STRING_AppendAtNull(newBuf, src);
+            ESQPARS_ReplaceOwnedString(0, DISPTEXT_TextBufferPtr);
             DISPTEXT_TextBufferPtr = newBuf;
         }
     } else {
         DISPTEXT_TextBufferPtr =
-            GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(src, DISPTEXT_TextBufferPtr);
+            ESQPARS_ReplaceOwnedString(src, DISPTEXT_TextBufferPtr);
     }
 
     return DISPTEXT_TextBufferPtr != 0;

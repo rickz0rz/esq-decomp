@@ -93,7 +93,7 @@ struct VmRuntime {                      /* 154 bytes */
 extern void TLIBA3_InitPatternTable(void);
 extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
-extern void TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag(void);
+extern void GCOMMAND_ApplyHighlightFlag(void);
 
 extern struct VmPattern TLIBA3_VmArrayPatternTable[];
 extern struct VmRuntime TLIBA3_VmArrayRuntimeTable[];
@@ -178,7 +178,7 @@ struct VmRuntime *TLIBA3_BuildDisplayContextForViewMode(long mode, long unused,
     *set0 = copyA;
     *set1 = copyB;
 
-    TLIBA3_JMPTBL_GCOMMAND_ApplyHighlightFlag();
+    GCOMMAND_ApplyHighlightFlag();
 
     return &TLIBA3_VmArrayRuntimeTable[mode];
 }

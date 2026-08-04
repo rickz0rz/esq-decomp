@@ -34,8 +34,8 @@
 #include "esq-exec.h"
 #include <string.h>
 
-extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(char *hay, char *needle);
-extern char *ESQSHARED_JMPTBL_STR_SkipClass3Chars(char *s);
+extern char *ESQ_FindSubstringCaseFold(char *hay, char *needle);
+extern char *STR_SkipClass3Chars(char *s);
 extern unsigned char WDISP_CharClassTable[];
 extern char Global_STR_IN_STEREO[];
 
@@ -45,7 +45,7 @@ void ESQSHARED_NormalizeInStereoTag(char *s, long flags)
     char *after;
     char *p;
 
-    hit = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(s, Global_STR_IN_STEREO);
+    hit = ESQ_FindSubstringCaseFold(s, Global_STR_IN_STEREO);
     if (hit == 0)
         return;
 
@@ -59,7 +59,7 @@ void ESQSHARED_NormalizeInStereoTag(char *s, long flags)
     }
 
     if (*after) {
-        p = ESQSHARED_JMPTBL_STR_SkipClass3Chars(after);
+        p = STR_SkipClass3Chars(after);
         after = p;
         CopyMem(p, hit, (long)strlen(p) + 1);
         return;

@@ -164,35 +164,35 @@ extern void ED2_DrawEntrySummaryPanel(void);
 extern void ED2_DrawEntryDetailsPanel(void);
 extern void ED_InitRastport2Pens(void);
 extern void DST_FormatBannerDateTime(char *name, short *slot);
-extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer();
-extern long ESQIFF_JMPTBL_DOS_OpenFileWithMode(char *name, long mode);
-extern short GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar(void);
-extern void ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition(long code, long flag);
-extern void GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom(void);
-extern struct EsqDisplayContext *ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(
+extern void FORMAT_RawDoFmtWithScratchBuffer();
+extern long DOS_OpenFileWithMode(char *name, long mode);
+extern short GCOMMAND_GetBannerChar(void);
+extern void SCRIPT_BeginBannerCharTransition(long code, long flag);
+extern void ESQ_SetCopperEffect_Custom(void);
+extern struct EsqDisplayContext *TLIBA3_BuildDisplayContextForViewMode(
     long a, long b, long c);
-extern void GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
-extern void GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(long v);
-extern void GROUP_AK_JMPTBL_TLIBA3_SelectNextViewMode(void);
-extern void GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist(char *p);
-extern void GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry(void);
-extern void GROUP_AK_JMPTBL_PARSEINI_ScanLogoDirectory(void);
-extern void GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides(void *rp);
-extern void GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(char *path);
-extern void GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable(void);
-extern void GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen(long a, long b,
+extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void SCRIPT_UpdateSerialShadowFromCtrlByte(long v);
+extern void TLIBA3_SelectNextViewMode(void);
+extern void ESQPARS_ApplyRtcBytesAndPersist(char *p);
+extern void PARSEINI_WriteErrorLogEntry(void);
+extern void PARSEINI_ScanLogoDirectory(void);
+extern void TLIBA3_DrawViewModeGuides(void *rp);
+extern void PARSEINI_ParseIniBufferAndDispatch(char *path);
+extern void GCOMMAND_CopyGfxToWorkIfAvailable(void);
+extern void CLEANUP_RenderAlignedStatusScreen(long a, long b,
                                                               long c);
-extern void ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(long mode);
-extern void ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(void);
+extern void TEXTDISP_SetRastForMode(long mode);
+extern void TEXTDISP_ResetSelectionAndRefresh(void);
 extern void ESQFUNC_UpdateDiskWarningAndRefreshTick(void);
 extern void ESQFUNC_ServiceUiTickIfRunning(void);
 extern short ESQDISP_TestWordIsZeroBooleanize(long v);
-extern void ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(long a, long b);
+extern void ESQ_MoveCopperEntryTowardEnd(long a, long b);
 extern void ESQIFF_PlayNextExternalAssetFrame(long v);
 extern void DISKIO2_RunDiskSyncWorkflow(long v);
 extern void DISKIO2_ReloadDataFilesAndRebuildIndex(void);
 extern void DISKIO1_DumpProgramSourceRecordVerbose(void *entry, long index);
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, void *a);
+extern void WDISP_SPrintf(char *dst, char *fmt, void *a);
 extern void DISPLIB_DisplayTextAtPosition(struct RastPort *rp, long x, long y,
                                           char *text);
 
@@ -255,21 +255,21 @@ void ED2_HandleMenuActions(void)
 
     case 3:
         WDISP_DisplayContextBase =
-            ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(3L, 0L, 4L);
+            TLIBA3_BuildDisplayContextForViewMode(3L, 0L, 4L);
         ED_InitRastport2Pens();
         SetAPen(Global_REF_RASTPORT_1, 0L);
         RectFill(Global_REF_RASTPORT_1, 0L, 20L,
                  (long)WDISP_DisplayContextBase->width,
                  (long)WDISP_DisplayContextBase->height);
-        GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+        ESQ_SetCopperEffect_OnEnableHighlight();
         SCRIPT_StatusRefreshHoldFlag = 1;
         break;
 
     case 7:
-        GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides(
+        TLIBA3_DrawViewModeGuides(
             &WDISP_DisplayContextBase->rp2);
         Global_REF_RASTPORT_1->BitMap = &Global_REF_696_400_BITMAP;
-        GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides(Global_REF_RASTPORT_1);
+        TLIBA3_DrawViewModeGuides(Global_REF_RASTPORT_1);
         break;
 
     case 15:
@@ -293,27 +293,27 @@ void ED2_HandleMenuActions(void)
         break;
 
     case 21:
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             ED2_FMT_WICON_PCT_LD, (long)WDISP_WeatherStatusBrushIndex);
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             ED2_FMT_W_MIN_PCT_LD_MINUTES, (long)WDISP_WeatherStatusCountdown);
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             ED2_FMT_WDCNT_EVERY_PCT_LD_TIMES_PCT_LD,
             (long)WDISP_WeatherStatusDigitChar - 48,
             (long)WDISP_WeatherStatusDigitChar);
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             ED2_FMT_CWCNT_PCT_LD_TIMES_FROM_NOW_PCT_LD,
             (long)WDISP_WeatherCycleOffsetCount,
             (long)WDISP_WeatherCycleOffsetCount);
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             ED2_FMT_WDATA_PCT_08LX, WDISP_WeatherStatusOverlayTextPtr);
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             ED2_FMT_WCITY_PCT_S, WDISP_WeatherStatusTextPtr);
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             ED2_FMT_WEATHER_ID_PCT_S, WDISP_WeatherStatusLabelBuffer);
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             ED2_FMT_CWCOLOR_PCT_LD, (long)WDISP_WeatherStatusColorCode);
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             ED2_FMT_BANNER_FOR_WEATHER_PCT_D,
             P_TYPE_WeatherBrushRefreshPendingFlag);
         break;
@@ -334,29 +334,29 @@ void ED2_HandleMenuActions(void)
         break;
 
     case 43:
-        ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition(
-            (long)(short)(GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar() + 1), 0L);
+        SCRIPT_BeginBannerCharTransition(
+            (long)(short)(GCOMMAND_GetBannerChar() + 1), 0L);
         break;
 
     case 45:
-        ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition(
-            (long)(short)(GROUP_AK_JMPTBL_GCOMMAND_GetBannerChar() - 1), 0L);
+        SCRIPT_BeginBannerCharTransition(
+            (long)(short)(GCOMMAND_GetBannerChar() - 1), 0L);
         break;
 
     case 61:
-        ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition(
+        SCRIPT_BeginBannerCharTransition(
             (long)CONFIG_BannerCopperHeadByte, 0L);
         break;
 
     case 47:
-        GROUP_AK_JMPTBL_TLIBA3_SelectNextViewMode();
+        TLIBA3_SelectNextViewMode();
         break;
 
     case 65:
         if (LOCAVAIL_FilterStep != 0)
             break;
         LOCAVAIL_FilterPrevClassId = 2;
-        GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(3L);
+        SCRIPT_UpdateSerialShadowFromCtrlByte(3L);
         TEXTDISP_DeferredActionCountdown = 3;
         TEXTDISP_DeferredActionArmed = 1;
         break;
@@ -365,7 +365,7 @@ void ED2_HandleMenuActions(void)
         if (LOCAVAIL_FilterStep != 0)
             break;
         LOCAVAIL_FilterPrevClassId = 3;
-        GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(3L);
+        SCRIPT_UpdateSerialShadowFromCtrlByte(3L);
         TEXTDISP_DeferredActionCountdown = 3;
         TEXTDISP_DeferredActionArmed = 1;
         break;
@@ -383,7 +383,7 @@ void ED2_HandleMenuActions(void)
         break;
 
     case 75:
-        GROUP_AK_JMPTBL_PARSEINI_ScanLogoDirectory();
+        PARSEINI_ScanLogoDirectory();
         break;
 
     case 76:
@@ -395,12 +395,12 @@ void ED2_HandleMenuActions(void)
         break;
 
     case 77:
-        GROUP_AK_JMPTBL_GCOMMAND_CopyGfxToWorkIfAvailable();
+        GCOMMAND_CopyGfxToWorkIfAvailable();
         break;
 
     case 78:
         Global_REF_RASTPORT_1->BitMap = &Global_REF_696_400_BITMAP;
-        GROUP_AM_JMPTBL_WDISP_SPrintf(statusLine, ED2_FMT_BITPLANE1_PCT_8LX,
+        WDISP_SPrintf(statusLine, ED2_FMT_BITPLANE1_PCT_8LX,
                                       ESQSHARED_BannerRowScratchRasterBase0);
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40L, 232L,
                                       statusLine);
@@ -421,16 +421,16 @@ void ED2_HandleMenuActions(void)
         break;
 
     case 101:
-        GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry();
+        PARSEINI_WriteErrorLogEntry();
         break;
 
     case 103:
-        ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh();
+        TEXTDISP_ResetSelectionAndRefresh();
         break;
 
     case 107:
         state = 0;
-        fh = ESQIFF_JMPTBL_DOS_OpenFileWithMode(Global_STR_DF0_CLOCK_CMD,
+        fh = DOS_OpenFileWithMode(Global_STR_DF0_CLOCK_CMD,
                                                 MODE_OLDFILE);
         if (fh == 0)
             break;
@@ -451,7 +451,7 @@ void ED2_HandleMenuActions(void)
                     else
                         state = 0;
                 } else if (state == 3) {
-                    GROUP_AK_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist(&fileBuf[i]);
+                    ESQPARS_ApplyRtcBytesAndPersist(&fileBuf[i]);
                     i = got;
                 }
             }
@@ -460,31 +460,31 @@ void ED2_HandleMenuActions(void)
         break;
 
     case 108:
-        GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen(1L, 0L, 0L);
+        CLEANUP_RenderAlignedStatusScreen(1L, 0L, 0L);
         break;
 
     case 114:
-        GROUP_AK_JMPTBL_CLEANUP_RenderAlignedStatusScreen(0L, 0L, 0L);
+        CLEANUP_RenderAlignedStatusScreen(0L, 0L, 0L);
         break;
 
     case 110:
-        GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
-        ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(0L);
-        GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(1L);
+        ESQ_SetCopperEffect_OnEnableHighlight();
+        TEXTDISP_SetRastForMode(0L);
+        SCRIPT_UpdateSerialShadowFromCtrlByte(1L);
         break;
 
     case 112:
-        GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(
+        PARSEINI_ParseIniBufferAndDispatch(
             Global_STR_DF0_GRADIENT_INI_1);
         break;
 
     case 120:
         HIGHLIGHT_CustomValue = 0x1f;
-        GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Custom();
+        ESQ_SetCopperEffect_Custom();
         break;
 
     case 121:
-        ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(0L, 31L);
+        ESQ_MoveCopperEntryTowardEnd(0L, 31L);
         WDISP_AccumulatorCaptureActive = 0;
         break;
 
@@ -513,13 +513,13 @@ void ED2_HandleMenuActions(void)
         break;
 
     case 231:
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             ED2_STR_ED_DOT_C_COLON_SHORT_DUMP_OF_CLU);
         if (TEXTDISP_PrimaryGroupPresentFlag != 0)
             boolText = Global_STR_TRUE_1;
         else
             boolText = Global_STR_FALSE_1;
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             ED2_FMT_CLU_POS1_PCT_LD_CURCLU_PCT_S_JDCLU1_,
             (long)TEXTDISP_PrimaryGroupEntryCount, boolText,
             (long)TEXTDISP_PrimaryGroupHeaderCode,
@@ -531,7 +531,7 @@ void ED2_HandleMenuActions(void)
             DISKIO1_DumpProgramSourceRecordVerbose(entryPtr, (long)n);
             ESQFUNC_ServiceUiTickIfRunning();
         }
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             ED2_STR_ED_DOT_C_COLON_END_OF_DUMP_OF_CLU);
         break;
 

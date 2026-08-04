@@ -11,13 +11,13 @@
  */
 struct Brush4 { char name[1]; char pad[367]; struct Brush4 *next; };
 struct Brush4Head { struct Brush4 *first; };
-extern long GROUP_AA_JMPTBL_STRING_CompareNoCase(struct Brush4 *a, char *b);
+extern long STRING_CompareNoCase(struct Brush4 *a, char *b);
 struct Brush4 *BRUSH_FindBrushByPredicate(char *want, struct Brush4Head *h)
 {
     struct Brush4 *cur = h->first;
 
     while (cur != 0) {
-        if (GROUP_AA_JMPTBL_STRING_CompareNoCase(cur, want) == 0)
+        if (STRING_CompareNoCase(cur, want) == 0)
             return cur;
         cur = cur->next;
     }

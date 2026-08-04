@@ -47,7 +47,7 @@
  *   retest:  a compiler that emits JSR (d16,PC) for a call to an extern; the
  *            isolated probe is esqiff_handle_brush_ini_reload_hotkey.c.
  */
-extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(char *newStr, char *old);
+extern char *ESQPARS_ReplaceOwnedString(char *newStr, char *old);
 
 struct NewGridShowtimeBucket {
     long  code;
@@ -65,7 +65,7 @@ void NEWGRID_ResetShowtimeBuckets(void)
     for (; i < 10; i++) {
         NEWGRID_ShowtimeBucketEntryTable[i].code = 0x3100;
         NEWGRID_ShowtimeBucketEntryTable[i].text =
-            PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(
+            ESQPARS_ReplaceOwnedString(
                 0, NEWGRID_ShowtimeBucketEntryTable[i].text);
     }
 }

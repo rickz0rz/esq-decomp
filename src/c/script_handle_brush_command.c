@@ -131,19 +131,19 @@ extern long  SCRIPT_SelectPlaybackCursorFromSearchText(long which, char *payload
 extern void  SCRIPT_SplitAndNormalizeSearchBuffer(char *payload, long len);
 extern void  SCRIPT_LoadCtrlContextSnapshot(void *ctx);
 extern void  SCRIPT_SaveCtrlContextSnapshot(void *ctx);
-extern void  SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist(char *rtc);
-extern void  SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState(long mode);
-extern void  SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry(char *entry,
+extern void  ESQPARS_ApplyRtcBytesAndPersist(char *rtc);
+extern void  LOCAVAIL_SetFilterModeAndResetState(long mode);
+extern void  LOCAVAIL_ComputeFilterOffsetForEntry(char *entry,
                                                                  void *state);
-extern unsigned char SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(long c);
-extern long  SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
-extern long  SCRIPT3_JMPTBL_STRING_CompareN(char *a, char *b, long n);
-extern void  SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
+extern unsigned char LADFUNC_ParseHexDigit(long c);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern long  STRING_CompareN(char *a, char *b, long n);
+extern void  STRING_CopyPadNul(char *dst, char *src, long n);
 extern char  SCRIPT_ReadHandshakeBit5Mask(void);
 extern short TEXTDISP_FindEntryIndexByWildcard(char *pattern);
 extern void  TEXTDISP_HandleScriptCommand(long a, long b, long c);
 extern void  TEXTDISP_UpdateChannelRangeFlags(void);
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newText,
+extern char *ESQPARS_ReplaceOwnedString(char *newText,
                                                         char *oldText);
 
 long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
@@ -250,8 +250,8 @@ long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
                 break;
             }
             SCRIPT_PendingBannerTargetChar = (short)
-                ((SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit((long)payload[2]) << 4) +
-                 SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit((long)payload[3]));
+                ((LADFUNC_ParseHexDigit((long)payload[2]) << 4) +
+                 LADFUNC_ParseHexDigit((long)payload[3]));
 
             if ((WDISP_CharClassTable[(unsigned char)payload[4]] & 4) != 0 &&
                 (WDISP_CharClassTable[(unsigned char)payload[5]] & 4) != 0) {
@@ -287,7 +287,7 @@ long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
             SCRIPT_PlaybackCursor = 9;
             SCRIPT_PendingTextdispCmdChar = payload[1];
             SCRIPT_PendingTextdispCmdArg = payload[2];
-            SCRIPT_CommandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(
+            SCRIPT_CommandTextPtr = ESQPARS_ReplaceOwnedString(
                 &payload[3], SCRIPT_CommandTextPtr);
             dispatchAfter = 0;
             SCRIPT_PendingBannerTargetChar = -2;
@@ -301,23 +301,23 @@ long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
     case 2:
         primaryDone = secondaryDone = 0;
 
-        if (SCRIPT3_JMPTBL_STRING_CompareN(SCRIPT_BrushTag_Default00_Primary,
+        if (STRING_CompareN(SCRIPT_BrushTag_Default00_Primary,
                                            &payload[3], 2L) == 0) {
             BRUSH_ScriptPrimarySelection = BRUSH_SelectedNode;
             primaryDone = 1;
         }
-        if (SCRIPT3_JMPTBL_STRING_CompareN(SCRIPT_BrushTag_Default00_Secondary,
+        if (STRING_CompareN(SCRIPT_BrushTag_Default00_Secondary,
                                            &payload[1], 2L) == 0) {
             BRUSH_ScriptSecondarySelection = BRUSH_SelectedNode;
             secondaryDone = 1;
         }
-        if (SCRIPT3_JMPTBL_STRING_CompareN(SCRIPT_BrushTag_Clear11_Primary,
+        if (STRING_CompareN(SCRIPT_BrushTag_Clear11_Primary,
                                            &payload[3], 2L) == 0 &&
             primaryDone == 0) {
             BRUSH_ScriptPrimarySelection = 0;
             primaryDone = 1;
         }
-        if (SCRIPT3_JMPTBL_STRING_CompareN(SCRIPT_BrushTag_Clear11_Secondary,
+        if (STRING_CompareN(SCRIPT_BrushTag_Clear11_Secondary,
                                            &payload[1], 2L) == 0 &&
             secondaryDone == 0) {
             BRUSH_ScriptSecondarySelection = 0;
@@ -329,14 +329,14 @@ long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
 
         node = ESQIFF_BrushIniListHead;
         while (node != 0) {
-            if (SCRIPT3_JMPTBL_STRING_CompareN(node->tag, &payload[3], 2L) == 0 &&
+            if (STRING_CompareN(node->tag, &payload[3], 2L) == 0 &&
                 primaryDone == 0) {
                 BRUSH_ScriptPrimarySelection = node;
                 primaryDone = 1;
                 if (primaryDone && secondaryDone)
                     break;
             }
-            if (SCRIPT3_JMPTBL_STRING_CompareN(node->tag, &payload[1], 2L) == 0 &&
+            if (STRING_CompareN(node->tag, &payload[1], 2L) == 0 &&
                 secondaryDone == 0) {
                 BRUSH_ScriptSecondarySelection = node;
                 secondaryDone = 1;
@@ -378,8 +378,8 @@ long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
             break;
         if (strlen(payload) != 12)
             break;
-        SCRIPT3_JMPTBL_STRING_CopyPadNul(yearText, &payload[4], 4L);
-        year = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(yearText);
+        STRING_CopyPadNul(yearText, &payload[4], 4L);
+        year = PARSE_ReadSignedLongSkipClass3_Alt(yearText);
         rtc[0] = payload[1] - 48;
         rtc[1] = payload[2] - 48;
         rtc[2] = payload[3] - 48;
@@ -395,7 +395,7 @@ long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
             break;
         if (rtc[6] >= 60)
             break;
-        SCRIPT3_JMPTBL_ESQPARS_ApplyRtcBytesAndPersist(rtc);
+        ESQPARS_ApplyRtcBytesAndPersist(rtc);
         break;
 
     case 12:
@@ -423,7 +423,7 @@ long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
         break;
 
     case 15:
-        value = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(&payload[1]);
+        value = PARSE_ReadSignedLongSkipClass3_Alt(&payload[1]);
         HIGHLIGHT_CustomValue = (char)(63 - value);
         if (HIGHLIGHT_CustomValue > 63 || HIGHLIGHT_CustomValue < 0)
             HIGHLIGHT_CustomValue = 63;
@@ -444,13 +444,13 @@ long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
 
     case 22:
         if (payload[1] == 57) {
-            SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState(1L);
-            SCRIPT3_JMPTBL_LOCAVAIL_ComputeFilterOffsetForEntry(
+            LOCAVAIL_SetFilterModeAndResetState(1L);
+            LOCAVAIL_ComputeFilterOffsetForEntry(
                 &payload[2], LOCAVAIL_PrimaryFilterState);
             break;
         }
         if (LOCAVAIL_FilterModeFlag == 1 && payload[1] == 56) {
-            SCRIPT3_JMPTBL_LOCAVAIL_SetFilterModeAndResetState(0L);
+            LOCAVAIL_SetFilterModeAndResetState(0L);
             break;
         }
         if (LOCAVAIL_FilterModeFlag == 1) {

@@ -33,7 +33,7 @@
  *            version; see docs/compiler-version.md.
  */
 extern void  DISPLIB_ResetTextBufferAndLineTables(void);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                      void *p, long size);
 extern void *Global_REF_1000_BYTES_ALLOCATED_1;
 extern void *Global_REF_1000_BYTES_ALLOCATED_2;
@@ -45,14 +45,14 @@ void DISPTEXT_FreeBuffers(void)
     DISPLIB_ResetTextBufferAndLineTables();
 
     if (Global_REF_1000_BYTES_ALLOCATED_1) {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISPTEXT_C_4, 338L,
+        MEMORY_DeallocateMemory(Global_STR_DISPTEXT_C_4, 338L,
                                                 Global_REF_1000_BYTES_ALLOCATED_1,
                                                 1000L);
         Global_REF_1000_BYTES_ALLOCATED_1 = 0;
     }
 
     if (Global_REF_1000_BYTES_ALLOCATED_2) {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISPTEXT_C_5, 343L,
+        MEMORY_DeallocateMemory(Global_STR_DISPTEXT_C_5, 343L,
                                                 Global_REF_1000_BYTES_ALLOCATED_2,
                                                 1000L);
         Global_REF_1000_BYTES_ALLOCATED_2 = 0;

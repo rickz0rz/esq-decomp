@@ -9,10 +9,10 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
  */
-extern short ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange(void);
+extern short PARSEINI_MonitorClockChange(void);
 extern void  ESQFUNC_ServiceUiTickIfRunning(void);
 void ESQFUNC_WaitForClockChangeAndServiceUi(void)
 {
-    while (ESQFUNC_JMPTBL_PARSEINI_MonitorClockChange() == 0)
+    while (PARSEINI_MonitorClockChange() == 0)
         ESQFUNC_ServiceUiTickIfRunning();
 }

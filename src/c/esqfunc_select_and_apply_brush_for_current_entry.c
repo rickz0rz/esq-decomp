@@ -102,12 +102,12 @@ struct EfCtx {
     struct RastPort rp;                 /* +10 */
 };
 
-extern long ESQIFF_JMPTBL_STRING_CompareN(char *a, char *b, long n);
-extern char ESQSHARED_JMPTBL_ESQ_WildcardMatch(char *name, void *node);
-extern void ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(struct EfBrush *b, long z0,
+extern long STRING_CompareN(char *a, char *b, long n);
+extern char ESQ_WildcardMatch(char *name, void *node);
+extern void BRUSH_SelectBrushSlot(struct EfBrush *b, long z0,
                                                 long z1, long w, long h,
                                                 struct RastPort *rp, long z2);
-extern long ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(long index);
+extern long BRUSH_PlaneMaskForIndex(long index);
 extern void ESQIFF_RestoreBasePaletteTriples(void);
 
 extern struct EfBrush *ESQIFF_BrushIniListHead;
@@ -157,13 +157,13 @@ long ESQFUNC_SelectAndApplyBrushForCurrentEntry(short mode)
     else
         entry = TEXTDISP_SecondaryEntryPtrTable[TEXTDISP_CurrentMatchIndex];
 
-    if (ESQIFF_JMPTBL_STRING_CompareN(entry->tag, ESQFUNC_TAG_00, 2L) == 0) {
+    if (STRING_CompareN(entry->tag, ESQFUNC_TAG_00, 2L) == 0) {
         brush = BRUSH_SelectedNode;
         found = 1;
         goto ensureFallback;
     }
 
-    if (ESQIFF_JMPTBL_STRING_CompareN(entry->tag, ESQFUNC_TAG_11, 2L) == 0) {
+    if (STRING_CompareN(entry->tag, ESQFUNC_TAG_11, 2L) == 0) {
 
 wildcardScan:
         if (brush == 0)
@@ -174,7 +174,7 @@ wildcardScan:
         node = brush->wild;
 
         while (node != 0 && !found) {
-            if (ESQSHARED_JMPTBL_ESQ_WildcardMatch(entry->name, node) == 0)
+            if (ESQ_WildcardMatch(entry->name, node) == 0)
                 found = 1;
             node = node->link;
         }
@@ -199,7 +199,7 @@ tagScan:
     if (found)
         goto ensureFallback;
 
-    if (ESQIFF_JMPTBL_STRING_CompareN(entry->tag, brush->tag, 2L) == 0)
+    if (STRING_CompareN(entry->tag, brush->tag, 2L) == 0)
         found = 1;
 
     if (!found)
@@ -215,7 +215,7 @@ ensureFallback:
     SetRast(&WDISP_DisplayContextBase->rp, 31L);
 
     if (brush != 0 && (BRUSH_SelectedNode != 0 || found))
-        ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(
+        BRUSH_SelectBrushSlot(
             brush, 0L, 0L, (long)WDISP_DisplayContextBase->w2 - 1,
             (long)WDISP_DisplayContextBase->w4 - 1, Global_REF_RASTPORT_2, 0L);
 
@@ -226,10 +226,10 @@ ensureFallback:
 
     if (brush->mode328 == 0 || brush->mode328 == 1 || brush->mode328 == 3) {
 
-        mask5 = ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(5L);
+        mask5 = BRUSH_PlaneMaskForIndex(5L);
         mask5 = (mask5 << 2) - mask5;
 
-        maskDepth = ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex((long)brush->b184);
+        maskDepth = BRUSH_PlaneMaskForIndex((long)brush->b184);
         maskDepth = (maskDepth << 2) - maskDepth;
 
         for (i = 0; i < maskDepth && i < mask5; i++)

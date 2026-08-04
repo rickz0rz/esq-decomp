@@ -35,9 +35,9 @@
 #include "esq-graphics.h"
 
 extern void GCOMMAND_SeedBannerFromPrefs(void);
-extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf();
-extern long ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(long depth);
+extern void DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
+extern void WDISP_SPrintf();
+extern long BRUSH_PlaneMaskForIndex(long depth);
 extern struct RastPort *Global_REF_RASTPORT_1;
 extern struct BitMap Global_REF_696_400_BITMAP;
 extern short Global_UIBusyFlag;
@@ -89,24 +89,24 @@ void ESQIFF2_ShowAttentionOverlay(char code)
     savedDrMd = Global_REF_RASTPORT_1->DrawMode;
     SetDrMd(Global_REF_RASTPORT_1, 0L);
 
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 35, 90,
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 35, 90,
                                                  Global_STR_PLEASE_STANDBY_2);
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 35, 120,
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 35, 120,
                                                  Global_STR_ATTENTION_SYSTEM_ENGINEER_2);
-    GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_REPORT_ERROR_CODE_FORMATTED, errCode);
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 35, 150, buf);
+    WDISP_SPrintf(buf, Global_STR_REPORT_ERROR_CODE_FORMATTED, errCode);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 35, 150, buf);
 
     if (errCode == 9 || errCode == 10) {
-        GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_FILE_WIDTH_COLORS_FORMATTED,
+        WDISP_SPrintf(buf, Global_STR_FILE_WIDTH_COLORS_FORMATTED,
                                       BRUSH_SnapshotHeader, BRUSH_SnapshotWidth,
-                                      ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(BRUSH_SnapshotDepth));
+                                      BRUSH_PlaneMaskForIndex(BRUSH_SnapshotDepth));
         COI_AttentionOverlayBusyFlag = 1;
     } else {
-        GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_FILE_PERCENT_S, BRUSH_SnapshotHeader);
+        WDISP_SPrintf(buf, Global_STR_FILE_PERCENT_S, BRUSH_SnapshotHeader);
     }
 
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 35, 180, buf);
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 35, 210,
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 35, 180, buf);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 35, 210,
                                                  Global_STR_PRESS_ESC_TWICE_TO_RESUME_SCROLL);
 
     SetDrMd(Global_REF_RASTPORT_1, (long)savedDrMd);

@@ -44,10 +44,10 @@ struct NewGridCellEntry {
     char text19[8];             /* +19 */
 };
 
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
-extern void  NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(void *rp, long x1, long y1,
+extern char *STR_SkipClass3Chars(char *s);
+extern void  BEVEL_DrawBeveledFrame(void *rp, long x1, long y1,
                                                     long x2, long y2);
-extern void  NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rp, long x1,
+extern void  BEVEL_DrawBevelFrameWithTopRight(void *rp, long x1,
                                                               long y1, long x2,
                                                               long y2);
 extern void  NEWGRID_DrawGridCellText(void *rp, char *second, char *first,
@@ -61,15 +61,15 @@ void NEWGRID_DrawGridCell(void *rp, struct NewGridCellEntry *e, long mode)
     char *first;
     char *second;
 
-    first  = NEWGRID2_JMPTBL_STR_SkipClass3Chars(e->text1);
-    second = NEWGRID2_JMPTBL_STR_SkipClass3Chars(e->text19);
+    first  = STR_SkipClass3Chars(e->text1);
+    second = STR_SkipClass3Chars(e->text19);
 
     if (mode != 0)
-        NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
+        BEVEL_DrawBevelFrameWithTopRight(
             rp, 0L, 0L,
             (long)NEWGRID_ColumnStartXPx + 35, (long)NEWGRID_RowHeightPx - 1);
     else
-        NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(
+        BEVEL_DrawBeveledFrame(
             rp, 0L, 0L,
             (long)NEWGRID_ColumnStartXPx + 35, (long)NEWGRID_RowHeightPx - 1);
 

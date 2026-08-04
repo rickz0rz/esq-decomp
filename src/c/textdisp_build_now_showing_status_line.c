@@ -87,9 +87,9 @@ extern char  SCRIPT_SpacerTripleA[];
 extern char  SCRIPT_SpacerTripleB[];
 extern char  SCRIPT_StrChannelLabel_TuesdaysFridays[];
 
-extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(long idx, long kind);
-extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(long idx, long kind);
-extern long  TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(void *entry, void *aux,
+extern void *ESQDISP_GetEntryAuxPointerByMode(long idx, long kind);
+extern void *ESQDISP_GetEntryPointerByMode(long idx, long kind);
+extern long  COI_TestEntryWithinTimeWindow(void *entry, void *aux,
                                                          long idx, long span,
                                                          long window);
 extern void  TEXTDISP_FormatEntryTimeForIndex(char *buf, long idx, void *aux);
@@ -97,7 +97,7 @@ extern char *STR_SkipClass3Chars(char *s);
 extern void  STRING_AppendAtNull(char *dst, char *src);
 extern char *TEXTDISP_FindControlToken(char *s);
 extern void  WDISP_SPrintf(char *dst, char *fmt, long a);
-extern void  TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(char *line, long a,
+extern void  CLEANUP_BuildAlignedStatusLine(char *line, long a,
                                                             long b, long c,
                                                             long d, long e);
 extern void  SCRIPT_SetupHighlightEffect(char *line);
@@ -121,9 +121,9 @@ void TEXTDISP_BuildNowShowingStatusLine(short mode, short index, short slot)
     token = 0;
     skipTitle = 1;
 
-    aux = (struct DkTitle *)TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
+    aux = (struct DkTitle *)ESQDISP_GetEntryAuxPointerByMode(
         (long)index, mode != 0 ? 1L : 2L);
-    entry = (char *)TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
+    entry = (char *)ESQDISP_GetEntryPointerByMode(
         (long)index, mode != 0 ? 1L : 2L);
 
     if (entry == 0 || aux == 0) {
@@ -152,7 +152,7 @@ void TEXTDISP_BuildNowShowingStatusLine(short mode, short index, short slot)
         channelEnabled = 0;
 
     if (channelEnabled != 0 && slot > 0 && slot < 49 &&
-        TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(entry, aux, (long)slot,
+        COI_TestEntryWithinTimeWindow(entry, aux, (long)slot,
                                                     1440L,
                                                     CONFIG_TimeWindowMinutes) !=
             0) {
@@ -211,7 +211,7 @@ void TEXTDISP_BuildNowShowingStatusLine(short mode, short index, short slot)
             STRING_AppendAtNull(line, scratch);
         }
 
-        TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(line, (long)mode,
+        CLEANUP_BuildAlignedStatusLine(line, (long)mode,
                                                        (long)index, (long)slot,
                                                        0L, 0L);
     }

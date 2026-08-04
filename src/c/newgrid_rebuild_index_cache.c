@@ -27,8 +27,8 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the two cross-unit calls.
  */
-extern unsigned char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(long i, long mode);
-extern long NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(char *s);
+extern unsigned char *ESQDISP_GetEntryPointerByMode(long i, long mode);
+extern long TLIBA_FindFirstWildcardMatchIndex(char *s);
 extern long *NEWGRID_SecondaryIndexCachePtr;
 extern short ESQPARS2_ReadModeFlags;
 extern short TEXTDISP_PrimaryGroupEntryCount;
@@ -51,10 +51,10 @@ void NEWGRID_RebuildIndexCache(void)
         NEWGRID_SecondaryIndexCachePtr[i] = -1;
 
     for (i = 0; i < TEXTDISP_PrimaryGroupEntryCount; i++) {
-        entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, 1);
+        entry = ESQDISP_GetEntryPointerByMode(i, 1);
         if (entry == 0)
             continue;
-        idx = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex((char *)entry + 12);
+        idx = TLIBA_FindFirstWildcardMatchIndex((char *)entry + 12);
         if (idx <= -1)
             continue;
         if (idx >= TEXTDISP_SecondaryGroupEntryCount)

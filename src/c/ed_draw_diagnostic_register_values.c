@@ -29,7 +29,7 @@
 #include "esq-graphics.h"
 extern struct RastPort *Global_REF_RASTPORT_1;
 extern void DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
-extern void GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(char *buf, long value, long width);
+extern void ESQ_WriteDecFixedWidth(char *buf, long value, long width);
 extern char ED_EditBufferScratch[];
 extern long ED_TempCopyOffset;
 extern unsigned char GCOMMAND_PresetFallbackValue0[];
@@ -45,18 +45,18 @@ void ED_DrawDiagnosticRegisterValues(void)
     SetDrMd(Global_REF_RASTPORT_1, 1L);
     SetAPen(Global_REF_RASTPORT_1, 1L);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 240, Global_STR_REGISTER);
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, ED_TempCopyOffset, 2);
+    ESQ_WriteDecFixedWidth(ED_EditBufferScratch, ED_TempCopyOffset, 2);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 190, 240, ED_EditBufferScratch);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 270, Global_STR_R_EQUALS);
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch,
+    ESQ_WriteDecFixedWidth(ED_EditBufferScratch,
         GCOMMAND_PresetFallbackValue0[ED_TempCopyOffset * 3], 2);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 85, 270, ED_EditBufferScratch);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 135, 270, Global_STR_G_EQUALS);
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch,
+    ESQ_WriteDecFixedWidth(ED_EditBufferScratch,
         GCOMMAND_PresetFallbackValue1[ED_TempCopyOffset * 3], 2);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 180, 270, ED_EditBufferScratch);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 230, 270, Global_STR_B_EQUALS);
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch,
+    ESQ_WriteDecFixedWidth(ED_EditBufferScratch,
         GCOMMAND_PresetFallbackValue2[ED_TempCopyOffset * 3], 2);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 275, 270, ED_EditBufferScratch);
 }

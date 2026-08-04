@@ -78,7 +78,7 @@ _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   GRAPHICS_AllocRaster
+;   _GRAPHICS_AllocRaster
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -89,4 +89,4 @@ _GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AA_JMPTBL_GRAPHICS_AllocRaster:
-    JMP     GRAPHICS_AllocRaster
+    JMP     _GRAPHICS_AllocRaster

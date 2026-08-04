@@ -1,9 +1,9 @@
-    XDEF    ESQPROTO_CopyLabelToGlobal
-    XDEF    ESQPROTO_ParseDigitLabelAndDisplay
+    XDEF    _ESQPROTO_CopyLabelToGlobal
+    XDEF    _ESQPROTO_ParseDigitLabelAndDisplay
     XDEF    UNKNOWN_ParseListAndUpdateEntries
     XDEF    UNKNOWN_ParseRecordAndUpdateDisplay
-    XDEF    ESQPROTO_VerifyChecksumAndParseList
-    XDEF    ESQPROTO_VerifyChecksumAndParseRecord
+    XDEF    _ESQPROTO_VerifyChecksumAndParseList
+    XDEF    _ESQPROTO_VerifyChecksumAndParseRecord
     XDEF    _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
     XDEF    UNKNOWN_JMPTBL_DST_NormalizeDayOfYear
     XDEF    UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer
@@ -403,7 +403,7 @@ UNKNOWN_ParseListAndUpdateEntries:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: ESQPROTO_VerifyChecksumAndParseRecord   (Validate checksum and dispatch to record parser.)
+; FUNC: _ESQPROTO_VerifyChecksumAndParseRecord   (Validate checksum and dispatch to record parser.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -421,7 +421,7 @@ UNKNOWN_ParseListAndUpdateEntries:
 ; NOTES:
 ;   Uses stack param byte at 11(A7).
 ;------------------------------------------------------------------------------
-ESQPROTO_VerifyChecksumAndParseRecord:
+_ESQPROTO_VerifyChecksumAndParseRecord:
     MOVE.L  D7,-(A7)
 
     MOVE.B  11(A7),D7
@@ -467,7 +467,7 @@ ESQPROTO_VerifyChecksumAndParseRecord:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: ESQPROTO_VerifyChecksumAndParseList   (Validate checksum and dispatch to list parser.)
+; FUNC: _ESQPROTO_VerifyChecksumAndParseList   (Validate checksum and dispatch to list parser.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -485,7 +485,7 @@ ESQPROTO_VerifyChecksumAndParseRecord:
 ; NOTES:
 ;   Uses stack param byte at 11(A7).
 ;------------------------------------------------------------------------------
-ESQPROTO_VerifyChecksumAndParseList:
+_ESQPROTO_VerifyChecksumAndParseList:
     MOVE.L  D7,-(A7)
 
     MOVE.B  11(A7),D7
@@ -531,7 +531,7 @@ ESQPROTO_VerifyChecksumAndParseList:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: ESQPROTO_ParseDigitLabelAndDisplay   (Parse digit + label, update globals, and display.)
+; FUNC: _ESQPROTO_ParseDigitLabelAndDisplay   (Parse digit + label, update globals, and display.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +9: arg_2 (via 13(A5))
@@ -550,7 +550,7 @@ ESQPROTO_VerifyChecksumAndParseList:
 ; NOTES:
 ;   Clamps digit to '0'..'9'; uses 0x12 sentinel and max length 10 for label.
 ;------------------------------------------------------------------------------
-ESQPROTO_ParseDigitLabelAndDisplay:
+_ESQPROTO_ParseDigitLabelAndDisplay:
     LINK.W  A5,#-16
     MOVEM.L D2/D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -619,7 +619,7 @@ ESQPROTO_ParseDigitLabelAndDisplay:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: ESQPROTO_CopyLabelToGlobal   (Copy short label into _WDISP_StatusListMatchPattern.)
+; FUNC: _ESQPROTO_CopyLabelToGlobal   (Copy short label into _WDISP_StatusListMatchPattern.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +9: arg_2 (via 13(A5))
@@ -638,7 +638,7 @@ ESQPROTO_ParseDigitLabelAndDisplay:
 ; NOTES:
 ;   Uses 0x12 sentinel and max length 10 for label.
 ;------------------------------------------------------------------------------
-ESQPROTO_CopyLabelToGlobal:
+_ESQPROTO_CopyLabelToGlobal:
     LINK.W  A5,#-16
     MOVEM.L D7/A3,-(A7)
     MOVEA.L 8(A5),A3

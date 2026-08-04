@@ -35,7 +35,7 @@
  */
 #include <string.h>
 
-extern char UNKNOWN_JMPTBL_ESQ_WildcardMatch(char *pat, char *s);
+extern char ESQ_WildcardMatch(char *pat, char *s);
 extern long TEXTDISP_ShouldOpenEditorForEntry(unsigned char *entry);
 extern short TEXTDISP_ActiveGroupId;
 extern short TEXTDISP_PrimaryGroupEntryCount;
@@ -68,17 +68,17 @@ short TEXTDISP_BuildMatchIndexList(char *pattern, short cmd)
     if (pattern == 0)
         return count;
 
-    if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(TEXTDISP_Tag_PPV, pattern) == 0) {
+    if (ESQ_WildcardMatch(TEXTDISP_Tag_PPV, pattern) == 0) {
         tagged = 1;
-    } else if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(TEXTDISP_Tag_SBE, pattern) == 0) {
+    } else if (ESQ_WildcardMatch(TEXTDISP_Tag_SBE, pattern) == 0) {
         TEXTDISP_SbeFilterActiveFlag = 1;
         tagged = 1;
     } else {
         tagged = 0;
     }
 
-    isSports = (UNKNOWN_JMPTBL_ESQ_WildcardMatch(TEXTDISP_Tag_SPORTS, pattern) == 0);
-    if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(TEXTDISP_Tag_SPT_Filter, pattern) == 0)
+    isSports = (ESQ_WildcardMatch(TEXTDISP_Tag_SPORTS, pattern) == 0);
+    if (ESQ_WildcardMatch(TEXTDISP_Tag_SPT_Filter, pattern) == 0)
         pattern = Global_STR_ASTERISK_2;
 
     if (strcmp(TEXTDISP_Tag_FIND1, pattern) == 0) {
@@ -110,7 +110,7 @@ short TEXTDISP_BuildMatchIndexList(char *pattern, short cmd)
             ;
         else if (isSports && TEXTDISP_ShouldOpenEditorForEntry(entry))
             ;
-        else if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(title, pattern))
+        else if (ESQ_WildcardMatch(title, pattern))
             continue;
         TEXTDISP_CandidateIndexList[count] = (unsigned char)i;
         count++;

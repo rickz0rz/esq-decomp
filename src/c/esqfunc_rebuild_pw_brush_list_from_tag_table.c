@@ -42,9 +42,9 @@
  *            +2 because just one call sits at the end.
  */
 
-extern void ESQIFF_JMPTBL_BRUSH_FreeBrushList(void *listHead, long flags);
-extern void *ESQIFF_JMPTBL_BRUSH_AllocBrushNode(char *tag, void *prev);
-extern void ESQIFF_JMPTBL_BRUSH_PopulateBrushList(void *chain, void *listHead);
+extern void BRUSH_FreeBrushList(void *listHead, long flags);
+extern void *BRUSH_AllocBrushNode(char *tag, void *prev);
+extern void BRUSH_PopulateBrushList(void *chain, void *listHead);
 
 extern void *ESQFUNC_PwBrushListHead;
 extern void *ESQFUNC_PwBrushDescriptorHead;
@@ -61,11 +61,11 @@ void ESQFUNC_RebuildPwBrushListFromTagTable(void)
     long i;
 
     desc = 0;
-    ESQIFF_JMPTBL_BRUSH_FreeBrushList(&ESQFUNC_PwBrushListHead, 0L);
+    BRUSH_FreeBrushList(&ESQFUNC_PwBrushListHead, 0L);
 
     for (i = 0; i < 6; i++) {
         desc = (struct PwBrushDescriptor *)
-               ESQIFF_JMPTBL_BRUSH_AllocBrushNode(ESQFUNC_BrushDescriptorTagStrings[i],
+               BRUSH_AllocBrushNode(ESQFUNC_BrushDescriptorTagStrings[i],
                                                   desc);
         switch (i) {
         case 0:
@@ -92,7 +92,7 @@ void ESQFUNC_RebuildPwBrushListFromTagTable(void)
             ESQFUNC_PwBrushDescriptorHead = desc;
     }
 
-    ESQIFF_JMPTBL_BRUSH_PopulateBrushList(ESQFUNC_PwBrushDescriptorHead,
+    BRUSH_PopulateBrushList(ESQFUNC_PwBrushDescriptorHead,
                                           &ESQFUNC_PwBrushListHead);
     ESQFUNC_PwBrushDescriptorHead = 0;
 }

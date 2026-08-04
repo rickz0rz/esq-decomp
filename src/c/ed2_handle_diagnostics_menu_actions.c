@@ -86,15 +86,15 @@ extern void DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
 extern long ED_FindNextCharInTable(long c, char *table);
 extern void ED_DrawDiagnosticModeText(void);
 extern void ED_DrawESCMenuBottomHelp(void);
-extern void GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides(void *rp);
-extern void GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(long v);
-extern void GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn(void);
-extern void GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(void);
-extern void GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
-extern void GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default(void);
-extern char ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void);
-extern void GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow(void);
-extern void GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow(void);
+extern void TLIBA3_DrawViewModeGuides(void *rp);
+extern void SCRIPT_UpdateSerialShadowFromCtrlByte(long v);
+extern void ESQ_SetCopperEffect_AllOn(void);
+extern void ESQ_SetCopperEffect_OffDisableHighlight(void);
+extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void ESQ_SetCopperEffect_Default(void);
+extern char SCRIPT_ReadHandshakeBit5Mask(void);
+extern void SCRIPT_AssertCtrlLineNow(void);
+extern void SCRIPT_DeassertCtrlLineNow(void);
 
 extern void *Global_REF_RASTPORT_1;
 extern long ED_StateRingIndex;
@@ -161,7 +161,7 @@ void ED2_HandleDiagnosticsMenuActions(void)
         break;
 
     case 7:
-        GROUP_AK_JMPTBL_TLIBA3_DrawViewModeGuides(Global_REF_RASTPORT_1);
+        TLIBA3_DrawViewModeGuides(Global_REF_RASTPORT_1);
         break;
 
     case 13:
@@ -213,52 +213,52 @@ void ED2_HandleDiagnosticsMenuActions(void)
 
     case 49:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175L, 360L, ED2_STR_SILENCE);
-        GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(0L);
+        SCRIPT_UpdateSerialShadowFromCtrlByte(0L);
         break;
 
     case 50:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175L, 360L, ED2_STR_LEFT);
-        GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(1L);
+        SCRIPT_UpdateSerialShadowFromCtrlByte(1L);
         break;
 
     case 51:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175L, 360L, ED2_STR_RIGHT);
-        GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(2L);
+        SCRIPT_UpdateSerialShadowFromCtrlByte(2L);
         break;
 
     case 52:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175L, 360L, ED2_STR_BACKGROUND);
-        GROUP_AK_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(3L);
+        SCRIPT_UpdateSerialShadowFromCtrlByte(3L);
         break;
 
     case 53:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40L, 390L,
                                       ED2_STR_EXT_DOT_VIDEO_ONLY);
-        GROUP_AK_JMPTBL_ESQ_SetCopperEffect_AllOn();
+        ESQ_SetCopperEffect_AllOn();
         break;
 
     case 54:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40L, 390L,
                                       ED2_STR_COMPUTER_ONLY);
-        GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight();
+        ESQ_SetCopperEffect_OffDisableHighlight();
         break;
 
     case 55:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40L, 390L,
                                       ED2_STR_OVERLAY_EXT_DOT_VIDEO);
-        GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+        ESQ_SetCopperEffect_OnEnableHighlight();
         break;
 
     case 56:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40L, 390L,
                                       ED2_STR_NEGATIVE_VIDEO);
-        GROUP_AK_JMPTBL_ESQ_SetCopperEffect_Default();
+        ESQ_SetCopperEffect_Default();
         break;
 
     case 57:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40L, 270L,
                                       ED2_STR_VIDEO_SWITCH);
-        if (ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask())
+        if (SCRIPT_ReadHandshakeBit5Mask())
             DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 235L, 270L,
                                           ED2_STR_CLOSED);
         else
@@ -269,12 +269,12 @@ void ED2_HandleDiagnosticsMenuActions(void)
     case 40:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40L, 270L,
                                       ED2_STR_START_TAPE_VIDEO);
-        GROUP_AK_JMPTBL_SCRIPT_AssertCtrlLineNow();
+        SCRIPT_AssertCtrlLineNow();
         break;
 
     case 41:
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40L, 270L, ED2_STR_STOP);
-        GROUP_AK_JMPTBL_SCRIPT_DeassertCtrlLineNow();
+        SCRIPT_DeassertCtrlLineNow();
         break;
 
     default:

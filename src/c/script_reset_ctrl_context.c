@@ -73,7 +73,7 @@ struct ScriptCtrlContext {
     char *owned;                /* +440 */
 };
 
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newStr, char *old);
+extern char *ESQPARS_ReplaceOwnedString(char *newStr, char *old);
 
 void SCRIPT_ResetCtrlContext(struct ScriptCtrlContext *c)
 {
@@ -84,7 +84,7 @@ void SCRIPT_ResetCtrlContext(struct ScriptCtrlContext *c)
     c->f438 = 0;
     c->f439 = 0;
 
-    c->owned = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(0, c->owned);
+    c->owned = ESQPARS_ReplaceOwnedString(0, c->owned);
 
     c->f26 = c->f226 = 0;
 

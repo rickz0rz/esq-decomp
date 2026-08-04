@@ -27,16 +27,16 @@ extern char ED_EditBufferScratch[];
 extern unsigned char ED_EditBufferLive[];
 extern char Global_STR_EDITING_AD_NUMBER_FORMATTED_2[];
 
-extern void GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault(long index,
+extern void LADFUNC_BuildEntryBuffersOrDefault(long index,
                 char *text, unsigned char *attr);
-extern long GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte(long hi, long lo);
+extern long LADFUNC_ComposePackedPenByte(long hi, long lo);
 extern void ED_RedrawAllRows(void);
 extern void SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE(long mode);
 extern void SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR(long mode);
-extern long __asm ESQIFF_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
 extern void ED_DrawCurrentColorIndicator(long pen);
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long n);
+extern void WDISP_SPrintf(char *buf, char *fmt, long n);
 extern void DISPLIB_DisplayTextAtPosition(struct RastPort *rp, long x, long y,
                                           char *text);
 extern void ED_RedrawCursorChar(void);
@@ -49,7 +49,7 @@ void ED_LoadCurrentAdIntoBuffers(void)
 
     rows = 30;
 
-    GROUP_AL_JMPTBL_LADFUNC_BuildEntryBuffersOrDefault(
+    LADFUNC_BuildEntryBuffersOrDefault(
         Global_REF_LONG_CURRENT_EDITING_AD_NUMBER - 1, ED_EditBufferScratch,
         ED_EditBufferLive);
 
@@ -57,7 +57,7 @@ void ED_LoadCurrentAdIntoBuffers(void)
     if (len < ED_BlockOffset) {
         memset(ED_EditBufferScratch + len, ' ', ED_BlockOffset - len);
         memset(ED_EditBufferLive + len,
-               GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte(2, 1),
+               LADFUNC_ComposePackedPenByte(2, 1),
                ED_BlockOffset - len);
     }
     ED_EditBufferScratch[ED_BlockOffset] = 0;
@@ -79,7 +79,7 @@ void ED_LoadCurrentAdIntoBuffers(void)
     SetAPen(Global_REF_RASTPORT_1, 1);
     SetBPen(Global_REF_RASTPORT_1, 7);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(label,
+    WDISP_SPrintf(label,
         Global_STR_EDITING_AD_NUMBER_FORMATTED_2,
         Global_REF_LONG_CURRENT_EDITING_AD_NUMBER);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 190, 300, label);

@@ -91,15 +91,15 @@ struct WBrush {
 };
 struct WBrushHead { struct WBrush *first; };
 
-extern struct WBrush *WDISP_JMPTBL_BRUSH_FindBrushByPredicate(char *name,
+extern struct WBrush *BRUSH_FindBrushByPredicate(char *name,
                                                   struct WBrushHead *head);
-extern long WDISP_JMPTBL_BRUSH_PlaneMaskForIndex(long index);
-extern void WDISP_JMPTBL_BRUSH_SelectBrushSlot(struct WBrush *b, long a,
+extern long BRUSH_PlaneMaskForIndex(long index);
+extern void BRUSH_SelectBrushSlot(struct WBrush *b, long a,
                                                long y, long w, long h,
                                                struct RastPort *rp, long z);
-extern long WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary(
+extern long ESQFUNC_TrimTextToPixelWidthWordBoundary(
                                 struct RastPort *rp, long width, char *text);
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *src, char *old);
+extern char *ESQPARS_ReplaceOwnedString(char *src, char *old);
 extern void MEMORY_DeallocateMemory(char *who, long line, char *p, long size);
 
 extern struct WBrushHead ESQFUNC_PwBrushListHead;
@@ -136,11 +136,11 @@ void WDISP_DrawWeatherStatusOverlay(struct RastPort *rp, long width, long height
         WDISP_WeatherStatusDigitChar != 48) {
 
         if (WDISP_WeatherStatusBrushIndex == 1)
-            brush = WDISP_JMPTBL_BRUSH_FindBrushByPredicate(
+            brush = BRUSH_FindBrushByPredicate(
                         ESQFUNC_WeatherBrushPredicateNames,
                         &ESQFUNC_PwBrushListHead);
         else
-            brush = WDISP_JMPTBL_BRUSH_FindBrushByPredicate(
+            brush = BRUSH_FindBrushByPredicate(
                         ESQFUNC_STR_I5[WDISP_WeatherStatusBrushIndex],
                         &ESQFUNC_PwBrushListHead);
 
@@ -152,7 +152,7 @@ void WDISP_DrawWeatherStatusOverlay(struct RastPort *rp, long width, long height
             brushWidth  = 0xaa;
         }
 
-        dup = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(
+        dup = ESQPARS_ReplaceOwnedString(
                   WDISP_WeatherStatusOverlayTextPtr, dup);
         dupLen1 = (long)strlen(dup) + 1;
         cur = dup;
@@ -184,8 +184,8 @@ void WDISP_DrawWeatherStatusOverlay(struct RastPort *rp, long width, long height
         if (WDISP_WeatherStatusBrushIndex != 1 && brush != 0) {
             brush->slotFlagA = 1;
             brush->slotFlagB = 1;
-            planeA = WDISP_JMPTBL_BRUSH_PlaneMaskForIndex(5L) * 3;
-            planeB = WDISP_JMPTBL_BRUSH_PlaneMaskForIndex(
+            planeA = BRUSH_PlaneMaskForIndex(5L) * 3;
+            planeB = BRUSH_PlaneMaskForIndex(
                          (long)brush->planeSel) * 3;
 
             for (i = 0; i < planeB && i < planeA; i++)
@@ -200,7 +200,7 @@ void WDISP_DrawWeatherStatusOverlay(struct RastPort *rp, long width, long height
             WDISP_AccumulatorFlushPending = 1;
 
             y = baseY;
-            WDISP_JMPTBL_BRUSH_SelectBrushSlot(brush, 0L, baseY, width, height,
+            BRUSH_SelectBrushSlot(brush, 0L, baseY, width, height,
                                                rp, 0L);
         }
 
@@ -237,7 +237,7 @@ void WDISP_DrawWeatherStatusOverlay(struct RastPort *rp, long width, long height
                   - (long)Global_HANDLE_PREVUEC_FONT->tf_Baseline >= height)
                 break;
 
-            textLen = WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary(
+            textLen = ESQFUNC_TrimTextToPixelWidthWordBoundary(
                           rp, halfWidth, cur);
             drawn = TextLength(rp, cur, textLen);
             x = (halfWidth - drawn - 1) / 2;
@@ -247,7 +247,7 @@ void WDISP_DrawWeatherStatusOverlay(struct RastPort *rp, long width, long height
 
             if (lineIndex < lineCount) {
                 cur += strlen(cur) + 1;
-                textLen = WDISP_JMPTBL_ESQFUNC_TrimTextToPixelWidthWordBoundary(
+                textLen = ESQFUNC_TrimTextToPixelWidthWordBoundary(
                               rp, halfWidth, cur);
                 drawn = TextLength(rp, cur, textLen);
                 x = width - (halfWidth + drawn) / 2 - 1;

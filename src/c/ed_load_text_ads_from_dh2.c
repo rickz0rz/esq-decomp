@@ -13,7 +13,7 @@ extern void *Global_REF_RASTPORT_1;
 extern char  Global_STR_LOADING_TEXT_ADS_FROM_DH2[];
 extern long  ED_IsConfirmKey(void);
 extern void  DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
-extern void  GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile(void);
+extern void  LADFUNC_LoadTextAdsFromFile(void);
 extern void  ED_DrawESCMenuBottomHelp(void);
 void ED_LoadTextAdsFromDh2(void)
 {
@@ -22,7 +22,7 @@ void ED_LoadTextAdsFromDh2(void)
     if ((char)cancelled == 0) {
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 120,
                                       Global_STR_LOADING_TEXT_ADS_FROM_DH2);
-        GROUP_AM_JMPTBL_LADFUNC_LoadTextAdsFromFile();
+        LADFUNC_LoadTextAdsFromFile();
     }
     ED_DrawESCMenuBottomHelp();
 }

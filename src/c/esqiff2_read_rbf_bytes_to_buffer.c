@@ -42,7 +42,7 @@
  */
 
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
-extern long ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
+extern long SCRIPT_ReadNextRbfByte(void);
 
 char *ESQIFF2_ReadRbfBytesToBuffer(char *buf, short count)
 {
@@ -50,7 +50,7 @@ char *ESQIFF2_ReadRbfBytesToBuffer(char *buf, short count)
 
     for (i = 0; i < count; i++) {
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        *buf++ = (char)ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        *buf++ = (char)SCRIPT_ReadNextRbfByte();
     }
 
     return buf;

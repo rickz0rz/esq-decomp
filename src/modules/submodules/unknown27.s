@@ -1,5 +1,5 @@
     XDEF    FORMAT_Buffer2WriteChar
-    XDEF    FORMAT_FormatToBuffer2
+    XDEF    _FORMAT_FormatToBuffer2
     XDEF    _FORMAT_ParseFormatSpec
 
 ;------------------------------------------------------------------------------
@@ -31,7 +31,7 @@ FORMAT_Buffer2WriteChar:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: FORMAT_FormatToBuffer2   (Format string into buffer #2.)
+; FUNC: _FORMAT_FormatToBuffer2   (Format string into buffer #2.)
 ; ARGS:
 ;   stack +16: A3 = output buffer
 ;   stack +20: A2 = format string
@@ -45,7 +45,7 @@ FORMAT_Buffer2WriteChar:
 ; WRITES:
 ;   Global_FormatBufferPtr2, Global_FormatByteCount2
 ;------------------------------------------------------------------------------
-FORMAT_FormatToBuffer2:
+_FORMAT_FormatToBuffer2:
     LINK.W  A5,#0
     MOVEM.L A2-A3,-(A7)
 

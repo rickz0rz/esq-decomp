@@ -48,9 +48,9 @@
 #include <exec/memory.h>
 #include "esq-exec.h"
 
-extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size,
+extern void *MEMORY_AllocateMemory(char *who, long line, long size,
                                                  long flags);
-extern void ESQFUNC_JMPTBL_ESQ_TickGlobalCounters();
+extern void ESQ_TickGlobalCounters();
 
 extern struct Interrupt *Global_REF_INTERRUPT_STRUCT_INTB_VERTB;
 extern char Global_STR_ESQFUNC_C_1[];
@@ -60,7 +60,7 @@ extern char ESQ_VerticalBlankInterruptUserData[];
 void SETUP_INTERRUPT_INTB_VERTB(void)
 {
     Global_REF_INTERRUPT_STRUCT_INTB_VERTB = (struct Interrupt *)
-        ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_1, 1159L,
+        MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_1, 1159L,
                                             (long)sizeof(struct Interrupt),
                                             MEMF_PUBLIC);
 
@@ -68,7 +68,7 @@ void SETUP_INTERRUPT_INTB_VERTB(void)
     Global_REF_INTERRUPT_STRUCT_INTB_VERTB->is_Node.ln_Pri = 0;
     Global_REF_INTERRUPT_STRUCT_INTB_VERTB->is_Node.ln_Name = Global_STR_VERTICAL_BLANK_INT;
     Global_REF_INTERRUPT_STRUCT_INTB_VERTB->is_Data = ESQ_VerticalBlankInterruptUserData;
-    Global_REF_INTERRUPT_STRUCT_INTB_VERTB->is_Code = ESQFUNC_JMPTBL_ESQ_TickGlobalCounters;
+    Global_REF_INTERRUPT_STRUCT_INTB_VERTB->is_Code = ESQ_TickGlobalCounters;
 
     AddIntServer(5L, Global_REF_INTERRUPT_STRUCT_INTB_VERTB);
 }

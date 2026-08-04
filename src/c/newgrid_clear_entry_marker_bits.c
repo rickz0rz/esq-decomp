@@ -24,8 +24,8 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the four cross-unit calls.
  */
-extern unsigned char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(long i, long mode);
-extern unsigned char *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(long i, long mode);
+extern unsigned char *ESQDISP_GetEntryPointerByMode(long i, long mode);
+extern unsigned char *ESQDISP_GetEntryAuxPointerByMode(long i, long mode);
 extern short TEXTDISP_PrimaryGroupEntryCount;
 extern short TEXTDISP_SecondaryGroupEntryCount;
 extern char  TEXTDISP_PrimaryGroupPresentFlag;
@@ -42,9 +42,9 @@ void NEWGRID_ClearEntryMarkerBits(short mode)
         for (i = 0; i < TEXTDISP_PrimaryGroupEntryCount; i++) {
             if (TEXTDISP_PrimaryGroupPresentFlag == 0)
                 break;
-            entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, 1);
+            entry = ESQDISP_GetEntryPointerByMode(i, 1);
             if (entry[47] & 0x10) {
-                aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, 1);
+                aux = ESQDISP_GetEntryAuxPointerByMode(i, 1);
                 for (j = 1; j < 49; j++)
                     aux[7 + j] &= ~0x20;
             }
@@ -54,9 +54,9 @@ void NEWGRID_ClearEntryMarkerBits(short mode)
     for (i = 0; i < TEXTDISP_SecondaryGroupEntryCount; i++) {
         if (TEXTDISP_SecondaryGroupPresentFlag == 0)
             break;
-        entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, 2);
+        entry = ESQDISP_GetEntryPointerByMode(i, 2);
         if (entry[47] & 0x10) {
-            aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, 2);
+            aux = ESQDISP_GetEntryAuxPointerByMode(i, 2);
             for (j = 1; j < 49; j++)
                 aux[7 + j] &= ~0x20;
         }

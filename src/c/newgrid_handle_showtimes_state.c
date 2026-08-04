@@ -31,18 +31,18 @@ extern long GCOMMAND_PpvShowtimesLayoutPen;
 extern long GCOMMAND_PpvShowtimesInitialLineIndex;
 extern unsigned char GCOMMAND_PpvDetailLayoutFlag;
 
-extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(long width, long lead,
+extern void DISPTEXT_SetLayoutParams(long width, long lead,
                                                      long pen);
 extern void NEWGRID_DrawGridEntry(struct RastPort *rp, char *entry, char *aux,
                                   long selector, long mode, long flag,
                                   long pen);
-extern void NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(long index);
+extern void DISPTEXT_SetCurrentLineIndex(long index);
 extern void NEWGRID_BuildShowtimesText(struct GridPanel *panel,
                                        struct ShowtimesCtx *ctx, char *buf);
-extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(struct RastPort *rp,
+extern void DISPTEXT_LayoutAndAppendToBuffer(struct RastPort *rp,
                                                              char *buf);
 extern long NEWGRID_DrawGridFrameVariant3(struct GridPanel *panel);
-extern long NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(long mode);
+extern long DISPTEXT_ComputeVisibleLineCount(long mode);
 
 long NEWGRID_HandleShowtimesState(struct GridPanel *panel,
                                   struct ShowtimesCtx *ctx)
@@ -62,7 +62,7 @@ long NEWGRID_HandleShowtimesState(struct GridPanel *panel,
         if (ctx->aux == 0)
             return NEWGRID_ShowtimesWorkflowStateLatch;
 
-        NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(612, 20,
+        DISPTEXT_SetLayoutParams(612, 20,
                                                  GCOMMAND_PpvShowtimesLayoutPen);
         selector = ctx->selector;
         if (selector > 48)
@@ -75,13 +75,13 @@ long NEWGRID_HandleShowtimesState(struct GridPanel *panel,
             NEWGRID_DrawGridEntry(&panel->rp, ctx->entry, ctx->aux,
                                   (long)selector, 3, 1, -1);
 
-        NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(
+        DISPTEXT_SetCurrentLineIndex(
             GCOMMAND_PpvShowtimesInitialLineIndex);
         NEWGRID_BuildShowtimesText(panel, ctx, buf);
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(&panel->rp, buf);
+        DISPTEXT_LayoutAndAppendToBuffer(&panel->rp, buf);
         NEWGRID_ShowtimesWorkflowStateLatch =
             NEWGRID_DrawGridFrameVariant3(panel) ? 4 : 5;
-        panel->visibleLines = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2);
+        panel->visibleLines = DISPTEXT_ComputeVisibleLineCount(2);
         break;
 
     case 5:

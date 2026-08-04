@@ -31,8 +31,8 @@
 #include <exec/memory.h>
 #include "esq-dos.h"
 
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size, long flags);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
+extern void *MEMORY_AllocateMemory(char *who, long line, long size, long flags);
+extern void  MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
 extern char Global_STR_BRUSH_C_1[];
 extern char Global_STR_BRUSH_C_2[];
 extern char Global_STR_BRUSH_C_3[];
@@ -46,18 +46,18 @@ long BRUSH_LoadColorTextFont(BPTR fh, long size, unsigned char *out)
     register short outIdx;
     register short i;
 
-    buf = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_BRUSH_C_1, 396, 96,
+    buf = MEMORY_AllocateMemory(Global_STR_BRUSH_C_1, 396, 96,
                                                 MEMF_PUBLIC);
     if (buf == 0)
         return -1;
 
     if (size > 96) {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_2, 416, buf, 96);
+        MEMORY_DeallocateMemory(Global_STR_BRUSH_C_2, 416, buf, 96);
         return -1;
     }
 
     if (Read(fh, buf, size) != size) {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_3, 431, buf, 96);
+        MEMORY_DeallocateMemory(Global_STR_BRUSH_C_3, 431, buf, 96);
         return -1;
     }
 
@@ -72,6 +72,6 @@ long BRUSH_LoadColorTextFont(BPTR fh, long size, unsigned char *out)
         i += 3;
     }
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_4, 445, buf, 96);
+    MEMORY_DeallocateMemory(Global_STR_BRUSH_C_4, 445, buf, 96);
     return 1;
 }

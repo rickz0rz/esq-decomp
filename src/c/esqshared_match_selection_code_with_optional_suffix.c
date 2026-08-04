@@ -28,7 +28,7 @@
  */
 #include <string.h>
 
-extern char ESQSHARED_JMPTBL_ESQ_WildcardMatch(char *pat, char *s);
+extern char ESQ_WildcardMatch(char *pat, char *s);
 extern char ESQ_STR_A[];
 extern char ESQ_SelectCodeBuffer[];
 extern char ESQPARS_SelectionSuffixBuffer[];
@@ -86,11 +86,11 @@ long ESQSHARED_MatchSelectionCodeWithOptionalSuffix(char *s)
     if (strlen(mainBuf) == 0)
         mainMatch = -1;
     else
-        mainMatch = ESQSHARED_JMPTBL_ESQ_WildcardMatch(ESQ_SelectCodeBuffer, mainBuf);
+        mainMatch = ESQ_WildcardMatch(ESQ_SelectCodeBuffer, mainBuf);
 
     suffixMatch = 0;
     if (suffixFlag == 1)
-        suffixMatch = ESQSHARED_JMPTBL_ESQ_WildcardMatch(ESQPARS_SelectionSuffixBuffer,
+        suffixMatch = ESQ_WildcardMatch(ESQPARS_SelectionSuffixBuffer,
                                                          suffixBuf);
 
     if (mainMatch == 0 && suffixMatch == 0 && lastSegment == ESQ_STR_A[0])

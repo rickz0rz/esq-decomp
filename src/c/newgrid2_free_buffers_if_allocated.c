@@ -12,15 +12,15 @@
 extern char *NEWGRID_EntryTextScratchPtr;
 extern char *NEWGRID_SecondaryIndexCachePtr;
 extern char  Global_STR_NEWGRID2_C_5[], Global_STR_NEWGRID2_C_6[];
-extern void  SCRIPT_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, char *p, long size);
+extern void  MEMORY_DeallocateMemory(char *who, long line, char *p, long size);
 void NEWGRID2_FreeBuffersIfAllocated(void)
 {
     if (NEWGRID_EntryTextScratchPtr == 0)
         return;
-    SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_NEWGRID2_C_5, 4164,
+    MEMORY_DeallocateMemory(Global_STR_NEWGRID2_C_5, 4164,
                                           NEWGRID_EntryTextScratchPtr, 1000);
     NEWGRID_EntryTextScratchPtr = 0;
-    SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_NEWGRID2_C_6, 4167,
+    MEMORY_DeallocateMemory(Global_STR_NEWGRID2_C_6, 4167,
                                           NEWGRID_SecondaryIndexCachePtr, 1208);
     NEWGRID_SecondaryIndexCachePtr = 0;
 }

@@ -28,9 +28,9 @@ extern char Global_STR_AD_NUMBER_QUESTIONMARK[];
 extern void ED_DrawHelpPanels(long mode);
 extern void DISPLIB_DisplayTextAtPosition(struct RastPort *rp, long x, long y,
                                           char *text);
-extern void GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(char *buf, long value,
+extern void ESQ_WriteDecFixedWidth(char *buf, long value,
                                                    long width);
-extern long GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte(long hi, long lo);
+extern long LADFUNC_ComposePackedPenByte(long hi, long lo);
 extern void ED_RedrawCursorChar(void);
 
 void ED_DrawAdNumberPrompt(void)
@@ -44,7 +44,7 @@ void ED_DrawAdNumberPrompt(void)
 
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 330,
                                   Global_STR_ENTER_AD_NUMBER_ONE_HYPHEN);
-    GROUP_AL_JMPTBL_ESQ_WriteDecFixedWidth(ED_EditBufferScratch, ED_MaxAdNumber,
+    ESQ_WriteDecFixedWidth(ED_EditBufferScratch, ED_MaxAdNumber,
                                            2);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 340, 330,
                                   ED_EditBufferScratch);
@@ -69,7 +69,7 @@ void ED_DrawAdNumberPrompt(void)
     ED_EditCursorOffset = 12;
     for (i = 0; i < 14; i++) {
         ED_EditBufferScratch[i] = ' ';
-        ED_EditBufferLive[i] = GROUP_AL_JMPTBL_LADFUNC_PackNibblesToByte(2, 1);
+        ED_EditBufferLive[i] = LADFUNC_ComposePackedPenByte(2, 1);
     }
 
     ED_AdNumberPromptStateBlock = 0;

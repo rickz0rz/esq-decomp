@@ -20,9 +20,9 @@ struct EntryTimeCtx {
 extern unsigned char CLOCK_FormatVariantCode;
 extern char **Global_REF_STR_CLOCK_FORMAT;      /* a POINTER to the table */
 
-extern short TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(long row,
+extern short ESQDISP_ComputeScheduleOffsetForRow(long row,
                                                                long variant);
-extern void  TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(long slot, char *out);
+extern void  CLEANUP_FormatClockFormatEntry(long slot, char *out);
 
 void TEXTDISP_FormatEntryTimeForIndex(char *out, short row,
                                       struct EntryTimeCtx *ctx)
@@ -32,7 +32,7 @@ void TEXTDISP_FormatEntryTimeForIndex(char *out, short row,
     short mins;
 
     entry = ctx->rows[row];
-    slot = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((long)row,
+    slot = ESQDISP_ComputeScheduleOffsetForRow((long)row,
                (long)ctx->variant498);
 
     if (entry == 0 || *entry == 0) {
@@ -42,7 +42,7 @@ void TEXTDISP_FormatEntryTimeForIndex(char *out, short row,
 
     if (*entry != 40 || entry[3] != 58) {
         slot += CLOCK_FormatVariantCode / 30;
-        TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry((long)slot, out);
+        CLEANUP_FormatClockFormatEntry((long)slot, out);
         return;
     }
 

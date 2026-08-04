@@ -31,12 +31,12 @@ extern char  ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD[];
 extern char  ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA[];
 extern char  ESQIFF_STR_CORRECT_VERSION_IS[];
 
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, char *s, long v);
-extern char ESQSHARED_JMPTBL_ESQ_WildcardMatch(char *pattern, char *text);
+extern void WDISP_SPrintf(char *buf, char *fmt, char *s, long v);
+extern char ESQ_WildcardMatch(char *pattern, char *text);
 extern void GCOMMAND_SeedBannerFromPrefs(void);
-extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(struct RastPort *rp,
+extern void DISPLIB_DisplayTextAtPosition(struct RastPort *rp,
                 long x, long y, char *text);
-extern void GROUP_AR_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern void STRING_AppendAtNull(char *dst, char *src);
 
 void ESQIFF2_ShowVersionMismatchOverlay(void)
 {
@@ -44,10 +44,10 @@ void ESQIFF2_ShowVersionMismatchOverlay(void)
 
     ESQIFF_RecordBufferPtr[20] = 0;
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(buf, ESQIFF_FMT_PCT_S_DOT_PCT_LD,
+    WDISP_SPrintf(buf, ESQIFF_FMT_PCT_S_DOT_PCT_LD,
         Global_STR_MAJOR_MINOR_VERSION_1, Global_LONG_PATCH_VERSION_NUMBER);
 
-    if (ESQSHARED_JMPTBL_ESQ_WildcardMatch(buf, ESQIFF_RecordBufferPtr + 1) == 0)
+    if (ESQ_WildcardMatch(buf, ESQIFF_RecordBufferPtr + 1) == 0)
         return;
     if (Global_UIBusyFlag != 0 && ED_DiagnosticsScreenActive == 0)
         return;
@@ -64,20 +64,20 @@ void ESQIFF2_ShowVersionMismatchOverlay(void)
     RectFill(Global_REF_RASTPORT_1, 0, 60, 679, 155);
     SetAPen(Global_REF_RASTPORT_1, 3);
 
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 30, 90,
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 30, 90,
         ESQIFF_STR_INCORRECT_VERSION_PLEASE_CORRECT_ASA);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+    WDISP_SPrintf(buf,
         ESQIFF_FMT_YOUR_VERSION_IS_PCT_S_DOT_PCT_LD,
         Global_STR_MAJOR_MINOR_VERSION_2, Global_LONG_PATCH_VERSION_NUMBER);
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 30, 120,
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 30, 120,
         buf);
 
     *(struct VersionBlob *)buf = *(struct VersionBlob *)ESQIFF_STR_CORRECT_VERSION_IS;
     buf[20] = 0;
 
-    GROUP_AR_JMPTBL_STRING_AppendAtNull(buf, ESQIFF_RecordBufferPtr + 1);
-    GROUP_AR_JMPTBL_STRING_AppendAtNull(buf, Global_STR_APOSTROPHE);
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 30, 150,
+    STRING_AppendAtNull(buf, ESQIFF_RecordBufferPtr + 1);
+    STRING_AppendAtNull(buf, Global_STR_APOSTROPHE);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 30, 150,
         buf);
 }

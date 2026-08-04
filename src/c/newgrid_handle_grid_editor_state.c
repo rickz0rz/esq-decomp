@@ -52,10 +52,10 @@ struct NewGridEditorContext {
     char text60[1];             /* +60 */
 };
 
-extern void NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(long a, long b, long c);
-extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(char *dst,
+extern void DISPTEXT_SetLayoutParams(long a, long b, long c);
+extern void DISPTEXT_LayoutAndAppendToBuffer(char *dst,
                                                              char *src);
-extern long NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(long minLines);
+extern long DISPTEXT_ComputeVisibleLineCount(long minLines);
 extern long NEWGRID_DrawGridFrameAndRows(struct NewGridEditorContext *ctx,
                                          long arg);
 
@@ -71,9 +71,9 @@ long NEWGRID_HandleGridEditorState(struct NewGridEditorContext *ctx, long layout
 
     switch (NEWGRID_GridEditorWorkflowState) {
     case 4:
-        NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(612L, 20L, layout);
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(ctx->text60, text);
-        ctx->lineCount = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(0L);
+        DISPTEXT_SetLayoutParams(612L, 20L, layout);
+        DISPTEXT_LayoutAndAppendToBuffer(ctx->text60, text);
+        ctx->lineCount = DISPTEXT_ComputeVisibleLineCount(0L);
 
         NEWGRID_GridEditorWorkflowState =
             NEWGRID_DrawGridFrameAndRows(ctx, drawArg) ? 4 : 5;

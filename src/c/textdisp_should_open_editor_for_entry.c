@@ -43,7 +43,7 @@ struct TextDispEntry {
     unsigned char flags40;
 };
 
-extern long TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor(struct TextDispEntry *e);
+extern long NEWGRID_ShouldOpenEditor(struct TextDispEntry *e);
 
 long TEXTDISP_ShouldOpenEditorForEntry(struct TextDispEntry *e)
 {
@@ -52,7 +52,7 @@ long TEXTDISP_ShouldOpenEditorForEntry(struct TextDispEntry *e)
 
     if (e != 0) {
         if ((e->flags40 & 1) && (e->flags40 & 8)
-            && TEXTDISP_JMPTBL_NEWGRID_ShouldOpenEditor(e) == 0
+            && NEWGRID_ShouldOpenEditor(e) == 0
             && (e->flags27 & 8) == 0)
             t = 1;
         else

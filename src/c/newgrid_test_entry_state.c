@@ -39,9 +39,9 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
-extern void *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(long index,
+extern void *ESQDISP_GetEntryPointerByMode(long index,
                                                            long mode);
-extern void *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(long index,
+extern void *ESQDISP_GetEntryAuxPointerByMode(long index,
                                                               long mode);
 /* The callee takes two TYPED pointers and a `short` slot. `void *, void *, long`
  * compiled alone and clashed as soon as this file was merged into one unit with
@@ -73,14 +73,14 @@ long NEWGRID_TestEntryState(long mode, long primaryIndex, long secondaryIndex,
     long  result = 0;
 
     if (key > 48 || key == 1) {
-        entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(secondaryIndex, 2L);
-        aux   = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(secondaryIndex,
+        entry = ESQDISP_GetEntryPointerByMode(secondaryIndex, 2L);
+        aux   = ESQDISP_GetEntryAuxPointerByMode(secondaryIndex,
                                                                  2L);
         while (key > 48)
             key -= 48;
     } else {
-        entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(primaryIndex, 1L);
-        aux   = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(primaryIndex,
+        entry = ESQDISP_GetEntryPointerByMode(primaryIndex, 1L);
+        aux   = ESQDISP_GetEntryAuxPointerByMode(primaryIndex,
                                                                  1L);
     }
 

@@ -291,7 +291,7 @@ _GROUP_AG_JMPTBL_MEMORY_AllocateMemory:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DOS_OpenFileWithMode
+;   _DOS_OpenFileWithMode
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -302,7 +302,7 @@ _GROUP_AG_JMPTBL_MEMORY_AllocateMemory:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AG_JMPTBL_DOS_OpenFileWithMode:
-    JMP     DOS_OpenFileWithMode
+    JMP     _DOS_OpenFileWithMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AG_JMPTBL_SCRIPT_CheckPathExists   (Routine at _GROUP_AG_JMPTBL_SCRIPT_CheckPathExists)

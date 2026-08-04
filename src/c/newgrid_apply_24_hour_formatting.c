@@ -24,8 +24,8 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the three cross-unit calls.
  */
-extern char *PARSEINI_JMPTBL_STR_FindCharPtr(char *s, long ch);
-extern short NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(long row, long code);
+extern char *STR_FindCharPtr(char *s, long ch);
+extern short ESQDISP_ComputeScheduleOffsetForRow(long row, long code);
 extern char *Global_JMPTBL_HALF_HOURS_24_HR_FMT[];
 extern char  Global_REF_STR_USE_24_HR_CLOCK[];
 
@@ -38,16 +38,16 @@ void NEWGRID_Apply24HourFormatting(char *s, short row, char code)
     if (s == 0)
         return;
 
-    p = PARSEINI_JMPTBL_STR_FindCharPtr(s, '(');
+    p = STR_FindCharPtr(s, '(');
     if (p == 0)
         return;
     if (p[3] != ':')
         return;
 
     p[1] = Global_JMPTBL_HALF_HOURS_24_HR_FMT[
-               NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((long)row,
+               ESQDISP_ComputeScheduleOffsetForRow((long)row,
                                                                    (long)(unsigned char)code)][0];
     p[2] = Global_JMPTBL_HALF_HOURS_24_HR_FMT[
-               NEWGRID2_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((long)row,
+               ESQDISP_ComputeScheduleOffsetForRow((long)row,
                                                                    (long)(unsigned char)code)][1];
 }

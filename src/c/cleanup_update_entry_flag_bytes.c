@@ -52,7 +52,7 @@
 #include <string.h>
 
 extern char *COI_GetAnimFieldPointerByMode(void *entry, long mode, long which);
-extern unsigned char GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(long ch);
+extern unsigned char LADFUNC_ParseHexDigit(long ch);
 
 extern unsigned char WDISP_CharClassTable[];
 extern char CLOCK_STR_FALLBACK_ENTRY_FLAGS_PRIMARY[];
@@ -73,13 +73,13 @@ void CLEANUP_UpdateEntryFlagBytes(void *entry, short mode)
 
     if (WDISP_CharClassTable[(long)field[6]] & 0x80)
         DISPTEXT_InsetNibblePrimary =
-            GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((long)field[6]);
+            LADFUNC_ParseHexDigit((long)field[6]);
     else
         DISPTEXT_InsetNibblePrimary = 255;
 
     if (WDISP_CharClassTable[(long)field[7]] & 0x80)
         DISPTEXT_InsetNibbleSecondary =
-            GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((long)field[7]);
+            LADFUNC_ParseHexDigit((long)field[7]);
     else
         DISPTEXT_InsetNibbleSecondary = 255;
 }

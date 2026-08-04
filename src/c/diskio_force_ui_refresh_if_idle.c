@@ -12,12 +12,12 @@
 extern short Global_UIBusyFlag;
 extern short ESQPARS2_ReadModeFlags;
 extern short Global_RefreshTickCounter;
-extern void  GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(void);
+extern void  TEXTDISP_ResetSelectionAndRefresh(void);
 void DISKIO_ForceUiRefreshIfIdle(void)
 {
     if (Global_UIBusyFlag != 0)
         return;
     ESQPARS2_ReadModeFlags = 0x100;
     Global_RefreshTickCounter = -1;
-    GROUP_AG_JMPTBL_TEXTDISP_ResetSelectionAndRefresh();
+    TEXTDISP_ResetSelectionAndRefresh();
 }

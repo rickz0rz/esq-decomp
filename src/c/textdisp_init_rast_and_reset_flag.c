@@ -23,11 +23,11 @@ extern void *WDISP_DisplayContextBase;
 extern short WDISP_AccumulatorFlushPending;
 
 extern void *TLIBA3_BuildDisplayContextForViewMode(long a, long b, long c);
-extern void  WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
+extern void  ESQIFF_RestoreBasePaletteTriples(void);
 
 void TEXTDISP_InitRastAndResetFlag(void)
 {
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(4L, 0L, 3L);
-    WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
+    ESQIFF_RestoreBasePaletteTriples();
     WDISP_AccumulatorFlushPending = 0;
 }

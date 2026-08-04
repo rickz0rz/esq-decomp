@@ -33,9 +33,9 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the three cross-unit calls.
  */
-extern short GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(unsigned char *entry);
-extern unsigned char *GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(long i, long mode);
-extern long GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset(long code, unsigned char *entry,
+extern short TLIBA_FindFirstWildcardMatchIndex(unsigned char *entry);
+extern unsigned char *ESQDISP_GetEntryAuxPointerByMode(long i, long mode);
+extern long TEXTDISP_ComputeTimeOffset(long code, unsigned char *entry,
                                                        long slot);
 extern char  TEXTDISP_PrimaryGroupCode;
 extern unsigned short CLOCK_HalfHourSlotIndex;
@@ -58,8 +58,8 @@ long COI_ComputeEntryTimeDeltaMinutes(unsigned char *entry, short slot)
             break;
 
     if (i > 48 && entry[498] == TEXTDISP_PrimaryGroupCode) {
-        i = GROUP_AE_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(entry);
-        entry = GROUP_AE_JMPTBL_ESQDISP_GetEntryAuxPointerByMode((long)i, 2);
+        i = TLIBA_FindFirstWildcardMatchIndex(entry);
+        entry = ESQDISP_GetEntryAuxPointerByMode((long)i, 2);
         if (entry == 0) {
             i = 49;
         } else {
@@ -72,7 +72,7 @@ long COI_ComputeEntryTimeDeltaMinutes(unsigned char *entry, short slot)
     if (i > 48)
         result = 2880 - (long)(CLOCK_HalfHourSlotIndex * 30);
     else
-        result = GROUP_AE_JMPTBL_TEXTDISP_ComputeTimeOffset((long)entry[498], entry,
+        result = TEXTDISP_ComputeTimeOffset((long)entry[498], entry,
                                                             (long)i);
     return result;
 }

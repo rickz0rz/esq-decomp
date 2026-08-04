@@ -11,14 +11,14 @@
  */
 extern long  DISPTEXT_LineTableLockFlag;
 extern char *Global_REF_1000_BYTES_ALLOCATED_1;
-extern void  GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2(char *buf, char *fmt, void *args);
+extern void  FORMAT_FormatToBuffer2(char *buf, char *fmt, void *args);
 extern long  DISPTEXT_LayoutAndAppendToBuffer(void *src, char *buf);
 long DISPTEXT_BuildLayoutForSource(void *src, char *fmt)
 {
     long n = 0;
 
     if (DISPTEXT_LineTableLockFlag == 0) {
-        GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2(Global_REF_1000_BYTES_ALLOCATED_1, fmt, &fmt + 1);
+        FORMAT_FormatToBuffer2(Global_REF_1000_BYTES_ALLOCATED_1, fmt, &fmt + 1);
         n = DISPTEXT_LayoutAndAppendToBuffer(src, Global_REF_1000_BYTES_ALLOCATED_1);
     }
     return n;

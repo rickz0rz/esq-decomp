@@ -102,18 +102,18 @@ extern char ED2_STR_DVIEW_USED[];
 extern char ED2_STR_REPEATPROG[];
 extern char ED2_STR_PREVDAYSDATA[];
 
-extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size,
+extern void *MEMORY_AllocateMemory(char *who, long line, long size,
                                                  long flags);
-extern void  ESQIFF_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p,
+extern void  MEMORY_DeallocateMemory(char *who, long line, void *p,
                                                    long size);
-extern void  GROUP_AM_JMPTBL_WDISP_SPrintf();
-extern void  ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(void *rp,
+extern void  WDISP_SPrintf();
+extern void  TLIBA3_DrawCenteredWrappedTextLines(void *rp,
                                                                 char *text,
                                                                 long y);
-extern void  GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern void  STRING_AppendAtNull(char *dst, char *src);
 extern char *DISKIO2_CopyAndSanitizeSlotString(char *buf, char *entry,
                                                struct DkTitle *t, long slot);
-extern void  GROUP_AK_JMPTBL_TEXTDISP_FormatEntryTimeForIndex(char *buf,
+extern void  TEXTDISP_FormatEntryTimeForIndex(char *buf,
                                                               long idx,
                                                               struct DkTitle *t);
 
@@ -142,7 +142,7 @@ void ED2_DrawEntryDetailsPanel(void)
     if (ED2_SelectedEntryDataPtr == 0)
         return;
 
-    scratch = (char *)ESQIFF_JMPTBL_MEMORY_AllocateMemory(
+    scratch = (char *)MEMORY_AllocateMemory(
         Global_STR_ED2_C_1, 374, 1000, MEMF_PUBLIC | MEMF_CLEAR);
 
     SetRast(&WDISP_DisplayContextBase->rp2, 2L);
@@ -153,10 +153,10 @@ void ED2_DrawEntryDetailsPanel(void)
     ED2_SelectedEntryTitlePtr =
         TEXTDISP_PrimaryTitlePtrTable[ED2_SelectedEntryIndex];
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(panelText, Global_STR_PI_CLU_POS1,
+    WDISP_SPrintf(panelText, Global_STR_PI_CLU_POS1,
                                   (long)ED2_SelectedEntryIndex,
                                   (long)TEXTDISP_PrimaryGroupEntryCount);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         &WDISP_DisplayContextBase->rp2, panelText, 90L);
 
     data = ED2_SelectedEntryDataPtr;
@@ -174,9 +174,9 @@ void ED2_DrawEntryDetailsPanel(void)
     if (callPtr == 0)
         callPtr = ED2_STR_NullFallbackCallLetters;
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(panelText, Global_STR_CHAN_SOURCE_CALLLTRS_1,
+    WDISP_SPrintf(panelText, Global_STR_CHAN_SOURCE_CALLLTRS_1,
                                   namePtr, srcPtr, callPtr);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         &WDISP_DisplayContextBase->rp2, panelText, 120L);
 
     titleText = DISKIO2_CopyAndSanitizeSlotString(
@@ -184,7 +184,7 @@ void ED2_DrawEntryDetailsPanel(void)
         (long)ED2_SelectedFlagByteOffset);
 
     if (titleText != 0)
-        GROUP_AK_JMPTBL_TEXTDISP_FormatEntryTimeForIndex(
+        TEXTDISP_FormatEntryTimeForIndex(
             timeText, (long)ED2_SelectedFlagByteOffset,
             ED2_SelectedEntryTitlePtr);
     else
@@ -193,34 +193,34 @@ void ED2_DrawEntryDetailsPanel(void)
     if (titleText == 0)
         titleText = ED2_STR_NullFallbackTitle;
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(panelText, Global_STR_TS_TITLE_TIME,
+    WDISP_SPrintf(panelText, Global_STR_TS_TITLE_TIME,
                                   (long)ED2_SelectedFlagByteOffset, titleText,
                                   timeText);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         &WDISP_DisplayContextBase->rp2, panelText, 150L);
 
     panelText[0] = 0;
 
     if ((ED2_SelectedEntryTitlePtr->slotFlag[ED2_SelectedFlagByteOffset] & 1) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText,
+        STRING_AppendAtNull(panelText,
                                             ED2_STR_NONE_ProgramFlagSummary);
     if ((ED2_SelectedEntryTitlePtr->slotFlag[ED2_SelectedFlagByteOffset] & 2) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_MOVIE);
+        STRING_AppendAtNull(panelText, ED2_STR_MOVIE);
     if ((ED2_SelectedEntryTitlePtr->slotFlag[ED2_SelectedFlagByteOffset] & 4) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_ALTHILITEPROG);
+        STRING_AppendAtNull(panelText, ED2_STR_ALTHILITEPROG);
     if ((ED2_SelectedEntryTitlePtr->slotFlag[ED2_SelectedFlagByteOffset] & 8) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_TAGPROG);
+        STRING_AppendAtNull(panelText, ED2_STR_TAGPROG);
     if ((ED2_SelectedEntryTitlePtr->slotFlag[ED2_SelectedFlagByteOffset] & 16) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_SPORTSPROG);
+        STRING_AppendAtNull(panelText, ED2_STR_SPORTSPROG);
     if ((ED2_SelectedEntryTitlePtr->slotFlag[ED2_SelectedFlagByteOffset] & 32) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_DVIEW_USED);
+        STRING_AppendAtNull(panelText, ED2_STR_DVIEW_USED);
     if ((ED2_SelectedEntryTitlePtr->slotFlag[ED2_SelectedFlagByteOffset] & 64) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_REPEATPROG);
+        STRING_AppendAtNull(panelText, ED2_STR_REPEATPROG);
     if ((ED2_SelectedEntryTitlePtr->slotFlag[ED2_SelectedFlagByteOffset] & 128) != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(panelText, ED2_STR_PREVDAYSDATA);
+        STRING_AppendAtNull(panelText, ED2_STR_PREVDAYSDATA);
 
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         &WDISP_DisplayContextBase->rp2, panelText, 210L);
 
-    ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ED2_C_2, 427, scratch, 1000);
+    MEMORY_DeallocateMemory(Global_STR_ED2_C_2, 427, scratch, 1000);
 }

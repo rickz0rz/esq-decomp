@@ -319,9 +319,9 @@ _ED_StateRingTable:
 ; SYM: _INPUTDEVICE_LibraryBaseFromConsoleIo/_INPUTDEVICE_HandlerUserDataLong   (input-handler call context)
 ; TYPE: pointer/u32[2]
 ; PURPOSE:
-;   `_INPUTDEVICE_LibraryBaseFromConsoleIo` caches the console-device library base used by EXEC_CallVector_48.
+;   `_INPUTDEVICE_LibraryBaseFromConsoleIo` caches the console-device library base used by _EXEC_CallVector_48.
 ;   `_INPUTDEVICE_HandlerUserDataLong` is the handler user-data storage pointer wired into the 22-byte input-handler struct.
-; USED BY: _KYBD_InitializeInputDevices, EXEC_CallVector_48
+; USED BY: _KYBD_InitializeInputDevices, _EXEC_CallVector_48
 ; NOTES:
 ;   `_INPUTDEVICE_HandlerUserDataLong` address is written to handler struct offset +14 (`is_Data`-style field).
 ;------------------------------------------------------------------------------

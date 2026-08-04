@@ -61,12 +61,12 @@ extern char PARSEINI_TAG_TABLE[];
 extern char PARSEINI_TAG_DONE[];
 extern char PARSEINI_TAG_COLOR[];
 
-extern char *PARSEINI_JMPTBL_STR_FindCharPtr(char *s, long ch);
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
-extern char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(char *s, char *set);
-extern long  PARSEINI_JMPTBL_STRING_CompareNoCaseN(char *a, char *b, long n);
-extern void  PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable(struct RangeRow *t);
-extern long  SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern char *STR_FindCharPtr(char *s, long ch);
+extern char *STR_SkipClass3Chars(char *s);
+extern char *STR_FindAnyCharPtr(char *s, char *set);
+extern long  STRING_CompareNoCaseN(char *a, char *b, long n);
+extern void  GCOMMAND_ValidatePresetTable(struct RangeRow *t);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern long  PARSEINI_ParseHexValueFromString(char *s);
 
 void PARSEINI_ParseRangeKeyValue(char *line, struct RangeRow *table)
@@ -80,19 +80,19 @@ void PARSEINI_ParseRangeKeyValue(char *line, struct RangeRow *table)
     short hex;
 
     if (line)
-        value = PARSEINI_JMPTBL_STR_FindCharPtr(line, 61L);   /* '=' */
+        value = STR_FindCharPtr(line, 61L);   /* '=' */
     else
         value = 0;
 
     if (key && value) {
-        key = NEWGRID2_JMPTBL_STR_SkipClass3Chars(key);
-        end = PARSEINI_JMPTBL_STR_FindAnyCharPtr(key, PARSEINI_DelimSpaceTab_RangeKey);
+        key = STR_SkipClass3Chars(key);
+        end = STR_FindAnyCharPtr(key, PARSEINI_DelimSpaceTab_RangeKey);
         if (end)
             *end = 0;
 
         *value++ = 0;
-        value = NEWGRID2_JMPTBL_STR_SkipClass3Chars(value);
-        end = PARSEINI_JMPTBL_STR_FindAnyCharPtr(
+        value = STR_SkipClass3Chars(value);
+        end = STR_FindAnyCharPtr(
                   value, PARSEINI_DelimSpaceSemicolonTab_RangeValue);
         if (end)
             *end = 0;
@@ -101,18 +101,18 @@ void PARSEINI_ParseRangeKeyValue(char *line, struct RangeRow *table)
     if (!key || !value)
         return;
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCaseN(key, PARSEINI_TAG_TABLE, 5L) == 0
-        && PARSEINI_JMPTBL_STRING_CompareNoCaseN(value, PARSEINI_TAG_DONE, 4L) == 0) {
-        PARSEINI_JMPTBL_GCOMMAND_ValidatePresetTable(table);
+    if (STRING_CompareNoCaseN(key, PARSEINI_TAG_TABLE, 5L) == 0
+        && STRING_CompareNoCaseN(value, PARSEINI_TAG_DONE, 4L) == 0) {
+        GCOMMAND_ValidatePresetTable(table);
         PARSEINI_CurrentRangeTableIndex = -1;
         return;
     }
 
-    if (PARSEINI_JMPTBL_STRING_CompareNoCaseN(key, PARSEINI_TAG_COLOR, 5L) == 0) {
+    if (STRING_CompareNoCaseN(key, PARSEINI_TAG_COLOR, 5L) == 0) {
         p = key + 5;
         index = 0;
         if (p && *p)
-            index = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(p);
+            index = PARSE_ReadSignedLongSkipClass3_Alt(p);
 
         if (index < 0 || index >= 16) {
             PARSEINI_CurrentRangeTableIndex = -1;
@@ -125,7 +125,7 @@ void PARSEINI_ParseRangeKeyValue(char *line, struct RangeRow *table)
             || PARSEINI_CurrentRangeTableIndex >= 16)
             return;
 
-        slot = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(value);
+        slot = PARSE_ReadSignedLongSkipClass3_Alt(value);
         if (slot < 1 || slot > 63)
             slot = -1;
         else
@@ -140,7 +140,7 @@ void PARSEINI_ParseRangeKeyValue(char *line, struct RangeRow *table)
     if (table[0].count[PARSEINI_CurrentRangeTableIndex] <= 0)
         return;
 
-    slot = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(key);
+    slot = PARSE_ReadSignedLongSkipClass3_Alt(key);
     hex  = PARSEINI_ParseHexValueFromString(value);
 
     if (slot <= 0)

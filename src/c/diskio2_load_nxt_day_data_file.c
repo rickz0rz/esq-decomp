@@ -92,16 +92,16 @@ extern unsigned char CTASKS_PendingSecondaryOiDiskId;
 extern long  DISKIO_LoadFileToWorkBuffer(char *name);
 extern long  DISKIO_ParseLongFromWorkBuffer(void);
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
-extern void  GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults(struct DkEntry *e);
-extern void  GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(char *s,
+extern void  ESQSHARED_InitEntryDefaults(struct DkEntry *e);
+extern void  ESQSHARED_ApplyProgramTitleTextFilters(char *s,
                                                                    long arg);
 extern void  COI_EnsureAnimObjectAllocated(struct DkEntry *e);
 extern long  COI_LoadOiDataFile(unsigned char diskId);
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *newText,
+extern char *ESQPARS_ReplaceOwnedString(char *newText,
                                                         char *oldText);
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                      void *p, long size);
 
 long DISKIO2_LoadNxtDayDataFile(void)
@@ -143,22 +143,22 @@ long DISKIO2_LoadNxtDayDataFile(void)
     status = 0;
 
     for (n = 0; n < entryCount; n++) {
-        entry = (struct DkEntry *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+        entry = (struct DkEntry *)MEMORY_AllocateMemory(
             Global_STR_DISKIO2_C_17, 948, 52, MEMF_PUBLIC | MEMF_CLEAR);
         if (entry == 0) {
             status = -1;
             goto finish;
         }
-        title = (struct DkTitle *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+        title = (struct DkTitle *)MEMORY_AllocateMemory(
             Global_STR_DISKIO2_C_18, 954, 500, MEMF_PUBLIC | MEMF_CLEAR);
         if (title == 0) {
             status = -1;
-            GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_19, 958,
+            MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_19, 958,
                                                     entry, 52);
             goto finish;
         }
 
-        GROUP_AH_JMPTBL_ESQSHARED_InitEntryDefaults(entry);
+        ESQSHARED_InitEntryDefaults(entry);
         COI_EnsureAnimObjectAllocated(entry);
 
         dstCursor = (char *)entry;
@@ -202,9 +202,9 @@ long DISKIO2_LoadNxtDayDataFile(void)
                 break;
             }
 
-            GROUP_AH_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(
+            ESQSHARED_ApplyProgramTitleTextFilters(
                 str, (long)entry->filterArg);
-            title->slotText[s] = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            title->slotText[s] = ESQPARS_ReplaceOwnedString(
                 str, title->slotText[s]);
             if (title->slotText[s] != 0)
                 entry->flags40 = entry->flags40 | 0x80;
@@ -214,9 +214,9 @@ long DISKIO2_LoadNxtDayDataFile(void)
             sparseLimit = (short)DISKIO_ParseLongFromWorkBuffer();
 
         if (status == -1) {
-            GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_20,
+            MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_20,
                                                     1027, entry, 52);
-            GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_21,
+            MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_21,
                                                     1028, title, 500);
             goto finish;
         }
@@ -228,7 +228,7 @@ long DISKIO2_LoadNxtDayDataFile(void)
 finish:
     TEXTDISP_SecondaryGroupHeaderCode = groupCode;
     TEXTDISP_SecondaryGroupEntryCount = n;
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_22, 1041, work,
+    MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_22, 1041, work,
                                             fileLen + 1);
 
     if (COI_LoadOiDataFile(groupCode) != -1) {

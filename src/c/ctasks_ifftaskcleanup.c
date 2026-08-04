@@ -37,8 +37,8 @@
  */
 #include "esq-exec.h"
 
-extern void GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult(void *desc);
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
+extern void GCOMMAND_SaveBrushResult(void *desc);
+extern void MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
 extern short CTASKS_IffTaskState;
 extern short CTASKS_IffTaskDoneFlag;
 extern void *CTASKS_PendingLogoBrushDescriptor;
@@ -62,7 +62,7 @@ void __saveds CTASKS_IFFTaskCleanup(void)
     while (BRUSH_LoadInProgressFlag)
         ;
 
-    GROUP_AF_JMPTBL_GCOMMAND_SaveBrushResult(desc);
+    GCOMMAND_SaveBrushResult(desc);
 
     if (CTASKS_IffTaskState == 4)
         CTASKS_PendingLogoBrushDescriptor = 0;
@@ -74,6 +74,6 @@ void __saveds CTASKS_IFFTaskCleanup(void)
     Forbid();
     CTASKS_IffTaskDoneFlag = 1;
     CTASKS_IffTaskState = 0;
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CTASKS_C_1, 127,
+    MEMORY_DeallocateMemory(Global_STR_CTASKS_C_1, 127,
                                             Global_REF_LIST_IFF_TASK_PROC, 14);
 }

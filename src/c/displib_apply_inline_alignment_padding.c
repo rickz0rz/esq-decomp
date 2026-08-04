@@ -22,13 +22,13 @@ extern char DISPLIB_STR_InlineAlignPadCharRight[];
 extern char Global_STR_DISPLIB_C_1[];
 extern char Global_STR_DISPLIB_C_2[];
 
-extern long __asm GROUP_AG_JMPTBL_MATH_DivS32(register __d0 long a,
+extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
-extern char *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern char *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                      long size, char *ptr);
-extern void  GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern void  STRING_AppendAtNull(char *dst, char *src);
 
 void DISPLIB_ApplyInlineAlignmentPadding(char *buf, char mode)
 {
@@ -56,7 +56,7 @@ void DISPLIB_ApplyInlineAlignmentPadding(char *buf, char mode)
     if (pad == 0)
         return;
 
-    copy = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_DISPLIB_C_1, 194,
+    copy = MEMORY_AllocateMemory(Global_STR_DISPLIB_C_1, 194,
                                                  len + 1, MEMF_PUBLIC);
     if (copy == 0)
         return;
@@ -67,7 +67,7 @@ void DISPLIB_ApplyInlineAlignmentPadding(char *buf, char mode)
         *p++ = ' ';
     *p = 0;
 
-    GROUP_AI_JMPTBL_STRING_AppendAtNull(buf, copy);
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISPLIB_C_2, 204,
+    STRING_AppendAtNull(buf, copy);
+    MEMORY_DeallocateMemory(Global_STR_DISPLIB_C_2, 204,
                                             len + 1, copy);
 }

@@ -94,10 +94,10 @@ struct LocavailCtx {
     short w24;                          /* +24 */
 };
 
-extern long __asm NEWGRID_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *s, long ch);
-extern char GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void);
+extern char *STR_FindCharPtr(char *s, long ch);
+extern char SCRIPT_ReadHandshakeBit5Mask(void);
 extern void LOCAVAIL_ResetFilterCursorState(struct LocavailState *st);
 
 extern long  LOCAVAIL_FilterModeFlag;
@@ -157,10 +157,10 @@ void LOCAVAIL_UpdateFilterStateMachine(struct LocavailCtx *ctx,
         switch ((short)cls) {
 
         case 1:
-            if (GROUP_AS_JMPTBL_STR_FindCharPtr(
+            if (STR_FindCharPtr(
                     LOCAVAIL_STR_YYLLZ_FilterStateUpdate,
                     (long)ED_DiagVinModeChar) != 0
-                && GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask() != 0) {
+                && SCRIPT_ReadHandshakeBit5Mask() != 0) {
                 ctx->mode = 10;
                 return;
             }

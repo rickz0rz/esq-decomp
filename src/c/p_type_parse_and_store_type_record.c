@@ -40,8 +40,8 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
-extern void  SCRIPT3_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
-extern long  SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern void  STRING_CopyPadNul(char *dst, char *src, long n);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern void  P_TYPE_FreeEntry(void *entry);
 extern void *P_TYPE_AllocateEntry(long code, long value, char *text);
 
@@ -57,14 +57,14 @@ long P_TYPE_ParseAndStoreTypeRecord(char *text)
     long group;
     long stored = 0;
 
-    SCRIPT3_JMPTBL_STRING_CopyPadNul(buf, text, 3L);
+    STRING_CopyPadNul(buf, text, 3L);
     buf[3] = 0;
-    code = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(buf) & 255;
+    code = PARSE_ReadSignedLongSkipClass3_Alt(buf) & 255;
     text += 3;
 
-    SCRIPT3_JMPTBL_STRING_CopyPadNul(buf, text, 2L);
+    STRING_CopyPadNul(buf, text, 2L);
     buf[2] = 0;
-    value = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(buf);
+    value = PARSE_ReadSignedLongSkipClass3_Alt(buf);
     text += 2;
 
     if (TEXTDISP_PrimaryGroupCode == (char)code)

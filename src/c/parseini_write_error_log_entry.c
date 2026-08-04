@@ -21,9 +21,9 @@
  *   summary: 4EBA against 6100 for the four cross-unit calls.
  */
 
-extern long SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(char *path, long mode);
-extern void SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(long fh, char *p, long len);
-extern void SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(long fh);
+extern long DISKIO_OpenFileWithBuffer(char *path, long mode);
+extern void DISKIO_WriteBufferedBytes(long fh, char *p, long len);
+extern void DISKIO_CloseBufferedFileAndFlush(long fh);
 
 extern char *NEWGRID2_ErrorLogEntryPtr;
 extern short FLIB_LogEntryByteCount;
@@ -37,13 +37,13 @@ long PARSEINI_WriteErrorLogEntry(void)
     if (NEWGRID2_ErrorLogEntryPtr == 0)
         return -1;
 
-    fh = SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(Global_STR_DF0_ERR_LOG, 1006L);
+    fh = DISKIO_OpenFileWithBuffer(Global_STR_DF0_ERR_LOG, 1006L);
     if (fh == 0)
         return -1;
 
-    SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(fh, NEWGRID2_ErrorLogEntryPtr,
+    DISKIO_WriteBufferedBytes(fh, NEWGRID2_ErrorLogEntryPtr,
                                             (long)FLIB_LogEntryByteCount);
-    SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(fh, CLOCK_FileEofMarkerCtrlZ, 1L);
-    SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(fh);
+    DISKIO_WriteBufferedBytes(fh, CLOCK_FileEofMarkerCtrlZ, 1L);
+    DISKIO_CloseBufferedFileAndFlush(fh);
     return 0;
 }

@@ -60,7 +60,7 @@
 #include "esq-exec.h"
 #include "esq-dos.h"
 
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size, long flags);
+extern void *MEMORY_AllocateMemory(char *who, long line, long size, long flags);
 extern void  CTASKS_CloseTaskTeardown(void);
 extern short CTASKS_CloseTaskCompletionFlag;
 extern long  CTASKS_CloseTaskFileHandle;
@@ -87,7 +87,7 @@ void CTASKS_StartCloseTaskProcess(long fileHandle)
     CTASKS_CloseTaskFileHandle = fileHandle;
 
     Global_REF_LIST_CLOSE_TASK_PROC =
-        GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_CTASKS_C_4, 203, 14,
+        MEMORY_AllocateMemory(Global_STR_CTASKS_C_4, 203, 14,
                                               MEMF_PUBLIC | MEMF_CLEAR);
 
     *(long *)Global_REF_LIST_CLOSE_TASK_PROC = 14;

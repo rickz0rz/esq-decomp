@@ -32,7 +32,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the five cross-unit calls.
  */
-extern short TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(long mode, long code);
+extern short ESQDISP_ComputeScheduleOffsetForRow(long mode, long code);
 extern void  TLIBA2_ComputeBroadcastTimeWindow(long row, void *entry, long mode,
                                                long off, long *ymd, long *hm);
 extern short CLOCK_CurrentYearValue;
@@ -50,7 +50,7 @@ long TEXTDISP_ComputeTimeOffset(short row, unsigned char *entry, short mode)
     register long minutes;
     long off;
 
-    off = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((long)mode,
+    off = ESQDISP_ComputeScheduleOffsetForRow((long)mode,
                                                             (long)entry[498]);
     TLIBA2_ComputeBroadcastTimeWindow((long)row, entry, (long)mode, off, ymd, hm);
 

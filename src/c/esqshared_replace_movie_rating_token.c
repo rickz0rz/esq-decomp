@@ -45,7 +45,7 @@
 #include "esq-exec.h"
 #include <string.h>
 
-extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(char *hay, char *needle);
+extern char *ESQ_FindSubstringCaseFold(char *hay, char *needle);
 extern char *Global_TBL_MOVIE_RATINGS[];
 extern char ESQPARS2_MovieRatingTokenGlyphMap[];
 
@@ -59,7 +59,7 @@ void ESQSHARED_ReplaceMovieRatingToken(char *s)
 
     replaced = 0;
     for (i = 0; i < 7 && !replaced; i++) {
-        hit = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(s, Global_TBL_MOVIE_RATINGS[i]);
+        hit = ESQ_FindSubstringCaseFold(s, Global_TBL_MOVIE_RATINGS[i]);
         if (hit) {
             *hit++ = ESQPARS2_MovieRatingTokenGlyphMap[i];
             tail = (long)strlen(Global_TBL_MOVIE_RATINGS[i]) - 1;

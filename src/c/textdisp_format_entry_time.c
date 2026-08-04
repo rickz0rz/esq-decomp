@@ -39,8 +39,8 @@
  */
 #include <string.h>
 
-extern long TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow(long row, long code);
-extern void TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(long offset, char *out);
+extern long ESQDISP_ComputeScheduleOffsetForRow(long row, long code);
+extern void CLEANUP_FormatClockFormatEntry(long offset, char *out);
 extern short TEXTDISP_ActiveGroupId;
 extern short TEXTDISP_CurrentMatchIndex;
 extern char *TEXTDISP_PrimaryTitlePtrTable[];
@@ -66,7 +66,7 @@ void TEXTDISP_FormatEntryTime(char *out, short row)
         code  = TEXTDISP_SecondaryTitlePtrTable[TEXTDISP_CurrentMatchIndex][498];
     }
 
-    offset = TLIBA1_JMPTBL_ESQDISP_ComputeScheduleOffsetForRow((long)row, (long)code);
+    offset = ESQDISP_ComputeScheduleOffsetForRow((long)row, (long)code);
 
     if (title == 0 || *title == 0) {
         *out = 0;
@@ -89,5 +89,5 @@ void TEXTDISP_FormatEntryTime(char *out, short row)
     }
 
     offset = offset + CLOCK_FormatVariantCode / 30;
-    TLIBA1_JMPTBL_CLEANUP_FormatClockFormatEntry(offset, out);
+    CLEANUP_FormatClockFormatEntry(offset, out);
 }

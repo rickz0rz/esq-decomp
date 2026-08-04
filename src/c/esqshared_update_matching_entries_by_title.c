@@ -110,20 +110,20 @@
  */
 #include <string.h>
 
-extern char  ESQSHARED_JMPTBL_ESQ_WildcardMatch(char *title, char *pattern);
-extern short ESQSHARED_JMPTBL_ESQ_TestBit1Based(char *bits, long slot);
-extern void  ESQSHARED_JMPTBL_ESQ_SetBit1Based(char *bits, long slot);
+extern char  ESQ_WildcardMatch(char *title, char *pattern);
+extern short ESQ_TestBit1Based(char *bits, long slot);
+extern void  ESQ_SetBit1Based(char *bits, long slot);
 extern void  ESQSHARED_ApplyProgramTitleTextFilters(char *text, long b27);
-extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                  long size, long flags);
-extern void  ESQIFF_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                    void *p, long size);
-extern void  GROUP_AW_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, long v);
-extern void  GROUP_AR_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern void  WDISP_SPrintf(char *dst, char *fmt, long v);
+extern void  STRING_AppendAtNull(char *dst, char *src);
 extern char *ESQPARS_ReplaceOwnedString(char *newStr, char *old);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *s, long ch);
-extern short ESQSHARED_JMPTBL_DST_BuildBannerTimeWord(long slot, long b498);
-extern void  ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString(char *s, long w);
+extern char *STR_FindCharPtr(char *s, long ch);
+extern short DST_BuildBannerTimeWord(long slot, long b498);
+extern void  ESQ_AdjustBracketedHourInString(char *s, long w);
 
 struct EsqEntry {
     char          pad0[27];
@@ -220,16 +220,16 @@ long ESQSHARED_UpdateMatchingEntriesByTitle(char *pattern, char groupCode,
             title = TEXTDISP_PrimaryTitlePtrTable[i];
         }
 
-        if (ESQSHARED_JMPTBL_ESQ_WildcardMatch(title->pad0, pattern) != 0)
+        if (ESQ_WildcardMatch(title->pad0, pattern) != 0)
             continue;
 
-        bit = ESQSHARED_JMPTBL_ESQ_TestBit1Based(entry->bits, (long)slot);
+        bit = ESQ_TestBit1Based(entry->bits, (long)slot);
 
         if (force == 0 && bit != 0)
             continue;
 
         if (force != 0)
-            ESQSHARED_JMPTBL_ESQ_SetBit1Based(entry->bits, (long)slot);
+            ESQ_SetBit1Based(entry->bits, (long)slot);
 
         title->flags[slot] = value;
 
@@ -252,7 +252,7 @@ long ESQSHARED_UpdateMatchingEntriesByTitle(char *pattern, char groupCode,
             minutes = hours = 0;
             buf = mem = 0;
 
-            mem = buf = ESQIFF_JMPTBL_MEMORY_AllocateMemory(
+            mem = buf = MEMORY_AllocateMemory(
                             Global_STR_ESQPARS2_C_1, 720L, 50L,
                             MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -262,31 +262,31 @@ long ESQSHARED_UpdateMatchingEntriesByTitle(char *pattern, char groupCode,
             minutes = ((long)end[-3] - 48) * 10 + (long)end[-2] - 48;
 
             if (hours > 0) {
-                GROUP_AW_JMPTBL_WDISP_SPrintf(
+                WDISP_SPrintf(
                     b1, ESQPARS2_DurationFmt_DecimalWithSpace, minutes);
-                GROUP_AW_JMPTBL_WDISP_SPrintf(
+                WDISP_SPrintf(
                     b2, ESQPARS2_DurationFmt_OpenParenHours, hours);
-                GROUP_AR_JMPTBL_STRING_AppendAtNull(buf, b2);
+                STRING_AppendAtNull(buf, b2);
 
                 if (hours == 1)
-                    GROUP_AR_JMPTBL_STRING_AppendAtNull(
+                    STRING_AppendAtNull(
                         buf, SCRIPT_StrHourSingularSuffix);
                 else
-                    GROUP_AR_JMPTBL_STRING_AppendAtNull(
+                    STRING_AppendAtNull(
                         buf, SCRIPT_StrHoursPluralSuffix);
             } else {
-                GROUP_AW_JMPTBL_WDISP_SPrintf(
+                WDISP_SPrintf(
                     b1, ESQPARS2_DurationFmt_OpenParenMinutes, minutes);
             }
 
             if (minutes > 0) {
-                GROUP_AR_JMPTBL_STRING_AppendAtNull(buf, b1);
-                GROUP_AR_JMPTBL_STRING_AppendAtNull(buf,
+                STRING_AppendAtNull(buf, b1);
+                STRING_AppendAtNull(buf,
                                                     SCRIPT_StrMinutesSuffix);
             } else {
                 d = strlen(buf);
                 buf[d - 1] = 0;
-                GROUP_AR_JMPTBL_STRING_AppendAtNull(
+                STRING_AppendAtNull(
                     buf, ESQPARS2_DurationFmt_CloseParen);
             }
 
@@ -298,7 +298,7 @@ long ESQSHARED_UpdateMatchingEntriesByTitle(char *pattern, char groupCode,
             }
 
             if (mem != 0)
-                ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQPARS2_C_2,
+                MEMORY_DeallocateMemory(Global_STR_ESQPARS2_C_2,
                                                       765L, mem, 50L);
         }
 
@@ -307,7 +307,7 @@ long ESQSHARED_UpdateMatchingEntriesByTitle(char *pattern, char groupCode,
 
         if ((unsigned char)CLOCK_FormatVariantCode > 0) {
 
-            p = GROUP_AS_JMPTBL_STR_FindCharPtr(title->slots[slot], 91L);
+            p = STR_FindCharPtr(title->slots[slot], 91L);
 
             if (p != 0) {
 
@@ -350,9 +350,9 @@ long ESQSHARED_UpdateMatchingEntriesByTitle(char *pattern, char groupCode,
             }
         }
 
-        ESQSHARED_JMPTBL_ESQ_AdjustBracketedHourInString(
+        ESQ_AdjustBracketedHourInString(
             title->slots[slot],
-            (long)ESQSHARED_JMPTBL_DST_BuildBannerTimeWord(
+            (long)DST_BuildBannerTimeWord(
                       (long)slot, (long)title->b498));
 
         if (title->flags[slot] & 0x10)

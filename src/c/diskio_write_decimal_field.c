@@ -43,7 +43,7 @@
 #include "esq-dos.h"
 #include <string.h>
 
-extern void GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, long a);
+extern void WDISP_SPrintf(char *dst, char *fmt, long a);
 extern long DISKIO_WriteBufferedBytes(BPTR fh, char *src, long len);
 extern char Global_STR_PERCENT_LD[];
 
@@ -51,6 +51,6 @@ void DISKIO_WriteDecimalField(BPTR fh, long value)
 {
     char buf[10];
 
-    GROUP_AE_JMPTBL_WDISP_SPrintf(buf, Global_STR_PERCENT_LD, value);
+    WDISP_SPrintf(buf, Global_STR_PERCENT_LD, value);
     DISKIO_WriteBufferedBytes(fh, buf, (long)strlen(buf) + 1);
 }

@@ -30,7 +30,7 @@
 #include <exec/memory.h>
 
 extern void *MEMORY_AllocateMemory(char *who, long line, long size, long flags);
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newstr, char *old);
+extern char *ESQPARS_ReplaceOwnedString(char *newstr, char *old);
 extern long  STRING_CompareNoCase(char *a, char *b);
 extern long  TEXTDISP_SourceConfigEntryCount;
 extern unsigned char *TEXTDISP_SourceConfigEntryTable[];
@@ -53,7 +53,7 @@ void TEXTDISP_AddSourceConfigEntry(char *name, char *tag)
 
     TEXTDISP_SourceConfigEntryCount++;
 
-    *(char **)e = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(name, *(char **)e);
+    *(char **)e = ESQPARS_ReplaceOwnedString(name, *(char **)e);
 
     if (STRING_CompareNoCase(tag, TEXTDISP_PtrPrevueSportsTag) == 0)
         e[4] = 8;

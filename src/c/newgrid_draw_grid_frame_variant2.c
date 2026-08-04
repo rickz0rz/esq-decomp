@@ -44,13 +44,13 @@ struct GridCtx {
 
 extern long NEWGRID_SetRowColor(struct GridCtx *ctx, long a, long pen);
 extern long NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
-extern long NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(void);
-extern long NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(void);
-extern void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(struct RastPort *rp,
+extern long DISPTEXT_HasMultipleLines(void);
+extern long DISPTEXT_IsLastLineSelected(void);
+extern void DISPTEXT_RenderCurrentLine(struct RastPort *rp,
                                                        long x, long y);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(struct RastPort *rp,
+extern void BEVEL_DrawVerticalBevel(struct RastPort *rp,
                             long x0, long y0, long x1, long y1);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(struct RastPort *rp,
+extern void BEVEL_DrawHorizontalBevel(struct RastPort *rp,
                             long x0, long y0, long x1, long y1);
 
 extern unsigned short NEWGRID_RowHeightPx;
@@ -71,13 +71,13 @@ long NEWGRID_DrawGridFrameVariant2(struct GridCtx *ctx)
     top = 0;
     while (row < 2 && NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0) {
         y = top;
-        if (NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines() != 0) {
-            NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevel(rp, 0L, 0L, 695L,
+        if (DISPTEXT_HasMultipleLines() != 0) {
+            BEVEL_DrawVerticalBevel(rp, 0L, 0L, 695L,
                                         (long)NEWGRID_RowHeightPx - 1);
             baseline = ctx->rp.Font->tf_Baseline;
             y += ((long)NEWGRID_RowHeightPx / 2 - baseline - 4) / 2
                  + baseline + 3;
-        } else if (NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected() != 0) {
+        } else if (DISPTEXT_IsLastLineSelected() != 0) {
             baseline = ctx->rp.Font->tf_Baseline;
             y += ((long)NEWGRID_RowHeightPx / 2 - baseline - 4) / 2
                  + baseline - 1;
@@ -87,13 +87,13 @@ long NEWGRID_DrawGridFrameVariant2(struct GridCtx *ctx)
                  + baseline - 1;
         }
 
-        NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(rp, x, y);
+        DISPTEXT_RenderCurrentLine(rp, x, y);
         row++;
         top += (long)NEWGRID_RowHeightPx / 2 + DISPTEXT_ControlMarkerXOffsetPx;
     }
 
     if (NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() != 0)
-        NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(rp, 0L, 0L, 695L, top - 1);
+        BEVEL_DrawHorizontalBevel(rp, 0L, 0L, 695L, top - 1);
 
     ctx->headerHalf = (short)(top / 2);
     return NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast();

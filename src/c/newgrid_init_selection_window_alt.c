@@ -64,7 +64,7 @@ struct NewGridSelWindow {
     short end;                  /* +24 */
 };
 
-extern short NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(long *clock);
+extern short ESQ_GetHalfHourSlotIndex(long *clock);
 
 extern long CLOCK_DaySlotIndex[];
 extern char CONFIG_NewgridWindowSpanHalfHoursPrimary;
@@ -86,7 +86,7 @@ void NEWGRID_InitSelectionWindowAlt(struct NewGridSelWindow *w, short slot,
 
     if (slot < 48) {
         if (slot == 1
-            || NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(CLOCK_DaySlotIndex) == 1)
+            || ESQ_GetHalfHourSlotIndex(CLOCK_DaySlotIndex) == 1)
             w->start += 48;
     }
 

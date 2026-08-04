@@ -53,7 +53,7 @@
  */
 #include "esq-graphics.h"
 
-extern unsigned char GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(long v);
+extern unsigned char LADFUNC_GetPackedPenHighNibble(long v);
 extern void ED_DrawCursorChar(void);
 
 extern long ED_EditCursorOffset;
@@ -69,7 +69,7 @@ void ED_RedrawAllRows(void)
     saved = ED_EditCursorOffset;
 
     SetAPen(Global_REF_RASTPORT_1,
-            (long)GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble((long)ED_EditBufferLive));
+            (long)LADFUNC_GetPackedPenHighNibble((long)ED_EditBufferLive));
 
     RectFill(Global_REF_RASTPORT_1, 40L, 68L, 640L, ED_TextLimit * 30 + 68);
 

@@ -97,7 +97,7 @@ struct DiskioCoi {
     char *exceptionBlock;               /* +38 */
 };
 
-extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(char *fmt, ...);
+extern void FORMAT_RawDoFmtWithScratchBuffer(char *fmt, ...);
 extern long ESQ_TestBit1Based(unsigned char *base, long bit);
 
 extern char **Global_REF_STR_CLOCK_FORMAT;
@@ -147,60 +147,60 @@ void DISKIO1_DumpProgramSourceRecordFull(struct DiskioFullRec *rec, long num)
     long sum, i;
     unsigned char slot;
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_CHANNEL_LINE_UP_PCT_LD, num);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_ETID_PCT_LD_PCT_02LX, (long)rec->etid, (long)rec->etid);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_CHAN_NUM_PCT_S, rec->chanNum);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_SOURCE_PCT_S, rec->source);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_CALL_LET_PCT_S, rec->callLetters);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_ATTR_PCT_02LX, (long)rec->flags);
 
     /* Bit 0 is a whole-byte comparison, not a bit test. */
     if (rec->flags == 1)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_NONE_CompactSourceAttrFlags);
 
     if (rec->flags & 2)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_HILITE_SRC_CompactSourceAttrFlags);
 
     if (rec->flags & 4)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_SUM_SRC_CompactSourceAttrFlags);
 
     if (rec->flags & 8)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_VIDEO_TAG_DISABLE_CompactSourceAttrFlags);
 
     if (rec->flags & 0x10)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_PPV_SRC_CompactSourceAttrFlags);
 
     if (rec->flags & 0x20)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_DITTO_CompactSourceAttrFlags);
 
     if (rec->flags & 0x40)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_ALTHILITESRC_CompactSourceAttrFlags);
 
     if (rec->flags & 0x80)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_0X80);
+        FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_0X80);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_STR_AttrFlagsCloseParenNewline_A);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_TSLT_MASK_PCT_02LX_PCT_02LX_PCT_02LX, (long)rec->tslt[0],
         (long)rec->tslt[1], (long)rec->tslt[2], (long)rec->tslt[3],
         (long)rec->tslt[4], (long)rec->tslt[5]);
@@ -210,26 +210,26 @@ void DISKIO1_DumpProgramSourceRecordFull(struct DiskioFullRec *rec, long num)
         sum += (long)rec->tslt[i];
 
     if (sum == 0x5fa) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_NONE_TimeSlotMaskAllSet);
     } else if (sum == 0) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(Global_STR_OFF_AIR_2);
+        FORMAT_RawDoFmtWithScratchBuffer(Global_STR_OFF_AIR_2);
     } else {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_TimeSlotListOpenParen);
 
         /* Prints the slot when the bit is CLEAR. */
         for (slot = 1; slot < 49; slot++)
             if (ESQ_TestBit1Based(rec->tslt, (long)slot) != -1)
-                GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+                FORMAT_RawDoFmtWithScratchBuffer(
                     DISKIO_FMT_PCT_S_TimeSlotMaskEntry,
                     Global_REF_STR_CLOCK_FORMAT[slot]);
 
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_TimeSlotListCloseParenNewline);
     }
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_BLKOUT_MASK_PCT_02LX_PCT_02LX_PCT_02, (long)rec->blk[0],
         (long)rec->blk[1], (long)rec->blk[2], (long)rec->blk[3],
         (long)rec->blk[4], (long)rec->blk[5]);
@@ -239,31 +239,31 @@ void DISKIO1_DumpProgramSourceRecordFull(struct DiskioFullRec *rec, long num)
         sum += (long)rec->blk[i];
 
     if (sum == 0) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_NONE_BlackoutMaskEmpty);
     } else if (sum == 0x5fa) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_BLACKED_OUT);
+        FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_BLACKED_OUT);
     } else {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_BlackoutListOpenParen);
 
         /* Prints the slot when the bit is SET -- the opposite of the loop above. */
         for (slot = 1; slot < 49; slot++)
             if (ESQ_TestBit1Based(rec->blk, (long)slot) == -1)
-                GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+                FORMAT_RawDoFmtWithScratchBuffer(
                     DISKIO_FMT_PCT_S_BlackoutMaskEntry,
                     Global_REF_STR_CLOCK_FORMAT[slot]);
 
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_BlackoutListCloseParenNewline);
     }
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_DefaultCoiDump,
         (long)rec->flag1, (long)rec->flag2, (long)rec->b41, (long)rec->b42,
         rec->bg);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_COI_DASH_PTR_PCT_08LX, rec->coi);
 
     if (rec->coi == 0)
@@ -271,29 +271,29 @@ void DISKIO1_DumpProgramSourceRecordFull(struct DiskioFullRec *rec, long num)
 
     coi = rec->coi;
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_STR_DEF_COI_INFORMATION_FOLLOWS_COLON);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_DEF_DEFAULT, coi);
+    FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_DEF_DEFAULT, coi);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_DEF_CITY_PCT_08LX_STAR_DEF_CITY, coi->city, coi->city);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_DEF_ORDER_PCT_08LX_STAR_DEF_ORDER, coi->order, coi->order);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_DEF_PRICE_PCT_08LX_STAR_DEF_PRICE, coi->price, coi->price);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_DEF_TELE_PCT_08LX_STAR_DEF_TELE, coi->tele, coi->tele);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_DEF_EVENT_PCT_08LX_STAR_DEF_EVENT, coi->event, coi->event);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_EXCEPTION_COUNT_IS_PCT_LD, (long)coi->exceptionCount);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_EXCEPTION_BLOCK_PCT_08LX, coi->exceptionBlock);
 }

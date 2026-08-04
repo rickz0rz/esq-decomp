@@ -70,7 +70,7 @@ struct NewGridClockData {
 };
 #endif
 
-extern unsigned short NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(
+extern unsigned short ESQ_GetHalfHourSlotIndex(
     struct NewGridClockData *c);
 
 long NEWGRID_ComputeDaySlotFromClock(struct NewGridClockData *src)
@@ -80,7 +80,7 @@ long NEWGRID_ComputeDaySlotFromClock(struct NewGridClockData *src)
     short m;
 
     tmp  = *src;
-    slot = (long)NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&tmp);
+    slot = (long)ESQ_GetHalfHourSlotIndex(&tmp);
 
     m = tmp.minutes;
     if (m >= 50 || (m >= 20 && m <= 29)) {

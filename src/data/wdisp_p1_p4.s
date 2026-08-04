@@ -277,7 +277,7 @@ _ESQFUNC_CListLinePointer:
 ; SYM: _WDISP_WeatherStatusLabelBuffer   (weather/status label buffer)
 ; TYPE: char[13]
 ; PURPOSE: Stores a short label used for wildcard match tests and serialized status text.
-; USED BY: UNKNOWN_ParseRecordAndUpdateDisplay, ESQPROTO_ParseDigitLabelAndDisplay, DISKIO2_*
+; USED BY: UNKNOWN_ParseRecordAndUpdateDisplay, _ESQPROTO_ParseDigitLabelAndDisplay, DISKIO2_*
 ; NOTES: Backed by `DS.L 2` + `DS.W 1` + `DS.B 1`; copied as a NUL-terminated byte string.
 ;------------------------------------------------------------------------------
 _WDISP_WeatherStatusLabelBuffer:
@@ -288,7 +288,7 @@ _WDISP_WeatherStatusLabelBuffer:
 ; SYM: _WDISP_StatusListMatchPattern   (status list wildcard pattern buffer)
 ; TYPE: char[11]
 ; PURPOSE: Stores a short wildcard/match pattern for status-list record parsing.
-; USED BY: UNKNOWN_ParseListAndUpdateEntries, ESQPROTO_CopyLabelToGlobal
+; USED BY: UNKNOWN_ParseListAndUpdateEntries, _ESQPROTO_CopyLabelToGlobal
 ; NOTES: Backed by `DS.B 1` + `DS.L 2` + `DS.W 1`; written as a NUL-terminated byte string.
 ;------------------------------------------------------------------------------
 _WDISP_StatusListMatchPattern:
@@ -765,7 +765,7 @@ _CTRL_BufferedByteCount:
 ; SYM: _ESQIFF_ParseAttemptCount   (record parse attempt counter)
 ; TYPE: u16
 ; PURPOSE: Counts checksum/parse attempts on incoming ESQIFF records.
-; USED BY: ESQPROTO_VerifyChecksumAndParseRecord, ESQPROTO_VerifyChecksumAndParseList
+; USED BY: _ESQPROTO_VerifyChecksumAndParseRecord, _ESQPROTO_VerifyChecksumAndParseList
 ; NOTES: Incremented before checksum verification.
 ;------------------------------------------------------------------------------
 _ESQIFF_ParseAttemptCount:
@@ -896,7 +896,7 @@ _WDISP_WeatherStatusColorCode:
 ; SYM: _WDISP_WeatherStatusBrushIndex/_WDISP_WeatherStatusDigitChar   (weather status style fields)
 ; TYPE: u8/u16
 ; PURPOSE: Brush/style selector plus leading digit character used by weather-status banner rendering.
-; USED BY: ESQPROTO_ParseDigitLabelAndDisplay, WDISP weather drawing routines, ED2 setup paths
+; USED BY: _ESQPROTO_ParseDigitLabelAndDisplay, WDISP weather drawing routines, ED2 setup paths
 ; NOTES: Digit char is clamped to ASCII `'0'..'9'`; `'0'` is treated as a suppress/idle value in some paths.
 ;------------------------------------------------------------------------------
 _WDISP_WeatherStatusBrushIndex:

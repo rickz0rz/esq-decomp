@@ -67,7 +67,7 @@ struct NewGridStateCtx {
 };
 #endif
 
-extern long NEWGRID2_JMPTBL_ESQ_TestBit1Based(char *bits, long slot);
+extern long ESQ_TestBit1Based(char *bits, long slot);
 
 long NEWGRID_GetEntryStateCode(struct NewGridStateEntry *e,
                                struct NewGridStateCtx *ctx, short slot)
@@ -75,7 +75,7 @@ long NEWGRID_GetEntryStateCode(struct NewGridStateEntry *e,
     long r = 0;
 
     if (e != 0 && ctx != 0 && slot > 0 && slot < 49) {
-        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(e->bits, (long)slot) == -1)
+        if (ESQ_TestBit1Based(e->bits, (long)slot) == -1)
             r = 0;
         else if (ctx->slots[slot] == 0)
             r = 1;

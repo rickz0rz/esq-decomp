@@ -43,9 +43,9 @@
 #include <exec/memory.h>
 #include "esq-dos.h"
 
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                      void *p, long size);
 extern char  Global_STR_DISKIO_C_7[];
 extern char  Global_STR_DISKIO_C_8[];
@@ -60,14 +60,14 @@ long DISKIO_QueryVolumeSoftErrorCount(char *name)
     if (lock == 0)
         return errors;
 
-    info = (struct InfoData *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+    info = (struct InfoData *)MEMORY_AllocateMemory(
         Global_STR_DISKIO_C_7, 593L, 36L, MEMF_CLEAR);
 
     if (info != 0) {
         if (Info(lock, info))
             errors = info->id_NumSoftErrors;
 
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO_C_8, 599L,
+        MEMORY_DeallocateMemory(Global_STR_DISKIO_C_8, 599L,
                                                 info, 36L);
     }
 

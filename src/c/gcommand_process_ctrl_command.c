@@ -53,7 +53,7 @@
  *   summary: 4EBA against 6100 for the one cross-unit call.
  */
 
-extern long GROUP_AV_JMPTBL_EXEC_CallVector_48(void *cmd, char *slot, long n, long z);
+extern long EXEC_CallVector_48(void *cmd, char *slot, long n, long z);
 
 extern long ED_StateRingWriteIndex;
 extern char ED_StateRingTable[][5];
@@ -70,7 +70,7 @@ long __saveds GCOMMAND_ProcessCtrlCommand(struct CtrlCommand *cmd)
     char type;
 
     if (cmd->type == 1) {
-        written = GROUP_AV_JMPTBL_EXEC_CallVector_48(
+        written = EXEC_CallVector_48(
                       cmd, ED_StateRingTable[ED_StateRingWriteIndex], 5L, 0L);
         if (written > 0 && written != -1) {
             ED_StateRingWriteIndex++;

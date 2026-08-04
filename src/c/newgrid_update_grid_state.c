@@ -30,13 +30,13 @@ extern long NEWGRID_OverridePenIndex;
 
 extern short NEWGRID_UpdatePresetEntry(char **entry, struct GridAux **aux,
                                        long sel, long ctx);
-extern long  NEWGRID2_JMPTBL_ESQ_TestBit1Based(char *bits, long slot);
-extern long  NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry,
+extern long  ESQ_TestBit1Based(char *bits, long slot);
+extern long  DISPLIB_FindPreviousValidEntryIndex(char *entry,
                  struct GridAux *aux, long index);
 extern long  NEWGRID_SelectEntryPen(char *entry);
 extern void  NEWGRID_DrawEntryFlagBadge(struct RastPort *rp, char *entry,
                  long index, long slotPtr, long pen);
-extern long  NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(long mode);
+extern long  DISPTEXT_ComputeVisibleLineCount(long mode);
 extern long  NEWGRID_DrawGridFrameAndRows(struct GridPanel *panel, long selected);
 
 void NEWGRID_UpdateGridState(struct GridPanel *panel, long ctx, short sel)
@@ -55,8 +55,8 @@ void NEWGRID_UpdateGridState(struct GridPanel *panel, long ctx, short sel)
     } else if (NEWGRID_GridStateFrameLatch == 4) {
         index = NEWGRID_UpdatePresetEntry(&entry, &aux, (long)sel, ctx);
         if (entry != 0 && aux != 0
-            && NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry + 28, index) == -1) {
-            index = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry,
+            && ESQ_TestBit1Based(entry + 28, index) == -1) {
+            index = DISPLIB_FindPreviousValidEntryIndex(entry,
                         aux, index);
             NEWGRID_SelectedGridEntryPtr = NEWGRID_SelectEntryPen(entry);
             if (aux->selectorFlags[index] & 4)
@@ -65,7 +65,7 @@ void NEWGRID_UpdateGridState(struct GridPanel *panel, long ctx, short sel)
                 *(long *)((char *)aux + index * 4 + 56),
                 NEWGRID_OverridePenIndex);
             panel->visibleLines =
-                NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(0);
+                DISPTEXT_ComputeVisibleLineCount(0);
         }
     } else {
         NEWGRID_GridStateFrameLatch = 4;

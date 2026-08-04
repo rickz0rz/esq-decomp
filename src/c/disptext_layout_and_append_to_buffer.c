@@ -29,7 +29,7 @@ extern char  DISPTEXT_STR_SINGLE_SPACE_COPY_PREFIX[];
 extern void  DISPLIB_CommitCurrentLinePenAndAdvance(long pen);
 extern char *DISPTEXT_BuildLineWithWidth(struct RastPort *rp, char *src,
                                          char *buf, long width);
-extern void  GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern void  STRING_AppendAtNull(char *dst, char *src);
 extern void  DISPTEXT_AppendToBuffer(char *text);
 extern void  DISPTEXT_BuildLinePointerTable(long mode);
 
@@ -76,7 +76,7 @@ long DISPTEXT_LayoutAndAppendToBuffer(struct RastPort *rp, char *src)
            && DISPTEXT_CurrentLineIndex < DISPTEXT_TargetLineIndex) {
         src = DISPTEXT_BuildLineWithWidth(rp, src, scratch, width);
         len = strlen(scratch);
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(Global_REF_1000_BYTES_ALLOCATED_2,
+        STRING_AppendAtNull(Global_REF_1000_BYTES_ALLOCATED_2,
                                             scratch);
         DISPTEXT_LineLengthTable[DISPTEXT_CurrentLineIndex] =
             DISPTEXT_LineLengthTable[DISPTEXT_CurrentLineIndex] + len;

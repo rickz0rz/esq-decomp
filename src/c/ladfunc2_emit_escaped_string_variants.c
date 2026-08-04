@@ -37,7 +37,7 @@
  */
 
 extern void LADFUNC2_EmitEscapedCharToScratch(long c);
-extern void GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(char *fmt, ...);
+extern void FORMAT_RawDoFmtWithScratchBuffer(char *fmt, ...);
 extern char LADFUNC_STR_QuoteAndNewline[];
 extern char LADFUNC_STR_Quote[];
 
@@ -73,9 +73,9 @@ void LADFUNC2_EmitEscapedStringChunked(char *text, long chunk)
     while (*text != 0) {
         if ((emitted - (emitted / chunk) * chunk) == 0) {
             if (emitted > 0)
-                GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+                FORMAT_RawDoFmtWithScratchBuffer(
                     LADFUNC_STR_QuoteAndNewline);
-            GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(LADFUNC_STR_Quote);
+            FORMAT_RawDoFmtWithScratchBuffer(LADFUNC_STR_Quote);
         }
         LADFUNC2_EmitEscapedCharToScratch((long)(unsigned char)*text++);
         emitted++;

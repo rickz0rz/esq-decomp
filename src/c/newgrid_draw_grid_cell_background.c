@@ -24,9 +24,9 @@ extern unsigned short NEWGRID_RowHeightPx;
 extern char           CONFIG_NewgridPlaceholderBevelFlag;
 
 extern long NEWGRID_SetRowColor(struct GridPanel *panel, long col, long pen);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(struct RastPort *rp,
+extern void BEVEL_DrawBeveledFrame(struct RastPort *rp,
                 long x0, long y0, long x1, long y1);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(struct RastPort *rp,
+extern void BEVEL_DrawBevelFrameWithTopRight(struct RastPort *rp,
                 long x0, long y0, long x1, long y1);
 
 void NEWGRID_DrawGridCellBackground(struct GridPanel *panel, short col,
@@ -50,7 +50,7 @@ void NEWGRID_DrawGridCellBackground(struct GridPanel *panel, short col,
     }
 
     if (span == 3 && CONFIG_NewgridPlaceholderBevelFlag == 89)
-        NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(rp, x0, y0, x1, y1);
+        BEVEL_DrawBeveledFrame(rp, x0, y0, x1, y1);
     else
-        NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(rp, x0, y0, x1, y1);
+        BEVEL_DrawBevelFrameWithTopRight(rp, x0, y0, x1, y1);
 }

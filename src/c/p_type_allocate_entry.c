@@ -61,9 +61,9 @@
  */
 #include <string.h>
 
-extern char *SCRIPT_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size,
+extern char *MEMORY_AllocateMemory(char *who, long line, long size,
                                                  long flags);
-extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p,
+extern void MEMORY_DeallocateMemory(char *who, long line, void *p,
                                                   long size);
 
 extern char Global_STR_P_TYPE_C_1[];
@@ -86,7 +86,7 @@ struct PromoEntry *P_TYPE_AllocateEntry(char kind, long length, char *src)
         return entry;
 
     entry = (struct PromoEntry *)
-            SCRIPT_JMPTBL_MEMORY_AllocateMemory(Global_STR_P_TYPE_C_1, 47L, 10L,
+            MEMORY_AllocateMemory(Global_STR_P_TYPE_C_1, 47L, 10L,
                                                 0x00010001L);
     if (entry == 0)
         return entry;
@@ -95,14 +95,14 @@ struct PromoEntry *P_TYPE_AllocateEntry(char kind, long length, char *src)
     entry->length = length;
 
     if (strlen(src) == length)
-        entry->payload = SCRIPT_JMPTBL_MEMORY_AllocateMemory(Global_STR_P_TYPE_C_2,
+        entry->payload = MEMORY_AllocateMemory(Global_STR_P_TYPE_C_2,
                                                              58L, length,
                                                              0x00010001L);
     else
         entry->payload = 0;
 
     if (entry->payload == 0) {
-        SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_P_TYPE_C_3, 77L, entry, 10L);
+        MEMORY_DeallocateMemory(Global_STR_P_TYPE_C_3, 77L, entry, 10L);
         entry = 0;
     } else {
         for (i = 0; i < length; i++)

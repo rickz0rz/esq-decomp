@@ -59,7 +59,7 @@ struct NewGridSelectEntry {
     unsigned char flags40;      /* +40 */
 };
 
-extern long NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2(struct NewGridSelectEntry *e);
+extern long ESQDISP_TestEntryBits0And2(struct NewGridSelectEntry *e);
 
 long NEWGRID_TestEntrySelectable(struct NewGridSelectEntry *e, void *ctx,
                                  long mode)
@@ -71,7 +71,7 @@ long NEWGRID_TestEntrySelectable(struct NewGridSelectEntry *e, void *ctx,
             r = 0;
         else if (mode == 0 && (e->flags27 & 4))
             r = 1;
-        else if (mode == 1 && NEWGRID2_JMPTBL_ESQDISP_TestEntryBits0And2(e) != 0)
+        else if (mode == 1 && ESQDISP_TestEntryBits0And2(e) != 0)
             r = 1;
         else
             r = 0;

@@ -36,7 +36,7 @@
  *   summary: Same count, different registers, no cost.
  */
 
-extern short SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(void);
+extern short GCOMMAND_GetBannerChar(void);
 
 /* A SHORT, not a char. The data section spells it `DC.B 0 / DC.B 142`, but every
  * reader in the program loads it with MOVE.W and every writer stores MOVE.W, so
@@ -59,7 +59,7 @@ void SCRIPT_PrimeBannerTransitionFromHexCode(void)
     short delta;
     short sign;
 
-    current = SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar();
+    current = GCOMMAND_GetBannerChar();
     SCRIPT_BannerTransitionActive = 0;
 
     target = (unsigned char)CONFIG_BannerCopperHeadByte;

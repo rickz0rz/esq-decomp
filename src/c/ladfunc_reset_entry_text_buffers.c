@@ -51,7 +51,7 @@ struct LadfuncTextEntry {
     void *buf10;                /* +10 */
 };
 
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                     void *p, long size);
 extern char *ESQPARS_ReplaceOwnedString(char *newStr, char *old);
 extern void  LADFUNC_ClearBannerRectEntries(void);
@@ -71,7 +71,7 @@ void LADFUNC_ResetEntryTextBuffers(void)
             len = (long)strlen(LADFUNC_EntryPtrTable[i]->text6);
 
             if (len > 0 && LADFUNC_EntryPtrTable[i]->buf10 != 0)
-                NEWGRID_JMPTBL_MEMORY_DeallocateMemory(
+                MEMORY_DeallocateMemory(
                     Global_STR_LADFUNC_C_4, 212L,
                     LADFUNC_EntryPtrTable[i]->buf10, len);
 

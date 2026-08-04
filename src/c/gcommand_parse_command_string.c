@@ -90,11 +90,11 @@
 
 extern void  FLIB2_LoadDigitalMplexDefaults(void);
 extern void  GCOMMAND_LoadMplexFile(void);
-extern void  GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
-extern long  ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern void  STRING_CopyPadNul(char *dst, char *src, long n);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern long  LADFUNC_ParseHexDigit(long ch);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *s, long ch);
-extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(char *hay, char *needle);
+extern char *STR_FindCharPtr(char *s, long ch);
+extern char *ESQ_FindSubstringCaseFold(char *hay, char *needle);
 extern char *ESQPARS_ReplaceOwnedString(char *newStr, char *old);
 
 extern unsigned char WDISP_CharClassTable[];
@@ -141,9 +141,9 @@ void GCOMMAND_ParseCommandString(char *cmd)
 
     if (cmd != 0 && *cmd != 0) {
 
-        GROUP_AW_JMPTBL_STRING_CopyPadNul(scratch, cmd, 2L);
+        STRING_CopyPadNul(scratch, cmd, 2L);
         scratch[2] = 0;
-        limit = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch) + 2;
+        limit = PARSE_ReadSignedLongSkipClass3_Alt(scratch) + 2;
 
         i = 2;
 
@@ -171,7 +171,7 @@ void GCOMMAND_ParseCommandString(char *cmd)
             scratch[0] = cmd[i];
             scratch[1] = cmd[i + 1];
             scratch[2] = 0;
-            v = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+            v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
             if (v >= 0 && v <= 99
                 && (WDISP_CharClassTable[(long)scratch[0]] & 4)
                 && (WDISP_CharClassTable[(long)scratch[1]] & 4))
@@ -184,7 +184,7 @@ void GCOMMAND_ParseCommandString(char *cmd)
             scratch[0] = cmd[i];
             scratch[1] = cmd[i + 1];
             scratch[2] = 0;
-            v = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+            v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
             if (v >= 0 && v <= 29
                 && (WDISP_CharClassTable[(long)scratch[0]] & 4)
                 && (WDISP_CharClassTable[(long)scratch[1]] & 4))
@@ -281,7 +281,7 @@ void GCOMMAND_ParseCommandString(char *cmd)
 
         if (*tail != 0) {
 
-            split = GROUP_AS_JMPTBL_STR_FindCharPtr(tail, (long)marker);
+            split = STR_FindCharPtr(tail, (long)marker);
 
             if (split != 0 && *split != 0) {
 
@@ -309,7 +309,7 @@ void GCOMMAND_ParseCommandString(char *cmd)
         suffix = 0;
         if (GCOMMAND_MplexAtTemplatePtr != 0
             && *GCOMMAND_MplexAtTemplatePtr != 0)
-            suffix = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(
+            suffix = ESQ_FindSubstringCaseFold(
                 GCOMMAND_MplexAtTemplatePtr,
                 GCOMMAND_FMT_PCT_T_MplexTemplateParse);
 

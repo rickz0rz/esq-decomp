@@ -117,7 +117,7 @@ extern char COI_STR_COLON_A[];
 extern char COI_STR_COLON_B[];
 extern char CLOCK_FileEofMarkerCtrlZ[];
 
-extern void  GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, long a);
+extern void  WDISP_SPrintf(char *dst, char *fmt, long a);
 extern long  DISKIO_OpenFileWithBuffer(char *name, long mode);
 extern void  DISKIO_WriteBufferedBytes(long fh, char *p, long n);
 extern void  DISKIO_CloseBufferedFileAndFlush(long fh);
@@ -156,16 +156,16 @@ long COI_WriteOiDataFile(unsigned char diskId)
     }
 
     parity = (short)((diskId - (diskId / 2) * 2));
-    GROUP_AE_JMPTBL_WDISP_SPrintf(nameBuf, Global_STR_DF0_OI_PERCENT_2_LX_DAT_1,
+    WDISP_SPrintf(nameBuf, Global_STR_DF0_OI_PERCENT_2_LX_DAT_1,
                                   (long)parity);
     fh = DISKIO_OpenFileWithBuffer(nameBuf, MODE_NEWFILE);
     if (fh == 0)
         return -3;
 
-    GROUP_AE_JMPTBL_WDISP_SPrintf(scratch, COI_FMT_LONG_DEC_A, (long)diskId);
+    WDISP_SPrintf(scratch, COI_FMT_LONG_DEC_A, (long)diskId);
     DISKIO_WriteBufferedBytes(fh, scratch, strlen(scratch));
     DISKIO_WriteBufferedBytes(fh, COI_FieldDelimiterTab, 1L);
-    GROUP_AE_JMPTBL_WDISP_SPrintf(scratch, COI_FMT_DEC_A, 2L);
+    WDISP_SPrintf(scratch, COI_FMT_DEC_A, 2L);
     DISKIO_WriteBufferedBytes(fh, scratch, strlen(scratch));
     DISKIO_WriteBufferedBytes(fh, COI_RecordTerminatorCrLf, 2L);
 
@@ -205,7 +205,7 @@ long COI_WriteOiDataFile(unsigned char diskId)
             DISKIO_WriteBufferedBytes(fh, rec->text28, strlen(rec->text28));
 
         DISKIO_WriteBufferedBytes(fh, COI_FieldDelimiterTab, 1L);
-        GROUP_AE_JMPTBL_WDISP_SPrintf(scratch, COI_FMT_LONG_DEC_B, rec->value32);
+        WDISP_SPrintf(scratch, COI_FMT_LONG_DEC_B, rec->value32);
         DISKIO_WriteBufferedBytes(fh, scratch, strlen(scratch));
         DISKIO_WriteBufferedBytes(fh, COI_FieldDelimiterTab, 1L);
 
@@ -228,7 +228,7 @@ long COI_WriteOiDataFile(unsigned char diskId)
             DISKIO_WriteBufferedBytes(fh, rec->text8, strlen(rec->text8));
 
         DISKIO_WriteBufferedBytes(fh, COI_FieldDelimiterTab, 1L);
-        GROUP_AE_JMPTBL_WDISP_SPrintf(scratch, COI_FMT_LONG_DEC_C,
+        WDISP_SPrintf(scratch, COI_FMT_LONG_DEC_C,
                                       (long)rec->subCount);
         DISKIO_WriteBufferedBytes(fh, scratch, strlen(scratch));
         DISKIO_WriteBufferedBytes(fh, COI_RecordTerminatorCrLf, 2L);
@@ -236,7 +236,7 @@ long COI_WriteOiDataFile(unsigned char diskId)
         for (j = 0; j < rec->subCount; j++) {
             sub = rec->subs[j];
 
-            GROUP_AE_JMPTBL_WDISP_SPrintf(scratch, COI_FMT_LONG_DEC_PAD2,
+            WDISP_SPrintf(scratch, COI_FMT_LONG_DEC_PAD2,
                                           (long)sub->numField);
             DISKIO_WriteBufferedBytes(fh, scratch, strlen(scratch));
             DISKIO_WriteBufferedBytes(fh, COI_FieldDelimiterTab, 1L);
@@ -248,7 +248,7 @@ long COI_WriteOiDataFile(unsigned char diskId)
                 DISKIO_WriteBufferedBytes(fh, sub->text22, strlen(sub->text22));
 
             DISKIO_WriteBufferedBytes(fh, COI_FieldDelimiterTab, 1L);
-            GROUP_AE_JMPTBL_WDISP_SPrintf(scratch, COI_FMT_DEC_B, sub->value26);
+            WDISP_SPrintf(scratch, COI_FMT_DEC_B, sub->value26);
             DISKIO_WriteBufferedBytes(fh, scratch, strlen(scratch));
             DISKIO_WriteBufferedBytes(fh, COI_FieldDelimiterTab, 1L);
 

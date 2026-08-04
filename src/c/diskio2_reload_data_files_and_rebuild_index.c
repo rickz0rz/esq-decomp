@@ -23,11 +23,11 @@
 extern void DISKIO2_LoadCurDayDataFile(void);
 extern void DISKIO2_LoadNxtDayDataFile(void);
 extern void DISKIO2_LoadOinfoDataFile(void);
-extern void GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache(void);
+extern void NEWGRID_RebuildIndexCache(void);
 void DISKIO2_ReloadDataFilesAndRebuildIndex(void)
 {
     DISKIO2_LoadCurDayDataFile();
     DISKIO2_LoadNxtDayDataFile();
     DISKIO2_LoadOinfoDataFile();
-    GROUP_AH_JMPTBL_NEWGRID_RebuildIndexCache();
+    NEWGRID_RebuildIndexCache();
 }

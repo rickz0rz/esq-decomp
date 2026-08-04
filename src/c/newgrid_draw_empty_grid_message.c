@@ -30,9 +30,9 @@ extern unsigned short NEWGRID_ColumnWidthPx;
 
 extern void NEWGRID_DrawGridFrame(struct GridPanel *panel, long style, long a,
                                   long b, long c);
-extern void NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(long slot, char *out);
-extern void PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(struct RastPort *rp,
+extern void CLEANUP_FormatClockFormatEntry(long slot, char *out);
+extern void STRING_AppendAtNull(char *dst, char *src);
+extern void BEVEL_DrawBevelFrameWithTopRight(struct RastPort *rp,
                 long x0, long y0, long x1, long y1);
 extern void NEWGRID_ValidateSelectionCode(struct GridPanel *panel, long code);
 
@@ -48,12 +48,12 @@ void NEWGRID_DrawEmptyGridMessage(struct GridPanel *panel, long unused,
     NEWGRID_DrawGridFrame(panel, 7, 6, 6, 33);
 
     strcpy(msg, SCRIPT_PtrMovieSummaryForPrefix);
-    NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry((long)slot, stamp);
-    PARSEINI_JMPTBL_STRING_AppendAtNull(msg, stamp);
+    CLEANUP_FormatClockFormatEntry((long)slot, stamp);
+    STRING_AppendAtNull(msg, stamp);
 
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(&panel->rp, 0, 0,
+    BEVEL_DrawBevelFrameWithTopRight(&panel->rp, 0, 0,
         (long)NEWGRID_ColumnStartXPx + 35, 33);
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(&panel->rp,
+    BEVEL_DrawBevelFrameWithTopRight(&panel->rp,
         (long)NEWGRID_ColumnStartXPx + 36, 0, 695, 33);
 
     SetAPen(&panel->rp, 3);

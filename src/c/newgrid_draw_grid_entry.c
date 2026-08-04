@@ -59,16 +59,16 @@ struct GridAux {
 };
 
 extern void  NEWGRID_Apply24HourFormatting(char *text, long sel, long fmt);
-extern void  NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(
+extern void  COI_RenderClockFormatEntryVariant(
                  struct GridEntry *e, struct GridAux *aux, long sel,
                  char *text, long variant);
-extern void  NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(
+extern void  DISPTEXT_LayoutAndAppendToBuffer(
                  struct RastPort *rp, char *text);
-extern long  NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(struct RastPort *rp,
+extern long  DISPTEXT_LayoutSourceToLines(struct RastPort *rp,
                                                           char *text);
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
-extern char *PARSEINI_JMPTBL_STR_FindCharPtr(char *s, long c);
-extern char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(char *s, char *set);
+extern char *STR_SkipClass3Chars(char *s);
+extern char *STR_FindCharPtr(char *s, long c);
+extern char *STR_FindAnyCharPtr(char *s, char *set);
 
 extern char  NEWGRID_GridEntryDelimiterBar[];
 extern char  NEWGRID_EntrySplitDelimiterMask[];
@@ -88,7 +88,7 @@ void NEWGRID_DrawGridEntry(struct RastPort *rp, struct GridEntry *entry,
 
     if (entry == 0 || aux == 0 || sel <= 0 || sel >= 49 || src == 0 ||
         *src == 0) {
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(rp,
+        DISPTEXT_LayoutAndAppendToBuffer(rp,
                                               SCRIPT_PtrNoDataPlaceholder);
         return;
     }
@@ -108,26 +108,26 @@ void NEWGRID_DrawGridEntry(struct RastPort *rp, struct GridEntry *entry,
                                   (long)aux->fmtCode);
 
     if ((aux->flags[sel] & 2) == 0 && (entry->flags27 & 0x10) == 0) {
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(rp,
+        DISPTEXT_LayoutAndAppendToBuffer(rp,
                                               NEWGRID_EntryTextScratchPtr);
         return;
     }
 
     if (flag != 0 && mode == 3) {
-        NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(entry, aux,
+        COI_RenderClockFormatEntryVariant(entry, aux,
             (long)sel, NEWGRID_EntryTextScratchPtr, variant);
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(rp,
+        DISPTEXT_LayoutAndAppendToBuffer(rp,
                                               NEWGRID_EntryTextScratchPtr);
         return;
     }
 
-    cut = PARSEINI_JMPTBL_STR_FindCharPtr(NEWGRID_EntryTextScratchPtr, 34L);
+    cut = STR_FindCharPtr(NEWGRID_EntryTextScratchPtr, 34L);
     if (cut != 0) {
         cut++;
-        cut = PARSEINI_JMPTBL_STR_FindCharPtr(cut, 34L);
+        cut = STR_FindCharPtr(cut, 34L);
     }
     if (cut != 0) {
-        mark = PARSEINI_JMPTBL_STR_FindAnyCharPtr(cut,
+        mark = STR_FindAnyCharPtr(cut,
                                         NEWGRID_EntrySplitDelimiterMask);
         if (mark != 0)
             cut = mark;
@@ -141,11 +141,11 @@ void NEWGRID_DrawGridEntry(struct RastPort *rp, struct GridEntry *entry,
         }
     }
 
-    NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(rp,
+    DISPTEXT_LayoutAndAppendToBuffer(rp,
                                           NEWGRID_EntryTextScratchPtr);
 
     if (flag != 0 && cut != 0 && mode > 1) {
-        mark = PARSEINI_JMPTBL_STR_FindCharPtr(cut, 40L);
+        mark = STR_FindCharPtr(cut, 40L);
         if (mark != 0 && mark[5] == 41) {
             cut = mark + 6;
             while (*cut != 0 && *cut != 32)
@@ -156,23 +156,23 @@ void NEWGRID_DrawGridEntry(struct RastPort *rp, struct GridEntry *entry,
             } else {
                 cut = 0;
             }
-            if (NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(rp, mark) != 0)
-                NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(rp, mark);
+            if (DISPTEXT_LayoutSourceToLines(rp, mark) != 0)
+                DISPTEXT_LayoutAndAppendToBuffer(rp, mark);
         }
 
         if (cut != 0) {
-            body = NEWGRID2_JMPTBL_STR_SkipClass3Chars(cut);
+            body = STR_SkipClass3Chars(cut);
             if (body != 0) {
-                comma = PARSEINI_JMPTBL_STR_FindCharPtr(body, 44L);
+                comma = STR_FindCharPtr(body, 44L);
                 if (comma != 0) {
-                    cut = PARSEINI_JMPTBL_STR_FindCharPtr(comma, 46L);
+                    cut = STR_FindCharPtr(comma, 46L);
                     if (cut == 0) {
                         cut = comma;
                         comma = 0;
                         *cut = 46;
                     }
                 } else {
-                    cut = PARSEINI_JMPTBL_STR_FindCharPtr(body, 46L);
+                    cut = STR_FindCharPtr(body, 46L);
                     if (cut == 0)
                         body = 0;
                 }
@@ -188,19 +188,19 @@ void NEWGRID_DrawGridEntry(struct RastPort *rp, struct GridEntry *entry,
                     cut = 0;
                 }
 
-                if (NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(rp, body) != 0)
-                    NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(rp, body);
+                if (DISPTEXT_LayoutSourceToLines(rp, body) != 0)
+                    DISPTEXT_LayoutAndAppendToBuffer(rp, body);
                 else if (comma != 0) {
                     comma[0] = 46;
                     comma[1] = 0;
-                    tail = NEWGRID2_JMPTBL_STR_SkipClass3Chars(comma + 2);
-                    if (NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(rp, body)
+                    tail = STR_SkipClass3Chars(comma + 2);
+                    if (DISPTEXT_LayoutSourceToLines(rp, body)
                         != 0)
-                        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(rp,
+                        DISPTEXT_LayoutAndAppendToBuffer(rp,
                                                                         body);
-                    else if (NEWGRID2_JMPTBL_DISPTEXT_LayoutSourceToLines(rp,
+                    else if (DISPTEXT_LayoutSourceToLines(rp,
                                  tail) != 0)
-                        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(rp,
+                        DISPTEXT_LayoutAndAppendToBuffer(rp,
                                                                         tail);
                 }
             }
@@ -208,24 +208,24 @@ void NEWGRID_DrawGridEntry(struct RastPort *rp, struct GridEntry *entry,
     }
 
     if (cut != 0) {
-        mark = PARSEINI_JMPTBL_STR_FindAnyCharPtr(cut, bar);
+        mark = STR_FindAnyCharPtr(cut, bar);
         if (mark != 0) {
             cut = mark + 1;
-            tail = PARSEINI_JMPTBL_STR_FindAnyCharPtr(cut, bar);
+            tail = STR_FindAnyCharPtr(cut, bar);
             while (tail != 0) {
                 cut = tail + 1;
-                tail = PARSEINI_JMPTBL_STR_FindAnyCharPtr(cut, bar);
+                tail = STR_FindAnyCharPtr(cut, bar);
             }
             *cut = 0;
-            NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(rp, mark);
+            DISPTEXT_LayoutAndAppendToBuffer(rp, mark);
         }
     }
 
     if (variant == -1 && flag != 0 && mode > 1) {
         NEWGRID_EntryTextScratchPtr[0] = 0;
-        NEWGRID2_JMPTBL_COI_RenderClockFormatEntryVariant(entry, aux,
+        COI_RenderClockFormatEntryVariant(entry, aux,
             (long)sel, NEWGRID_EntryTextScratchPtr, variant);
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(rp,
+        DISPTEXT_LayoutAndAppendToBuffer(rp,
                                               NEWGRID_EntryTextScratchPtr);
     }
 }

@@ -70,7 +70,7 @@
 #include "esq-exec.h"
 #include "esq-dos.h"
 
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size, long flags);
+extern void *MEMORY_AllocateMemory(char *who, long line, long size, long flags);
 extern void  CTASKS_IFFTaskCleanup(void);
 extern short CTASKS_IffTaskDoneFlag;
 extern short CTASKS_IffTaskState;
@@ -109,7 +109,7 @@ void CTASKS_StartIffTaskProcess(void)
     }
 
     Global_REF_LIST_IFF_TASK_PROC =
-        GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_CTASKS_C_2, 159, 14,
+        MEMORY_AllocateMemory(Global_STR_CTASKS_C_2, 159, 14,
                                               MEMF_PUBLIC | MEMF_CLEAR);
 
     *(long *)Global_REF_LIST_IFF_TASK_PROC = 14;

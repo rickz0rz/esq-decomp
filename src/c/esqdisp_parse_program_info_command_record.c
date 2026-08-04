@@ -75,10 +75,10 @@ struct EsqDispEntry {
     short         w46;                  /* +46, low byte carries five flags */
 };
 
-extern long __asm ESQIFF_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
-extern long ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(long ch);
-extern void ESQFUNC_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
+extern long LADFUNC_ParseHexDigit(long ch);
+extern void STRING_CopyPadNul(char *dst, char *src, long n);
 extern void ESQDISP_FillProgramInfoHeaderFields(struct EsqDispEntry *e,
                                                 long flags, long w46,
                                                 long hex1, long hex2,
@@ -127,7 +127,7 @@ void ESQDISP_ParseProgramInfoCommandRecord(char *rec)
     }
 
     if (WDISP_CharClassTable[(long)*rec] & 4)
-        n = ESQIFF_JMPTBL_MATH_Mulu32((long)*rec - 48, 10L);
+        n = MATH_Mulu32((long)*rec - 48, 10L);
     else
         n = 0;
     rec++;
@@ -195,7 +195,7 @@ void ESQDISP_ParseProgramInfoCommandRecord(char *rec)
             }
 
             if (n > 2 && (WDISP_CharClassTable[(long)field[2]] & 0x80))
-                hex1 = (unsigned char)ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(
+                hex1 = (unsigned char)LADFUNC_ParseHexDigit(
                            (long)field[2]);
             else
                 hex1 = 0xff;
@@ -204,7 +204,7 @@ void ESQDISP_ParseProgramInfoCommandRecord(char *rec)
                 hex1 = 0xff;
 
             if (n > 3 && (WDISP_CharClassTable[(long)field[3]] & 0x80))
-                hex2 = (unsigned char)ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(
+                hex2 = (unsigned char)LADFUNC_ParseHexDigit(
                            (long)field[3]);
             else
                 hex2 = 0xff;
@@ -213,7 +213,7 @@ void ESQDISP_ParseProgramInfoCommandRecord(char *rec)
                 hex2 = 0xff;
 
             if (n > 5)
-                ESQFUNC_JMPTBL_STRING_CopyPadNul(tag, field + 4, 2L);
+                STRING_CopyPadNul(tag, field + 4, 2L);
             else
                 strcpy(tag, ESQDISP_ProgramInfoZeroTag);
 

@@ -116,13 +116,13 @@ extern char  DISKIO_TAG_NRLS[];
 extern char  DISKIO_TAG_LRBN[];
 extern char  DISKIO_TAG_MSN[];
 
-extern long  GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
-extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *s, long c);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern char *STR_FindCharPtr(char *s, long c);
 extern void  BRUSH_SelectBrushByLabel(char *label);
 extern void  DISKIO_EnsurePc1MountedAndGfxAssigned(void);
-extern void  GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition(long code,
+extern void  SCRIPT_BeginBannerCharTransition(long code,
                                                               long flag);
-extern void  GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState(long a, long b);
+extern void  ESQFUNC_UpdateRefreshModeState(long a, long b);
 
 void DISKIO_ParseConfigBuffer(char *buf, long len)
 {
@@ -143,13 +143,13 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
     digits[1] = buf[pos++];
     digits[2] = 0;
     CONFIG_SerializedNumericSlot05 =
-        (char)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(digits);
+        (char)PARSE_ReadSignedLongSkipClass3_Alt(digits);
 
     digits[0] = buf[pos++];
     digits[1] = buf[pos++];
     digits[2] = 0;
     CONFIG_NewgridWindowSpanHalfHoursPrimary =
-        (char)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(digits);
+        (char)PARSE_ReadSignedLongSkipClass3_Alt(digits);
 
     CTASKS_STR_G = buf[pos++];
 
@@ -233,7 +233,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
         digits[1] = buf[pos++];
         digits[2] = 0;
         CONFIG_SerializedNumericSlot19 =
-            (char)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(digits);
+            (char)PARSE_ReadSignedLongSkipClass3_Alt(digits);
     }
 
     if ((long)pos < len - 1) {
@@ -241,7 +241,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
         digits[1] = buf[pos++];
         digits[2] = 0;
         CONFIG_SerializedNumericSlot20 =
-            (char)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(digits);
+            (char)PARSE_ReadSignedLongSkipClass3_Alt(digits);
     }
 
     if ((long)pos < len - 1) {
@@ -270,7 +270,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
         digits[1] = buf[pos++];
         digits[2] = 0;
         CONFIG_SerializedNumericSlot25 =
-            (char)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(digits);
+            (char)PARSE_ReadSignedLongSkipClass3_Alt(digits);
     }
 
     if ((long)pos < len - 1) {
@@ -278,7 +278,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
         digits[1] = buf[pos++];
         digits[2] = 0;
         CONFIG_SerializedNumericSlot26 =
-            (char)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(digits);
+            (char)PARSE_ReadSignedLongSkipClass3_Alt(digits);
     }
 
     if ((long)pos < len - 1) {
@@ -286,7 +286,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
         digits[1] = buf[pos++];
         digits[2] = 0;
         CONFIG_NewgridWindowSpanHalfHoursAlt =
-            (char)GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(digits);
+            (char)PARSE_ReadSignedLongSkipClass3_Alt(digits);
     }
 
     if ((long)pos < len - 1) {
@@ -295,7 +295,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
         digits[2] = buf[pos++];
         digits[3] = 0;
         CONFIG_TimeWindowMinutes =
-            GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(digits);
+            PARSE_ReadSignedLongSkipClass3_Alt(digits);
     }
 
     if ((long)pos < len - 1) {
@@ -367,7 +367,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
         c = buf[pos++];
         upper = (WDISP_CharClassTable[c] & 2) ? (unsigned char)(c - 32) : c;
         ED_DiagTextModeChar = upper;
-        if (GROUP_AI_JMPTBL_STR_FindCharPtr(DISKIO_TAG_NRLS,
+        if (STR_FindCharPtr(DISKIO_TAG_NRLS,
                                            (long)(char)ED_DiagTextModeChar) == 0)
             ED_DiagTextModeChar = 78;
         else if (ED_DiagTextModeChar == 0)
@@ -387,7 +387,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
     if ((long)pos < len - 1) {
         c = buf[pos++];
         CONFIG_MsnRuntimeModeSelectorChar_LRBN = c;
-        if (GROUP_AI_JMPTBL_STR_FindCharPtr(
+        if (STR_FindCharPtr(
                 DISKIO_TAG_LRBN,
                 (long)(short)(char)CONFIG_MsnRuntimeModeSelectorChar_LRBN) == 0)
             CONFIG_MsnRuntimeModeSelectorChar_LRBN = 78;
@@ -403,7 +403,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
         /* Three stores in one path: the transition reads the flag. */
         if (CONFIG_LRBN_FlagChar != 89) {
             CONFIG_LRBN_FlagChar = 89;
-            GROUP_AG_JMPTBL_SCRIPT_BeginBannerCharTransition(
+            SCRIPT_BeginBannerCharTransition(
                 (long)CONFIG_BannerCopperHeadByte, 0L);
             CONFIG_LRBN_FlagChar = 'N';
         }
@@ -412,7 +412,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
     if ((long)pos < len - 1) {
         c = buf[pos++];
         CONFIG_MSN_FlagChar = c;
-        if (GROUP_AI_JMPTBL_STR_FindCharPtr(
+        if (STR_FindCharPtr(
                 DISKIO_TAG_MSN,
                 (long)(short)(char)CONFIG_MSN_FlagChar) == 0)
             CONFIG_MSN_FlagChar = 'N';
@@ -425,7 +425,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
             CTASKS_STR_1 = 49;
     }
 
-    GROUP_AG_JMPTBL_ESQFUNC_UpdateRefreshModeState(
+    ESQFUNC_UpdateRefreshModeState(
         0L, (long)(char)CONFIG_RefreshIntervalMinutes);
     CONFIG_RefreshIntervalSeconds =
         (long)(char)CONFIG_RefreshIntervalMinutes * 60;

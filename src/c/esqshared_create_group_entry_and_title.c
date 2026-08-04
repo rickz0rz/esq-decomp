@@ -103,12 +103,12 @@ struct EsqNewTitle {                    /* 500 bytes */
     char          pad499;
 };
 
-extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                  long size, long flags);
 extern void  ESQSHARED_InitEntryDefaults(struct EsqNewEntry *e);
-extern void  ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated(
+extern void  COI_EnsureAnimObjectAllocated(
                  struct EsqNewEntry *e);
-extern void  ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes(char *dst, char *src);
+extern void  ESQ_ReverseBitsIn6Bytes(char *dst, char *src);
 
 extern struct EsqNewEntry *TEXTDISP_PrimaryEntryPtrTable[];
 extern struct EsqNewTitle *TEXTDISP_PrimaryTitlePtrTable[];
@@ -146,12 +146,12 @@ long ESQSHARED_CreateGroupEntryAndTitle(char groupCode, char entryFlag,
     if (groupCode == TEXTDISP_SecondaryGroupCode) {
 
         TEXTDISP_SecondaryEntryPtrTable[TEXTDISP_SecondaryGroupEntryCount] =
-            ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_ESQPARS2_C_1, 299L,
+            MEMORY_AllocateMemory(Global_ESQPARS2_C_1, 299L,
                                                 52L,
                                                 MEMF_PUBLIC | MEMF_CLEAR);
 
         TEXTDISP_SecondaryTitlePtrTable[TEXTDISP_SecondaryGroupEntryCount] =
-            ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_ESQPARS2_C_2, 301L,
+            MEMORY_AllocateMemory(Global_ESQPARS2_C_2, 301L,
                                                 500L,
                                                 MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -166,12 +166,12 @@ long ESQSHARED_CreateGroupEntryAndTitle(char groupCode, char entryFlag,
     } else if (groupCode == TEXTDISP_PrimaryGroupCode) {
 
         TEXTDISP_PrimaryEntryPtrTable[TEXTDISP_PrimaryGroupEntryCount] =
-            ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_ESQPARS2_C_3, 314L,
+            MEMORY_AllocateMemory(Global_ESQPARS2_C_3, 314L,
                                                 52L,
                                                 MEMF_PUBLIC | MEMF_CLEAR);
 
         TEXTDISP_PrimaryTitlePtrTable[TEXTDISP_PrimaryGroupEntryCount] =
-            ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_ESQPARS2_C_4, 315L,
+            MEMORY_AllocateMemory(Global_ESQPARS2_C_4, 315L,
                                                 500L,
                                                 MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -186,7 +186,7 @@ long ESQSHARED_CreateGroupEntryAndTitle(char groupCode, char entryFlag,
     }
 
     ESQSHARED_InitEntryDefaults(entry);
-    ESQSHARED_JMPTBL_COI_EnsureAnimObjectAllocated(entry);
+    COI_EnsureAnimObjectAllocated(entry);
 
     entry->groupCode = groupCode;
 
@@ -213,7 +213,7 @@ long ESQSHARED_CreateGroupEntryAndTitle(char groupCode, char entryFlag,
 
     entry->entryFlag = entryFlag;
 
-    ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes(entry->bits, f2);
+    ESQ_ReverseBitsIn6Bytes(entry->bits, f2);
 
     for (i = 0; i < 6; i++)
         entry->tail[i] = 0;

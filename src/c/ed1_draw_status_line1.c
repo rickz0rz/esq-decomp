@@ -23,13 +23,13 @@
 extern short ESQPARS2_StateIndex;
 extern char  ED2_FMT_SCRSPD_PCT_D[];
 extern void *WDISP_DisplayContextBase;
-extern void  GROUP_AM_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long v);
-extern void  ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(void *rp, char *s, long y);
+extern void  WDISP_SPrintf(char *buf, char *fmt, long v);
+extern void  TLIBA3_DrawCenteredWrappedTextLines(void *rp, char *s, long y);
 void ED1_DrawStatusLine1(void)
 {
     char statusLine[41];
-    GROUP_AM_JMPTBL_WDISP_SPrintf(statusLine, ED2_FMT_SCRSPD_PCT_D,
+    WDISP_SPrintf(statusLine, ED2_FMT_SCRSPD_PCT_D,
                                   (long)ESQPARS2_StateIndex);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         (char *)WDISP_DisplayContextBase + 10, statusLine, 210);
 }

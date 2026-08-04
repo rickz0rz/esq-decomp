@@ -10,13 +10,13 @@
  *            SAS/C version; see docs/compiler-version.md.
  */
 extern char Global_STR_SCRIPT_C_2[];
-extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
+extern void MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
 void SCRIPT_DeallocateBufferArray(void **arr, short size, short count)
 {
     short i;
 
     for (i = 0; i < count; i++) {
-        SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_SCRIPT_C_2, 405, arr[i], (long)size);
+        MEMORY_DeallocateMemory(Global_STR_SCRIPT_C_2, 405, arr[i], (long)size);
         arr[i] = 0;
     }
 }

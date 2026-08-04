@@ -26,11 +26,11 @@ extern char LADFUNC_FMT_AttrEscapePrefixCharHex[];
 extern char LADFUNC_TextAdLineBreakBuffer[];
 
 extern long LADFUNC_ComposePackedPenByte(long hi, long lo);
-extern long GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(char *path, long mode);
-extern void GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(long fh, long value);
-extern void GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(long fh, char *buf, long n);
-extern void GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(long fh);
-extern void GROUP_AW_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long width,
+extern long DISKIO_OpenFileWithBuffer(char *path, long mode);
+extern void DISKIO_WriteDecimalField(long fh, long value);
+extern void DISKIO_WriteBufferedBytes(long fh, char *buf, long n);
+extern void DISKIO_CloseBufferedFileAndFlush(long fh);
+extern void WDISP_SPrintf(char *buf, char *fmt, long width,
                                           long value);
 
 long LADFUNC_SaveTextAdsToFile(void)
@@ -52,7 +52,7 @@ long LADFUNC_SaveTextAdsToFile(void)
     DISKIO_SaveOperationReadyFlag = 0;
     empty[0] = 0;
 
-    LADFUNC_SaveAdsFileHandle = GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(
+    LADFUNC_SaveAdsFileHandle = DISKIO_OpenFileWithBuffer(
         KYBD_PATH_DF0_LOCAL_ADS, 1006);
     if (LADFUNC_SaveAdsFileHandle == 0) {
         DISKIO_SaveOperationReadyFlag = 1;
@@ -63,9 +63,9 @@ long LADFUNC_SaveTextAdsToFile(void)
     while (row < 46) {
         entry = LADFUNC_EntryPtrTable[row];
 
-        GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(LADFUNC_SaveAdsFileHandle,
+        DISKIO_WriteDecimalField(LADFUNC_SaveAdsFileHandle,
                                                  (long)entry->flags0);
-        GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(LADFUNC_SaveAdsFileHandle,
+        DISKIO_WriteDecimalField(LADFUNC_SaveAdsFileHandle,
                                                  (long)entry->flags2);
 
         if (entry->text != 0)
@@ -80,11 +80,11 @@ long LADFUNC_SaveTextAdsToFile(void)
         while (seg < len) {
             if (len == pos || entry->attr[pos] != pen) {
                 if (pos > 0) {
-                    GROUP_AW_JMPTBL_WDISP_SPrintf(escape,
+                    WDISP_SPrintf(escape,
                         LADFUNC_FMT_AttrEscapePrefixCharHex, 3, (long)pen);
-                    GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(
+                    DISKIO_WriteBufferedBytes(
                         LADFUNC_SaveAdsFileHandle, escape, strlen(escape));
-                    GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(
+                    DISKIO_WriteBufferedBytes(
                         LADFUNC_SaveAdsFileHandle, text + seg, pos - seg);
                 }
                 seg = pos;
@@ -94,12 +94,12 @@ long LADFUNC_SaveTextAdsToFile(void)
             pos++;
         }
 
-        GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(LADFUNC_SaveAdsFileHandle,
+        DISKIO_WriteBufferedBytes(LADFUNC_SaveAdsFileHandle,
             LADFUNC_TextAdLineBreakBuffer, 1);
         row++;
     }
 
-    GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(LADFUNC_SaveAdsFileHandle);
+    DISKIO_CloseBufferedFileAndFlush(LADFUNC_SaveAdsFileHandle);
     DISKIO_SaveOperationReadyFlag = 1;
     return 1;
 }

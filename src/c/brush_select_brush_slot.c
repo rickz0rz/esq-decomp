@@ -31,7 +31,7 @@ struct BrushRecord {
     long modeY;                 /* +360 */
 };
 
-extern void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(struct BitMap *src,
+extern void GRAPHICS_BltBitMapRastPort(struct BitMap *src,
                 long sx, long sy, struct RastPort *rp, long dx, long dy,
                 long w, long h, long minterm);
 
@@ -117,6 +117,6 @@ void BRUSH_SelectBrushSlot(struct BrushRecord *brush, long x0, long y0, long x1,
     if (mode <= 0)
         mode = srcY;
 
-    GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(&brush->bitmap, srcX, mode, rp,
+    GRAPHICS_BltBitMapRastPort(&brush->bitmap, srcX, mode, rp,
                                                destX, destY, width, height, 192);
 }

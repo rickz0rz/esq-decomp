@@ -78,17 +78,17 @@ struct LadCtx {
     struct RastPort rp;                 /* +10 */
 };
 
-extern struct LadCtx *GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(
+extern struct LadCtx *TLIBA3_BuildDisplayContextForViewMode(
                           long mode, long zero, long arg);
-extern long __asm NEWGRID_JMPTBL_MATH_DivS32(register __d0 long a,
+extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                     void *p, long size);
-extern void  GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(void);
-extern void  GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition(void);
-extern void  GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
+extern void  ESQ_SetCopperEffect_OffDisableHighlight(void);
+extern void  ESQIFF_RunCopperDropTransition(void);
+extern void  ESQIFF_RunCopperRiseTransition(void);
 extern unsigned char LADFUNC_GetPackedPenHighNibble(long packed);
 extern void  LADFUNC_DrawEntryLineWithAttrs(struct RastPort *rp, long row,
                                             char *text, char *attr);
@@ -130,20 +130,20 @@ void LADFUNC_DrawEntryPreview(long index)
     char  c;
 
     WDISP_DisplayContextBase =
-        GROUP_AW_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(4L, 0L, 3L);
+        TLIBA3_BuildDisplayContextForViewMode(4L, 0L, 3L);
 
     SetFont(&WDISP_DisplayContextBase->rp, Global_HANDLE_H26F_FONT);
 
     w = TextLength(&WDISP_DisplayContextBase->rp, Global_STR_SINGLE_SPACE_2,
                    1L);
 
-    maxCols = NEWGRID_JMPTBL_MATH_DivS32(624L, w);
+    maxCols = MATH_DivS32(624L, w);
 
-    lineBuf = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_16,
+    lineBuf = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_16,
                                                    857L, maxCols + 1,
                                                    MEMF_PUBLIC | MEMF_CLEAR);
 
-    attrBuf = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_17,
+    attrBuf = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_17,
                                                    858L, maxCols,
                                                    MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -154,11 +154,11 @@ void LADFUNC_DrawEntryPreview(long index)
 
         WDISP_AccumulatorFlushPending = 0;
 
-        GROUP_AW_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight();
+        ESQ_SetCopperEffect_OffDisableHighlight();
 
         SetDrMd(&WDISP_DisplayContextBase->rp, 1L);
 
-        GROUP_AW_JMPTBL_ESQIFF_RunCopperDropTransition();
+        ESQIFF_RunCopperDropTransition();
 
         for (i = 0; i < 24; i++)
             WDISP_PaletteTriplesRBase[i] = KYBD_CustomPaletteTriplesRBase[i];
@@ -220,16 +220,16 @@ void LADFUNC_DrawEntryPreview(long index)
             col = 0;
         }
 
-        GROUP_AW_JMPTBL_ESQIFF_RunCopperRiseTransition();
+        ESQIFF_RunCopperRiseTransition();
     }
 
     SetFont(&WDISP_DisplayContextBase->rp, Global_HANDLE_PREVUEC_FONT);
 
     if (lineBuf != 0)
-        NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_18, 926L,
+        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_18, 926L,
                                                lineBuf, maxCols + 1);
 
     if (attrBuf != 0)
-        NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_19, 928L,
+        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_19, 928L,
                                                attrBuf, maxCols);
 }

@@ -23,9 +23,9 @@ extern char *Global_JMPTBL_SHORT_DAYS_OF_WEEK[];
 extern char *Global_JMPTBL_SHORT_MONTHS[];
 extern char  Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED[];
 
-extern void GROUP_AE_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, char *day,
+extern void WDISP_SPrintf(char *buf, char *fmt, char *day,
                                           char *month, long dom);
-extern void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(struct BitMap *src,
+extern void GRAPHICS_BltBitMapRastPort(struct BitMap *src,
                 long sx, long sy, struct RastPort *rp, long dx, long dy,
                 long w, long h, long minterm);
 
@@ -38,7 +38,7 @@ void RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY(void)
 
     Global_REF_RASTPORT_1->BitMap = &Global_REF_696_400_BITMAP;
 
-    GROUP_AE_JMPTBL_WDISP_SPrintf(buf,
+    WDISP_SPrintf(buf,
         Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED,
         Global_JMPTBL_SHORT_DAYS_OF_WEEK[CLOCK_CurrentDayOfWeekIndex],
         Global_JMPTBL_SHORT_MONTHS[CLOCK_CurrentMonthIndex],
@@ -57,7 +57,7 @@ void RENDER_SHORT_MONTH_SHORT_DAY_OF_WEEK_DAY(void)
     Move(Global_REF_RASTPORT_1, x, y);
     Text(Global_REF_RASTPORT_1, buf, len);
 
-    GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(Global_REF_RASTPORT_1->BitMap,
+    GRAPHICS_BltBitMapRastPort(Global_REF_RASTPORT_1->BitMap,
         0, 0, Global_REF_RASTPORT_1, 44, 40, 208,
         (long)Global_REF_RASTPORT_1->TxHeight - 2, 192);
 }

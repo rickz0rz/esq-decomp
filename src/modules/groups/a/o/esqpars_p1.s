@@ -104,7 +104,7 @@ _ESQPARS_JMPTBL_DATETIME_SavePairToFile:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQPROTO_VerifyChecksumAndParseList
+;   _ESQPROTO_VerifyChecksumAndParseList
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -115,7 +115,7 @@ _ESQPARS_JMPTBL_DATETIME_SavePairToFile:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList:
-    JMP     ESQPROTO_VerifyChecksumAndParseList
+    JMP     _ESQPROTO_VerifyChecksumAndParseList
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord   (Jump-table forwarder)
@@ -148,7 +148,7 @@ _ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQPROTO_CopyLabelToGlobal
+;   _ESQPROTO_CopyLabelToGlobal
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -159,7 +159,7 @@ _ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal:
-    JMP     ESQPROTO_CopyLabelToGlobal
+    JMP     _ESQPROTO_CopyLabelToGlobal
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQPARS_JMPTBL_DST_HandleBannerCommand32_33   (Jump-table forwarder)
@@ -518,7 +518,7 @@ _ESQPARS_JMPTBL_DST_UpdateBannerQueue:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQPROTO_VerifyChecksumAndParseRecord
+;   _ESQPROTO_VerifyChecksumAndParseRecord
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -529,7 +529,7 @@ _ESQPARS_JMPTBL_DST_UpdateBannerQueue:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord:
-    JMP     ESQPROTO_VerifyChecksumAndParseRecord
+    JMP     _ESQPROTO_VerifyChecksumAndParseRecord
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay   (Jump-table forwarder)
@@ -540,7 +540,7 @@ _ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   ESQPROTO_ParseDigitLabelAndDisplay
+;   _ESQPROTO_ParseDigitLabelAndDisplay
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -551,7 +551,7 @@ _ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay:
-    JMP     ESQPROTO_ParseDigitLabelAndDisplay
+    JMP     _ESQPROTO_ParseDigitLabelAndDisplay
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer   (Jump-table forwarder)

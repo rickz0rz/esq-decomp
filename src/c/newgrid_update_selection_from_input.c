@@ -37,11 +37,11 @@ extern long  GCOMMAND_PpvSelectionToleranceMinutes;
 extern void  NEWGRID_ClearEntryMarkerBits(long row);
 extern short NEWGRID_UpdatePresetEntry(char **entry, char **aux, long selector,
                                        long index);
-extern long  NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry,
+extern long  DISPLIB_FindPreviousValidEntryIndex(char *entry,
                  char *aux, long index);
-extern long  NEWGRID2_JMPTBL_ESQ_TestBit1Based(char *bits, long slot);
+extern long  ESQ_TestBit1Based(char *bits, long slot);
 extern long  NEWGRID_ShouldOpenEditor(char *entry);
-extern long  NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry,
+extern long  COI_ProcessEntrySelectionState(char *entry,
                  char *aux, long index, long window, long tolerance);
 extern void  NEWGRID_InitSelectionWindow(struct SelectionCtx *ctx, long mode);
 
@@ -92,11 +92,11 @@ long NEWGRID_UpdateSelectionFromInput(long state, struct SelectionCtx *ctx)
                 && (((struct GridEntry *)entry)->marker & 0x80)) {
 
                 if (NEWGRID_SelectionScanRow == ctx->firstRow)
-                    index = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(
+                    index = DISPLIB_FindPreviousValidEntryIndex(
                                 entry, aux, index);
 
                 if (index > 0
-                    && NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry + 28, index) == -1
+                    && ESQ_TestBit1Based(entry + 28, index) == -1
                     && !(aux[index + 7] & 32)) {
 
                     if (NEWGRID_ShouldOpenEditor(entry) != 0) {
@@ -108,7 +108,7 @@ long NEWGRID_UpdateSelectionFromInput(long state, struct SelectionCtx *ctx)
                     } else {
                         if (*(long *)(aux + index * 4 + 56) != 0
                             && !(aux[NEWGRID_SelectionScanRow + 7] & 0x80)
-                            && NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(
+                            && COI_ProcessEntrySelectionState(
                                    entry, aux, index,
                                    GCOMMAND_PpvSelectionWindowMinutes,
                                    GCOMMAND_PpvSelectionToleranceMinutes) != 0)

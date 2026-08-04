@@ -69,7 +69,7 @@ extern struct TextDispGroup *TEXTDISP_SecondaryTitlePtrTable[];
 
 extern char *TLIBA2_FindLastCharInString(char *s, long ch);
 extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
-extern long  TLIBA2_JMPTBL_ESQ_TestBit1Based(unsigned char *bits, long index);
+extern long  ESQ_TestBit1Based(unsigned char *bits, long index);
 extern long  TLIBA_FindFirstWildcardMatchIndex(struct TextDispGroup *g);
 
 long TLIBA2_ResolveEntryWindowAndSlotCount(struct TextDispEntry *entry,
@@ -114,7 +114,7 @@ long TLIBA2_ResolveEntryWindowAndSlotCount(struct TextDispEntry *entry,
     }
 
     while (index < 49) {
-        if (TLIBA2_JMPTBL_ESQ_TestBit1Based(entry->bits, index) + 1 != 0) {
+        if (ESQ_TestBit1Based(entry->bits, index) + 1 != 0) {
             found = 1;
             break;
         }
@@ -133,7 +133,7 @@ long TLIBA2_ResolveEntryWindowAndSlotCount(struct TextDispEntry *entry,
             wGroup = TEXTDISP_SecondaryTitlePtrTable[wild];
             index = 1;
             while (index < 49) {
-                if (TLIBA2_JMPTBL_ESQ_TestBit1Based(wEntry->bits, index) + 1 != 0)
+                if (ESQ_TestBit1Based(wEntry->bits, index) + 1 != 0)
                     break;
                 if (wGroup->text[index] && !(wGroup->flags[index] & 0x80))
                     break;

@@ -77,19 +77,19 @@ extern char          *Global_REF_RASTPORT_1;
 extern char           Global_REF_696_400_BITMAP[];
 extern char           Global_STR_RESET_COMMAND_RECEIVED[];
 
-extern unsigned char ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
-extern long  ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte(long seed, char *buf, long len);
-extern void  ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord(long cmd);
-extern void  ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList(long cmd);
-extern void  ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay(char *buf);
-extern void  ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal(char *buf);
-extern void  ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock(char *buf);
-extern void  ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer(long isEquals);
-extern void  ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer(char *buf, long len);
-extern void  ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle(char *buf, long len);
-extern void  ESQPARS_JMPTBL_PARSEINI_HandleFontCommand(char *buf);
-extern void  ESQPARS_JMPTBL_DST_HandleBannerCommand32_33(long sub, char *buf);
-extern void  ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord(char *buf);
+extern unsigned char SCRIPT_ReadNextRbfByte(void);
+extern long  ESQ_GenerateXorChecksumByte(long seed, char *buf, long len);
+extern void  ESQPROTO_VerifyChecksumAndParseRecord(long cmd);
+extern void  ESQPROTO_VerifyChecksumAndParseList(long cmd);
+extern void  ESQPROTO_ParseDigitLabelAndDisplay(char *buf);
+extern void  ESQPROTO_CopyLabelToGlobal(char *buf);
+extern void  CLEANUP_ParseAlignedListingBlock(char *buf);
+extern void  DISKIO2_HandleInteractiveFileTransfer(long isEquals);
+extern void  DISKIO_ParseConfigBuffer(char *buf, long len);
+extern void  DISKIO_SaveConfigToFileHandle(char *buf, long len);
+extern void  PARSEINI_HandleFontCommand(char *buf);
+extern void  DST_HandleBannerCommand32_33(long sub, char *buf);
+extern void  P_TYPE_ParseAndStoreTypeRecord(char *buf);
 extern void  ESQPARS_ApplyRtcBytesAndPersist(char *buf);
 extern void  ESQPARS_PersistStateDataAfterCommand(void);
 extern unsigned char ESQPARS_ReadLengthWordWithChecksumXor(long seed);
@@ -105,9 +105,9 @@ extern void  ESQIFF2_ApplyIncomingStatusPacket(char *buf);
 extern void  ESQIFF2_ClearPrimaryEntryFlags34To39(void);
 extern void  ESQIFF2_ShowVersionMismatchOverlay(void);
 
-extern void  ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes(unsigned char *dst, unsigned char *src);
-extern long  ESQSHARED_JMPTBL_ESQ_TestBit1Based(unsigned char *bits, long index);
-extern long __asm ESQIFF_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern void  ESQ_ReverseBitsIn6Bytes(unsigned char *dst, unsigned char *src);
+extern long  ESQ_TestBit1Based(unsigned char *bits, long index);
+extern long __asm MATH_Mulu32(register __d0 long a,
                                             register __d1 long b);
 extern unsigned char ESQSHARED_MatchSelectionCodeWithOptionalSuffix(char *buf);
 extern void  ESQSHARED_ParseCompactEntryRecord(char *buf);
@@ -123,8 +123,8 @@ extern void  LOCAVAIL_ParseFilterStateFromBuffer(char *buf, char *state);
 extern void  GCOMMAND_ParseCommandOptions(char *buf);
 extern void  GCOMMAND_ParseCommandString(char *buf);
 extern void  GCOMMAND_ParsePPVCommand(char *buf);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *set, long ch);
-extern void  GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition(char *rp, long x, long y,
+extern char *STR_FindCharPtr(char *set, long ch);
+extern void  DISPLIB_DisplayTextAtPosition(char *rp, long x, long y,
                                                            char *text);
 
 void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
@@ -163,7 +163,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
     long row;
     long y;
 
-    cmd = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+    cmd = SCRIPT_ReadNextRbfByte();
 
     if (ESQPARS_CommandPreambleArmedFlag == 0) {
         if (cmd == 0x55) {
@@ -184,7 +184,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         if (cmd == 65) {
             ESQIFF_RecordLength =
                 ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 0, 0);
-            if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+            if (ESQ_GenerateXorChecksumByte((long)cmd,
                     ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
                 != (long)ESQIFF_RecordChecksumByte) {
                 DATACErrs++;
@@ -201,9 +201,9 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
                 }
             }
         } else if (cmd == 87) {
-            ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord((long)cmd);
+            ESQPROTO_VerifyChecksumAndParseRecord((long)cmd);
         } else if (cmd == 119) {
-            ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList((long)cmd);
+            ESQPROTO_VerifyChecksumAndParseList((long)cmd);
         }
         ESQPARS_Preamble55SeenFlag = ESQPARS_CommandPreambleArmedFlag = 0;
         return;
@@ -297,9 +297,9 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
     case 37:                                    /* '%' arm the state save */
         ESQIFF_ParseAttemptCount++;
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        SCRIPT_ReadNextRbfByte();
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        checkByte = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        checkByte = SCRIPT_ReadNextRbfByte();
         ESQIFF_RecordChecksumByte = checkByte;
         if (checkByte == 218)
             ESQPARS_PersistOnNextBoxOffFlag = 1;
@@ -315,7 +315,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQPARS_ResetArmedFlag = 0;
         if (DISKIO2_InteractiveTransferArmedFlag != 1)
             break;
-        ESQPARS_JMPTBL_DISKIO2_HandleInteractiveFileTransfer(cmd == 61 ? 1L : 0L);
+        DISKIO2_HandleInteractiveFileTransfer(cmd == 61 ? 1L : 0L);
         break;
 
     case 67:                                    /* 'C' group record */
@@ -324,7 +324,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
             ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 1, 6);
         if (ESQIFF_RecordLength == 0)
             return;
-        if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        if (ESQ_GenerateXorChecksumByte((long)cmd,
                 ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
             != (long)ESQIFF_RecordChecksumByte)
             DATACErrs++;
@@ -337,8 +337,8 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQIFF_ParseAttemptCount++;
         ESQIFF2_ReadRbfBytesToBuffer(ESQIFF_RecordBufferPtr, 256);
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        ESQIFF_RecordChecksumByte = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
-        if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        ESQIFF_RecordChecksumByte = SCRIPT_ReadNextRbfByte();
+        if (ESQ_GenerateXorChecksumByte((long)cmd,
                 ESQIFF_RecordBufferPtr, 256) != (long)ESQIFF_RecordChecksumByte)
             DATACErrs++;
         ESQPARS_ResetArmedFlag = 0;
@@ -348,7 +348,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQIFF_ParseAttemptCount++;
         ESQIFF_RecordLength =
             ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 0, 0);
-        if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        if (ESQ_GenerateXorChecksumByte((long)cmd,
                 ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
             != (long)ESQIFF_RecordChecksumByte)
             DATACErrs++;
@@ -361,8 +361,8 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQIFF_ParseAttemptCount++;
         ESQIFF2_ReadRbfBytesToBuffer(ESQIFF_RecordBufferPtr, 21);
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        ESQIFF_RecordChecksumByte = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
-        if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        ESQIFF_RecordChecksumByte = SCRIPT_ReadNextRbfByte();
+        if (ESQ_GenerateXorChecksumByte((long)cmd,
                 ESQIFF_RecordBufferPtr, 20) != (long)ESQIFF_RecordChecksumByte) {
             DATACErrs++;
         } else if (BYTE_AT(ESQIFF_RecordBufferPtr, 0) != 65
@@ -381,14 +381,14 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQIFF_ParseAttemptCount++;
         ESQIFF_RecordLength =
             ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 0, 0);
-        if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        if (ESQ_GenerateXorChecksumByte((long)cmd,
                 ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
             != (long)ESQIFF_RecordChecksumByte)
             DATACErrs++;
         else if (ESQIFF_RecordLength > 39)
             ESQIFF_LineErrorCount++;
         else
-            ESQPARS_JMPTBL_ESQPROTO_ParseDigitLabelAndDisplay(ESQIFF_RecordBufferPtr);
+            ESQPROTO_ParseDigitLabelAndDisplay(ESQIFF_RecordBufferPtr);
         ESQPARS_ResetArmedFlag = 0;
         break;
 
@@ -398,10 +398,10 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQIFF_ParseAttemptCount++;
         ESQIFF2_ReadRbfBytesToBuffer(ESQIFF_RecordBufferPtr, 8);
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        SCRIPT_ReadNextRbfByte();
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        ESQIFF_RecordChecksumByte = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
-        if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        ESQIFF_RecordChecksumByte = SCRIPT_ReadNextRbfByte();
+        if (ESQ_GenerateXorChecksumByte((long)cmd,
                 ESQIFF_RecordBufferPtr, 8) != (long)ESQIFF_RecordChecksumByte)
             DATACErrs++;
         else if (BYTE_AT(ESQIFF_RecordBufferPtr, 0) >= 7)
@@ -422,7 +422,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQIFF_ParseAttemptCount++;
         ESQIFF_RecordLength =
             ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 0, 0);
-        if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        if (ESQ_GenerateXorChecksumByte((long)cmd,
                 ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
             != (long)ESQIFF_RecordChecksumByte)
             DATACErrs++;
@@ -441,9 +441,9 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
     case 79:                                    /* 'O' clear primary flags */
         ESQIFF_ParseAttemptCount++;
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        SCRIPT_ReadNextRbfByte();
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        checkByte = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        checkByte = SCRIPT_ReadNextRbfByte();
         if (checkByte == 176)
             ESQIFF2_ClearPrimaryEntryFlags34To39();
         else
@@ -455,7 +455,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQIFF_ParseAttemptCount++;
         ESQIFF_RecordLength =
             ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 2, 0);
-        if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        if (ESQ_GenerateXorChecksumByte((long)cmd,
                 ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
             != (long)ESQIFF_RecordChecksumByte)
             DATACErrs++;
@@ -469,9 +469,9 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
     case 82:                                    /* 'R' reset: never returns */
         ESQIFF_ParseAttemptCount++;
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        SCRIPT_ReadNextRbfByte();
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        checkByte = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        checkByte = SCRIPT_ReadNextRbfByte();
         if (checkByte != 0xad) {
             DATACErrs++;
             ESQPARS_ResetArmedFlag = 0;
@@ -487,7 +487,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
             y = (34L - (long)*(short *)(font + 26)) / 2;
             y += (long)*(unsigned short *)(font + 26);
             y += 29;
-            GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition(rp, 40, y,
+            DISPLIB_DisplayTextAtPosition(rp, 40, y,
                 Global_STR_RESET_COMMAND_RECEIVED);
         }
 
@@ -495,7 +495,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQIFF_ParseAttemptCount++;
         ESQIFF_RecordLength =
             ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 0, 0);
-        if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        if (ESQ_GenerateXorChecksumByte((long)cmd,
                 ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
             != (long)ESQIFF_RecordChecksumByte)
             DATACErrs++;
@@ -507,7 +507,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         break;
 
     case 87:                                    /* 'W' verify one record */
-        ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseRecord((long)cmd);
+        ESQPROTO_VerifyChecksumAndParseRecord((long)cmd);
         break;
 
     case 99:                                    /* 'c' program info */
@@ -516,7 +516,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
             ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 1, 0);
         if (ESQIFF_RecordLength == 0)
             DATACErrs++;
-        else if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        else if (ESQ_GenerateXorChecksumByte((long)cmd,
                      ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
                  != (long)ESQIFF_RecordChecksumByte)
             DATACErrs++;
@@ -527,7 +527,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
 
     case 102:                                   /* 'f' configuration record */
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        sub = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        sub = SCRIPT_ReadNextRbfByte();
         seed = (unsigned char)(cmd ^ sub);
         seed = ESQPARS_ReadLengthWordWithChecksumXor((long)seed);
         if (ESQIFF_RecordLength >= 0x2328) {
@@ -538,8 +538,8 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQIFF2_ReadRbfBytesToBuffer(ESQIFF_RecordBufferPtr,
                                      (long)(short)ESQIFF_RecordLength);
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        ESQIFF_RecordChecksumByte = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
-        if ((unsigned char)ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)seed,
+        ESQIFF_RecordChecksumByte = SCRIPT_ReadNextRbfByte();
+        if ((unsigned char)ESQ_GenerateXorChecksumByte((long)seed,
                 ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
             != ESQIFF_RecordChecksumByte) {
             DATACErrs++;
@@ -547,24 +547,24 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
             break;
         }
         ESQIFF_ParseAttemptCount++;
-        ESQPARS_JMPTBL_DISKIO_ParseConfigBuffer(ESQIFF_RecordBufferPtr,
+        DISKIO_ParseConfigBuffer(ESQIFF_RecordBufferPtr,
                                                 (long)ESQIFF_RecordLength);
-        ESQPARS_JMPTBL_DISKIO_SaveConfigToFileHandle(ESQIFF_RecordBufferPtr,
+        DISKIO_SaveConfigToFileHandle(ESQIFF_RecordBufferPtr,
                                                      (long)ESQIFF_RecordLength);
         break;
 
     case 103:                                   /* 'g' filter and banner group */
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        sub = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        sub = SCRIPT_ReadNextRbfByte();
         seed = (unsigned char)(cmd ^ sub);
 
         if (sub == 49) {                        /* '1' availability filter */
             ESQFUNC_WaitForClockChangeAndServiceUi();
-            one = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+            one = SCRIPT_ReadNextRbfByte();
             BYTE_AT(ESQIFF_RecordBufferPtr, 0) = one;
             ESQIFF_RecordLength = (unsigned short)
                 (ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr + 1, 0, 0) + 1);
-            if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)seed,
+            if (ESQ_GenerateXorChecksumByte((long)seed,
                     ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
                 != (long)ESQIFF_RecordChecksumByte) {
                 DATACErrs++;
@@ -580,7 +580,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
             break;
         }
 
-        if (GROUP_AS_JMPTBL_STR_FindCharPtr(ESQPARS_BannerSubcommandSet,
+        if (STR_FindCharPtr(ESQPARS_BannerSubcommandSet,
                                             (long)sub) != 0) {
             ESQIFF_RecordLength =
                 ESQIFF2_ReadSerialSizedTextRecord(ESQIFF_RecordBufferPtr, 2);
@@ -588,13 +588,13 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
                 ESQIFF_LineErrorCount++;
                 break;
             }
-            if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)seed,
+            if (ESQ_GenerateXorChecksumByte((long)seed,
                     ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
                 != (long)ESQIFF_RecordChecksumByte) {
                 DATACErrs++;
                 break;
             }
-            ESQPARS_JMPTBL_DST_HandleBannerCommand32_33((long)(char)sub,
+            DST_HandleBannerCommand32_33((long)(char)sub,
                                                         ESQIFF_RecordBufferPtr);
             ESQIFF_ParseAttemptCount++;
             break;
@@ -604,14 +604,14 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
             ESQFUNC_WaitForClockChangeAndServiceUi();
             ESQIFF_RecordLength =
                 ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 0, 0);
-            if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)seed,
+            if (ESQ_GenerateXorChecksumByte((long)seed,
                     ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
                 != (long)ESQIFF_RecordChecksumByte) {
                 DATACErrs++;
                 break;
             }
             if (sub == 53)
-                ESQPARS_JMPTBL_P_TYPE_ParseAndStoreTypeRecord(ESQIFF_RecordBufferPtr);
+                P_TYPE_ParseAndStoreTypeRecord(ESQIFF_RecordBufferPtr);
             else if (sub == 54)
                 GCOMMAND_ParseCommandOptions(ESQIFF_RecordBufferPtr);
             else if (sub == 55)
@@ -626,14 +626,14 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQIFF_ParseAttemptCount++;
         ESQIFF_RecordLength =
             ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 0, 0);
-        if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        if (ESQ_GenerateXorChecksumByte((long)cmd,
                 ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
             != (long)ESQIFF_RecordChecksumByte)
             DATACErrs++;
         else if (ESQIFF_RecordLength > 39)
             ESQIFF_LineErrorCount++;
         else
-            ESQPARS_JMPTBL_ESQPROTO_CopyLabelToGlobal(ESQIFF_RecordBufferPtr);
+            ESQPROTO_CopyLabelToGlobal(ESQIFF_RecordBufferPtr);
         ESQPARS_ResetArmedFlag = 0;
         break;
 
@@ -641,7 +641,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         ESQIFF_ParseAttemptCount++;
         ESQIFF_RecordLength =
             ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 2, 0);
-        if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        if (ESQ_GenerateXorChecksumByte((long)cmd,
                 ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
             != (long)ESQIFF_RecordChecksumByte)
             DATACErrs++;
@@ -684,7 +684,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         for (index = 0; index < 6; index++)
             if (bitmap[index] != 0)
                 bitmapClear = 0;
-        ESQSHARED_JMPTBL_ESQ_ReverseBitsIn6Bytes(rowBits, bitmap);
+        ESQ_ReverseBitsIn6Bytes(rowBits, bitmap);
 
         entry = 0;
         title = 0;
@@ -741,11 +741,11 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
         }
         count = 0;
         for (row = 1; row < 49; row++)
-            if (ESQSHARED_JMPTBL_ESQ_TestBit1Based(rowBits, row) == -1)
+            if (ESQ_TestBit1Based(rowBits, row) == -1)
                 count++;
 
         ESQIFF2_ReadRbfBytesWithXor(payload,
-            (long)(short)ESQIFF_JMPTBL_MATH_Mulu32((long)width, count), &runningXor);
+            (long)(short)MATH_Mulu32((long)width, count), &runningXor);
         ESQIFF2_ReadRbfBytesWithXor(&trailer, 1, &runningXor);
         if (trailer != 0)
             titleMatched = 0;
@@ -759,7 +759,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
 
         source = 0;
         for (row = 1; row < 49; row++) {
-            if (ESQSHARED_JMPTBL_ESQ_TestBit1Based(rowBits, row) != -1)
+            if (ESQ_TestBit1Based(rowBits, row) != -1)
                 continue;
             if (width > 0) {
                 BYTE_AT(title, row + 0xfc) = payload[source];
@@ -785,42 +785,42 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
             ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 1, 0);
         if (ESQIFF_RecordLength == 0)
             return;
-        if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        if (ESQ_GenerateXorChecksumByte((long)cmd,
                 ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
             != (long)ESQIFF_RecordChecksumByte)
             DATACErrs++;
         else if (BYTE_AT(ESQIFF_RecordBufferPtr, 1) == 49)
-            ESQPARS_JMPTBL_CLEANUP_ParseAlignedListingBlock(ESQIFF_RecordBufferPtr);
+            CLEANUP_ParseAlignedListingBlock(ESQIFF_RecordBufferPtr);
         ESQPARS_ResetArmedFlag = 0;
         break;
 
     case 119:                                   /* 'w' verify a list */
-        ESQPARS_JMPTBL_ESQPROTO_VerifyChecksumAndParseList((long)cmd);
+        ESQPROTO_VerifyChecksumAndParseList((long)cmd);
         break;
 
     case 120:                                   /* 'x' font command */
         ESQIFF_ParseAttemptCount++;
         ESQIFF_RecordLength =
             ESQIFF2_ReadSerialRecordIntoBuffer(ESQIFF_RecordBufferPtr, 0, 0);
-        if (ESQPARS_JMPTBL_ESQ_GenerateXorChecksumByte((long)cmd,
+        if (ESQ_GenerateXorChecksumByte((long)cmd,
                 ESQIFF_RecordBufferPtr, (long)ESQIFF_RecordLength)
             != (long)ESQIFF_RecordChecksumByte)
             DATACErrs++;
         else if (ESQIFF_RecordLength > 80)
             DATACErrs++;
         else
-            ESQPARS_JMPTBL_PARSEINI_HandleFontCommand(ESQIFF_RecordBufferPtr);
+            PARSEINI_HandleFontCommand(ESQIFF_RecordBufferPtr);
         ESQPARS_ResetArmedFlag = 0;
         break;
 
     case 187:                                   /* box off */
         ESQIFF_ParseAttemptCount++;
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        cmd = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        cmd = SCRIPT_ReadNextRbfByte();
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        SCRIPT_ReadNextRbfByte();
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        checkByte = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        checkByte = SCRIPT_ReadNextRbfByte();
         ESQIFF_RecordChecksumByte = checkByte;
         if (cmd != 0xbb || checkByte != 0xff) {
             DATACErrs++;

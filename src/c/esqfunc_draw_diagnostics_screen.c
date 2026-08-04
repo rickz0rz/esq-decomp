@@ -41,15 +41,15 @@
 
 struct VideoInsertionStateStrings { char *s[4]; };
 
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, ...);
-extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(void *rp,
+extern void WDISP_SPrintf(char *buf, char *fmt, ...);
+extern void TLIBA3_DrawCenteredWrappedTextLines(void *rp,
                                                                char *text,
                                                                long y);
-extern char ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void);
-extern char ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag(void);
-extern char ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag(void);
-extern long ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues(void);
-extern long ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax(void);
+extern char SCRIPT_ReadHandshakeBit5Mask(void);
+extern char SCRIPT_GetCtrlLineFlag(void);
+extern char SCRIPT_ReadHandshakeBit3Flag(void);
+extern long PARSEINI_ComputeHTCMaxValues(void);
+extern long PARSEINI_UpdateCtrlHDeltaMax(void);
 
 extern struct VideoInsertionStateStrings ESQFUNC_VideoInsertionStateStrings;
 extern void *WDISP_DisplayContextBase;
@@ -143,17 +143,17 @@ void ESQFUNC_DrawDiagnosticsScreen(void)
     rp = (struct RastPort *)((char *)WDISP_DisplayContextBase + 10);
     SetFont(rp, Global_HANDLE_TOPAZ_FONT);
 
-    if (ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit5Mask())
+    if (SCRIPT_ReadHandshakeBit5Mask())
         cartSw = ESQFUNC_STR_CLOSED_ENABLED;
     else
         cartSw = ESQFUNC_STR_OPEN_DISABLED;
 
-    if (ESQFUNC_JMPTBL_SCRIPT_GetCtrlLineFlag())
+    if (SCRIPT_GetCtrlLineFlag())
         cartRel = ESQFUNC_TAG_CLOSED;
     else
         cartRel = ESQFUNC_TAG_OPEN;
 
-    if (ESQFUNC_JMPTBL_SCRIPT_ReadCiaBBit3Flag())
+    if (SCRIPT_ReadHandshakeBit3Flag())
         vidSw = ESQFUNC_STR_CLOSED_ON_AIR;
     else
         vidSw = ESQFUNC_STR_OPEN_OFF_AIR;
@@ -165,25 +165,25 @@ void ESQFUNC_DrawDiagnosticsScreen(void)
     else
         onAir = ESQFUNC_STR_NO_DETECT;
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+    WDISP_SPrintf(buf,
         ESQFUNC_FMT_CARTSW_COLON_PCT_S_CARTREL_COLON_PCT,
         cartSw, cartRel, vidSw, onAir);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         (char *)WDISP_DisplayContextBase + 10, buf, 92L);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+    WDISP_SPrintf(buf,
         ESQFUNC_FMT_INSERTIME_PCT_S_WINIT_0X_PCT_04X,
         insertState.s[SCRIPT_RuntimeMode], (long)ESQPARS2_ReadModeFlags);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         (char *)WDISP_DisplayContextBase + 10, buf, 110L);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+    WDISP_SPrintf(buf,
         ESQFUNC_FMT_LOCAL_MODE_PCT_LD_LOCAL_UPDATE_PCT_L,
         (long)TEXTDISP_DeferredActionCountdown,
         (long)TEXTDISP_DeferredActionArmed,
         LOCAVAIL_FilterModeFlag, LOCAVAIL_FilterStep, LOCAVAIL_FilterClassId,
         LOCAVAIL_PrimaryFilterState[2], LOCAVAIL_PrimaryFilterState[3]);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         (char *)WDISP_DisplayContextBase + 10, buf, 128L);
 
     if (CLOCK_CacheAmPmFlag != 0)
@@ -191,38 +191,38 @@ void ESQFUNC_DrawDiagnosticsScreen(void)
     else
         ampm = ESQFUNC_STR_AM;
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+    WDISP_SPrintf(buf,
         ESQFUNC_FMT_CTIME_PCT_02D_SLASH_PCT_02D_SLASH_PC,
         (long)CLOCK_CacheMonthIndex0, (long)CLOCK_CacheDayIndex0,
         (long)CLOCK_CacheYear, (long)CLOCK_CacheHour,
         (long)CLOCK_CacheMinuteOrSecond, (long)Global_REF_CLOCKDATA_STRUCT,
         ampm, (long)LOCAVAIL_FilterCooldownTicks);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         (char *)WDISP_DisplayContextBase + 10, buf, 146L);
 
     chipFree = (long)AvailMem(0x20002L);
     fastFree = (long)AvailMem(4L);
     maxFree  = (long)AvailMem(0x20000L);
-    GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+    WDISP_SPrintf(buf,
         ESQFUNC_FMT_L_CHIP_COLON_PCT_07LD_FAST_COLON_PCT,
         chipFree, fastFree, maxFree);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         (char *)WDISP_DisplayContextBase + 10, buf, 164L);
 
-    htc = ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues();
-    GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+    htc = PARSEINI_ComputeHTCMaxValues();
+    WDISP_SPrintf(buf,
         ESQFUNC_FMT_DATA_COLON_CMD_CNT_COLON_PCT_08LD_CR,
         (long)ESQIFF_ParseAttemptCount, (long)DATACErrs,
         (long)ESQIFF_LineErrorCount, (long)Global_WORD_MAX_VALUE, htc);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         (char *)WDISP_DisplayContextBase + 10, buf, 182L);
 
-    htc = ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax();
-    GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+    htc = PARSEINI_UpdateCtrlHDeltaMax();
+    WDISP_SPrintf(buf,
         ESQFUNC_FMT_CTRL_COLON_CMD_CNT_COLON_PCT_08LD_CR,
         (long)SCRIPT_CtrlCmdCount, (long)SCRIPT_CtrlCmdChecksumErrorCount,
         (long)SCRIPT_CtrlCmdLengthErrorCount, (long)CTRL_HDeltaMax, htc);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         (char *)WDISP_DisplayContextBase + 10, buf, 200L);
 
     ESQFUNC_DiagRowCounter++;
@@ -231,11 +231,11 @@ void ESQFUNC_DrawDiagnosticsScreen(void)
     else
         mirrored = Global_STR_FALSE_2;
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+    WDISP_SPrintf(buf,
         ESQFUNC_FMT_PCT_05LD_COLON_PEP_COLON_PCT_LD_REUS,
         ESQFUNC_DiagRowCounter, (long)Global_RefreshTickCounter, mirrored,
         (long)SCRIPT_PlaybackFallbackCounter, (long)ED_MenuStateId);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         (char *)WDISP_DisplayContextBase + 10, buf, 218L);
 
     rp = (struct RastPort *)((char *)WDISP_DisplayContextBase + 10);

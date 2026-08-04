@@ -105,17 +105,17 @@ struct IffCtx {
 
 extern void  ESQIFF_RunCopperDropTransition(void);
 extern void  ESQIFF_RunCopperRiseTransition(void);
-extern long __asm ESQIFF_JMPTBL_MATH_DivS32(register __d0 long a,
+extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
-extern void  ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition(long steps,
+extern void  SCRIPT_BeginBannerCharTransition(long steps,
                                                             long delay);
-extern struct IffCtx *ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(
+extern struct IffCtx *TLIBA3_BuildDisplayContextForViewMode(
                           long mode, long zero, long depth);
-extern void  ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(struct IffBrush *b, long z0,
+extern void  BRUSH_SelectBrushSlot(struct IffBrush *b, long z0,
                                                  long pen, long w, long h,
                                                  struct RastPort *rp,
                                                  long z1);
-extern long  ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(long index);
+extern long  BRUSH_PlaneMaskForIndex(long index);
 
 extern struct IffBrush *ESQIFF_GAdsBrushListHead;
 extern struct IffBrush *ESQIFF_LogoBrushListHead;
@@ -189,14 +189,14 @@ void ESQIFF_ShowExternalAssetWithCopperFx(long pad, short mode)
     else
         div = 1;
 
-    steps = ESQIFF_JMPTBL_MATH_DivS32(steps, div);
+    steps = MATH_DivS32(steps, div);
 
     if (steps > 120)
         steps = 120;
 
     steps += 22;
 
-    ESQIFF_JMPTBL_SCRIPT_BeginBannerCharTransition(steps, 1000L);
+    SCRIPT_BeginBannerCharTransition(steps, 1000L);
 
     while (SCRIPT_BannerTransitionActive != 0)
         ;
@@ -211,19 +211,19 @@ void ESQIFF_ShowExternalAssetWithCopperFx(long pad, short mode)
     WDISP_AccumulatorFlushPending  = 1;
 
     if ((brush->l196 & 0x8004) == 0x8004) {
-        ctx = ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(
+        ctx = TLIBA3_BuildDisplayContextForViewMode(
                   4L, 0L, (long)brush->b184);
         pen = 20;
     } else if (brush->b198 & 0x80) {
-        ctx = ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(
+        ctx = TLIBA3_BuildDisplayContextForViewMode(
                   6L, 0L, (long)brush->b184);
         pen = 10;
     } else if (brush->b199 & 4) {
-        ctx = ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(
+        ctx = TLIBA3_BuildDisplayContextForViewMode(
                   5L, 0L, (long)brush->b184);
         pen = 20;
     } else {
-        ctx = ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(
+        ctx = TLIBA3_BuildDisplayContextForViewMode(
                   7L, 0L, (long)brush->b184);
         pen = 10;
     }
@@ -233,17 +233,17 @@ void ESQIFF_ShowExternalAssetWithCopperFx(long pad, short mode)
     SetRast(&ctx->rp, 0L);
     SetAPen(&WDISP_DisplayContextBase->rp, 7L);
 
-    ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(
+    BRUSH_SelectBrushSlot(
         brush, 0L, pen, (long)WDISP_DisplayContextBase->w2 - 1,
         (long)WDISP_DisplayContextBase->w4 - 1,
         &WDISP_DisplayContextBase->rp, 0L);
 
     if (brush->l328 == 0 || brush->l328 == 1) {
 
-        mask5 = ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex(5L);
+        mask5 = BRUSH_PlaneMaskForIndex(5L);
         mask5 = (mask5 << 2) - mask5;
 
-        maskDepth = ESQPARS_JMPTBL_BRUSH_PlaneMaskForIndex((long)brush->b184);
+        maskDepth = BRUSH_PlaneMaskForIndex((long)brush->b184);
         maskDepth = (maskDepth << 2) - maskDepth;
 
         for (i = 0; i < maskDepth && i < mask5; i++)

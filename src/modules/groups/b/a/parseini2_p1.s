@@ -154,14 +154,14 @@ _PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   CLOCK_CheckDateOrSecondsFromEpoch
+;   _CLOCK_CheckDateOrSecondsFromEpoch
 ; DESC:
-;   Jump stub to CLOCK_CheckDateOrSecondsFromEpoch.
+;   Jump stub to _CLOCK_CheckDateOrSecondsFromEpoch.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch:
-    JMP     CLOCK_CheckDateOrSecondsFromEpoch
+    JMP     _CLOCK_CheckDateOrSecondsFromEpoch
 
 ;------------------------------------------------------------------------------
 ; FUNC: _PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock   (JumpStub_BATTCLOCK_GetSecondsFromBatteryBackedClock)
@@ -226,14 +226,14 @@ _PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   CLOCK_SecondsFromEpoch
+;   _CLOCK_SecondsFromEpoch
 ; DESC:
-;   Jump stub to CLOCK_SecondsFromEpoch.
+;   Jump stub to _CLOCK_SecondsFromEpoch.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch:
-    JMP     CLOCK_SecondsFromEpoch
+    JMP     _CLOCK_SecondsFromEpoch
 
 ;!======
 

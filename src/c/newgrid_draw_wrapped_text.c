@@ -35,8 +35,8 @@
 #include "esq-graphics.h"
 #include <string.h>
 
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
-extern char *NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(char *src, char *dst, long max, char *delims);
+extern char *STR_SkipClass3Chars(char *s);
+extern char *STR_CopyUntilAnyDelimN(char *src, char *dst, long max, char *delims);
 extern char Global_STR_SINGLE_SPACE[];
 extern char NEWGRID_WrapWordSpacer[];
 extern char NEWGRID_WrapReturnSpacer[];
@@ -53,7 +53,7 @@ char *NEWGRID_DrawWrappedText(struct RastPort *rp, long x, long y, long maxWidth
     char *wordStart;
 
     if (text)
-        cursor = NEWGRID2_JMPTBL_STR_SkipClass3Chars(text);
+        cursor = STR_SkipClass3Chars(text);
     else
         cursor = 0;
     wordStart = cursor;
@@ -62,8 +62,8 @@ char *NEWGRID_DrawWrappedText(struct RastPort *rp, long x, long y, long maxWidth
     Move(rp, x, y);
 
     while (cursor) {
-        cursor = NEWGRID_JMPTBL_STR_CopyUntilAnyDelimN(cursor, word, 50, NEWGRID_WrapWordSpacer);
-        cursor = NEWGRID2_JMPTBL_STR_SkipClass3Chars(cursor);
+        cursor = STR_CopyUntilAnyDelimN(cursor, word, 50, NEWGRID_WrapWordSpacer);
+        cursor = STR_SkipClass3Chars(cursor);
         if (word[0] == 0)
             return 0;
 

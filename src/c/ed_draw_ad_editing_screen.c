@@ -28,9 +28,9 @@ extern void DISPLIB_DisplayTextAtPosition(struct RastPort *rp, long x, long y,
                                           char *text);
 extern void SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_LINE_OR_PAGE(long mode);
 extern void SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR(long mode);
-extern long __asm ESQIFF_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long n);
+extern void WDISP_SPrintf(char *buf, char *fmt, long n);
 
 void ED_DrawAdEditingScreen(void)
 {
@@ -60,7 +60,7 @@ void ED_DrawAdEditingScreen(void)
     SetAPen(Global_REF_RASTPORT_1, 1);
     SetBPen(Global_REF_RASTPORT_1, 7);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(label,
+    WDISP_SPrintf(label,
         Global_STR_EDITING_AD_NUMBER_FORMATTED_1,
         Global_REF_LONG_CURRENT_EDITING_AD_NUMBER);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 190, 300, label);

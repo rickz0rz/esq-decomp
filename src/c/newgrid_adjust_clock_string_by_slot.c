@@ -49,8 +49,8 @@
  */
 #include <string.h>
 
-extern long NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(char *rec);
-extern void NEWGRID_JMPTBL_DATETIME_SecondsToStruct(long secs, char *rec);
+extern long DATETIME_NormalizeStructToSeconds(char *rec);
+extern void DATETIME_SecondsToStruct(long secs, char *rec);
 /* The callee takes the 22-byte clock record as a struct, not as bytes. Declaring
  * it `char *` here compiled alone and clashed the moment this file and
  * newgrid_compute_day_slot_from_clock.c were merged into one unit, which is the
@@ -68,9 +68,9 @@ long NEWGRID_AdjustClockStringBySlot(char *clock)
     long secs;
 
     memcpy(tmp, clock, 22);
-    secs = NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(tmp);
+    secs = DATETIME_NormalizeStructToSeconds(tmp);
     secs -= 60 * (((long)CLOCK_FormatVariantCode - ((long)CLOCK_FormatVariantCode / 30) * 30));
-    NEWGRID_JMPTBL_DATETIME_SecondsToStruct(secs, tmp);
+    DATETIME_SecondsToStruct(secs, tmp);
 
     return NEWGRID_ComputeDaySlotFromClock((struct NewGridClockData *)tmp);
 }

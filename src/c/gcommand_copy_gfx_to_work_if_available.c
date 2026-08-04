@@ -27,9 +27,9 @@
  */
 #include "esq-dos.h"
 
-extern long GROUP_AT_JMPTBL_DOS_SystemTagList(char *cmd, void *tags);
-extern void GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0(void);
-extern void GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1(void);
+extern long DOS_SystemTagList(char *cmd, void *tags);
+extern void ED1_WaitForFlagAndClearBit0(void);
+extern void ED1_WaitForFlagAndClearBit1(void);
 
 extern char GCOMMAND_PATH_GFX_COLON[];
 extern char GCOMMAND_STR_WORK_COLON[];
@@ -56,10 +56,10 @@ void GCOMMAND_CopyGfxToWorkIfAvailable(void)
     UnLock(lock);
     lock = 0;
 
-    rc = GROUP_AT_JMPTBL_DOS_SystemTagList(
+    rc = DOS_SystemTagList(
              GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_LOGO_DOT_LS, 0L);
-    rc = GROUP_AT_JMPTBL_DOS_SystemTagList(
+    rc = DOS_SystemTagList(
              GCOMMAND_CMD_COPY_NIL_COLON_GFX_COLON_WORK_COLON_, 0L);
-    GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit0();
-    GROUP_AT_JMPTBL_ED1_WaitForFlagAndClearBit1();
+    ED1_WaitForFlagAndClearBit0();
+    ED1_WaitForFlagAndClearBit1();
 }

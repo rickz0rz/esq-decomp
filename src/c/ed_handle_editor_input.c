@@ -142,11 +142,11 @@ extern void ED_DrawESCMenuBottomHelp(void);
 extern void ED_NextAdNumber(void);
 extern void ED_PrevAdNumber(void);
 extern void ED_DrawEditHelpText(void);
-extern long GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble(long v);
-extern long GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(long v);
-extern long ED1_JMPTBL_LADFUNC_MergeHighLowNibbles(long ch, long nib);
-extern long ED1_JMPTBL_LADFUNC_PackNibblesToByte(long nib, long ch);
-extern void ED1_JMPTBL_MEM_Move(char *a, char *b, long n);
+extern long LADFUNC_GetPackedPenLowNibble(long v);
+extern long LADFUNC_GetPackedPenHighNibble(long v);
+extern long LADFUNC_SetPackedPenLowNibble(long ch, long nib);
+extern long LADFUNC_SetPackedPenHighNibble(long nib, long ch);
+extern void MEM_Move(char *a, char *b, long n);
 extern void SET_A_PEN_1_B_PEN_6_DRMD_1_DRAW_TEXT_OR_CURSOR(long mode);
 extern void DISPLIB_DisplayTextAtPosition(struct RastPort *rp, long x, long y,
                                           char *text);
@@ -186,8 +186,8 @@ void ED_HandleEditorInput(void)
 
     case 2:
         /* Step the HIGH nibble, wrapping at 8. */
-        nib = GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(ED_CurrentChar) + 1;
-        ED_CurrentChar = (unsigned char)ED1_JMPTBL_LADFUNC_PackNibblesToByte(
+        nib = LADFUNC_GetPackedPenHighNibble(ED_CurrentChar) + 1;
+        ED_CurrentChar = (unsigned char)LADFUNC_SetPackedPenHighNibble(
             nib - (nib / 8) * 8,
             ED_CurrentChar);
         if (Global_REF_BOOL_IS_TEXT_OR_CURSOR == 1)
@@ -196,8 +196,8 @@ void ED_HandleEditorInput(void)
 
     case 6:
         /* Step the LOW nibble, wrapping at 8. */
-        nib = GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble(ED_CurrentChar) + 1;
-        ED_CurrentChar = (unsigned char)ED1_JMPTBL_LADFUNC_MergeHighLowNibbles(
+        nib = LADFUNC_GetPackedPenLowNibble(ED_CurrentChar) + 1;
+        ED_CurrentChar = (unsigned char)LADFUNC_SetPackedPenLowNibble(
             ED_CurrentChar,
             nib - (nib / 8) * 8);
         if (Global_REF_BOOL_IS_TEXT_OR_CURSOR == 1)
@@ -242,11 +242,11 @@ void ED_HandleEditorInput(void)
             ED_DrawCursorChar();
         } else if (Global_REF_BOOL_IS_LINE_OR_PAGE != 0) {
             ED_TempCopyOffset = ED_BlockOffset - 1;
-            ED1_JMPTBL_MEM_Move(
+            MEM_Move(
                 &ED_EditBufferScratchShiftBase[ED_EditCursorOffset],
                 &ED_EditBufferScratch[ED_EditCursorOffset],
                 ED_TempCopyOffset - ED_EditCursorOffset);
-            ED1_JMPTBL_MEM_Move(
+            MEM_Move(
                 &ED_EditBufferLiveShiftBase[ED_EditCursorOffset],
                 &ED_EditBufferLive[ED_EditCursorOffset],
                 ED_TempCopyOffset - ED_EditCursorOffset);
@@ -258,11 +258,11 @@ void ED_HandleEditorInput(void)
         } else {
             ED_TempCopyOffset = 40 * (ED_ViewportOffset + 1) - 1;
             if (ED_EditCursorOffset < ED_TempCopyOffset) {
-                ED1_JMPTBL_MEM_Move(
+                MEM_Move(
                     &ED_EditBufferScratchShiftBase[ED_EditCursorOffset],
                     &ED_EditBufferScratch[ED_EditCursorOffset],
                     ED_TempCopyOffset - ED_EditCursorOffset);
-                ED1_JMPTBL_MEM_Move(
+                MEM_Move(
                     &ED_EditBufferLiveShiftBase[ED_EditCursorOffset],
                     &ED_EditBufferLive[ED_EditCursorOffset],
                     ED_TempCopyOffset - ED_EditCursorOffset);
@@ -379,11 +379,11 @@ void ED_HandleEditorInput(void)
             /* insert a row: shift everything below down by one line */
             if (ED_ViewportOffset >= ED_TextLimit - 1)
                 break;
-            ED1_JMPTBL_MEM_Move(
+            MEM_Move(
                 &ED_EditBufferScratch[40 * ED_ViewportOffset],
                 &ED_EditBufferScratch[40 * (ED_ViewportOffset + 1)],
                 ED_BlockOffset - 40 * (ED_ViewportOffset + 1));
-            ED1_JMPTBL_MEM_Move(
+            MEM_Move(
                 &ED_EditBufferLive[40 * ED_ViewportOffset],
                 &ED_EditBufferLive[40 * (ED_ViewportOffset + 1)],
                 ED_BlockOffset - 40 * (ED_ViewportOffset + 1));
@@ -402,11 +402,11 @@ void ED_HandleEditorInput(void)
             /* delete a row: shift everything below up by one line */
             if (ED_ViewportOffset >= ED_TextLimit - 1)
                 break;
-            ED1_JMPTBL_MEM_Move(
+            MEM_Move(
                 &ED_EditBufferScratch[40 * (ED_ViewportOffset + 1)],
                 &ED_EditBufferScratch[40 * ED_ViewportOffset],
                 ED_BlockOffset - 40 * (ED_ViewportOffset + 1));
-            ED1_JMPTBL_MEM_Move(
+            MEM_Move(
                 &ED_EditBufferLive[40 * (ED_ViewportOffset + 1)],
                 &ED_EditBufferLive[40 * ED_ViewportOffset],
                 ED_BlockOffset - 40 * (ED_ViewportOffset + 1));
@@ -442,11 +442,11 @@ void ED_HandleEditorInput(void)
                 ED_DrawCursorChar();
             } else if (Global_REF_BOOL_IS_LINE_OR_PAGE != 0) {
                 ED_TempCopyOffset = ED_BlockOffset - 1;
-                ED1_JMPTBL_MEM_Move(
+                MEM_Move(
                     &ED_EditBufferScratch[ED_EditCursorOffset],
                     &ED_EditBufferScratchShiftBase[ED_EditCursorOffset],
                     ED_TempCopyOffset - ED_EditCursorOffset);
-                ED1_JMPTBL_MEM_Move(
+                MEM_Move(
                     &ED_EditBufferLive[ED_EditCursorOffset],
                     &ED_EditBufferLiveShiftBase[ED_EditCursorOffset],
                     ED_TempCopyOffset - ED_EditCursorOffset);
@@ -457,11 +457,11 @@ void ED_HandleEditorInput(void)
             } else {
                 ED_TempCopyOffset = 40 * (ED_ViewportOffset + 1) - 1;
                 if (ED_EditCursorOffset < ED_TempCopyOffset) {
-                    ED1_JMPTBL_MEM_Move(
+                    MEM_Move(
                         &ED_EditBufferScratch[ED_EditCursorOffset],
                         &ED_EditBufferScratchShiftBase[ED_EditCursorOffset],
                         ED_TempCopyOffset - ED_EditCursorOffset);
-                    ED1_JMPTBL_MEM_Move(
+                    MEM_Move(
                         &ED_EditBufferLive[ED_EditCursorOffset],
                         &ED_EditBufferLiveShiftBase[ED_EditCursorOffset],
                         ED_TempCopyOffset - ED_EditCursorOffset);

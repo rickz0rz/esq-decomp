@@ -41,7 +41,7 @@
  */
 extern long  DISKIO_LoadFileToWorkBuffer(char *path);
 extern void  DISKIO_ParseConfigBuffer(char *buf, long len);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                      void *p, long size);
 
 extern long  Global_REF_LONG_FILE_SCRATCH;
@@ -62,7 +62,7 @@ long DISKIO_LoadConfigFromDisk(void)
 
     DISKIO_ParseConfigBuffer(buf, Global_REF_LONG_FILE_SCRATCH + 1);
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO_C_9, 1344L, buf,
+    MEMORY_DeallocateMemory(Global_STR_DISKIO_C_9, 1344L, buf,
                                             len + 1);
     return 0;
 }

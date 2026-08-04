@@ -99,10 +99,10 @@
 
 extern void  FLIB2_LoadDigitalPpvDefaults(void);
 extern void  GCOMMAND_LoadPPVTemplate(void);
-extern void  GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
-extern long  ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern void  STRING_CopyPadNul(char *dst, char *src, long n);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern long  LADFUNC_ParseHexDigit(long ch);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *s, long ch);
+extern char *STR_FindCharPtr(char *s, long ch);
 extern char *ESQPARS_ReplaceOwnedString(char *newStr, char *old);
 
 extern unsigned char WDISP_CharClassTable[];
@@ -150,9 +150,9 @@ void GCOMMAND_ParsePPVCommand(char *cmd)
 
     if (cmd != 0 && *cmd != 0) {
 
-        GROUP_AW_JMPTBL_STRING_CopyPadNul(scratch, cmd, 2L);
+        STRING_CopyPadNul(scratch, cmd, 2L);
         scratch[2] = 0;
-        limit = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch) + 2;
+        limit = PARSE_ReadSignedLongSkipClass3_Alt(scratch) + 2;
 
         i = 2;
 
@@ -181,7 +181,7 @@ void GCOMMAND_ParsePPVCommand(char *cmd)
             scratch[1] = cmd[i + 1];
             scratch[2] = cmd[i + 2];
             scratch[3] = 0;
-            v = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+            v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
             if (v >= 0 && v <= 999
                 && (WDISP_CharClassTable[(long)scratch[0]] & 4)
                 && (WDISP_CharClassTable[(long)scratch[1]] & 4)
@@ -196,7 +196,7 @@ void GCOMMAND_ParsePPVCommand(char *cmd)
             scratch[1] = cmd[i + 1];
             scratch[2] = cmd[i + 2];
             scratch[3] = 0;
-            v = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+            v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
             if (v >= 0 && v <= 999
                 && (WDISP_CharClassTable[(long)scratch[0]] & 4)
                 && (WDISP_CharClassTable[(long)scratch[1]] & 4)
@@ -289,9 +289,9 @@ void GCOMMAND_ParsePPVCommand(char *cmd)
 
         /* two-character number, bound unreachable -> PpvShowtimesRowSpan */
         if (i < limit) {
-            GROUP_AW_JMPTBL_STRING_CopyPadNul(scratch, cmd + i, 2L);
+            STRING_CopyPadNul(scratch, cmd + i, 2L);
             scratch[2] = 0;
-            v = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+            v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
             if (v >= 0 || v <= bound)
                 GCOMMAND_PpvShowtimesRowSpan = v;
         }
@@ -304,7 +304,7 @@ void GCOMMAND_ParsePPVCommand(char *cmd)
 
         if (cmd[t] != 0) {
 
-            split = GROUP_AS_JMPTBL_STR_FindCharPtr(cmd + t, (long)marker);
+            split = STR_FindCharPtr(cmd + t, (long)marker);
 
             if (split != 0 && *split == marker) {
 

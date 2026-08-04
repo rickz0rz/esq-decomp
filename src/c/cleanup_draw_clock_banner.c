@@ -32,10 +32,10 @@
 #include "esq-graphics.h"
 #include <string.h>
 
-extern long GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(long hour, long ampm);
-extern void GROUP_AE_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long a, long b, long c);
+extern long PARSEINI_AdjustHoursTo24HrFormat(long hour, long ampm);
+extern void WDISP_SPrintf(char *buf, char *fmt, long a, long b, long c);
 extern void BEVEL_DrawBevelFrameWithTopRight(void *rp, long x0, long y0, long x1, long y1);
-extern void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(struct BitMap *src, long sx, long sy,
+extern void GRAPHICS_BltBitMapRastPort(struct BitMap *src, long sx, long sy,
                                                        void *drp, long dx, long dy,
                                                        long w, long h, long minterm);
 extern struct RastPort *NEWGRID_MainRastPortPtr;
@@ -60,13 +60,13 @@ void CLEANUP_DrawClockBanner(void)
         return;
 
     if (Global_REF_STR_USE_24_HR_CLOCK[0] == 'Y') {
-        hour = GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(Global_WORD_CURRENT_HOUR,
+        hour = PARSEINI_AdjustHoursTo24HrFormat(Global_WORD_CURRENT_HOUR,
                                                                 CLOCK_CurrentAmPmFlag);
-        GROUP_AE_JMPTBL_WDISP_SPrintf(buf, Global_STR_EXTRA_TIME_FORMAT, hour,
+        WDISP_SPrintf(buf, Global_STR_EXTRA_TIME_FORMAT, hour,
                                       Global_WORD_CURRENT_MINUTE,
                                       Global_WORD_CURRENT_SECOND);
     } else {
-        GROUP_AE_JMPTBL_WDISP_SPrintf(buf, Global_STR_GRID_TIME_FORMAT,
+        WDISP_SPrintf(buf, Global_STR_GRID_TIME_FORMAT,
                                       Global_WORD_CURRENT_HOUR,
                                       Global_WORD_CURRENT_MINUTE,
                                       Global_WORD_CURRENT_SECOND);
@@ -85,7 +85,7 @@ void CLEANUP_DrawClockBanner(void)
     SetAPen(NEWGRID_MainRastPortPtr, 1L);
     Text(NEWGRID_MainRastPortPtr, buf, (long)strlen(buf));
 
-    GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(NEWGRID_MainRastPortPtr->BitMap, 0, 0,
+    GRAPHICS_BltBitMapRastPort(NEWGRID_MainRastPortPtr->BitMap, 0, 0,
                                                NEWGRID_MainRastPortPtr, 0, 34,
                                                NEWGRID_ColumnStartXPx + 36L, 34, 192);
 }

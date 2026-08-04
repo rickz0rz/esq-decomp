@@ -28,11 +28,11 @@ extern char  Global_STR_ESQPARS_C_2[];
 extern char  Global_STR_ESQPARS_C_3[];
 extern char  Global_STR_ESQPARS_C_4[];
 
-extern void ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine(void);
+extern void SCRIPT_ResetCtrlContextAndClearStatusLine(void);
 extern void ESQIFF2_ClearLineHeadTailByMode(long mode);
-extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void MEMORY_DeallocateMemory(char *who, long line,
                                                   void *ptr, long size);
-extern void ESQPARS_JMPTBL_COI_FreeEntryResources(char *entry);
+extern void COI_FreeEntryResources(char *entry);
 
 void ESQPARS_RemoveGroupEntryAndReleaseStrings(short mode)
 {
@@ -42,7 +42,7 @@ void ESQPARS_RemoveGroupEntryAndReleaseStrings(short mode)
     short            i;
     short            j;
 
-    ESQPARS_JMPTBL_SCRIPT_ResetCtrlContextAndClearStatusLine();
+    SCRIPT_ResetCtrlContextAndClearStatusLine();
     ESQIFF2_ClearLineHeadTailByMode((long)mode);
 
     if (mode == 2) {
@@ -72,7 +72,7 @@ void ESQPARS_RemoveGroupEntryAndReleaseStrings(short mode)
         while (title != 0 && j < 49) {
             str = title->slots[j];
             if (str != 0) {
-                ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_2,
+                MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_2,
                     1025, str, (long)strlen(str) + 1);
                 title->slots[j] = 0;
             }
@@ -80,11 +80,11 @@ void ESQPARS_RemoveGroupEntryAndReleaseStrings(short mode)
         }
 
         if (title != 0)
-            ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_3, 1031,
+            MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_3, 1031,
                                                   title, 500);
-        ESQPARS_JMPTBL_COI_FreeEntryResources(entry);
+        COI_FreeEntryResources(entry);
         if (entry != 0)
-            ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_4, 1040,
+            MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_4, 1040,
                                                   entry, 52);
         i--;
     }

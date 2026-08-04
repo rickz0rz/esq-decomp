@@ -20,13 +20,13 @@ extern char CLEANUP_AlignedInsetNibblePrimary;
 extern char CLEANUP_AlignedInsetNibbleSecondary;
 extern char CLOCK_AlignedInsetRenderGateFlag;
 
-extern char *GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(long row, long kind);
+extern char *ESQDISP_GetEntryPointerByMode(long row, long kind);
 extern long  CLEANUP_TestEntryFlagYAndBit1(char *entry, long slot, long kind);
 extern char *COI_GetAnimFieldPointerByMode(char *entry, long slot, long mode);
-extern void  GROUP_AE_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long a,
+extern void  WDISP_SPrintf(char *buf, char *fmt, long a,
                                            char *s, long b);
-extern void  GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
-extern long  GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit(long c);
+extern void  STRING_AppendAtNull(char *dst, char *src);
+extern long  LADFUNC_ParseHexDigit(long c);
 
 void CLEANUP_BuildAlignedStatusLine(char *line, short flag, short row,
                                     short slot, long kind, long centered)
@@ -38,7 +38,7 @@ void CLEANUP_BuildAlignedStatusLine(char *line, short flag, short row,
     char *flags;
 
     text = 0;
-    entry = GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode((long)row,
+    entry = ESQDISP_GetEntryPointerByMode((long)row,
                 flag != 0 ? 1 : 2);
 
     if (CLEANUP_TestEntryFlagYAndBit1(entry, (long)slot, kind) != 0)
@@ -49,15 +49,15 @@ void CLEANUP_BuildAlignedStatusLine(char *line, short flag, short row,
         return;
     }
 
-    GROUP_AE_JMPTBL_WDISP_SPrintf(wrap, CLOCK_FMT_WRAP_CHAR_STRING_CHAR, 19,
+    WDISP_SPrintf(wrap, CLOCK_FMT_WRAP_CHAR_STRING_CHAR, 19,
                                   text, 20);
 
     if (centered != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(line, TEXTDISP_CenterAlignToken);
+        STRING_AppendAtNull(line, TEXTDISP_CenterAlignToken);
     else
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(line, CLOCK_STR_DOUBLE_SPACE);
+        STRING_AppendAtNull(line, CLOCK_STR_DOUBLE_SPACE);
 
-    GROUP_AI_JMPTBL_STRING_AppendAtNull(line, wrap);
+    STRING_AppendAtNull(line, wrap);
 
     flags = COI_GetAnimFieldPointerByMode(entry, (long)slot, 7);
     if (flags == 0) {
@@ -67,13 +67,13 @@ void CLEANUP_BuildAlignedStatusLine(char *line, short flag, short row,
 
     if (WDISP_CharClassTable[flags[6]] & 0x80)
         CLEANUP_AlignedInsetNibblePrimary =
-            GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((long)flags[6]);
+            LADFUNC_ParseHexDigit((long)flags[6]);
     else
         CLEANUP_AlignedInsetNibblePrimary = ~0;
 
     if (WDISP_CharClassTable[flags[7]] & 0x80)
         CLEANUP_AlignedInsetNibbleSecondary =
-            GROUP_AE_JMPTBL_LADFUNC_ParseHexDigit((long)flags[7]);
+            LADFUNC_ParseHexDigit((long)flags[7]);
     else
         CLEANUP_AlignedInsetNibbleSecondary = ~0;
 

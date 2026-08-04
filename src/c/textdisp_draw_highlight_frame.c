@@ -34,17 +34,17 @@ extern unsigned char CONFIG_LRBN_FlagChar;
 extern void  TLIBA3_ClearViewModeRastPort(long mode, long flags);
 extern struct DisplayContext *TLIBA3_BuildDisplayContextForViewMode(long mode,
                  long a, long b);
-extern void  WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void  ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
 extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
-extern void  WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
-extern void  WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
+extern void  ESQIFF_RunCopperDropTransition(void);
+extern void  ESQIFF_RestoreBasePaletteTriples(void);
 extern long  SCRIPT_BeginBannerCharTransition(long target, long rate);
 extern void  TLIBA1_DrawFormattedTextBlock(struct RastPort *rp, char *text,
                  long x, long y, long right, long bottom);
-extern void  TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
+extern void  ESQIFF_RunCopperRiseTransition(void);
 extern void  TEXTDISP_ResetSelectionState(struct HighlightCtx *ctx);
 
 void TEXTDISP_DrawHighlightFrame(struct HighlightCtx *ctx)
@@ -67,7 +67,7 @@ void TEXTDISP_DrawHighlightFrame(struct HighlightCtx *ctx)
 
     TLIBA3_ClearViewModeRastPort(8, 0);
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(8, 0, 3);
-    WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+    ESQ_SetCopperEffect_OnEnableHighlight();
 
     width = (unsigned short)WDISP_DisplayContextBase->width;
     span = TEXTDISP_EntryTextBaseWidthPx - 22;
@@ -84,8 +84,8 @@ void TEXTDISP_DrawHighlightFrame(struct HighlightCtx *ctx)
     WDISP_AccumulatorFlushPending = 0;
     rp = (struct RastPort *)((char *)WDISP_DisplayContextBase + 10);
 
-    WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
-    WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
+    ESQIFF_RunCopperDropTransition();
+    ESQIFF_RestoreBasePaletteTriples();
 
     if (CONFIG_LRBN_FlagChar == 89) {
         if (WDISP_DisplayContextBase->flags & 4)
@@ -110,6 +110,6 @@ void TEXTDISP_DrawHighlightFrame(struct HighlightCtx *ctx)
     TLIBA1_DrawFormattedTextBlock(rp, ctx->text, left, top, right, (long)bottom);
 
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(8, 0, 3);
-    TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition();
+    ESQIFF_RunCopperRiseTransition();
     TEXTDISP_ResetSelectionState(ctx);
 }

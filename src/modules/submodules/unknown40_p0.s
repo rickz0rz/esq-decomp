@@ -1,8 +1,8 @@
-    XDEF    EXEC_CallVector_48
+    XDEF    _EXEC_CallVector_48
 
 
 ;------------------------------------------------------------------------------
-; FUNC: EXEC_CallVector_48   (Exec.library call wrapper at LVO -48.)
+; FUNC: _EXEC_CallVector_48   (Exec.library call wrapper at LVO -48.)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -14,7 +14,7 @@
 ; NOTES:
 ;   Vector identity unknown; verify against call sites.
 ;------------------------------------------------------------------------------
-EXEC_CallVector_48:
+_EXEC_CallVector_48:
     MOVEM.L A2/A6,-(A7)
 
     MOVEA.L _INPUTDEVICE_LibraryBaseFromConsoleIo,A6

@@ -29,7 +29,7 @@
 #include "esq-graphics.h"
 #include <string.h>
 
-extern void GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(char *seg, long align);
+extern void DISPLIB_ApplyInlineAlignmentPadding(char *seg, long align);
 extern struct RastPort *Global_REF_RASTPORT_1;
 extern unsigned short LADFUNC_LineSlotWriteIndex;
 extern unsigned short LADFUNC_LineControlCodeTable[];
@@ -72,7 +72,7 @@ void LADFUNC_BuildHighlightLinesFromText(char *text)
         }
 
         seg[segLen] = 0;
-        GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(seg, (long)align);
+        DISPLIB_ApplyInlineAlignmentPadding(seg, (long)align);
         strcpy(LADFUNC_LineTextBufferPtrs[LADFUNC_LineSlotWriteIndex], seg);
         LADFUNC_LineControlCodeTable[LADFUNC_LineSlotWriteIndex] = 0;
         LADFUNC_LineSlotWriteIndex++;
@@ -84,7 +84,7 @@ void LADFUNC_BuildHighlightLinesFromText(char *text)
     }
 
     seg[segLen] = 0;
-    GROUP_AW_JMPTBL_DISPLIB_ApplyInlineAlignmentPadding(seg, (long)align);
+    DISPLIB_ApplyInlineAlignmentPadding(seg, (long)align);
     strcpy(LADFUNC_LineTextBufferPtrs[LADFUNC_LineSlotWriteIndex], seg);
     LADFUNC_LineControlCodeTable[LADFUNC_LineSlotWriteIndex] = 0;
     LADFUNC_LineSlotWriteIndex++;

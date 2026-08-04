@@ -88,15 +88,15 @@ struct TdAux2 {
 };
 
 extern void  TEXTDISP_ResetSelectionState(struct TdRec *rec);
-extern struct TdAux2 *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(long i,
+extern struct TdAux2 *ESQDISP_GetEntryAuxPointerByMode(long i,
                                                                      long m);
-extern struct TdEntry2 *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(long i,
+extern struct TdEntry2 *ESQDISP_GetEntryPointerByMode(long i,
                                                                     long m);
 extern void  TEXTDISP_BuildEntryShortName(struct TdEntry2 *e, char *out);
 extern void  STRING_AppendAtNull(char *dst, char *src);
 extern char *TEXTDISP_SkipControlCodes(char *s);
 extern void  WDISP_SPrintf(char *dst, char *fmt, char *arg);
-extern char *TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(char *hay, char *needle);
+extern char *ESQ_FindSubstringCaseFold(char *hay, char *needle);
 extern char *STR_FindCharPtr(char *s, long ch);
 extern void  TEXTDISP_FormatEntryTimeForIndex(char *buf, long idx, void *aux);
 extern void  TEXTDISP_TrimTextToPixelWidth(char *text, long width);
@@ -133,9 +133,9 @@ void TEXTDISP_BuildEntryDetailLine(struct TdRec *rec)
 
     titlePtr = rec->title;
 
-    aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(rec->index,
+    aux = ESQDISP_GetEntryAuxPointerByMode(rec->index,
                                                          rec->mode);
-    entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(rec->index,
+    entry = ESQDISP_GetEntryPointerByMode(rec->index,
                                                         rec->mode);
 
     out  = rec->out;
@@ -167,13 +167,13 @@ void TEXTDISP_BuildEntryDetailLine(struct TdRec *rec)
 
         WDISP_SPrintf(work, SCRIPT_AlignedStringFormat, p);
 
-        p = TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(work,
+        p = ESQ_FindSubstringCaseFold(work,
                                                     SCRIPT_StrAtSeparator);
         if (p == 0)
-            p = TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(
+            p = ESQ_FindSubstringCaseFold(
                     work, SCRIPT_StrVsDotSeparator);
         if (p == 0)
-            p = TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(
+            p = ESQ_FindSubstringCaseFold(
                     work, SCRIPT_StrVsSeparator);
 
         if (p != 0) {

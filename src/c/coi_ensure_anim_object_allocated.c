@@ -27,9 +27,9 @@
  *   summary: 4EBA against 6100 for the two cross-unit calls.
  */
 
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size,
+extern void *MEMORY_AllocateMemory(char *who, long line, long size,
                                                    long flags);
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *newText, char *old);
+extern char *ESQPARS_ReplaceOwnedString(char *newText, char *old);
 
 extern char COI_STR_DEFAULT_TOKEN_TEMPLATE_B[];
 extern char Global_STR_COI_C_2[];
@@ -57,10 +57,10 @@ void COI_EnsureAnimObjectAllocated(struct CoiEntry *entry)
         return;
 
     entry->anim = (struct CoiAnimOb *)
-        GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_COI_C_2, 1458L, 42L,
+        MEMORY_AllocateMemory(Global_STR_COI_C_2, 1458L, 42L,
                                               0x00010001L);
     entry->anim->tokenTemplate =
-        GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(COI_STR_DEFAULT_TOKEN_TEMPLATE_B,
+        ESQPARS_ReplaceOwnedString(COI_STR_DEFAULT_TOKEN_TEMPLATE_B,
                                                    entry->anim->tokenTemplate);
     entry->anim->sentinel = -1;
 }

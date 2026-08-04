@@ -27,17 +27,17 @@ extern char NEWGRID_ChannelRowFmt[];
 
 extern short NEWGRID_UpdatePresetEntry(char **entry, char **aux, long sel,
                                        long ctx);
-extern void  NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(long width, long lead,
+extern void  DISPTEXT_SetLayoutParams(long width, long lead,
                                                       long pen);
 extern void  NEWGRID_DrawGridEntry(struct RastPort *rp, char *entry, char *aux,
                                    long slot, long mode, long flag, long pen);
-extern void  NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(long index);
-extern void  PARSEINI_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, char *a,
+extern void  DISPTEXT_SetCurrentLineIndex(long index);
+extern void  WDISP_SPrintf(char *buf, char *fmt, char *a,
                                            char *b);
-extern void  NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(struct RastPort *rp,
+extern void  DISPTEXT_LayoutAndAppendToBuffer(struct RastPort *rp,
                                                               char *buf);
 extern long  NEWGRID_DrawGridFrameVariant2(struct GridPanel *panel);
-extern long  NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(long mode);
+extern long  DISPTEXT_ComputeVisibleLineCount(long mode);
 
 long NEWGRID_HandleDetailGridState(struct GridPanel *panel, long ctx, short sel)
 {
@@ -61,7 +61,7 @@ long NEWGRID_HandleDetailGridState(struct GridPanel *panel, long ctx, short sel)
         if (aux == 0)
             return NEWGRID_DetailGridStateLatch;
 
-        NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(612, 20,
+        DISPTEXT_SetLayoutParams(612, 20,
                                                  GCOMMAND_MplexDetailLayoutPen);
 
         if (GCOMMAND_MplexDetailLayoutFlag == 78)
@@ -69,15 +69,15 @@ long NEWGRID_HandleDetailGridState(struct GridPanel *panel, long ctx, short sel)
         else
             NEWGRID_DrawGridEntry(&panel->rp, entry, aux, slot, 3, 1, 4);
 
-        NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(
+        DISPTEXT_SetCurrentLineIndex(
             GCOMMAND_MplexDetailInitialLineIndex);
-        PARSEINI_JMPTBL_WDISP_SPrintf(buf, NEWGRID_ChannelRowFmt, entry + 19,
+        WDISP_SPrintf(buf, NEWGRID_ChannelRowFmt, entry + 19,
                                       entry + 1);
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(&panel->rp, buf);
+        DISPTEXT_LayoutAndAppendToBuffer(&panel->rp, buf);
         NEWGRID_DetailGridStateLatch =
             NEWGRID_DrawGridFrameVariant2(panel) ? 4 : 5;
         panel->visibleLines =
-            NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2);
+            DISPTEXT_ComputeVisibleLineCount(2);
         break;
 
     case 5:

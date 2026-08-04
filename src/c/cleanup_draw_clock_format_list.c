@@ -65,7 +65,7 @@ extern struct RastPort *NEWGRID_MainRastPortPtr;
 extern short NEWGRID_ColumnStartXPx;
 extern short NEWGRID_ColumnWidthPx;
 
-extern void GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds(long a, long b, long c,
+extern void GCOMMAND_UpdateBannerBounds(long a, long b, long c,
                                                         long d);
 extern void BEVEL_DrawBevelFrameWithTopRight(struct RastPort *rp, long x1,
                                              long y1, long x2, long y2);
@@ -83,7 +83,7 @@ void CLEANUP_DrawClockFormatList(long startIndex)
     long  y;
     long  baseline;
 
-    GROUP_AC_JMPTBL_GCOMMAND_UpdateBannerBounds(0L, 5L, 6L, 0L);
+    GCOMMAND_UpdateBannerBounds(0L, 5L, 6L, 0L);
 
     SetAPen(NEWGRID_MainRastPortPtr, 7L);
     RectFill(NEWGRID_MainRastPortPtr, (long)NEWGRID_ColumnStartXPx + 36, 0L,

@@ -39,9 +39,9 @@
 #include <string.h>
 
 extern void ESQ_FormatTimeStamp(char *buf, void *dayIndex);
-extern long GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(long hour, long ampm);
-extern void GROUP_AE_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long a, long b, long c);
-extern void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(struct BitMap *src, long sx, long sy,
+extern long PARSEINI_AdjustHoursTo24HrFormat(long hour, long ampm);
+extern void WDISP_SPrintf(char *buf, char *fmt, long a, long b, long c);
+extern void GRAPHICS_BltBitMapRastPort(struct BitMap *src, long sx, long sy,
                                                        void *drp, long dx, long dy,
                                                        long w, long h, long minterm);
 extern struct RastPort *Global_REF_RASTPORT_1;
@@ -76,9 +76,9 @@ void CLEANUP_DrawGridTimeBanner(void)
     buf[9] = 0;
 
     if (Global_REF_STR_USE_24_HR_CLOCK[0] == 'Y') {
-        hour = GROUP_AC_JMPTBL_PARSEINI_AdjustHoursTo24HrFormat(Global_WORD_CURRENT_HOUR,
+        hour = PARSEINI_AdjustHoursTo24HrFormat(Global_WORD_CURRENT_HOUR,
                                                                 CLOCK_CurrentAmPmFlag);
-        GROUP_AE_JMPTBL_WDISP_SPrintf(buf, Global_STR_GRID_TIME_FORMAT_DUPLICATE, hour,
+        WDISP_SPrintf(buf, Global_STR_GRID_TIME_FORMAT_DUPLICATE, hour,
                                       Global_WORD_CURRENT_MINUTE,
                                       Global_WORD_CURRENT_SECOND);
     }
@@ -100,7 +100,7 @@ void CLEANUP_DrawGridTimeBanner(void)
         Text(Global_REF_RASTPORT_1, &buf[9], (long)strlen(&buf[9]));
     }
 
-    GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(Global_REF_RASTPORT_1->BitMap, x, 0,
+    GRAPHICS_BltBitMapRastPort(Global_REF_RASTPORT_1->BitMap, x, 0,
                                                Global_REF_RASTPORT_1, x + 448, 40,
                                                ampmWidth,
                                                (long)Global_REF_RASTPORT_1->TxHeight - 2,

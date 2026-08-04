@@ -13,7 +13,7 @@ extern void *Global_REF_RASTPORT_1;
 extern char  Global_STR_REBOOTING_COMPUTER[];
 extern long  ED_IsConfirmKey(void);
 extern void  DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
-extern void  ED1_JMPTBL_ESQ_ColdReboot(void);
+extern void  ESQ_ColdReboot(void);
 extern void  ED_DrawESCMenuBottomHelp(void);
 void ED_RebootComputer(void)
 {
@@ -24,7 +24,7 @@ void ED_RebootComputer(void)
                                       Global_STR_REBOOTING_COMPUTER);
         for (i = 0; i < 0xaae60L; i += 2)
             ;
-        ED1_JMPTBL_ESQ_ColdReboot();
+        ESQ_ColdReboot();
     }
     ED_DrawESCMenuBottomHelp();
 }

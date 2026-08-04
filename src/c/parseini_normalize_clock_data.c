@@ -75,8 +75,8 @@ struct ParseIniClockData {
     short leapYear;             /* +20 */
 };
 
-extern short PARSEINI2_JMPTBL_DATETIME_IsLeapYear(long year);
-extern void  PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay(
+extern short DATETIME_IsLeapYear(long year);
+extern void  ESQ_CalcDayOfYearFromMonthDay(
     struct ParseIniClockData *c);
 
 void PARSEINI_NormalizeClockData(struct ParseIniClockData *dst,
@@ -100,10 +100,10 @@ void PARSEINI_NormalizeClockData(struct ParseIniClockData *dst,
 
     dst->mday++;
 
-    if (PARSEINI2_JMPTBL_DATETIME_IsLeapYear((long)dst->year))
+    if (DATETIME_IsLeapYear((long)dst->year))
         dst->leapYear = -1;
     else
         dst->leapYear = 0;
 
-    PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay(dst);
+    ESQ_CalcDayOfYearFromMonthDay(dst);
 }

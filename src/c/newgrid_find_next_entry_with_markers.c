@@ -26,7 +26,7 @@ struct NewGridAux {
 extern short NEWGRID_UpdatePresetEntry(struct NewGridEntry **entry,
                                        struct NewGridAux **aux,
                                        long selector, long index);
-extern long  NEWGRID2_JMPTBL_ESQ_TestBit1Based(char *bits, long slot);
+extern long  ESQ_TestBit1Based(char *bits, long slot);
 extern long  NEWGRID_ShouldOpenEditor(struct NewGridEntry *entry);
 
 extern unsigned short TEXTDISP_PrimaryGroupEntryCount;
@@ -57,7 +57,7 @@ long NEWGRID_FindNextEntryWithMarkers(long op, long index, short selector)
         if (entry != 0 && aux != 0
             && (entry->state & 2)
             && (entry->marker & 0x80)
-            && NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->bitset, (long)selector) == -1
+            && ESQ_TestBit1Based(entry->bitset, (long)selector) == -1
             && NEWGRID_ShouldOpenEditor(entry) == 0
             && ((aux->selectorFlags[selector] & 2)
                 || (entry->editorFlags & 0x10))

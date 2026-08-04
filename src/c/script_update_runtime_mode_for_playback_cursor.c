@@ -51,7 +51,7 @@
  *            version; see docs/compiler-version.md.
  */
 extern void SCRIPT_BeginBannerCharTransition(long ch, long speed);
-extern void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern void TEXTDISP_SetRastForMode(long mode);
 extern void SCRIPT_UpdateSerialShadowFromCtrlByte(long shadow);
 extern void SCRIPT_ClearSearchTextsAndChannels(void);
@@ -81,7 +81,7 @@ short SCRIPT_UpdateRuntimeModeForPlaybackCursor(void)
         SCRIPT_RuntimeMode             = 2;
         SCRIPT_RuntimeModeDispatchLatch = 1;
 
-        WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+        ESQ_SetCopperEffect_OnEnableHighlight();
         TEXTDISP_SetRastForMode(0L);
 
         if (CONFIG_MSN_FlagChar == 'M' || CONFIG_MSN_FlagChar == 'S') {

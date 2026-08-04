@@ -22,9 +22,9 @@ extern long  DISPTEXT_ControlMarkerWidthPx;
 extern long  DISPTEXT_LineWidthPx;
 extern short DISPTEXT_ControlMarkersEnabledFlag;
 
-extern void  GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
-extern char *GROUP_AI_JMPTBL_STR_SkipClass3Chars(char *s);
-extern char *GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN(char *src, char *dst,
+extern void  STRING_AppendAtNull(char *dst, char *src);
+extern char *STR_SkipClass3Chars(char *s);
+extern char *STR_CopyUntilAnyDelimN(char *src, char *dst,
                                                     long max, char *delims);
 
 char *DISPTEXT_BuildLineWithWidth(struct RastPort *rp, char *src, char *out,
@@ -44,13 +44,13 @@ char *DISPTEXT_BuildLineWithWidth(struct RastPort *rp, char *src, char *out,
 
     while (src != 0 && *src != 0 && width > spaceW) {
         if (*out != 0)
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(out,
+            STRING_AppendAtNull(out,
                 DISPTEXT_STR_SINGLE_SPACE_APPEND);
         width -= spaceW;
 
-        src = GROUP_AI_JMPTBL_STR_SkipClass3Chars(src);
+        src = STR_SkipClass3Chars(src);
         start = src;
-        src = GROUP_AI_JMPTBL_STR_CopyUntilAnyDelimN(src, word, 50,
+        src = STR_CopyUntilAnyDelimN(src, word, 50,
                   DISPTEXT_STR_SINGLE_SPACE_DELIM);
 
         wlen = strlen(word);
@@ -80,14 +80,14 @@ char *DISPTEXT_BuildLineWithWidth(struct RastPort *rp, char *src, char *out,
             }
             if (wlen > 0) {
                 word[wlen] = 0;
-                GROUP_AI_JMPTBL_STRING_AppendAtNull(out, word);
+                STRING_AppendAtNull(out, word);
             }
             src = start + wlen;
             width = 0;
             continue;
         }
 
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(out, word);
+        STRING_AppendAtNull(out, word);
         width -= wpx;
         DISPTEXT_ControlMarkersEnabledFlag =
             DISPTEXT_ControlMarkersEnabledFlag | (*start == 19);

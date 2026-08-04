@@ -92,24 +92,24 @@ struct NgAux {
 
 extern void  NEWGRID_DrawGridHeaderRows(struct NgCtx *ctx, long headerPen,
                                         long markerPen);
-extern long  NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
-extern short NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(void *clock);
-extern long  NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(void *title);
+extern long  DISPTEXT_IsCurrentLineLast(void);
+extern short ESQ_GetHalfHourSlotIndex(void *clock);
+extern long  TLIBA_FindFirstWildcardMatchIndex(void *title);
 extern long  NEWGRID_SelectEntryPen(void *entry);
 extern void  NEWGRID_DrawGridFrame(struct NgCtx *ctx, long a, long headerPen,
                                    long selPtr, long height);
-extern void *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(long i, long mode);
-extern struct NgAux *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(long i,
+extern void *ESQDISP_GetEntryPointerByMode(long i, long mode);
+extern struct NgAux *ESQDISP_GetEntryAuxPointerByMode(long i,
                                                                       long mode);
 extern long  NEWGRID_GetEntryStateCode(void *entry, void *aux, long idx);
 extern long  NEWGRID_TestEntryState(long state, long index, long match,
                                     long idx);
-extern short NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(void *entry,
+extern short DISPLIB_FindPreviousValidEntryIndex(void *entry,
                                                                  void *aux,
                                                                  long idx);
-extern void  NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(long w, long h,
+extern void  DISPTEXT_SetLayoutParams(long w, long h,
                                                       long pen);
-extern void  NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths(char *panel,
+extern void  DISPTEXT_ComputeMarkerWidths(char *panel,
                                                           long a, long b);
 extern void  NEWGRID_DrawEntryRowOrPlaceholder(char *panel, void *entry,
                                                void *aux, long idx, long span,
@@ -118,7 +118,7 @@ extern void  NEWGRID_DrawSelectionMarkers(struct NgCtx *ctx, long row,
                                           long span, long pen, long a,
                                           long b);
 extern void  NEWGRID_DrawGridCell(char *panel, void *entry, long flag);
-extern long  NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(long n);
+extern long  DISPTEXT_ComputeVisibleLineCount(long n);
 
 extern void *TEXTDISP_PrimaryEntryPtrTable[];
 extern void *TEXTDISP_PrimaryTitlePtrTable[];
@@ -175,7 +175,7 @@ long NEWGRID_ProcessGridEntries(struct NgCtx *ctx, long index, short slot)
                                NEWGRID_SelectionMarkerPenState);
     ctx->f32 = -1;
 
-    if (NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0)
+    if (DISPTEXT_IsCurrentLineLast() == 0)
         goto returnState;
 
     NEWGRID_GridEntriesWorkflowState = 4;
@@ -183,8 +183,8 @@ long NEWGRID_ProcessGridEntries(struct NgCtx *ctx, long index, short slot)
 
 state4:
     if (slot > 44 || slot == 1
-        || NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(CLOCK_DaySlotIndex) == 1)
-        match = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(
+        || ESQ_GetHalfHourSlotIndex(CLOCK_DaySlotIndex) == 1)
+        match = TLIBA_FindFirstWildcardMatchIndex(
                     TEXTDISP_PrimaryTitlePtrTable[index]);
     else
         match = -1;
@@ -209,11 +209,11 @@ state4:
         entry = aux = 0;
 
         if ((long)slot + (long)row > 48 || slot == 1
-            || NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(CLOCK_DaySlotIndex)
+            || ESQ_GetHalfHourSlotIndex(CLOCK_DaySlotIndex)
                    == 1) {
 
-            entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(match, 2L);
-            aux   = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(match,
+            entry = ESQDISP_GetEntryPointerByMode(match, 2L);
+            aux   = ESQDISP_GetEntryAuxPointerByMode(match,
                                                                      2L);
 
             t = (long)slot + (long)row;
@@ -225,8 +225,8 @@ state4:
 
         } else {
 
-            entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(index, 1L);
-            aux   = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(index,
+            entry = ESQDISP_GetEntryPointerByMode(index, 1L);
+            aux   = ESQDISP_GetEntryAuxPointerByMode(index,
                                                                      1L);
 
             idxB = idxA = idxC = slot + row;
@@ -245,7 +245,7 @@ state4:
             t = 1;
 
             w = (long)NEWGRID_ColumnWidthPx * span - 12;
-            NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(w, 2L, 1L);
+            DISPTEXT_SetLayoutParams(w, 2L, 1L);
             NEWGRID_DrawEntryRowOrPlaceholder(ctx->panel, entry, aux,
                                               (long)idxB, (long)span, t);
             goto maybeDrawMarkers;
@@ -265,7 +265,7 @@ state4:
         }
 
         if (t == 3) {
-            idxB = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(
+            idxB = DISPLIB_FindPreviousValidEntryIndex(
                        entry, aux, (long)idxA);
             if (idxB == 0)
                 t = 1;
@@ -322,9 +322,9 @@ state4:
             cellH = 2;
 
         w = (long)NEWGRID_ColumnWidthPx * span - 12;
-        NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(w, cellH,
+        DISPTEXT_SetLayoutParams(w, cellH,
                                                  NEWGRID_RowLayoutCommitPenId);
-        NEWGRID2_JMPTBL_DISPTEXT_ComputeMarkerWidths(ctx->panel, markerA,
+        DISPTEXT_ComputeMarkerWidths(ctx->panel, markerA,
                                                      markerB);
         NEWGRID_DrawEntryRowOrPlaceholder(ctx->panel, entry, aux, (long)idxB,
                                           (long)span, t);
@@ -340,7 +340,7 @@ drawSimpleCell:
         NEWGRID_RowLayoutCommitPenId    = 1;
 
         w = (long)NEWGRID_ColumnWidthPx * span - 12;
-        NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(w, 2L, 1L);
+        DISPTEXT_SetLayoutParams(w, 2L, 1L);
         NEWGRID_DrawEntryRowOrPlaceholder(ctx->panel, entry, aux, (long)idxB,
                                           (long)span, t);
 
@@ -358,7 +358,7 @@ maybeDrawMarkers:
     }
 
     if (span == 3 && CONFIG_NewgridPlaceholderBevelFlag == 89
-        && NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0) {
+        && DISPTEXT_IsCurrentLineLast() == 0) {
 
         NEWGRID_DrawGridCell(ctx->panel, firstEntry, 0L);
         NEWGRID_GridEntriesWorkflowState = 5;
@@ -372,7 +372,7 @@ maybeDrawMarkers:
     }
 
     ctx->w52 = (short)((unsigned short)NEWGRID_RowHeightPx >> 1);
-    ctx->f32 = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2L);
+    ctx->f32 = DISPTEXT_ComputeVisibleLineCount(2L);
 
 returnState:
     state = NEWGRID_GridEntriesWorkflowState;

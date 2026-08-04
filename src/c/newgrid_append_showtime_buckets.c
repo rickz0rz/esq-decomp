@@ -45,7 +45,7 @@ struct NewGridShowtimeBucket {
     char *text;
 };
 
-extern void PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern void STRING_AppendAtNull(char *dst, char *src);
 
 extern struct NewGridShowtimeBucket *NEWGRID_ShowtimeBucketPtrTable[];
 extern long NEWGRID_ShowtimeBucketCount;
@@ -55,11 +55,11 @@ void NEWGRID_AppendShowtimeBuckets(char *dst)
 {
     long i;
 
-    PARSEINI_JMPTBL_STRING_AppendAtNull(dst, NEWGRID_ShowtimeBucketPtrTable[0]->text);
+    STRING_AppendAtNull(dst, NEWGRID_ShowtimeBucketPtrTable[0]->text);
 
     for (i = 1; i < NEWGRID_ShowtimeBucketCount; i++) {
-        PARSEINI_JMPTBL_STRING_AppendAtNull(dst, NEWGRID_ShowtimeBucketSeparator);
-        PARSEINI_JMPTBL_STRING_AppendAtNull(dst,
+        STRING_AppendAtNull(dst, NEWGRID_ShowtimeBucketSeparator);
+        STRING_AppendAtNull(dst,
                                             NEWGRID_ShowtimeBucketPtrTable[i]->text);
     }
 }

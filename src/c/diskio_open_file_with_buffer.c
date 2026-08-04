@@ -35,9 +35,9 @@ struct DiskIoBufferControl { void *BufferBase; long ErrorFlag; };
 struct DiskIoBufferState   { char *BufferPtr; long BufferSize; long Remaining;
                              short SavedF45; };
 
-extern void  GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(void);
-extern BPTR  GROUP_AG_JMPTBL_DOS_OpenFileWithMode(char *path, long mode);
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void  ESQFUNC_ServiceUiTickIfRunning(void);
+extern BPTR  DOS_OpenFileWithMode(char *path, long mode);
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
 
 extern struct DiskIoBufferControl DISKIO_BufferControl;
@@ -51,14 +51,14 @@ BPTR DISKIO_OpenFileWithBuffer(char *path, long mode)
     BPTR  fh = 0;
     char *buf;
 
-    GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+    ESQFUNC_ServiceUiTickIfRunning();
 
     if (DISKIO_OpenCount != 0)
         return fh;
 
     DISKIO_BufferControl.ErrorFlag = 0;
 
-    fh = GROUP_AG_JMPTBL_DOS_OpenFileWithMode(path, mode);
+    fh = DOS_OpenFileWithMode(path, mode);
 
     if (fh != 0) {
         if (DISKIO_OpenCount == 0)
@@ -67,7 +67,7 @@ BPTR DISKIO_OpenFileWithBuffer(char *path, long mode)
         DISKIO_OpenCount++;
         ESQPARS2_ReadModeFlags = 0x100;
 
-        buf = (char *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+        buf = (char *)MEMORY_AllocateMemory(
             Global_STR_DISKIO_C_1, 286L, DISKIO_BufferState.BufferSize,
             MEMF_PUBLIC);
 
@@ -76,6 +76,6 @@ BPTR DISKIO_OpenFileWithBuffer(char *path, long mode)
         DISKIO_BufferControl.BufferBase   = buf;
     }
 
-    GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+    ESQFUNC_ServiceUiTickIfRunning();
     return fh;
 }

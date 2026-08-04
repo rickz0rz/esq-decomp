@@ -45,7 +45,7 @@
  */
 #include <exec/memory.h>
 
-extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size,
+extern void *MEMORY_AllocateMemory(char *who, long line, long size,
                                                  long flags);
 extern char  Global_STR_SCRIPT_C_1[];
 
@@ -54,6 +54,6 @@ void SCRIPT_AllocateBufferArray(void **arr, short size, short count)
     short i;
 
     for (i = 0; i < count; i++)
-        arr[i] = SCRIPT_JMPTBL_MEMORY_AllocateMemory(
+        arr[i] = MEMORY_AllocateMemory(
             Global_STR_SCRIPT_C_1, 394L, (long)size, MEMF_PUBLIC | MEMF_CLEAR);
 }

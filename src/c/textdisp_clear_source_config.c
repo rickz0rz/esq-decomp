@@ -46,7 +46,7 @@ struct TextDispSourceConfig {
 };
 #endif
 
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newStr, char *old);
+extern char *ESQPARS_ReplaceOwnedString(char *newStr, char *old);
 extern void  MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
 
 extern long TEXTDISP_SourceConfigEntryCount;
@@ -61,7 +61,7 @@ void TEXTDISP_ClearSourceConfig(void)
     for (i = 0; i < TEXTDISP_SourceConfigEntryCount; i++) {
         if (TEXTDISP_SourceConfigEntryTable[i] != 0) {
             TEXTDISP_SourceConfigEntryTable[i]->name =
-                ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(
+                ESQPARS_ReplaceOwnedString(
                     0, TEXTDISP_SourceConfigEntryTable[i]->name);
 
             MEMORY_DeallocateMemory(Global_STR_TEXTDISP_C_3, 1153L,

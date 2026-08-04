@@ -71,7 +71,7 @@ struct DiskioRec {
     unsigned short w46;                 /* +46 */
 };
 
-extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(char *fmt, ...);
+extern void FORMAT_RawDoFmtWithScratchBuffer(char *fmt, ...);
 
 extern char DISKIO_FMT_CHANNEL_LINE_UP_PCT_D[];
 extern char DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT[];
@@ -91,60 +91,60 @@ extern char DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord[
 
 void DISKIO1_DumpProgramSourceRecordVerbose(struct DiskioRec *rec, long num)
 {
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_CHANNEL_LINE_UP_PCT_D, num);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_ETID_PCT_D_CHAN_NUM_PCT_S_SOURCE_PCT, (long)rec->b0,
         rec->name, rec->chan, rec->source);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_ATTR);
+    FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_ATTR);
 
     if (rec->flags == 1)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_NONE_VerboseSourceAttrFlags);
 
     if (rec->flags & 2)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_HILITE_SRC_VerboseSourceAttrFlags);
 
     if (rec->flags & 4)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_SUM_SRC_VerboseSourceAttrFlags);
 
     if (rec->flags & 8)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_VIDEO_TAG_DISABLE_VerboseSourceAttrFlags);
 
     if (rec->flags & 0x10)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_PPV_SRC_VerboseSourceAttrFlags);
 
     if (rec->flags & 0x20)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_DITTO_VerboseSourceAttrFlags);
 
     if (rec->flags & 0x40)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_ALTHILITESRC_VerboseSourceAttrFlags);
 
     if (rec->flags & 0x80)
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_STEREO);
+        FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_STEREO);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_STR_ProgramAttrCloseParenNewline);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_TSLT_MASK_PCT_02X_PCT_02X_PCT_02X_PC, (long)rec->tslt[0],
         (long)rec->tslt[1], (long)rec->tslt[2], (long)rec->tslt[3],
         (long)rec->tslt[4], (long)rec->tslt[5]);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_BLKOUT_MASK_PCT_02X_PCT_02X_PCT_02X_, (long)rec->blk[0],
         (long)rec->blk[1], (long)rec->blk[2], (long)rec->blk[3],
         (long)rec->blk[4], (long)rec->blk[5]);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_FLAG1_0X_PCT_02X_FLAG2_0X_PCT_04X_BG_VerboseSourceRecord,
         (long)rec->b40, (long)rec->w46, (long)rec->b41, (long)rec->b42,
         rec->tail);

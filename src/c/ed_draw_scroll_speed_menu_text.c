@@ -25,7 +25,7 @@ extern char Global_STR_SCROLL_SPEED_5[];
 extern char Global_STR_SCROLL_SPEED_6[];
 extern char Global_STR_SCROLL_SPEED_7[];
 
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long value);
+extern void WDISP_SPrintf(char *buf, char *fmt, long value);
 extern void DISPLIB_DisplayTextAtPosition(struct RastPort *rp, long x, long y,
                                           char *text);
 
@@ -36,7 +36,7 @@ void ED_DrawScrollSpeedMenuText(void)
     SetAPen(Global_REF_RASTPORT_1, 1);
     SetDrMd(Global_REF_RASTPORT_1, 0);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(line,
+    WDISP_SPrintf(line,
         ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED_PCT_C,
         (long)ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED);
 

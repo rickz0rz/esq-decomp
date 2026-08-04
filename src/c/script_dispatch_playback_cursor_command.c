@@ -73,9 +73,9 @@ extern unsigned char SCRIPT_PendingTextdispCmdArg;
 extern long  SCRIPT_CommandTextPtr;
 extern short SCRIPT_RuntimeMode;
 
-extern void WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
-extern void SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom(void);
-extern void SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(long a, long b, long c);
+extern void ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void ESQ_SetCopperEffect_Custom(void);
+extern void CLEANUP_RenderAlignedStatusScreen(long a, long b, long c);
 extern void TEXTDISP_SetRastForMode(long mode);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
 extern void SCRIPT_UpdateSerialShadowFromCtrlByte(long v);
@@ -94,7 +94,7 @@ void SCRIPT_DispatchPlaybackCursorCommand(struct CmdSlot *slot)
 
     case 2:
         TEXTDISP_CurrentMatchIndex = -1;
-        WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+        ESQ_SetCopperEffect_OnEnableHighlight();
         TEXTDISP_SetRastForMode(0L);
         if (CONFIG_MSN_FlagChar == 77)
             SCRIPT_UpdateSerialShadowFromCtrlByte(3L);
@@ -104,7 +104,7 @@ void SCRIPT_DispatchPlaybackCursorCommand(struct CmdSlot *slot)
 
     case 3:
         TEXTDISP_CurrentMatchIndex = -1;
-        WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+        ESQ_SetCopperEffect_OnEnableHighlight();
         TEXTDISP_SetRastForMode(0L);
         SCRIPT_UpdateSerialShadowFromCtrlByte(1L);
         break;
@@ -119,17 +119,17 @@ void SCRIPT_DispatchPlaybackCursorCommand(struct CmdSlot *slot)
         break;
 
     case 5:
-        SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(
+        CLEANUP_RenderAlignedStatusScreen(
             TEXTDISP_ChannelSourceMode, SCRIPT_ChannelRangeDigitChar, 0L);
         break;
 
     case 6:
-        SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(
+        CLEANUP_RenderAlignedStatusScreen(
             1L, 53L, (long)(short)SCRIPT_SearchMatchCountOrIndex);
         break;
 
     case 7:
-        SCRIPT3_JMPTBL_CLEANUP_RenderAlignedStatusScreen(
+        CLEANUP_RenderAlignedStatusScreen(
             0L, 53L, (long)(short)SCRIPT_SearchMatchCountOrIndex);
         break;
 
@@ -151,7 +151,7 @@ void SCRIPT_DispatchPlaybackCursorCommand(struct CmdSlot *slot)
         break;
 
     case 11:
-        WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+        ESQ_SetCopperEffect_OnEnableHighlight();
         TEXTDISP_SetRastForMode(0L);
         SCRIPT_PendingBannerSpeedMs = 1000;
         SCRIPT_PendingBannerTargetChar = CONFIG_BannerCopperHeadByte + 28;
@@ -163,7 +163,7 @@ void SCRIPT_DispatchPlaybackCursorCommand(struct CmdSlot *slot)
         break;
 
     case 13:
-        SCRIPT3_JMPTBL_ESQ_SetCopperEffect_Custom();
+        ESQ_SetCopperEffect_Custom();
         break;
 
     case 14:

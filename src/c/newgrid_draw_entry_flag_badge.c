@@ -23,13 +23,13 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the six cross-unit calls.
  */
-extern void  NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(long w, long lines, long pen);
-extern long  NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1(unsigned char *e, long row, long k);
-extern void *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(unsigned char *e, long row, long k);
-extern void  NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes(unsigned char *e, long row);
-extern void  NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(void *dst, char *fmt, long a,
+extern void  DISPTEXT_SetLayoutParams(long w, long lines, long pen);
+extern long  CLEANUP_TestEntryFlagYAndBit1(unsigned char *e, long row, long k);
+extern void *COI_SelectAnimFieldPointer(unsigned char *e, long row, long k);
+extern void  CLEANUP_UpdateEntryFlagBytes(unsigned char *e, long row);
+extern void  DISPTEXT_BuildLayoutForSource(void *dst, char *fmt, long a,
                                                            void *anim, long b, void *src);
-extern void  NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *dst, void *src);
+extern void  DISPTEXT_LayoutAndAppendToBuffer(void *dst, void *src);
 extern char  NEWGRID_EntryDetailFmtStr[];
 
 void NEWGRID_DrawEntryFlagBadge(void *dst, unsigned char *entry, short row,
@@ -37,18 +37,18 @@ void NEWGRID_DrawEntryFlagBadge(void *dst, unsigned char *entry, short row,
 {
     void *anim;
 
-    NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(612, 20, pen);
+    DISPTEXT_SetLayoutParams(612, 20, pen);
 
     if (entry && (entry[27] & 0x10)
-        && NEWGRID2_JMPTBL_CLEANUP_TestEntryFlagYAndBit1(entry, (long)row, 5)) {
-        anim = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry, (long)row, 6);
+        && CLEANUP_TestEntryFlagYAndBit1(entry, (long)row, 5)) {
+        anim = COI_SelectAnimFieldPointer(entry, (long)row, 6);
         if (anim) {
-            NEWGRID2_JMPTBL_CLEANUP_UpdateEntryFlagBytes(entry, (long)row);
-            NEWGRID2_JMPTBL_DISPTEXT_BuildLayoutForSource(dst, NEWGRID_EntryDetailFmtStr,
+            CLEANUP_UpdateEntryFlagBytes(entry, (long)row);
+            DISPTEXT_BuildLayoutForSource(dst, NEWGRID_EntryDetailFmtStr,
                                                           19, anim, 20, src);
             return;
         }
     }
 
-    NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(dst, src);
+    DISPTEXT_LayoutAndAppendToBuffer(dst, src);
 }

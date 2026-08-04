@@ -9,12 +9,12 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
  */
-extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *s, long c);
+extern char *STR_FindCharPtr(char *s, long c);
 long ED_FindNextCharInTable(unsigned char c, char *table)
 {
     char *p;
 
-    p = GROUP_AI_JMPTBL_STR_FindCharPtr(table, (long)c);
+    p = STR_FindCharPtr(table, (long)c);
     if (p != 0)
         p = p + 1;
     else

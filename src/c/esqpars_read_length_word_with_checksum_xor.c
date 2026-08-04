@@ -53,7 +53,7 @@
 extern unsigned short ESQIFF_RecordLength;
 
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
-extern long ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
+extern long SCRIPT_ReadNextRbfByte(void);
 
 unsigned char ESQPARS_ReadLengthWordWithChecksumXor(unsigned char xorAcc)
 {
@@ -63,7 +63,7 @@ unsigned char ESQPARS_ReadLengthWordWithChecksumXor(unsigned char xorAcc)
     ESQIFF_RecordLength = i = 0;
     while (i < 2) {
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        b = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        b = SCRIPT_ReadNextRbfByte();
         xorAcc ^= b;
         ESQIFF_RecordLength = (unsigned short)((ESQIFF_RecordLength << 8) + b);
         i++;

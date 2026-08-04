@@ -25,10 +25,10 @@ extern char P_TYPE_STR_NXTDAY_COLON_WriteSection[];
 extern char P_TYPE_FMT_PCT_03D_PCT_02D[];
 extern char P_TYPE_STR_NO_DATA[];
 
-extern long SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(char *path, long line);
-extern void SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(long fh, char *buf, long n);
-extern void SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(long fh);
-extern void PARSEINI_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long a, long b);
+extern long DISKIO_OpenFileWithBuffer(char *path, long line);
+extern void DISKIO_WriteBufferedBytes(long fh, char *buf, long n);
+extern void DISKIO_CloseBufferedFileAndFlush(long fh);
+extern void WDISP_SPrintf(char *buf, char *fmt, long a, long b);
 
 void P_TYPE_WritePromoIdDataFile(void)
 {
@@ -38,7 +38,7 @@ void P_TYPE_WritePromoIdDataFile(void)
     long i;
     struct PromoRec *rec;
 
-    fh = SCRIPT_JMPTBL_DISKIO_OpenFileWithBuffer(
+    fh = DISKIO_OpenFileWithBuffer(
              P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Write, 1006);
     if (fh == 0)
         return;
@@ -48,21 +48,21 @@ void P_TYPE_WritePromoIdDataFile(void)
 
     while (sect != 2) {
         rec = P_TYPE_PrimaryGroupListPtr[sect];
-        SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(fh, line, strlen(line));
+        DISKIO_WriteBufferedBytes(fh, line, strlen(line));
 
         if (rec != 0 && rec->count > 0) {
-            PARSEINI_JMPTBL_WDISP_SPrintf(line, P_TYPE_FMT_PCT_03D_PCT_02D,
+            WDISP_SPrintf(line, P_TYPE_FMT_PCT_03D_PCT_02D,
                                           (long)rec->kind, rec->count);
-            SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(fh, line, strlen(line));
+            DISKIO_WriteBufferedBytes(fh, line, strlen(line));
 
             for (i = 0; i < rec->count; i++)
                 line[i] = rec->data[i];
             line[i++] = '\n';
             line[i] = 0;
 
-            SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(fh, line, strlen(line));
+            DISKIO_WriteBufferedBytes(fh, line, strlen(line));
         } else {
-            SCRIPT_JMPTBL_DISKIO_WriteBufferedBytes(fh, P_TYPE_STR_NO_DATA, 9);
+            DISKIO_WriteBufferedBytes(fh, P_TYPE_STR_NO_DATA, 9);
         }
 
         switch (sect) {
@@ -77,5 +77,5 @@ void P_TYPE_WritePromoIdDataFile(void)
         }
     }
 
-    SCRIPT_JMPTBL_DISKIO_CloseBufferedFileAndFlush(fh);
+    DISKIO_CloseBufferedFileAndFlush(fh);
 }

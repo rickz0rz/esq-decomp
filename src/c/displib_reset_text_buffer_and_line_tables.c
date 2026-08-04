@@ -10,10 +10,10 @@
  *            SAS/C version; see docs/compiler-version.md.
  */
 extern char *DISPTEXT_TextBufferPtr;
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *newv, char *old);
+extern char *ESQPARS_ReplaceOwnedString(char *newv, char *old);
 extern void  DISPLIB_ResetLineTables(void);
 void DISPLIB_ResetTextBufferAndLineTables(void)
 {
-    DISPTEXT_TextBufferPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, DISPTEXT_TextBufferPtr);
+    DISPTEXT_TextBufferPtr = ESQPARS_ReplaceOwnedString(0, DISPTEXT_TextBufferPtr);
     DISPLIB_ResetLineTables();
 }

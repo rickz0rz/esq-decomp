@@ -40,7 +40,7 @@ extern short TLIBA2_BroadcastWindowClockSnapshotB;
 extern short TLIBA2_BroadcastWindowClockSnapshotC;
 extern unsigned char TEXTDISP_PrimaryGroupCode;
 
-extern long TLIBA2_JMPTBL_DST_AddTimeOffset(struct BroadcastClock *clock,
+extern long DST_AddTimeOffset(struct BroadcastClock *clock,
                 long minutes, long days);
 extern short TLIBA2_ParseEntryTimeWindow(char *entry, long mode,
                 struct BroadcastPair *out);
@@ -92,7 +92,7 @@ void TLIBA2_ComputeBroadcastTimeWindow(short group, char *entry, long mode,
     local.f10 = 0;
     local.f18 = 0;
 
-    TLIBA2_JMPTBL_DST_AddTimeOffset(&local, (long)offsetMinutes,
+    DST_AddTimeOffset(&local, (long)offsetMinutes,
                                     (long)offsetDays);
 
     out->a = local.f6;

@@ -34,7 +34,7 @@ _GROUP_MAIN_B_JMPTBL_DOS_Delay:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   STREAM_BufferedWriteString
+;   _STREAM_BufferedWriteString
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -45,7 +45,7 @@ _GROUP_MAIN_B_JMPTBL_DOS_Delay:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString:
-    JMP     STREAM_BufferedWriteString
+    JMP     _STREAM_BufferedWriteString
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_MAIN_B_JMPTBL_MATH_Mulu32   (Routine at _GROUP_MAIN_B_JMPTBL_MATH_Mulu32)

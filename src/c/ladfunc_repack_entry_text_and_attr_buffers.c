@@ -83,12 +83,12 @@
 #define MEMF_PUBLIC 1L
 #define MEMF_CLEAR  0x10000L
 
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                     void *p, long size);
-extern void  GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
-extern void  GROUP_AW_JMPTBL_MEM_Move(char *src, char *dst, long n);
+extern void  STRING_CopyPadNul(char *dst, char *src, long n);
+extern void  MEM_Move(char *src, char *dst, long n);
 
 extern long ED_TextLimit;
 extern char Global_STR_LADFUNC_C_24[];
@@ -113,11 +113,11 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(char *text, char *attr)
 
     srcLen = strlen(text);
 
-    textCopy = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_24,
+    textCopy = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_24,
                                                     1214L, srcLen + 1,
                                                     MEMF_PUBLIC | MEMF_CLEAR);
 
-    attrCopy = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_25,
+    attrCopy = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_25,
                                                     1215L, srcLen,
                                                     MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -130,7 +130,7 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(char *text, char *attr)
 
         for (i = 0; i < ED_TextLimit; i++) {
 
-            GROUP_AW_JMPTBL_STRING_CopyPadNul(line, textCopy + i * 40, 40L);
+            STRING_CopyPadNul(line, textCopy + i * 40, 40L);
             line[40] = 0;
 
             len = strlen(line);
@@ -165,8 +165,8 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(char *text, char *attr)
 
                 if (j > 0) {
                     line[40 - j] = 0;
-                    GROUP_AW_JMPTBL_MEM_Move(line + j, line, 40 - j - j + 1);
-                    GROUP_AW_JMPTBL_MEM_Move(attrLine + j, attrLine,
+                    MEM_Move(line + j, line, 40 - j - j + 1);
+                    MEM_Move(attrLine + j, attrLine,
                                              40 - j - j);
                 }
                 break;
@@ -189,8 +189,8 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(char *text, char *attr)
                     j++;
 
                 if (j > 0) {
-                    GROUP_AW_JMPTBL_MEM_Move(line + j, line, 40 - j + 1);
-                    GROUP_AW_JMPTBL_MEM_Move(attrLine + j, attrLine, 40 - j);
+                    MEM_Move(line + j, line, 40 - j + 1);
+                    MEM_Move(attrLine + j, attrLine, 40 - j);
                 }
                 break;
             }
@@ -210,10 +210,10 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(char *text, char *attr)
     }
 
     if (textCopy != 0)
-        NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_26, 1322L,
+        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_26, 1322L,
                                                textCopy, srcLen + 1);
 
     if (attrCopy != 0)
-        NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_27, 1324L,
+        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_27, 1324L,
                                                attrCopy, srcLen);
 }

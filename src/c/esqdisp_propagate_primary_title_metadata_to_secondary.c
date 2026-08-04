@@ -16,8 +16,8 @@ extern char *TEXTDISP_SecondaryEntryPtrTable[];
 extern char *TEXTDISP_PrimaryTitlePtrTable[];
 extern char *TEXTDISP_SecondaryTitlePtrTable[];
 
-extern long  ESQSHARED_JMPTBL_ESQ_TestBit1Based(char *bits, long slot);
-extern char  ESQSHARED_JMPTBL_ESQ_WildcardMatch(char *pattern, char *text);
+extern long  ESQ_TestBit1Based(char *bits, long slot);
+extern char  ESQ_WildcardMatch(char *pattern, char *text);
 extern char *ESQPARS_ReplaceOwnedString(char *src, char *owned);
 
 void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void)
@@ -36,12 +36,12 @@ void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void)
     sec = 0;
     while (sec < (long)TEXTDISP_SecondaryGroupEntryCount) {
         if (*(long *)(TEXTDISP_SecondaryTitlePtrTable[sec] + 60) == 0
-            && ESQSHARED_JMPTBL_ESQ_TestBit1Based(
+            && ESQ_TestBit1Based(
                    TEXTDISP_SecondaryEntryPtrTable[sec] + 28, 1) == -1) {
             done = 0;
             pri = 0;
             while (pri < (long)TEXTDISP_PrimaryGroupEntryCount && done == 0) {
-                if (ESQSHARED_JMPTBL_ESQ_WildcardMatch(
+                if (ESQ_WildcardMatch(
                         TEXTDISP_SecondaryTitlePtrTable[sec],
                         TEXTDISP_PrimaryTitlePtrTable[pri]) == 0) {
                     slot = 48;
@@ -51,7 +51,7 @@ void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void)
                         floor = 44;
 
                     while (slot > floor && done == 0) {
-                        if (ESQSHARED_JMPTBL_ESQ_TestBit1Based(
+                        if (ESQ_TestBit1Based(
                                 TEXTDISP_PrimaryEntryPtrTable[pri] + 28, slot) == -1
                             && *(long *)(TEXTDISP_PrimaryTitlePtrTable[pri]
                                          + slot * 4 + 56) != 0) {

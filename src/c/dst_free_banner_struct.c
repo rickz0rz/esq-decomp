@@ -43,7 +43,7 @@ struct DstBanner {
     char  rest[10];             /* +8, to 18 */
 };
 
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void MEMORY_DeallocateMemory(char *who, long line,
                                                     void *p, long size);
 extern char Global_STR_DST_C_1[];
 extern char Global_STR_DST_C_2[];
@@ -55,11 +55,11 @@ void DST_FreeBannerStruct(struct DstBanner *b)
         return;
 
     if (b->first)
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_1, 773L,
+        MEMORY_DeallocateMemory(Global_STR_DST_C_1, 773L,
                                                 b->first, 22L);
     if (b->second)
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_2, 777L,
+        MEMORY_DeallocateMemory(Global_STR_DST_C_2, 777L,
                                                 b->second, 22L);
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_3, 779L, b, 18L);
+    MEMORY_DeallocateMemory(Global_STR_DST_C_3, 779L, b, 18L);
 }

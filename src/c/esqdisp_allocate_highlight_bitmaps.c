@@ -53,7 +53,7 @@
 #include <graphics/gfx.h>
 #include "esq-graphics.h"
 
-extern char *ESQDISP_JMPTBL_GRAPHICS_AllocRaster(char *who, long line, long width,
+extern char *GRAPHICS_AllocRaster(char *who, long line, long width,
                                                  long height);
 
 extern unsigned short WDISP_HighlightRasterHeightPx;
@@ -67,7 +67,7 @@ void ESQDISP_AllocateHighlightBitmaps(struct BitMap *bm)
 
     for (i = 0; i < 3; i++) {
         bm->Planes[i] = (PLANEPTR)
-            ESQDISP_JMPTBL_GRAPHICS_AllocRaster(Global_STR_ESQDISP_C, 79L, 696L,
+            GRAPHICS_AllocRaster(Global_STR_ESQDISP_C, 79L, 696L,
                                                 (long)WDISP_HighlightRasterHeightPx);
         BltClear(bm->Planes[i], (long)(WDISP_HighlightRasterHeightPx * 88), 0L);
     }

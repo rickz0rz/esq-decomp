@@ -46,9 +46,9 @@
 #include <string.h>
 #include "esq-graphics.h"
 
-extern void NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING(char *out);
+extern void GENERATE_GRID_DATE_STRING(char *out);
 extern long NEWGRID_SetRowColor(void *ctx, long row, long which);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(struct RastPort *rp,
+extern void BEVEL_DrawBevelFrameWithTopRight(struct RastPort *rp,
                                                              long x1, long y1,
                                                              long x2, long y2);
 
@@ -76,15 +76,15 @@ void NEWGRID_DrawDateBanner(struct GridContext *ctx)
     long textWidth;
 
     rp = &ctx->rp;
-    NEWGRID_JMPTBL_GENERATE_GRID_DATE_STRING(date);
+    GENERATE_GRID_DATE_STRING(date);
 
     SetDrMd(rp, 0L);
     SetAPen(rp, NEWGRID_SetRowColor(ctx, 0L, 7L));
     RectFill(rp, 0L, 0L, 695L, 33L);
 
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
+    BEVEL_DrawBevelFrameWithTopRight(
         rp, 0L, 0L, NEWGRID_ColumnStartXPx + 35, 33L);
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
+    BEVEL_DrawBevelFrameWithTopRight(
         rp, NEWGRID_ColumnStartXPx + 36, 0L, 695L, 33L);
 
     SetAPen(rp, 3L);

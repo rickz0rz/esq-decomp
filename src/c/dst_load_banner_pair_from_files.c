@@ -56,11 +56,11 @@ struct DstBannerPair {
 
 extern void  DST_RebuildBannerPair(struct DstBannerPair *p);
 extern long  DISKIO_LoadFileToWorkBuffer(char *path);
-extern char *GROUP_AJ_JMPTBL_STRING_FindSubstring(char *hay, char *needle);
+extern char *STRING_FindSubstring(char *hay, char *needle);
 extern void  DATETIME_ParseString(char *out, char *text, long offset);
 extern void  DATETIME_CopyPairAndRecalc(struct DateTimePair *p, char *a,
                                         char *b);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                      void *p, long size);
 extern long  DST_UpdateBannerQueue(struct DstBannerPair *p);
 
@@ -87,21 +87,21 @@ long DST_LoadBannerPairFromFiles(struct DstBannerPair *pair)
     buf = Global_PTR_WORK_BUFFER;
     len = Global_REF_LONG_FILE_SCRATCH;
 
-    found = GROUP_AJ_JMPTBL_STRING_FindSubstring(buf, Global_STR_G2);
+    found = STRING_FindSubstring(buf, Global_STR_G2);
     if (found != 0) {
         DATETIME_ParseString(a, found, 4L);
         DATETIME_ParseString(b, found, 19L);
         DATETIME_CopyPairAndRecalc(pair->g2, a, b);
     }
 
-    found = GROUP_AJ_JMPTBL_STRING_FindSubstring(buf, Global_STR_G3);
+    found = STRING_FindSubstring(buf, Global_STR_G3);
     if (found != 0) {
         DATETIME_ParseString(a, found, 4L);
         DATETIME_ParseString(b, found, 19L);
         DATETIME_CopyPairAndRecalc(pair->g3, a, b);
     }
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DST_C_7, 889L, buf,
+    MEMORY_DeallocateMemory(Global_STR_DST_C_7, 889L, buf,
                                             len + 1);
     DST_UpdateBannerQueue(pair);
     return 1;

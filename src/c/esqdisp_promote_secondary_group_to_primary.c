@@ -38,7 +38,7 @@
  *   summary: 4EBA against 6100 for the two cross-unit calls.
  */
 extern void ESQPARS_RemoveGroupEntryAndReleaseStrings(long which);
-extern void ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache(void);
+extern void NEWGRID_RebuildIndexCache(void);
 
 extern long  NEWGRID_RefreshStateFlag;
 extern short TEXTDISP_GroupMutationState;
@@ -92,5 +92,5 @@ void ESQDISP_PromoteSecondaryGroupToPrimary(void)
     CTASKS_PendingSecondaryOiDiskId    = 0xff;
     CTASKS_SecondaryOiWritePendingFlag = 0;
 
-    ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache();
+    NEWGRID_RebuildIndexCache();
 }

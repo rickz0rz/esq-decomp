@@ -28,14 +28,14 @@ extern char  ESQPARS2_LogLineTerminator[];
 extern char  Global_STR_FLIB_C_1[];
 extern char  Global_STR_FLIB_C_2[];
 
-extern long __asm NEWGRID_JMPTBL_MATH_DivS32(register __d0 long a,
+extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
-extern void  GROUP_AW_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long h, long m,
+extern void  WDISP_SPrintf(char *buf, char *fmt, long h, long m,
                                            long s, char *tag);
-extern void  GROUP_AR_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
-extern char *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void  STRING_AppendAtNull(char *dst, char *src);
+extern char *MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                     char *ptr, long size);
 extern char *ESQPARS_ReplaceOwnedString(char *src, char *owned);
 
@@ -62,18 +62,18 @@ long FLIB_AppendClockStampedLogEntry(char *text)
     }
 
     tag = CLOCK_CacheAmPmFlag != 0 ? ESQPARS2_LogTagPm : ESQPARS2_LogTagAm;
-    GROUP_AW_JMPTBL_WDISP_SPrintf(line, ESQPARS2_LogTimestampFmt,
+    WDISP_SPrintf(line, ESQPARS2_LogTimestampFmt,
         (CLOCK_CacheHour - (CLOCK_CacheHour / 100) * 100), (CLOCK_CacheMinuteOrSecond - (CLOCK_CacheMinuteOrSecond / 100) * 100),
         (Global_REF_CLOCKDATA_STRUCT - (Global_REF_CLOCKDATA_STRUCT / 100) * 100), tag);
 
     len += 14;
-    GROUP_AR_JMPTBL_STRING_AppendAtNull(line, ESQPARS2_LogFieldTab);
-    GROUP_AR_JMPTBL_STRING_AppendAtNull(line, text);
-    GROUP_AR_JMPTBL_STRING_AppendAtNull(line, ESQPARS2_LogLineTerminator);
+    STRING_AppendAtNull(line, ESQPARS2_LogFieldTab);
+    STRING_AppendAtNull(line, text);
+    STRING_AppendAtNull(line, ESQPARS2_LogLineTerminator);
 
     FLIB_LogEntryByteCount = FLIB_LogEntryByteCount + len;
 
-    buf = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_FLIB_C_1, 173,
+    buf = MEMORY_AllocateMemory(Global_STR_FLIB_C_1, 173,
               (long)FLIB_LogEntryByteCount + 1, MEMF_PUBLIC);
 
     if (FLIB_LogEntryByteCount != len)
@@ -81,10 +81,10 @@ long FLIB_AppendClockStampedLogEntry(char *text)
     else
         buf[0] = 0;
 
-    GROUP_AR_JMPTBL_STRING_AppendAtNull(buf, line);
+    STRING_AppendAtNull(buf, line);
     NEWGRID2_ErrorLogEntryPtr = ESQPARS_ReplaceOwnedString(buf,
                                     NEWGRID2_ErrorLogEntryPtr);
-    NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_FLIB_C_2, 198, buf,
+    MEMORY_DeallocateMemory(Global_STR_FLIB_C_2, 198, buf,
                                            (long)FLIB_LogEntryByteCount + 1);
     ESQPARS2_LogAppendSpinlock = 0;
     return 0;

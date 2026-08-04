@@ -47,7 +47,7 @@ struct TextDispWildcardEntry {
     unsigned char flags27;      /* +27 */
 };
 
-extern char UNKNOWN_JMPTBL_ESQ_WildcardMatch(char *title, char *pattern);
+extern char ESQ_WildcardMatch(char *title, char *pattern);
 
 extern short  TEXTDISP_CurrentMatchIndex;
 extern short  TEXTDISP_CurrentMatchIndexSaved;
@@ -63,7 +63,7 @@ long TEXTDISP_FindEntryIndexByWildcard(char *pattern)
 
     for (i = 0; i < TEXTDISP_PrimaryGroupEntryCount; i++) {
         if (!(TEXTDISP_PrimaryEntryPtrTable[i]->flags27 & 8)
-            && UNKNOWN_JMPTBL_ESQ_WildcardMatch(TEXTDISP_PrimaryTitlePtrTable[i],
+            && ESQ_WildcardMatch(TEXTDISP_PrimaryTitlePtrTable[i],
                                                 pattern) == 0) {
             TEXTDISP_CurrentMatchIndex = i;
             return 1;

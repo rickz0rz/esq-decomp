@@ -53,8 +53,8 @@ struct DstPair {
     struct DstRec *out;
 };
 
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf();
-extern void GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern void WDISP_SPrintf();
+extern void STRING_AppendAtNull(char *dst, char *src);
 extern void DISKIO_WriteBufferedBytes(long stream, char *buf, long len);
 extern char DST_FMT_PCT_C_InTimePrefixChar[];
 extern char DST_FMT_PCT_04D_PCT_03D_InTimeDateCode[];
@@ -76,36 +76,36 @@ void DATETIME_FormatPairToStream(long stream, struct DstPair *pair)
     out[0] = 0;
 
     if (pair == 0) {
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(out, DST_STR_NO_DST_DATA);
+        STRING_AppendAtNull(out, DST_STR_NO_DST_DATA);
     } else {
         rec = pair->in;
         if (rec == 0) {
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(out, DST_STR_NO_IN_TIME);
+            STRING_AppendAtNull(out, DST_STR_NO_IN_TIME);
         } else {
-            GROUP_AM_JMPTBL_WDISP_SPrintf(tmp, DST_FMT_PCT_C_InTimePrefixChar, 4L);
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(out, tmp);
-            GROUP_AM_JMPTBL_WDISP_SPrintf(tmp, DST_FMT_PCT_04D_PCT_03D_InTimeDateCode,
+            WDISP_SPrintf(tmp, DST_FMT_PCT_C_InTimePrefixChar, 4L);
+            STRING_AppendAtNull(out, tmp);
+            WDISP_SPrintf(tmp, DST_FMT_PCT_04D_PCT_03D_InTimeDateCode,
                                           (long)rec->dateCode, (long)rec->subCode);
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(out, tmp);
+            STRING_AppendAtNull(out, tmp);
             hour = rec->hour % 12 + (rec->pmFlag ? 12 : 0);
-            GROUP_AM_JMPTBL_WDISP_SPrintf(tmp, DST_FMT_PCT_02D_COLON_PCT_02D_InTimeClock,
+            WDISP_SPrintf(tmp, DST_FMT_PCT_02D_COLON_PCT_02D_InTimeClock,
                                           hour, (long)rec->minute);
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(out, tmp);
+            STRING_AppendAtNull(out, tmp);
         }
 
         rec = pair->out;
         if (rec == 0) {
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(out, DST_STR_NO_OUT_TIME);
+            STRING_AppendAtNull(out, DST_STR_NO_OUT_TIME);
         } else {
-            GROUP_AM_JMPTBL_WDISP_SPrintf(tmp, DST_FMT_PCT_C_OutTimePrefixChar, 19L);
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(out, tmp);
-            GROUP_AM_JMPTBL_WDISP_SPrintf(tmp, DST_FMT_PCT_04D_PCT_03D_OutTimeDateCode,
+            WDISP_SPrintf(tmp, DST_FMT_PCT_C_OutTimePrefixChar, 19L);
+            STRING_AppendAtNull(out, tmp);
+            WDISP_SPrintf(tmp, DST_FMT_PCT_04D_PCT_03D_OutTimeDateCode,
                                           (long)rec->dateCode, (long)rec->subCode);
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(out, tmp);
+            STRING_AppendAtNull(out, tmp);
             hour = rec->hour % 12 + (rec->pmFlag ? 12 : 0);
-            GROUP_AM_JMPTBL_WDISP_SPrintf(tmp, DST_FMT_PCT_02D_COLON_PCT_02D_OutTimeClock,
+            WDISP_SPrintf(tmp, DST_FMT_PCT_02D_COLON_PCT_02D_OutTimeClock,
                                           hour, (long)rec->minute);
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(out, tmp);
+            STRING_AppendAtNull(out, tmp);
         }
     }
 

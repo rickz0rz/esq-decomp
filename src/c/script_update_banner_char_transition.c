@@ -38,8 +38,8 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the two cross-unit calls.
  */
-extern short SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(void);
-extern void  SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset(long delta);
+extern short GCOMMAND_GetBannerChar(void);
+extern void  GCOMMAND_AdjustBannerCopperOffset(long delta);
 extern short SCRIPT_BannerTransitionActive;
 extern unsigned char SCRIPT_BannerTransitionTargetChar;
 extern short SCRIPT_BannerTransitionStepDelta;
@@ -59,7 +59,7 @@ void __saveds SCRIPT_UpdateBannerCharTransition(void)
     if (SCRIPT_BannerTransitionActive == 0)
         return;
 
-    cur = SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar();
+    cur = GCOMMAND_GetBannerChar();
     target = SCRIPT_BannerTransitionTargetChar;
 
     if (target == (long)cur) {
@@ -87,5 +87,5 @@ void __saveds SCRIPT_UpdateBannerCharTransition(void)
             && SCRIPT_BannerTransitionStepBudget == 0))
         delta = (short)(target - cur);
 
-    SCRIPT3_JMPTBL_GCOMMAND_AdjustBannerCopperOffset((long)delta);
+    GCOMMAND_AdjustBannerCopperOffset((long)delta);
 }

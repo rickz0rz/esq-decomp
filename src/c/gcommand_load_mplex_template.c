@@ -28,11 +28,11 @@
  */
 #include "esq-exec.h"
 
-extern long  GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(char *path);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *s, long ch);
+extern long  DISKIO_LoadFileToWorkBuffer(char *path);
+extern char *STR_FindCharPtr(char *s, long ch);
 extern char *ESQPARS_ReplaceOwnedString(char *newstr, char *old);
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
-extern char *GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(char *hay, char *needle);
+extern void  MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
+extern char *ESQ_FindSubstringCaseFold(char *hay, char *needle);
 
 extern char *Global_PTR_WORK_BUFFER;
 extern long  Global_REF_LONG_FILE_SCRATCH;
@@ -50,7 +50,7 @@ long GCOMMAND_LoadMplexTemplate(void)
     char *found;
     register long savedLen;
 
-    if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(
+    if (DISKIO_LoadFileToWorkBuffer(
             GCOMMAND_PATH_DF0_COLON_DIGITAL_MPLEX_DOT_DAT_TemplateLoad) + 1 == 0)
         return 1;
 
@@ -62,7 +62,7 @@ long GCOMMAND_LoadMplexTemplate(void)
     GCOMMAND_MplexListingsTemplatePtr = 0;
     GCOMMAND_MplexAtTemplatePtr = 0;
 
-    sep = GROUP_AS_JMPTBL_STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18);
+    sep = STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18);
     if (sep && *sep) {
         *sep++ = 0;
     }
@@ -72,12 +72,12 @@ long GCOMMAND_LoadMplexTemplate(void)
     GCOMMAND_MplexListingsTemplatePtr =
         ESQPARS_ReplaceOwnedString(sep, GCOMMAND_MplexListingsTemplatePtr);
 
-    NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_GCOMMAND_C_2, 575, base,
+    MEMORY_DeallocateMemory(Global_STR_GCOMMAND_C_2, 575, base,
                                            savedLen + 1);
 
     found = 0;
     if (GCOMMAND_MplexAtTemplatePtr && *GCOMMAND_MplexAtTemplatePtr)
-        found = GROUP_AS_JMPTBL_ESQ_FindSubstringCaseFold(GCOMMAND_MplexAtTemplatePtr,
+        found = ESQ_FindSubstringCaseFold(GCOMMAND_MplexAtTemplatePtr,
                                                           GCOMMAND_FMT_PCT_T_MplexTemplateLoad);
     if (found && *found)
         found[1] = 's';

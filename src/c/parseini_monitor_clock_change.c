@@ -40,7 +40,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
-extern void SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(long a, long b);
+extern void ESQDISP_UpdateStatusMaskAndRefresh(long a, long b);
 
 extern short Global_WORD_H_VALUE;
 extern short Global_WORD_T_VALUE;
@@ -60,7 +60,7 @@ long PARSEINI_MonitorClockChange(void)
 
         if (PARSEINI_ClockChangeActiveFlag != 1) {
             PARSEINI_ClockChangeActiveFlag = 1;
-            SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(1L, 1L);
+            ESQDISP_UpdateStatusMaskAndRefresh(1L, 1L);
         }
     } else if (PARSEINI_ClockChangeActiveFlag != 0
                && Global_REF_CLOCKDATA_STRUCT != PARSEINI_ClockSecondsSnapshot) {
@@ -70,7 +70,7 @@ long PARSEINI_MonitorClockChange(void)
 
         if (PARSEINI_ClockChangeSampleCounter >= 3) {
             PARSEINI_ClockChangeActiveFlag = 0;
-            SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(1L, 0L);
+            ESQDISP_UpdateStatusMaskAndRefresh(1L, 0L);
         }
     }
 

@@ -31,7 +31,7 @@ extern void NEWGRID_DrawGridFrame(struct GridPanel *panel, long style,
                                   long left, long top, long bottom);
 extern void NEWGRID_DrawWrappedText(struct RastPort *rp, long x, long y,
                                     long width, char *text, long flag);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
+extern void BEVEL_DrawBevelFrameWithTopRight(
                 struct RastPort *rp, long x, long y, long w, long h);
 
 void NEWGRID_DrawAwaitingListingsMessage(struct GridPanel *panel)
@@ -49,7 +49,7 @@ void NEWGRID_DrawAwaitingListingsMessage(struct GridPanel *panel)
         + panel->rp.Font->tf_Baseline - 1;
 
     NEWGRID_DrawWrappedText(&panel->rp, x, y, 612, msg, 1);
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(&panel->rp, 0, 0, 695,
+    BEVEL_DrawBevelFrameWithTopRight(&panel->rp, 0, 0, 695,
                                                      (long)NEWGRID_RowHeightPx - 1);
     half = NEWGRID_RowHeightPx >> 1;
     panel->halfRowHeight = half;

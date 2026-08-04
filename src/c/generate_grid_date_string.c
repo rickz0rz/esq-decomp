@@ -35,7 +35,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
-extern void  PARSEINI_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, char *day,
+extern void  WDISP_SPrintf(char *dst, char *fmt, char *day,
                                            char *month, long dom, long year);
 
 extern short CLOCK_CurrentDayOfWeekIndex;
@@ -48,7 +48,7 @@ extern char  Global_STR_GRID_DATE_FORMAT_STRING[];
 
 void GENERATE_GRID_DATE_STRING(char *dst)
 {
-    PARSEINI_JMPTBL_WDISP_SPrintf(dst, Global_STR_GRID_DATE_FORMAT_STRING,
+    WDISP_SPrintf(dst, Global_STR_GRID_DATE_FORMAT_STRING,
                                   Global_JMPTBL_DAYS_OF_WEEK[CLOCK_CurrentDayOfWeekIndex],
                                   Global_JMPTBL_MONTHS[CLOCK_CurrentMonthIndex],
                                   (long)CLOCK_CurrentDayOfMonth,

@@ -31,15 +31,15 @@ extern unsigned char WDISP_WeatherStatusCountdown;
 extern short  WDISP_WeatherStatusDigitChar;
 extern short  CTASKS_IffTaskState;
 
-extern long              ESQIFF_JMPTBL_STRING_CompareNoCase(char *a, char *b);
-extern struct BrushDesc *ESQIFF_JMPTBL_BRUSH_AllocBrushNode(struct BrushDesc *src,
+extern long              STRING_CompareNoCase(char *a, char *b);
+extern struct BrushDesc *BRUSH_AllocBrushNode(struct BrushDesc *src,
                                                             long flags);
-extern struct BrushDesc *ESQIFF_JMPTBL_BRUSH_CloneBrushRecord(struct BrushDesc *src);
+extern struct BrushDesc *BRUSH_CloneBrushRecord(struct BrushDesc *src);
 extern void              ESQIFF_DrawWeatherStatusOverlayIntoBrush(struct BrushDesc *b);
-extern void              ESQIFF_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void              MEMORY_DeallocateMemory(char *who, long line,
                                                                struct BrushDesc *ptr,
                                                                long size);
-extern void              ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(void);
+extern void              CTASKS_StartIffTaskProcess(void);
 
 void ESQIFF_QueueIffBrushLoad(long mode)
 {
@@ -54,21 +54,21 @@ void ESQIFF_QueueIffBrushLoad(long mode)
     weatherPathEnabled = 0;
 
     if (weatherPathEnabled) {
-        if (ESQIFF_JMPTBL_STRING_CompareNoCase(
+        if (STRING_CompareNoCase(
                 (char *)ESQIFF_BannerBrushResourceCursor, ESQIFF_STR_WEATHER) == 0
             || mode == 2) {
             if (WDISP_WeatherStatusCountdown > 0
                 && WDISP_WeatherStatusDigitChar != 48) {
                 CTASKS_PendingIffBrushDescriptor =
-                    ESQIFF_JMPTBL_BRUSH_AllocBrushNode(ESQIFF_BannerBrushResourceCursor, 0);
+                    BRUSH_AllocBrushNode(ESQIFF_BannerBrushResourceCursor, 0);
                 CTASKS_PendingIffBrushDescriptor->kind = 11;
                 CTASKS_PendingIffBrushDescriptor->width = 0x280;
                 CTASKS_PendingIffBrushDescriptor->height = 160;
                 CTASKS_PendingIffBrushDescriptor->depth = 3;
                 WDISP_WeatherStatusBrushListHead =
-                    ESQIFF_JMPTBL_BRUSH_CloneBrushRecord(CTASKS_PendingIffBrushDescriptor);
+                    BRUSH_CloneBrushRecord(CTASKS_PendingIffBrushDescriptor);
                 ESQIFF_DrawWeatherStatusOverlayIntoBrush(WDISP_WeatherStatusBrushListHead);
-                ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQIFF_C_2, 724,
+                MEMORY_DeallocateMemory(Global_STR_ESQIFF_C_2, 724,
                                                       CTASKS_PendingIffBrushDescriptor,
                                                       238);
             }
@@ -76,10 +76,10 @@ void ESQIFF_QueueIffBrushLoad(long mode)
     } else if (ESQIFF_BannerBrushResourceCursor != 0
                && ESQIFF_BannerBrushResourceCursor != 0) {
         CTASKS_PendingIffBrushDescriptor =
-            ESQIFF_JMPTBL_BRUSH_AllocBrushNode(ESQIFF_BannerBrushResourceCursor, 0);
+            BRUSH_AllocBrushNode(ESQIFF_BannerBrushResourceCursor, 0);
         CTASKS_PendingIffBrushDescriptor->kind = 6;
         CTASKS_IffTaskState = 6;
-        ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess();
+        CTASKS_StartIffTaskProcess();
     }
 
     if (mode == 2)

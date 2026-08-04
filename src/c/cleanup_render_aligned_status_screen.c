@@ -157,38 +157,38 @@ extern char Global_STR_ALIGNED_TODAY_AT[];
 extern char Global_STR_ALIGNED_TONIGHT_AT[];
 extern char Global_STR_ALIGNED_TOMORROW_AT[];
 
-extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *s, long c);
-extern void  GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
-extern void  GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(long a, long b,
+extern char *STR_FindCharPtr(char *s, long c);
+extern void  STRING_AppendAtNull(char *dst, char *src);
+extern void  TLIBA1_BuildClockFormatEntryIfVisible(long a, long b,
                                                                    char *buf,
                                                                    long flag);
 extern long  DISPLIB_NormalizeValueByStep(long v, long lo, long hi);
 extern void  ESQ_SetCopperEffect_OffDisableHighlight(void);
 extern void  ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern void  ESQ_NoOp(void);
-extern void  GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition(void);
-extern void  GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
-extern struct EsqDisplayContext *GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(
+extern void  ESQIFF_RunCopperDropTransition(void);
+extern void  ESQIFF_RunCopperRiseTransition(void);
+extern struct EsqDisplayContext *TLIBA3_BuildDisplayContextForViewMode(
     long a, long b, long c);
-extern void  GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry(long m);
-extern void  GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(long v);
-extern void  GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner(long mode, long kind);
-extern void *GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(long idx, long mode);
-extern void  GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName(void *entry, char *out);
-extern void  GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime(char *out, long idx);
-extern void  GROUP_AD_JMPTBL_DST_ComputeBannerIndex(short *parts, long idx,
+extern void  ESQFUNC_SelectAndApplyBrushForCurrentEntry(long m);
+extern void  SCRIPT_UpdateSerialShadowFromCtrlByte(long v);
+extern void  TEXTDISP_DrawChannelBanner(long mode, long kind);
+extern void *ESQDISP_GetEntryPointerByMode(long idx, long mode);
+extern void  TEXTDISP_BuildEntryShortName(void *entry, char *out);
+extern void  TEXTDISP_FormatEntryTime(char *out, long idx);
+extern void  DST_ComputeBannerIndex(short *parts, long idx,
                                                     long group);
-extern void  GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex(short *parts);
-extern void  GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange(short *parts);
-extern void  GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel(long v);
+extern void  DATETIME_AdjustMonthIndex(short *parts);
+extern void  DATETIME_NormalizeMonthRange(short *parts);
+extern void  TEXTDISP_BuildChannelLabel(long v);
 extern void  CLEANUP_BuildAlignedStatusLine(char *buf, long group, long match,
                                             long clockEntry, long mode,
                                             long notReady);
-extern void  GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth(char *s, long px);
-extern void  GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame(char *s, long kind);
-extern struct RastPort *GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort(long mode);
-extern unsigned short GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight(long mode);
-extern void  GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(struct BitMap *bm,
+extern void  TEXTDISP_TrimTextToPixelWidth(char *s, long px);
+extern void  TEXTDISP_DrawInsetRectFrame(char *s, long kind);
+extern struct RastPort *TLIBA3_GetViewModeRastPort(long mode);
+extern unsigned short TLIBA3_GetViewModeHeight(long mode);
+extern void  GRAPHICS_BltBitMapRastPort(struct BitMap *bm,
                                                         long sx, long sy,
                                                         struct RastPort *rp,
                                                         long dx, long dy,
@@ -231,16 +231,16 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
     if (templateCode == 0)
         templateCode = 48;
 
-    if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN,
+    if (STR_FindCharPtr(CLOCK_STR_TEMPLATE_CODE_SET_FGN,
                                         (long)templateCode) != 0) {
         CLEANUP_AlignedStatusClockEntryBuffer[0] = 0;
-        GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(
+        TLIBA1_BuildClockFormatEntryIfVisible(
             (long)CLEANUP_AlignedStatusMatchIndex,
             (long)CLEANUP_AlignedStatusClockEntryIndex,
             CLEANUP_AlignedStatusClockEntryBuffer, 0L);
     } else if (templateCode == 79) {
         CLEANUP_AlignedStatusAltTimeBuffer[0] = 0;
-        GROUP_AD_JMPTBL_TLIBA1_BuildClockFormatEntryIfVisible(
+        TLIBA1_BuildClockFormatEntryIfVisible(
             (long)CLEANUP_AlignedStatusMatchIndex,
             (long)CLEANUP_AlignedStatusClockEntryIndex,
             CLEANUP_AlignedStatusAltTimeBuffer, 1L);
@@ -324,29 +324,29 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
     if (effectCode == 53)
         ESQ_SetCopperEffect_OffDisableHighlight();
 
-    GROUP_AD_JMPTBL_ESQIFF_RunCopperDropTransition();
+    ESQIFF_RunCopperDropTransition();
 
     SetRast(&WDISP_DisplayContextBase->rp2,
             (1L << WDISP_DisplayContextBase->rp2.BitMap->Depth) - 1);
 
     if (mode == 0)
         WDISP_DisplayContextBase =
-            GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(1L, 0L, 1L);
+            TLIBA3_BuildDisplayContextForViewMode(1L, 0L, 1L);
     else
         WDISP_DisplayContextBase =
-            GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(0L, 0L, 1L);
+            TLIBA3_BuildDisplayContextForViewMode(0L, 0L, 1L);
 
     if (suppressFlag == 0)
-        GROUP_AD_JMPTBL_ESQFUNC_SelectAndApplyBrushForCurrentEntry((long)mode);
+        ESQFUNC_SelectAndApplyBrushForCurrentEntry((long)mode);
 
     if (mode == 0) {
         WDISP_DisplayContextBase =
-            GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(1L, 0L, 4L);
-        GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(2L);
+            TLIBA3_BuildDisplayContextForViewMode(1L, 0L, 4L);
+        SCRIPT_UpdateSerialShadowFromCtrlByte(2L);
     } else {
         WDISP_DisplayContextBase =
-            GROUP_AD_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(0L, 0L, 4L);
-        GROUP_AD_JMPTBL_SCRIPT_UpdateSerialShadowFromCtrlByte(1L);
+            TLIBA3_BuildDisplayContextForViewMode(0L, 0L, 4L);
+        SCRIPT_UpdateSerialShadowFromCtrlByte(1L);
     }
 
     if (suppressFlag == 1)
@@ -358,7 +358,7 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
     TEXTDISP_CurrentMatchIndexSaved = TEXTDISP_CurrentMatchIndex;
 
     if (templateCode == 48 && templateText[0] == 0) {
-        GROUP_AD_JMPTBL_TEXTDISP_DrawChannelBanner((long)mode, 3L);
+        TEXTDISP_DrawChannelBanner((long)mode, 3L);
         ESQ_SetCopperEffect_OnEnableHighlight();
         CLEANUP_AlignedStatusSuffixBuffer[0] = 0;
         CLEANUP_AlignedStatusMatchIndex = TEXTDISP_CurrentMatchIndex;
@@ -384,18 +384,18 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
     if (titleState == 2) {
         TEXTDISP_ChannelLabelBuffer[0] = 0;
     } else {
-        entryPtr = GROUP_AE_JMPTBL_ESQDISP_GetEntryPointerByMode(
+        entryPtr = ESQDISP_GetEntryPointerByMode(
             (long)TEXTDISP_CurrentMatchIndex,
             TEXTDISP_ActiveGroupId != 0 ? 1L : 2L);
-        GROUP_AD_JMPTBL_TEXTDISP_BuildEntryShortName(
+        TEXTDISP_BuildEntryShortName(
             entryPtr, TEXTDISP_EntryShortNameScratch);
         strcpy(TEXTDISP_ChannelLabelBuffer, TEXTDISP_EntryShortNameScratch);
     }
 
     if (templateText[0] != 0)
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(TEXTDISP_ChannelLabelBuffer,
+        STRING_AppendAtNull(TEXTDISP_ChannelLabelBuffer,
                                             TEXTDISP_LeftAlignToken);
-    GROUP_AI_JMPTBL_STRING_AppendAtNull(TEXTDISP_ChannelLabelBuffer,
+    STRING_AppendAtNull(TEXTDISP_ChannelLabelBuffer,
                                         templateText);
 
     if (titleState == 1) {
@@ -414,22 +414,22 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
                 special = TEXTDISP_BannerSelectedValidFlag;
 
             if (special != 0) {
-                GROUP_AI_JMPTBL_STRING_AppendAtNull(
+                STRING_AppendAtNull(
                     TEXTDISP_ChannelLabelBuffer,
                     CLEANUP_AlignedStatusSuffixBuffer);
                 strcpy(CLEANUP_AlignedStatusSuffixBuffer,
                        Global_STR_ALIGNED_NEXT_SHOWING);
-                GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime(timeText,
+                TEXTDISP_FormatEntryTime(timeText,
                                                          (long)bannerIndex);
-                GROUP_AI_JMPTBL_STRING_AppendAtNull(
+                STRING_AppendAtNull(
                     CLEANUP_AlignedStatusSuffixBuffer, timeText);
             }
         } else {
-            GROUP_AD_JMPTBL_DST_ComputeBannerIndex(
+            DST_ComputeBannerIndex(
                 dateParts, (long)bannerIndex,
                 TEXTDISP_ActiveGroupId != 0 ? (long)TEXTDISP_PrimaryGroupCode
                                             : (long)TEXTDISP_SecondaryGroupCode);
-            GROUP_AD_JMPTBL_DATETIME_AdjustMonthIndex(dateParts);
+            DATETIME_AdjustMonthIndex(dateParts);
 
             if (dateParts[8] != CLOCK_CurrentDayOfYear) {
                 strcpy(CLEANUP_AlignedStatusSuffixBuffer,
@@ -443,14 +443,14 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
                        Global_STR_ALIGNED_TONIGHT_AT);
             }
 
-            GROUP_AD_JMPTBL_DATETIME_NormalizeMonthRange(dateParts);
-            GROUP_AD_JMPTBL_TEXTDISP_FormatEntryTime(timeText,
+            DATETIME_NormalizeMonthRange(dateParts);
+            TEXTDISP_FormatEntryTime(timeText,
                                                      (long)bannerIndex);
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(
+            STRING_AppendAtNull(
                 CLEANUP_AlignedStatusSuffixBuffer, timeText);
         }
 
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(TEXTDISP_ChannelLabelBuffer,
+        STRING_AppendAtNull(TEXTDISP_ChannelLabelBuffer,
                                             CLEANUP_AlignedStatusSuffixBuffer);
 
     } else if (titleState != 2 &&
@@ -458,15 +458,15 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
                 (templateCode >= 72 && templateCode <= 77))) {
         strcpy(CLEANUP_AlignedStatusSuffixBuffer, TEXTDISP_CenterAlignToken);
         labelTable = (char **)&SCRIPT_StrChannelLabel_TuesdaysFridays[2];
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(CLEANUP_AlignedStatusSuffixBuffer,
+        STRING_AppendAtNull(CLEANUP_AlignedStatusSuffixBuffer,
                                             labelTable[templateCode]);
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(TEXTDISP_ChannelLabelBuffer,
+        STRING_AppendAtNull(TEXTDISP_ChannelLabelBuffer,
                                             CLEANUP_AlignedStatusSuffixBuffer);
     }
 
     if (titleState != 2 || templateCode == 70 || templateCode == 71 ||
         templateCode == 78 || templateCode == 79) {
-        GROUP_AD_JMPTBL_TEXTDISP_BuildChannelLabel(0L);
+        TEXTDISP_BuildChannelLabel(0L);
         CLEANUP_BuildAlignedStatusLine(TEXTDISP_ChannelLabelBuffer,
                                        (long)TEXTDISP_ActiveGroupId,
                                        (long)CLEANUP_AlignedStatusMatchIndex,
@@ -474,7 +474,7 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
                                        titleState == 2 ? 1L : 0L,
                                        !TEXTDISP_ChannelLabelReadyFlag);
         if (titleState == 2)
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(
+            STRING_AppendAtNull(
                 TEXTDISP_ChannelLabelBuffer, CLEANUP_AlignedStatusSuffixBuffer);
     }
 
@@ -484,23 +484,23 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
 
     SetDrMd(Global_REF_RASTPORT_2, 0L);
     TEXTDISP_LinePenOverrideEnabledFlag = 1;
-    GROUP_AD_JMPTBL_TEXTDISP_TrimTextToPixelWidth(
+    TEXTDISP_TrimTextToPixelWidth(
         TEXTDISP_ChannelLabelBuffer, (long)WDISP_DisplayContextBase->width);
-    GROUP_AD_JMPTBL_TEXTDISP_DrawInsetRectFrame(TEXTDISP_ChannelLabelBuffer, 3L);
+    TEXTDISP_DrawInsetRectFrame(TEXTDISP_ChannelLabelBuffer, 3L);
     SetDrMd(Global_REF_RASTPORT_2, 1L);
 
-    viewRp = GROUP_AD_JMPTBL_TLIBA3_GetViewModeRastPort(2L);
+    viewRp = TLIBA3_GetViewModeRastPort(2L);
     SetAPen(viewRp, 0L);
-    y1 = (long)GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight(2L) / 2;
-    bottom = (long)GROUP_AD_JMPTBL_TLIBA3_GetViewModeHeight(2L) - 1;
+    y1 = (long)TLIBA3_GetViewModeHeight(2L) / 2;
+    bottom = (long)TLIBA3_GetViewModeHeight(2L) - 1;
     RectFill(viewRp, 0L, y1, 703L, bottom);
 
     ESQ_SetCopperEffect_OnEnableHighlight();
 
-    GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
+    GRAPHICS_BltBitMapRastPort(
         &Global_REF_320_240_BITMAP, 0L, 0L, &WDISP_DisplayContextBase->rp2,
         0L, 0L, (long)WDISP_DisplayContextBase->width - 1,
         (long)WDISP_DisplayContextBase->height - 1, 192L);
 
-    GROUP_AD_JMPTBL_ESQIFF_RunCopperRiseTransition();
+    ESQIFF_RunCopperRiseTransition();
 }

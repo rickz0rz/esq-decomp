@@ -24,7 +24,7 @@
  */
 #include "esq-graphics.h"
 
-extern void  WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
+extern void  ESQIFF_RunCopperDropTransition(void);
 extern void *TLIBA3_BuildDisplayContextForViewMode(long a, long b, long c);
 extern short WDISP_AccumulatorFlushPending;
 extern void *WDISP_DisplayContextBase;
@@ -35,7 +35,7 @@ extern unsigned char WDISP_PaletteTriplesBBase[];
 void TEXTDISP_SetRastForMode(short mode)
 {
     WDISP_AccumulatorFlushPending = 0;
-    WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
+    ESQIFF_RunCopperDropTransition();
 
     if (mode == 0) {
         WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(3, 0, 0);

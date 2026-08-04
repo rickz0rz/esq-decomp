@@ -80,28 +80,28 @@ struct FontCtx {
     struct RastPort rp;                 /* +10 */
 };
 
-extern void  PARSEINI_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, char *arg);
-extern void  PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0(void);
-extern void  PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1(void);
+extern void  WDISP_SPrintf(char *buf, char *fmt, char *arg);
+extern void  ED1_WaitForFlagAndClearBit0(void);
+extern void  ED1_WaitForFlagAndClearBit1(void);
 extern void  PARSEINI_ScanLogoDirectory(void);
-extern void  PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable(void);
+extern void  ESQFUNC_RebuildPwBrushListFromTagTable(void);
 extern short PARSEINI_TestMemoryAndOpenTopazFont(struct TextFont **handle,
                                                  struct TextAttr *attr);
-extern long __asm SCRIPT3_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
 extern void  TLIBA3_SetFontForAllViewModes(struct TextFont *font);
-extern void  PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk(void);
-extern void  PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(long key);
+extern void  DISKIO2_ParseIniFileFromDisk(void);
+extern void  ESQIFF_HandleBrushIniReloadHotkey(long key);
 extern void  PARSEINI_ParseIniBufferAndDispatch(char *path);
 extern short SCRIPT_CheckPathExists(char *path);
-extern void  PARSEINI_JMPTBL_BRUSH_FreeBrushList(void *head, long zero);
-extern void  PARSEINI_JMPTBL_BRUSH_FreeBrushResources(void *head);
-extern void  PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(long mode);
+extern void  BRUSH_FreeBrushList(void *head, long zero);
+extern void  BRUSH_FreeBrushResources(void *head);
+extern void  ESQIFF_QueueIffBrushLoad(long mode);
 extern void  TEXTDISP_ApplySourceConfigAllEntries(void);
-extern void  PARSEINI_JMPTBL_ED1_EnterEscMenu(void);
-extern void  PARSEINI_JMPTBL_ED1_ExitEscMenu(void);
-extern void  PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen(void);
-extern void  PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion(void);
+extern void  ED1_EnterEscMenu(void);
+extern void  ED1_ExitEscMenu(void);
+extern void  ED1_DrawDiagnosticsScreen(void);
+extern void  ESQFUNC_DrawEscMenuVersion(void);
 
 extern struct TextFont *Global_HANDLE_H26F_FONT;
 extern struct TextFont *Global_HANDLE_PREVUEC_FONT;
@@ -140,7 +140,7 @@ void PARSEINI_HandleFontCommand(char *cmd)
     switch ((short)(unsigned char)*cmd++) {
 
     case 0x32:
-        PARSEINI_JMPTBL_WDISP_SPrintf(cmdBuf, Global_STR_PERCENT_S_2, cmd);
+        WDISP_SPrintf(cmdBuf, Global_STR_PERCENT_S_2, cmd);
         Execute(cmdBuf, 0L, 0L);
         return;
 
@@ -148,17 +148,17 @@ void PARSEINI_HandleFontCommand(char *cmd)
         switch ((short)(unsigned char)*cmd++) {
 
         case 0x34:
-            PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit0();
+            ED1_WaitForFlagAndClearBit0();
             return;
 
         case 0x35:
             if (CONFIG_ParseiniLogoScanEnabledFlag == 89)
                 PARSEINI_ScanLogoDirectory();
-            PARSEINI_JMPTBL_ED1_WaitForFlagAndClearBit1();
+            ED1_WaitForFlagAndClearBit1();
             return;
 
         case 0x36:
-            PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable();
+            ESQFUNC_RebuildPwBrushListFromTagTable();
             return;
 
         case 0x37:
@@ -198,11 +198,11 @@ void PARSEINI_HandleFontCommand(char *cmd)
             return;
 
         case 0x51:
-            PARSEINI_JMPTBL_DISKIO2_ParseIniFileFromDisk();
+            DISKIO2_ParseIniFileFromDisk();
             return;
 
         case 0x61:
-            PARSEINI_JMPTBL_ESQIFF_HandleBrushIniReloadHotkey(97L);
+            ESQIFF_HandleBrushIniReloadHotkey(97L);
             return;
 
         case 0x62:
@@ -216,12 +216,12 @@ void PARSEINI_HandleFontCommand(char *cmd)
             while (CTASKS_IffTaskDoneFlag == 0)
                 ;
 
-            PARSEINI_JMPTBL_BRUSH_FreeBrushList(
+            BRUSH_FreeBrushList(
                 &WDISP_WeatherStatusBrushListHead, 0L);
-            PARSEINI_JMPTBL_BRUSH_FreeBrushResources(
+            BRUSH_FreeBrushResources(
                 &PARSEINI_BannerBrushResourceHead);
             PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_BANNER_INI_3);
-            PARSEINI_JMPTBL_ESQIFF_QueueIffBrushLoad(1L);
+            ESQIFF_QueueIffBrushLoad(1L);
             return;
 
         case 0x64:
@@ -241,18 +241,18 @@ void PARSEINI_HandleFontCommand(char *cmd)
         switch ((short)(unsigned char)*cmd++) {
 
         case 0x30:
-            PARSEINI_JMPTBL_ED1_EnterEscMenu();
-            PARSEINI_JMPTBL_ED1_ExitEscMenu();
+            ED1_EnterEscMenu();
+            ED1_ExitEscMenu();
             return;
 
         case 0x31:
-            PARSEINI_JMPTBL_ED1_EnterEscMenu();
-            PARSEINI_JMPTBL_ED1_DrawDiagnosticsScreen();
+            ED1_EnterEscMenu();
+            ED1_DrawDiagnosticsScreen();
             return;
 
         case 0x32:
-            PARSEINI_JMPTBL_ED1_EnterEscMenu();
-            PARSEINI_JMPTBL_ESQFUNC_DrawEscMenuVersion();
+            ED1_EnterEscMenu();
+            ESQFUNC_DrawEscMenuVersion();
             return;
 
         default:

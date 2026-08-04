@@ -12,11 +12,11 @@
 extern short TEXTDISP_ActiveGroupId;
 extern long  CONFIG_TimeWindowMinutes;
 
-extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(long row, long kind);
-extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(long row, long kind);
-extern char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(char *entry, long slot,
+extern char *ESQDISP_GetEntryPointerByMode(long row, long kind);
+extern char *ESQDISP_GetEntryAuxPointerByMode(long row, long kind);
+extern char *COI_GetAnimFieldPointerByMode(char *entry, long slot,
                                                          long mode);
-extern long  TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(char *entry, char *aux,
+extern long  COI_TestEntryWithinTimeWindow(char *entry, char *aux,
                  long slot, long window, long fallback);
 extern void  TLIBA1_FormatClockFormatEntry(char *out, char *f5, char *f3,
                  char *f2, char *f4, char *f1, long mode);
@@ -36,21 +36,21 @@ short TLIBA1_BuildClockFormatEntryIfVisible(short row, short slot, char *out,
     result = 0;
 
     if (TEXTDISP_ActiveGroupId == 1) {
-        entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((long)row, 1);
-        aux   = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode((long)row, 1);
+        entry = ESQDISP_GetEntryPointerByMode((long)row, 1);
+        aux   = ESQDISP_GetEntryAuxPointerByMode((long)row, 1);
     } else {
-        entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((long)row, 2);
-        aux   = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode((long)row, 2);
+        entry = ESQDISP_GetEntryPointerByMode((long)row, 2);
+        aux   = ESQDISP_GetEntryAuxPointerByMode((long)row, 2);
     }
 
-    f5 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (long)slot, 5);
-    f3 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (long)slot, 3);
-    f2 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (long)slot, 2);
-    f4 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (long)slot, 4);
-    f1 = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (long)slot, 1);
+    f5 = COI_GetAnimFieldPointerByMode(entry, (long)slot, 5);
+    f3 = COI_GetAnimFieldPointerByMode(entry, (long)slot, 3);
+    f2 = COI_GetAnimFieldPointerByMode(entry, (long)slot, 2);
+    f4 = COI_GetAnimFieldPointerByMode(entry, (long)slot, 4);
+    f1 = COI_GetAnimFieldPointerByMode(entry, (long)slot, 1);
 
     if (slot == -1
-        || TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(entry, aux, (long)slot,
+        || COI_TestEntryWithinTimeWindow(entry, aux, (long)slot,
                1440, CONFIG_TimeWindowMinutes) != 0) {
         if (f5 != 0 || f3 != 0 || f2 != 0 || f4 != 0 || f1 != 0) {
             if (out != 0)

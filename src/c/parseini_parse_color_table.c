@@ -58,10 +58,10 @@
  *   summary: 4EBA against 6100 for the four cross-unit calls.
  */
 
-extern void PARSEINI_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long v);
-extern long PARSEINI_JMPTBL_STRING_CompareNoCase(char *a, char *b);
-extern long SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(long ch);
-extern void TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
+extern void WDISP_SPrintf(char *buf, char *fmt, long v);
+extern long STRING_CompareNoCase(char *a, char *b);
+extern long LADFUNC_ParseHexDigit(long ch);
+extern void ESQIFF_RunCopperRiseTransition(void);
 
 extern char KYBD_CustomPaletteTriplesRBase[];
 extern char ESQFUNC_BasePaletteRgbTriples[];
@@ -87,14 +87,14 @@ void PARSEINI_ParseColorTable(char *key, char *digits, long mode)
     }
 
     for (index = 0; index < count; index++) {
-        PARSEINI_JMPTBL_WDISP_SPrintf(buf, Global_STR_COLOR_PERCENT_D, index);
-        if (PARSEINI_JMPTBL_STRING_CompareNoCase(key, buf) == 0) {
+        WDISP_SPrintf(buf, Global_STR_COLOR_PERCENT_D, index);
+        if (STRING_CompareNoCase(key, buf) == 0) {
             for (channel = 0; channel < 3; channel++)
                 table[index * 3 + channel] =
-                    (char)SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit((long)digits[channel]);
+                    (char)LADFUNC_ParseHexDigit((long)digits[channel]);
         }
     }
 
     if (mode == 4)
-        TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition();
+        ESQIFF_RunCopperRiseTransition();
 }

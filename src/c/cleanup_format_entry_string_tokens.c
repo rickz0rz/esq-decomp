@@ -20,8 +20,8 @@ extern char CLOCK_STR_BOOL_CHARS_YyNn[];
 extern char CLOCK_STR_EMPTY_TOKEN_TEMPLATE[];
 extern unsigned char WDISP_CharClassTable[];
 
-extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *s, long c);
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *src, char *owned);
+extern char *STR_FindCharPtr(char *s, long c);
+extern char *ESQPARS_ReplaceOwnedString(char *src, char *owned);
 
 void CLEANUP_FormatEntryStringTokens(char **first, char **second, char *src)
 {
@@ -31,7 +31,7 @@ void CLEANUP_FormatEntryStringTokens(char **first, char **second, char *src)
     long  i;
 
     if (src != 0 && *src != 0
-        && (body = GROUP_AI_JMPTBL_STR_FindCharPtr(src, 58)) != 0) {
+        && (body = STR_FindCharPtr(src, 58)) != 0) {
 
         *(struct TokenDefaults *)defaults = CLOCK_STR_TOKEN_PAIR_DEFAULTS;
         defaults[10] = 0;
@@ -44,7 +44,7 @@ void CLEANUP_FormatEntryStringTokens(char **first, char **second, char *src)
         }
         work[i] = 0;
 
-        *first = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(work, *first);
+        *first = ESQPARS_ReplaceOwnedString(work, *first);
 
         strcpy(work, CLOCK_STR_TOKEN_OUTPUT_TEMPLATE);
         body++;
@@ -58,7 +58,7 @@ void CLEANUP_FormatEntryStringTokens(char **first, char **second, char *src)
             case 3:
             case 4:
             case 5:
-                if (GROUP_AI_JMPTBL_STR_FindCharPtr(CLOCK_STR_BOOL_CHARS_YyNn,
+                if (STR_FindCharPtr(CLOCK_STR_BOOL_CHARS_YyNn,
                         (long)body[i]) != 0) {
                     if (WDISP_CharClassTable[body[i]] & 2)
                         work[i] = body[i] - 32;
@@ -102,11 +102,11 @@ void CLEANUP_FormatEntryStringTokens(char **first, char **second, char *src)
             i++;
         }
 
-        *second = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(work, *second);
+        *second = ESQPARS_ReplaceOwnedString(work, *second);
         return;
     }
 
-    *first = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, *first);
-    *second = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+    *first = ESQPARS_ReplaceOwnedString(0, *first);
+    *second = ESQPARS_ReplaceOwnedString(
                   CLOCK_STR_EMPTY_TOKEN_TEMPLATE, *second);
 }

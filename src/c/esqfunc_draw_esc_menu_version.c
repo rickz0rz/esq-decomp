@@ -40,8 +40,8 @@
  */
 #include "esq-graphics.h"
 
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf();   /* variadic: arg count differs per call */
-extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(void *rp, long x, long y,
+extern void WDISP_SPrintf();   /* variadic: arg count differs per call */
+extern void DISPLIB_DisplayTextAtPosition(void *rp, long x, long y,
                                                          char *s);
 
 extern struct RastPort *Global_REF_RASTPORT_1;
@@ -65,9 +65,9 @@ void ESQFUNC_DrawEscMenuVersion(void)
     SetAPen(Global_REF_RASTPORT_1, 1L);
     SetDrMd(Global_REF_RASTPORT_1, 1L);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(line, Global_STR_BUILD_NUMBER_FORMATTED,
+    WDISP_SPrintf(line, Global_STR_BUILD_NUMBER_FORMATTED,
                                   Global_LONG_BUILD_NUMBER, Global_PTR_STR_BUILD_ID);
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175L, 330L,
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175L, 330L,
                                                  line);
 
     if (Global_LONG_ROM_VERSION_CHECK == 1)
@@ -75,12 +75,12 @@ void ESQFUNC_DrawEscMenuVersion(void)
     else
         romName = Global_STR_ROM_VERSION_2_04;
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(line, Global_STR_ROM_VERSION_FORMATTED, romName);
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175L, 360L,
+    WDISP_SPrintf(line, Global_STR_ROM_VERSION_FORMATTED, romName);
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175L, 360L,
                                                  line);
 
     SetAPen(Global_REF_RASTPORT_1, 3L);
-    ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175L, 390L,
+    DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 175L, 390L,
                                                  Global_STR_PUSH_ANY_KEY_TO_CONTINUE_1);
     SetAPen(Global_REF_RASTPORT_1, 1L);
 }

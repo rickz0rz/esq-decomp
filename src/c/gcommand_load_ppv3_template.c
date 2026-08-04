@@ -55,10 +55,10 @@
 #include "esq-exec.h"
 #include "esq-dos.h"
 
-extern long  GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(char *path);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *s, long ch);
+extern long  DISKIO_LoadFileToWorkBuffer(char *path);
+extern char *STR_FindCharPtr(char *s, long ch);
 extern char *ESQPARS_ReplaceOwnedString(char *newStr, char *old);
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                     void *p, long size);
 extern void  GCOMMAND_LoadPPVTemplate(void);
 
@@ -80,12 +80,12 @@ long GCOMMAND_LoadPPV3Template(void)
     long  usedFallback = 0;
     long  len;
 
-    if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(
+    if (DISKIO_LoadFileToWorkBuffer(
             GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV3_DOT_DAT_TemplatePrimaryLoad)
         != -1) {
         headerSize = 56;
 
-    } else if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(
+    } else if (DISKIO_LoadFileToWorkBuffer(
                    GCOMMAND_PATH_DF0_COLON_DIGITAL_PPV_DOT_DAT_TemplateFallbackLoad)
                != -1) {
         headerSize = 52;
@@ -106,7 +106,7 @@ long GCOMMAND_LoadPPV3Template(void)
 
     Global_PTR_WORK_BUFFER += headerSize;
 
-    split = GROUP_AS_JMPTBL_STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18L);
+    split = STR_FindCharPtr(Global_PTR_WORK_BUFFER, 18L);
     if (split != 0 && *split != 0) {
         *split++ = 0;
 
@@ -117,7 +117,7 @@ long GCOMMAND_LoadPPV3Template(void)
             split, GCOMMAND_PPVListingsTemplatePtr);
     }
 
-    NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_GCOMMAND_C_3, 993L, buf,
+    MEMORY_DeallocateMemory(Global_STR_GCOMMAND_C_3, 993L, buf,
                                            len + 1);
 
     if (usedFallback)

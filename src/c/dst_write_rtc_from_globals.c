@@ -16,9 +16,9 @@
  *   retest:  a compiler that picks the call opcode from the callee's
  *            translation unit would match this byte for byte.
  */
-extern void GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals(void);
+extern void PARSEINI_WriteRtcFromGlobals(void);
 
 void DST_WriteRtcFromGlobals(void)
 {
-    GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals();
+    PARSEINI_WriteRtcFromGlobals();
 }

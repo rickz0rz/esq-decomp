@@ -121,21 +121,21 @@ extern char COI_STR_LINEFEED_CR_1[];
 extern char COI_STR_LINEFEED_CR_2[];
 extern char COI_STR_DEFAULT_TOKEN_TEMPLATE_A[];
 
-extern void  GROUP_AE_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, long a);
+extern void  WDISP_SPrintf(char *dst, char *fmt, long a);
 extern long  DISKIO_LoadFileToWorkBuffer(char *name);
-extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *s, long c);
-extern long  GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
-extern void  GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(char *input, short *out,
+extern char *STR_FindCharPtr(char *s, long c);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern void  SCRIPT_BuildTokenIndexMap(char *input, short *out,
                                                        long tokenCount,
                                                        char *tokenTable,
                                                        long maxScan,
                                                        long terminator,
                                                        long fillMissing);
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *newText,
+extern char *ESQPARS_ReplaceOwnedString(char *newText,
                                                         char *oldText);
 extern void  CLEANUP_FormatEntryStringTokens(char **a, char **b, char *src);
 extern char  ESQ_WildcardMatch(char *pattern, char *text);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                      void *p, long size);
 extern void  COI_AllocSubEntryTable(struct TextEntry *entry);
 
@@ -191,7 +191,7 @@ long COI_LoadOiDataFile(unsigned char diskId)
     pos = recBase = 0;
 
     parity = (short)((diskId - (diskId / 2) * 2));
-    GROUP_AE_JMPTBL_WDISP_SPrintf(nameBuf, Global_STR_DF0_OI_PERCENT_2_LX_DAT_2,
+    WDISP_SPrintf(nameBuf, Global_STR_DF0_OI_PERCENT_2_LX_DAT_2,
                                   (long)parity);
     if (DISKIO_LoadFileToWorkBuffer(nameBuf) == -1)
         return -1;
@@ -205,7 +205,7 @@ long COI_LoadOiDataFile(unsigned char diskId)
     } else if (diskId == TEXTDISP_PrimaryGroupCode) {
         entryCount = TEXTDISP_PrimaryGroupEntryCount;
     } else {
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_COI_C_6, 1198,
+        MEMORY_DeallocateMemory(Global_STR_COI_C_6, 1198,
                                                 Global_PTR_WORK_BUFFER,
                                                 fileLen + 1);
         return -1;
@@ -213,7 +213,7 @@ long COI_LoadOiDataFile(unsigned char diskId)
 
     /* --- header line: copy it out, split off the format number ------------- */
     recBase = pos = 0;
-    while (GROUP_AI_JMPTBL_STR_FindCharPtr(
+    while (STR_FindCharPtr(
                COI_STR_LINEFEED_CR_1,
                Global_PTR_WORK_BUFFER[recBase + pos]) == 0) {
         lineBuf[pos] = Global_PTR_WORK_BUFFER[recBase + pos];
@@ -221,20 +221,20 @@ long COI_LoadOiDataFile(unsigned char diskId)
     }
     lineBuf[pos] = 0;
 
-    tabPtr = GROUP_AI_JMPTBL_STR_FindCharPtr(lineBuf, 9);
+    tabPtr = STR_FindCharPtr(lineBuf, 9);
     if (tabPtr != 0) {
         *tabPtr = 0;
         tabPtr = tabPtr + 1;
-        fileFormat = GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(tabPtr);
+        fileFormat = PARSE_ReadSignedLongSkipClass3_Alt(tabPtr);
     } else {
         fileFormat = 0;
     }
 
-    if (GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(lineBuf) !=
+    if (PARSE_ReadSignedLongSkipClass3_Alt(lineBuf) !=
         (long)diskId)
         return -1;
 
-    while (GROUP_AI_JMPTBL_STR_FindCharPtr(
+    while (STR_FindCharPtr(
                COI_STR_LINEFEED_CR_2,
                Global_PTR_WORK_BUFFER[recBase + pos]) != 0) {
         Global_PTR_WORK_BUFFER[recBase + pos] = 0;
@@ -249,14 +249,14 @@ long COI_LoadOiDataFile(unsigned char diskId)
         recBase = recBase + pos;
 
         if (fileFormat == 2) {
-            GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(
+            SCRIPT_BuildTokenIndexMap(
                 &Global_PTR_WORK_BUFFER[recBase], &fieldMap[0], 11,
                 &separators[0], fileLen, 26, 1);
         } else {
             for (k = 0; k < 11; k++)
                 fieldMap[k] = 0;
             /* &fieldMap[2] with 11 tokens: see the overrun note in the header */
-            GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(
+            SCRIPT_BuildTokenIndexMap(
                 &Global_PTR_WORK_BUFFER[recBase], &fieldMap[2], 11,
                 &separators[2], fileLen, 26, 1);
         }
@@ -276,20 +276,20 @@ long COI_LoadOiDataFile(unsigned char diskId)
 
             if (seen[i] == 0) {
                 rec = entry->rec;
-                rec->text4 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                rec->text4 = ESQPARS_ReplaceOwnedString(
                     &Global_PTR_WORK_BUFFER[recBase + fieldMap[0]], rec->text4);
                 rec->code[0] = Global_PTR_WORK_BUFFER[recBase + fieldMap[1]];
                 rec->code[1] = Global_PTR_WORK_BUFFER[recBase + fieldMap[1] + 1];
                 rec->code[2] = Global_PTR_WORK_BUFFER[recBase + fieldMap[1] + 2];
                 rec->code[3] = 0;
-                rec->text12 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                rec->text12 = ESQPARS_ReplaceOwnedString(
                     &Global_PTR_WORK_BUFFER[recBase + fieldMap[1] + fieldMap[2]],
                     rec->text12);
-                rec->text16 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                rec->text16 = ESQPARS_ReplaceOwnedString(
                     &Global_PTR_WORK_BUFFER[recBase + fieldMap[3]], rec->text16);
-                rec->text20 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                rec->text20 = ESQPARS_ReplaceOwnedString(
                     &Global_PTR_WORK_BUFFER[recBase + fieldMap[4]], rec->text20);
-                rec->text8 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                rec->text8 = ESQPARS_ReplaceOwnedString(
                     &Global_PTR_WORK_BUFFER[recBase + fieldMap[5]], rec->text8);
 
                 if (fieldMap[0] > 0 &&
@@ -298,26 +298,26 @@ long COI_LoadOiDataFile(unsigned char diskId)
                         &rec->text24, &rec->text28,
                         &Global_PTR_WORK_BUFFER[recBase + fieldMap[0]]);
                 } else {
-                    rec->text24 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                    rec->text24 = ESQPARS_ReplaceOwnedString(
                         0, rec->text24);
-                    rec->text28 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                    rec->text28 = ESQPARS_ReplaceOwnedString(
                         COI_STR_DEFAULT_TOKEN_TEMPLATE_A, rec->text28);
                 }
 
                 if (fieldMap[1] != 0 &&
                     &Global_PTR_WORK_BUFFER[recBase + fieldMap[1]] != 0) {
                     rec->value32 =
-                        GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(
+                        PARSE_ReadSignedLongSkipClass3_Alt(
                             &Global_PTR_WORK_BUFFER[recBase + fieldMap[1]]);
                 } else {
                     rec->value32 = -1;
                 }
 
-                GROUP_AE_JMPTBL_WDISP_SPrintf(
+                WDISP_SPrintf(
                     lineBuf, Global_STR_PERCENT_S_1,
                     (long)&Global_PTR_WORK_BUFFER[recBase + fieldMap[8]]);
                 rec->subCount = (short)
-                    GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(lineBuf);
+                    PARSE_ReadSignedLongSkipClass3_Alt(lineBuf);
             }
 
             COI_AllocSubEntryTable(entry);
@@ -327,31 +327,31 @@ long COI_LoadOiDataFile(unsigned char diskId)
                 recBase = recBase + pos;
 
                 if (fileFormat == 2) {
-                    GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(
+                    SCRIPT_BuildTokenIndexMap(
                         &Global_PTR_WORK_BUFFER[recBase], &subFieldMap[0], 8,
                         &subSeparators[0], fileLen, 26, 1);
                 } else {
                     for (k = 0; k < 8; k++)
                         subFieldMap[k] = 0;
-                    GROUP_AE_JMPTBL_SCRIPT_BuildTokenIndexMap(
+                    SCRIPT_BuildTokenIndexMap(
                         &Global_PTR_WORK_BUFFER[recBase], &subFieldMap[2], 6,
                         &subSeparators[2], fileLen, 26, 1);
                 }
 
                 if (seen[i] == 0) {
                     sub->numField = (short)
-                        GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(
+                        PARSE_ReadSignedLongSkipClass3_Alt(
                             &Global_PTR_WORK_BUFFER[recBase]);
-                    sub->text6 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                    sub->text6 = ESQPARS_ReplaceOwnedString(
                         &Global_PTR_WORK_BUFFER[recBase + subFieldMap[2]],
                         sub->text6);
-                    sub->text10 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                    sub->text10 = ESQPARS_ReplaceOwnedString(
                         &Global_PTR_WORK_BUFFER[recBase + subFieldMap[3]],
                         sub->text10);
-                    sub->text14 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                    sub->text14 = ESQPARS_ReplaceOwnedString(
                         &Global_PTR_WORK_BUFFER[recBase + subFieldMap[4]],
                         sub->text14);
-                    sub->text2 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                    sub->text2 = ESQPARS_ReplaceOwnedString(
                         &Global_PTR_WORK_BUFFER[recBase + subFieldMap[5]],
                         sub->text2);
 
@@ -361,16 +361,16 @@ long COI_LoadOiDataFile(unsigned char diskId)
                             &sub->text18, &sub->text22,
                             &Global_PTR_WORK_BUFFER[recBase + subFieldMap[0]]);
                     } else {
-                        sub->text18 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                        sub->text18 = ESQPARS_ReplaceOwnedString(
                             rec->text24, sub->text18);
-                        sub->text22 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                        sub->text22 = ESQPARS_ReplaceOwnedString(
                             rec->text28, sub->text22);
                     }
 
                     if (subFieldMap[1] > 0 &&
                         &Global_PTR_WORK_BUFFER[recBase + subFieldMap[1]] != 0) {
                         sub->value26 =
-                            GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(
+                            PARSE_ReadSignedLongSkipClass3_Alt(
                                 &Global_PTR_WORK_BUFFER[recBase +
                                                         subFieldMap[1]]);
                     } else {
@@ -401,23 +401,23 @@ long COI_LoadOiDataFile(unsigned char diskId)
 
             seen[i] = 1;
             rec2 = entry2->rec;
-            rec2->text4 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            rec2->text4 = ESQPARS_ReplaceOwnedString(
                 rec->text4, rec2->text4);
             rec2->code[0] = rec->code[0];
             rec2->code[1] = rec->code[1];
             rec2->code[2] = rec->code[2];
             rec2->code[3] = rec->code[3];
-            rec2->text12 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            rec2->text12 = ESQPARS_ReplaceOwnedString(
                 rec->text12, rec2->text12);
-            rec2->text16 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            rec2->text16 = ESQPARS_ReplaceOwnedString(
                 rec->text16, rec2->text16);
-            rec2->text20 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            rec2->text20 = ESQPARS_ReplaceOwnedString(
                 rec->text20, rec2->text20);
-            rec2->text8 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            rec2->text8 = ESQPARS_ReplaceOwnedString(
                 rec->text8, rec2->text8);
-            rec2->text24 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            rec2->text24 = ESQPARS_ReplaceOwnedString(
                 rec->text24, rec2->text24);
-            rec2->text28 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+            rec2->text28 = ESQPARS_ReplaceOwnedString(
                 rec->text28, rec2->text28);
             rec2->value32 = rec->value32;
             rec2->subCount = rec->subCount;
@@ -428,24 +428,24 @@ long COI_LoadOiDataFile(unsigned char diskId)
                 sub2 = rec2->subs[subIndex];
                 sub = rec->subs[subIndex];
                 sub2->numField = sub->numField;
-                sub2->text6 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                sub2->text6 = ESQPARS_ReplaceOwnedString(
                     sub->text6, sub2->text6);
-                sub2->text10 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                sub2->text10 = ESQPARS_ReplaceOwnedString(
                     sub->text10, sub2->text10);
-                sub2->text14 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                sub2->text14 = ESQPARS_ReplaceOwnedString(
                     sub->text14, sub2->text14);
-                sub2->text2 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                sub2->text2 = ESQPARS_ReplaceOwnedString(
                     sub->text2, sub2->text2);
-                sub2->text18 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                sub2->text18 = ESQPARS_ReplaceOwnedString(
                     sub->text18, sub2->text18);
-                sub2->text22 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(
+                sub2->text22 = ESQPARS_ReplaceOwnedString(
                     sub->text22, sub2->text22);
                 sub2->value26 = sub->value26;
             }
         }
     }
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_COI_C_1, 1443, work,
+    MEMORY_DeallocateMemory(Global_STR_COI_C_1, 1443, work,
                                             fileLen + 1);
     return 0;
 }

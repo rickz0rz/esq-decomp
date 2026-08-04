@@ -66,9 +66,9 @@ struct DiskioProgInfoRec {
 };
 #endif
 
-extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(char *fmt, ...);
-extern void GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long len);
-extern void GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch(char *s);
+extern void FORMAT_RawDoFmtWithScratchBuffer(char *fmt, ...);
+extern void STRING_CopyPadNul(char *dst, char *src, long len);
+extern void LADFUNC2_EmitEscapedStringToScratch(char *s);
 
 extern char **Global_REF_STR_CLOCK_FORMAT;
 
@@ -93,15 +93,15 @@ void DISKIO1_DumpProgramInfoAttrTable(struct DiskioProgInfoRec *rec, long num)
     char buf[41];
     register long i;
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_PROGRAM_INFO_PCT_D, num);
 
     if (rec == 0) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NewlineOnly_C);
+        FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NewlineOnly_C);
         return;
     }
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_PROG_SRCE_PCT_S_ProgramInfoAttrTable, rec);
 
     /* Cleared once, not per slot. The copy helper pads 40 bytes and does not
@@ -113,52 +113,52 @@ void DISKIO1_DumpProgramInfoAttrTable(struct DiskioProgInfoRec *rec, long num)
         if (rec->attr[i] == 1 && rec->str[i] == 0)
             continue;
 
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_FMT_PCT_02D_PCT_S_COLON_ATTR, i,
             Global_REF_STR_CLOCK_FORMAT[i]);
 
         /* A whole-byte comparison, not a bit test. */
         if (rec->attr[i] == 1)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_NONE_ProgramInfoAttrTable);
 
         if (rec->attr[i] & 2)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_MOVIE_ProgramInfoAttrTable);
 
         if (rec->attr[i] & 4)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_ALTHILITE_PROG_ProgramInfoAttrTable);
 
         if (rec->attr[i] & 8)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_TAG_PROG_ProgramInfoAttrTable);
 
         if (rec->attr[i] & 0x10)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_SPORTSPROG);
+            FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_SPORTSPROG);
 
         if (rec->attr[i] & 0x20)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_0X20_ProgramInfoAttrTable);
 
         if (rec->attr[i] & 0x40)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_REPEATPROG);
+            FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_REPEATPROG);
 
         if (rec->attr[i] & 0x80)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_PREV_DAYS_DATA_ProgramInfoAttrTable);
 
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_ProgramAttrCloseAndProgQuotedPrefix);
 
         if (rec->str[i] != 0)
-            GROUP_AG_JMPTBL_STRING_CopyPadNul(buf, rec->str[i], 40);
+            STRING_CopyPadNul(buf, rec->str[i], 40);
         else
             strcpy(buf, DISKIO_TAG_NONE);
 
-        GROUP_AG_JMPTBL_LADFUNC2_EmitEscapedStringToScratch(buf);
+        LADFUNC2_EmitEscapedStringToScratch(buf);
 
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_FMT_ProgramStringSuffixWithTypeFields, (long)rec->typeA[i],
             (long)rec->typeB[i], (long)rec->typeC[i]);
     }

@@ -78,12 +78,12 @@ struct IffNode {
 
 extern void  ESQIFF_ReadNextExternalAssetPathEntry(char *buf);
 extern char *GCOMMAND_FindPathSeparator(char *s);
-extern short ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard(char *s);
-extern long  ESQIFF_JMPTBL_STRING_CompareNoCaseN(char *a, char *b, long n);
+extern short TEXTDISP_FindEntryIndexByWildcard(char *s);
+extern long  STRING_CompareNoCaseN(char *a, char *b, long n);
 extern void  ESQDISP_ProcessGridMessagesIfIdle(void);
-extern struct IffNode *ESQIFF_JMPTBL_BRUSH_AllocBrushNode(char *path,
+extern struct IffNode *BRUSH_AllocBrushNode(char *path,
                                                           void *prev);
-extern void  ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess(void);
+extern void  CTASKS_StartIffTaskProcess(void);
 
 extern short CTASKS_IffTaskDoneFlag;
 extern short ESQIFF_AssetSourceSelect;
@@ -178,7 +178,7 @@ short ESQIFF_QueueNextExternalAssetIffJob(void)
 
                 p = GCOMMAND_FindPathSeparator(probe);
 
-                if (ESQIFF_JMPTBL_TEXTDISP_FindEntryIndexByWildcard(p) == 1) {
+                if (TEXTDISP_FindEntryIndexByWildcard(p) == 1) {
                     found = 1;
                     ESQIFF_ExternalAssetStateTable = TEXTDISP_CurrentMatchIndex;
                     break;
@@ -188,11 +188,11 @@ short ESQIFF_QueueNextExternalAssetIffJob(void)
 
             } else {
 
-                if (ESQIFF_JMPTBL_STRING_CompareNoCaseN(ESQIFF_PATH_DF0_COLON,
+                if (STRING_CompareNoCaseN(ESQIFF_PATH_DF0_COLON,
                                                         path, 4L) == 0)
                     break;
 
-                if (ESQIFF_JMPTBL_STRING_CompareNoCaseN(
+                if (STRING_CompareNoCaseN(
                         ESQIFF_PATH_RAM_COLON_LOGOS_SLASH, path, 11L) == 0)
                     break;
 
@@ -233,7 +233,7 @@ short ESQIFF_QueueNextExternalAssetIffJob(void)
 
         if (duplicate == 0) {
 
-            node = ESQIFF_JMPTBL_BRUSH_AllocBrushNode(path, 0);
+            node = BRUSH_AllocBrushNode(path, 0);
             ESQIFF_PendingExternalBrushNode = node;
 
             if (ESQIFF_AssetSourceSelect != 0) {
@@ -244,7 +244,7 @@ short ESQIFF_QueueNextExternalAssetIffJob(void)
                 CTASKS_PendingGAdsBrushDescriptor = node;
             }
 
-            ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess();
+            CTASKS_StartIffTaskProcess();
         }
 
         ESQDISP_ProcessGridMessagesIfIdle();

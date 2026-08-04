@@ -79,9 +79,9 @@ struct EsqDateTime {
 
 extern short CLOCK_CacheYear;
 
-extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *s, long ch);
-extern void  GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
-extern long  GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern char *STR_FindCharPtr(char *s, long ch);
+extern void  STRING_CopyPadNul(char *dst, char *src, long n);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern long  DATETIME_IsLeapYear(long year);
 extern void  DATETIME_NormalizeMonthRange(struct EsqDateTime *dt);
 extern long  DATETIME_NormalizeStructToSeconds(struct EsqDateTime *dt);
@@ -94,13 +94,13 @@ long DATETIME_ParseString(struct EsqDateTime *dt, char *text, char delim)
     long ok = 0;
     long packed, diff, limit, v;
 
-    at = GROUP_AI_JMPTBL_STR_FindCharPtr(text, (long)delim);
+    at = STR_FindCharPtr(text, (long)delim);
     if (at && dt) {
         memset(dt, 0, 22);
 
-        GROUP_AG_JMPTBL_STRING_CopyPadNul(digits, at + 1, 7L);
+        STRING_CopyPadNul(digits, at + 1, 7L);
         digits[7] = 0;
-        packed = GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(digits);
+        packed = PARSE_ReadSignedLongSkipClass3_Alt(digits);
 
         dt->year      = packed / 1000;
         dt->dayOfYear = (packed - (packed / 1000) * 1000);
@@ -114,10 +114,10 @@ long DATETIME_ParseString(struct EsqDateTime *dt, char *text, char delim)
             limit = DATETIME_IsLeapYear(dt->year) ? 1 : 0;
             limit += 366;
             if (dt->dayOfYear < limit) {
-                v = GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(at + 8);
+                v = PARSE_ReadSignedLongSkipClass3_Alt(at + 8);
                 dt->hour = v;
                 if (dt->hour >= 0 && dt->hour < 24) {
-                    v = GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(at + 11);
+                    v = PARSE_ReadSignedLongSkipClass3_Alt(at + 11);
                     dt->minute = v;
                     if (dt->minute >= 0 && dt->minute < 60) {
                         dt->second = dt->pad14 = 0;

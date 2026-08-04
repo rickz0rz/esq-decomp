@@ -18,9 +18,9 @@ extern struct ShowtimeBucket  NEWGRID_ShowtimeBucketEntryTable[];
 extern struct ShowtimeBucket *NEWGRID_ShowtimeBucketPtrTable[];
 extern long                   NEWGRID_ShowtimeBucketCount;
 
-extern char *PARSEINI_JMPTBL_STR_FindCharPtr(char *s, long c);
-extern long  SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s, long c);
-extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(char *src, char *owned);
+extern char *STR_FindCharPtr(char *s, long c);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s, long c);
+extern char *ESQPARS_ReplaceOwnedString(char *src, char *owned);
 
 long NEWGRID_AddShowtimeBucketEntry(char *text, long hour)
 {
@@ -31,8 +31,8 @@ long NEWGRID_AddShowtimeBucketEntry(char *text, long hour)
     long  result;
 
     result = 0;
-    value = PARSEINI_JMPTBL_STR_FindCharPtr(text, 58) + 1;
-    key = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(value, 58)
+    value = STR_FindCharPtr(text, 58) + 1;
+    key = PARSE_ReadSignedLongSkipClass3_Alt(value, 58)
           + (hour << 8);
 
     if (NEWGRID_ShowtimeBucketCount >= 10)
@@ -40,7 +40,7 @@ long NEWGRID_AddShowtimeBucketEntry(char *text, long hour)
 
     NEWGRID_ShowtimeBucketEntryTable[NEWGRID_ShowtimeBucketCount].key = key;
     NEWGRID_ShowtimeBucketEntryTable[NEWGRID_ShowtimeBucketCount].text =
-        PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(text,
+        ESQPARS_ReplaceOwnedString(text,
             NEWGRID_ShowtimeBucketEntryTable[NEWGRID_ShowtimeBucketCount].text);
 
     slot = NEWGRID_ShowtimeBucketCount;

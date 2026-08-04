@@ -10,9 +10,9 @@
  *            SAS/C version; see docs/compiler-version.md.
  */
 extern char ED_EditBufferLive[];
-extern void ED1_JMPTBL_LOCAVAIL_ResetFilterCursorState(char *st);
+extern void LOCAVAIL_ResetFilterCursorState(char *st);
 extern char LOCAVAIL_PrimaryFilterState[];
 void ED1_EnterEscMenu_AfterVersionText(void)
 {
-    ED1_JMPTBL_LOCAVAIL_ResetFilterCursorState(LOCAVAIL_PrimaryFilterState);
+    LOCAVAIL_ResetFilterCursorState(LOCAVAIL_PrimaryFilterState);
 }

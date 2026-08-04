@@ -11,7 +11,7 @@
  */
 extern unsigned short TEXTDISP_SecondaryGroupEntryCount;
 extern char *TEXTDISP_SecondaryTitlePtrTable[];
-extern char  UNKNOWN_JMPTBL_ESQ_WildcardMatch(char *pat, char *s);
+extern char  ESQ_WildcardMatch(char *pat, char *s);
 
 long TLIBA_FindFirstWildcardMatchIndex(char *pattern)
 {
@@ -20,7 +20,7 @@ long TLIBA_FindFirstWildcardMatchIndex(char *pattern)
 
     found = -1;
     for (i = 0; i < TEXTDISP_SecondaryGroupEntryCount; i++) {
-        if (UNKNOWN_JMPTBL_ESQ_WildcardMatch(pattern,
+        if (ESQ_WildcardMatch(pattern,
                                              TEXTDISP_SecondaryTitlePtrTable[i]) == 0) {
             found = i;
             break;

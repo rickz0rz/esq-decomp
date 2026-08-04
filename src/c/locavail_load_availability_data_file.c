@@ -89,20 +89,20 @@ struct LaState {                        /* 24 bytes */
     struct LaNode *nodes;               /* +20 */
 };
 
-extern long  GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(char *path);
-extern char *GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(void);
-extern long  GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(void);
-extern long  GROUP_AY_JMPTBL_STRING_CompareNoCaseN(char *a, char *b, long n);
+extern long  DISKIO_LoadFileToWorkBuffer(char *path);
+extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
+extern long  DISKIO_ParseLongFromWorkBuffer(void);
+extern long  STRING_CompareNoCaseN(char *a, char *b, long n);
 extern void  LOCAVAIL_FreeResourceChain(struct LaState *st);
 extern void  LOCAVAIL_ResetFilterStateStruct(struct LaState *st);
 extern long  LOCAVAIL_AllocNodeArraysForState(struct LaState *st);
 extern void  LOCAVAIL_CopyFilterStateStructRetainRefs(struct LaState *dst,
                                                       struct LaState *src);
-extern long __asm NEWGRID_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                     void *p, long size);
 
 extern char  TEXTDISP_PrimaryGroupCode;
@@ -131,7 +131,7 @@ long LOCAVAIL_LoadAvailabilityDataFile(struct LaState *group1,
     buf = 0;
     len = 0;
 
-    if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(
+    if (DISKIO_LoadFileToWorkBuffer(
             LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Load) == -1) {
 
         if (group1->code != TEXTDISP_PrimaryGroupCode) {
@@ -156,22 +156,22 @@ long LOCAVAIL_LoadAvailabilityDataFile(struct LaState *group1,
     len = Global_REF_LONG_FILE_SCRATCH;
     buf = Global_PTR_WORK_BUFFER;
 
-    tok = GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer();
+    tok = DISKIO_ConsumeCStringFromWorkBuffer();
     if (tok == (char *)-1)
         tok = 0;
 
     while (ok && tok != 0) {
 
-        if (GROUP_AY_JMPTBL_STRING_CompareNoCaseN(tok, LOCAVAIL_STR_LA_VER,
+        if (STRING_CompareNoCaseN(tok, LOCAVAIL_STR_LA_VER,
                                                   6L) != 0)
             break;
 
         LOCAVAIL_ResetFilterStateStruct(&st);
 
-        st.code  = (char)GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
-        st.count = GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
+        st.code  = (char)DISKIO_ParseLongFromWorkBuffer();
+        st.count = DISKIO_ParseLongFromWorkBuffer();
 
-        tok    = GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer();
+        tok    = DISKIO_ConsumeCStringFromWorkBuffer();
         st.tag = *tok;
 
         if (LOCAVAIL_AllocNodeArraysForState(&st) == 0) {
@@ -186,7 +186,7 @@ long LOCAVAIL_LoadAvailabilityDataFile(struct LaState *group1,
                 node = &st.nodes[i];
 
                 node->id = (unsigned char)
-                    GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
+                    DISKIO_ParseLongFromWorkBuffer();
 
                 if (node->id == 0 || node->id >= 100) {
                     ok = 0;
@@ -194,7 +194,7 @@ long LOCAVAIL_LoadAvailabilityDataFile(struct LaState *group1,
                 }
 
                 node->time = (short)
-                    GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
+                    DISKIO_ParseLongFromWorkBuffer();
 
                 if (node->time <= 0 || node->time >= 0xe11) {
                     ok = 0;
@@ -202,14 +202,14 @@ long LOCAVAIL_LoadAvailabilityDataFile(struct LaState *group1,
                 }
 
                 node->len = (short)
-                    GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
+                    DISKIO_ParseLongFromWorkBuffer();
 
                 if (node->len <= 0 || node->len >= 100) {
                     ok = 0;
                     continue;
                 }
 
-                node->data = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+                node->data = MEMORY_AllocateMemory(
                                  Global_STR_LOCAVAIL_C_7, 786L,
                                  (long)node->len,
                                  MEMF_PUBLIC | MEMF_CLEAR);
@@ -219,7 +219,7 @@ long LOCAVAIL_LoadAvailabilityDataFile(struct LaState *group1,
                     continue;
                 }
 
-                tok = GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer();
+                tok = DISKIO_ConsumeCStringFromWorkBuffer();
 
                 if (tok == (char *)-1) {
                     ok = 0;
@@ -272,12 +272,12 @@ long LOCAVAIL_LoadAvailabilityDataFile(struct LaState *group1,
             LOCAVAIL_FreeResourceChain(&st);
         }
 
-        tok = GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer();
+        tok = DISKIO_ConsumeCStringFromWorkBuffer();
         if (tok == (char *)-1)
             tok = 0;
     }
 
-    NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LOCAVAIL_C_8, 897L, buf,
+    MEMORY_DeallocateMemory(Global_STR_LOCAVAIL_C_8, 897L, buf,
                                            len + 1);
 
     return ok;

@@ -25,7 +25,7 @@
  * Hence the unsigned char pointer plus an explicit (char) cast at the call.
  */
 extern unsigned char WDISP_CharClassTable[];
-extern long SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit(long ch);
+extern long LADFUNC_ParseHexDigit(long ch);
 
 long PARSEINI_ParseHexValueFromString(unsigned char *s)
 {
@@ -36,7 +36,7 @@ long PARSEINI_ParseHexValueFromString(unsigned char *s)
     p = s;
     while (p && (WDISP_CharClassTable[*p] & 0x80)) {
         value <<= 4;
-        value += SCRIPT3_JMPTBL_LADFUNC_ParseHexDigit((long)(char)*p);
+        value += LADFUNC_ParseHexDigit((long)(char)*p);
         p++;
     }
     return value;

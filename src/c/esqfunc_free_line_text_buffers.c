@@ -11,13 +11,13 @@
  */
 extern char *LADFUNC_LineTextBufferPtrs[];
 extern char  Global_STR_ESQFUNC_C_6[];
-extern void  ESQIFF_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, char *p, long size);
+extern void  MEMORY_DeallocateMemory(char *who, long line, char *p, long size);
 void ESQFUNC_FreeLineTextBuffers(void)
 {
     short i;
 
     for (i = 0; i < 20; i++) {
-        ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQFUNC_C_6, 1235,
+        MEMORY_DeallocateMemory(Global_STR_ESQFUNC_C_6, 1235,
                                               LADFUNC_LineTextBufferPtrs[i], 60);
         LADFUNC_LineTextBufferPtrs[i] = 0;
     }

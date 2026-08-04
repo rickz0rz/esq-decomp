@@ -45,11 +45,11 @@ extern void NEWGRID_DrawGridCellBackground(struct GridCtx *ctx, long col,
                                            long row, long a);
 extern void NEWGRID_SetSelectionMarkers(long a, long b, char *m1, char *m2,
                                         char *m3, char *m4);
-extern long NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
-extern long NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(void);
-extern void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(struct RastPort *rp,
+extern long DISPTEXT_IsCurrentLineLast(void);
+extern long DISPTEXT_IsLastLineSelected(void);
+extern void DISPTEXT_RenderCurrentLine(struct RastPort *rp,
                                                        long x, long y);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(struct RastPort *rp,
+extern void BEVEL_DrawHorizontalBevel(struct RastPort *rp,
                             long x0, long y0, long x1, long y1);
 
 extern unsigned short NEWGRID_ColumnStartXPx;
@@ -88,13 +88,13 @@ long NEWGRID_DrawSelectionMarkers(struct GridCtx *ctx, short col, short row,
     y2 = (half - baseline - 4) / 2 + baseline + half - 1;
     y3 = (half - baseline) / 2 + baseline + half - 1;
 
-    NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(rp, x, y1);
+    DISPTEXT_RenderCurrentLine(rp, x, y1);
 
-    if (NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0) {
-        if (NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected() != 0)
-            NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(rp, x, y2);
+    if (DISPTEXT_IsCurrentLineLast() == 0) {
+        if (DISPTEXT_IsLastLineSelected() != 0)
+            DISPTEXT_RenderCurrentLine(rp, x, y2);
         else
-            NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(rp, x, y3);
+            DISPTEXT_RenderCurrentLine(rp, x, y3);
     }
 
     if (left1 != 0) {
@@ -114,9 +114,9 @@ long NEWGRID_DrawSelectionMarkers(struct GridCtx *ctx, short col, short row,
         Text(rp, &right2, 1L);
     }
 
-    last = NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast();
+    last = DISPTEXT_IsCurrentLineLast();
     if (last != 0 && row == 3 && CONFIG_NewgridPlaceholderBevelFlag == 89)
-        NEWGRID2_JMPTBL_BEVEL_DrawHorizontalBevel(rp,
+        BEVEL_DrawHorizontalBevel(rp,
             (long)NEWGRID_ColumnStartXPx + 36, 0L, 695L,
             (long)NEWGRID_RowHeightPx + DISPTEXT_ControlMarkerXOffsetPx - 1);
 

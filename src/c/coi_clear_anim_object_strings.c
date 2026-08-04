@@ -57,7 +57,7 @@
  *   summary: the original pops two address registers as two MOVEA.L instructions;
  *            SAS/C uses one MOVEM. Both 4 bytes.
  */
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *newstr, char *old);
+extern char *ESQPARS_ReplaceOwnedString(char *newstr, char *old);
 
 struct AnimObj {
     unsigned char b0, b1, b2, b3;
@@ -78,12 +78,12 @@ void COI_ClearAnimObjectStrings(unsigned char *ctx)
 
     obj->b3 = obj->b2 = obj->b1 = obj->b0 = 0;
 
-    obj->s4  = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, obj->s4);
-    obj->s8  = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, obj->s8);
-    obj->s12 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, obj->s12);
-    obj->s16 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, obj->s16);
-    obj->s20 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, obj->s20);
-    obj->s24 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, obj->s24);
-    obj->s28 = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, obj->s28);
+    obj->s4  = ESQPARS_ReplaceOwnedString(0, obj->s4);
+    obj->s8  = ESQPARS_ReplaceOwnedString(0, obj->s8);
+    obj->s12 = ESQPARS_ReplaceOwnedString(0, obj->s12);
+    obj->s16 = ESQPARS_ReplaceOwnedString(0, obj->s16);
+    obj->s20 = ESQPARS_ReplaceOwnedString(0, obj->s20);
+    obj->s24 = ESQPARS_ReplaceOwnedString(0, obj->s24);
+    obj->s28 = ESQPARS_ReplaceOwnedString(0, obj->s28);
     obj->s32 = 0;
 }

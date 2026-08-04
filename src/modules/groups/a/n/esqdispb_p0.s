@@ -42,7 +42,7 @@ _ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   GRAPHICS_AllocRaster
+;   _GRAPHICS_AllocRaster
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -53,7 +53,7 @@ _ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQDISP_JMPTBL_GRAPHICS_AllocRaster:
-    JMP     GRAPHICS_AllocRaster
+    JMP     _GRAPHICS_AllocRaster
 
 ;!======
 

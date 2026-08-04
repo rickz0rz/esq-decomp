@@ -31,9 +31,9 @@ extern long DST_BannerWindowSecondary;
 extern long DST_BannerWindowPrimary;
 
 extern short DATETIME_IsLeapYear(long year);
-extern long __asm GROUP_AG_JMPTBL_MATH_DivS32(register __d0 long a,
+extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
-extern long __asm GROUP_AG_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
 extern long  DATETIME_BuildFromBaseDay(struct ClockBlock *out,
                  struct ClockBlock *in, long mode, long baseDay);
@@ -79,7 +79,7 @@ void DST_BuildBannerTimeEntry(short slot, unsigned char day, short *outRow,
 
     block.dayOfYear = dayOfYear;
     block.hourFlag = 0;
-    block.minute = GROUP_AG_JMPTBL_MATH_Mulu32(30,
+    block.minute = MATH_Mulu32(30,
         (((long)slot - 1) - (((long)slot - 1) / 2) * 2));
 
     block.month = ((((long)slot - 1) / 2 + 5) - ((((long)slot - 1) / 2 + 5) / 12) * 12);
@@ -117,7 +117,7 @@ void DST_BuildBannerTimeEntry(short slot, unsigned char day, short *outRow,
         row = row + 0;
 
     base += (long)row * 3600;
-    base += GROUP_AG_JMPTBL_MATH_Mulu32((long)CLOCK_FormatVariantCode, 60);
+    base += MATH_Mulu32((long)CLOCK_FormatVariantCode, 60);
 
     DATETIME_SecondsToStruct(base, outStruct);
     *(short *)(outStruct + 14) = secondary;

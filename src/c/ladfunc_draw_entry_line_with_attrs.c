@@ -77,13 +77,13 @@
 #define MEMF_PUBLIC 1L
 #define MEMF_CLEAR  0x10000L
 
-extern long __asm NEWGRID_JMPTBL_MATH_DivS32(register __d0 long a,
+extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
-extern long __asm NEWGRID_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                     void *p, long size);
 /* The 4th parameter is a PACKED PEN BYTE, not a pen number, and the definition
  * in ladfunc_display_text_packed_pens.c spells it `char`. Declaring it `long`
@@ -120,11 +120,11 @@ void LADFUNC_DrawEntryLineWithAttrs(struct RastPort *rp, long row, char *text,
 
     charWidth = TextLength(rp, Global_STR_SINGLE_SPACE_1, 1L);
 
-    maxCols = NEWGRID_JMPTBL_MATH_DivS32(624L, charWidth);
+    maxCols = MATH_DivS32(624L, charWidth);
     if (maxCols > 40)
         maxCols = 40;
 
-    buf = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_14, 712L,
+    buf = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_14, 712L,
                                                maxCols + 1,
                                                MEMF_PUBLIC | MEMF_CLEAR);
     if (buf == 0)
@@ -146,13 +146,13 @@ void LADFUNC_DrawEntryLineWithAttrs(struct RastPort *rp, long row, char *text,
         attrByte = attr[textLen];
 
     x = ((long)(rp->BitMap->BytesPerRow << 3)
-         - NEWGRID_JMPTBL_MATH_Mulu32(charWidth, maxCols)) / 2;
+         - MATH_Mulu32(charWidth, maxCols)) / 2;
 
     y = ((long)rp->BitMap->Rows
-         - NEWGRID_JMPTBL_MATH_Mulu32((long)rp->Font->tf_YSize, ED_TextLimit))
+         - MATH_Mulu32((long)rp->Font->tf_YSize, ED_TextLimit))
         / 2;
 
-    y += NEWGRID_JMPTBL_MATH_Mulu32(row + 1, (long)rp->Font->tf_YSize);
+    y += MATH_Mulu32(row + 1, (long)rp->Font->tf_YSize);
 
     if (x < 0)
         x = 0;
@@ -169,13 +169,13 @@ void LADFUNC_DrawEntryLineWithAttrs(struct RastPort *rp, long row, char *text,
 
     if (indent != 0 && pad != 0) {
 
-        memset(buf, 32, NEWGRID_JMPTBL_MATH_DivS32(pad, indent));
-        buf[NEWGRID_JMPTBL_MATH_DivS32(pad, indent)] = 0;
+        memset(buf, 32, MATH_DivS32(pad, indent));
+        buf[MATH_DivS32(pad, indent)] = 0;
 
         LADFUNC_DisplayTextPackedPens(rp, x, y, (long)attrByte, buf);
 
-        k = NEWGRID_JMPTBL_MATH_DivS32(pad, indent);
-        x += NEWGRID_JMPTBL_MATH_Mulu32(k, charWidth);
+        k = MATH_DivS32(pad, indent);
+        x += MATH_Mulu32(k, charWidth);
         pad -= k;
     }
 
@@ -193,7 +193,7 @@ void LADFUNC_DrawEntryLineWithAttrs(struct RastPort *rp, long row, char *text,
 
         LADFUNC_DisplayTextPackedPens(rp, x, y, (long)attr[segStart], buf);
 
-        x += NEWGRID_JMPTBL_MATH_Mulu32(charWidth, segLen);
+        x += MATH_Mulu32(charWidth, segLen);
     }
 
     if (pad != 0) {
@@ -204,6 +204,6 @@ void LADFUNC_DrawEntryLineWithAttrs(struct RastPort *rp, long row, char *text,
         LADFUNC_DisplayTextPackedPens(rp, x, y, (long)attrByte, buf);
     }
 
-    NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_15, 824L, buf,
+    MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_15, 824L, buf,
                                            maxCols + 1);
 }

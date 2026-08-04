@@ -22,7 +22,7 @@ extern long NEWGRID_GridOperationId;
 extern long GCOMMAND_NicheTextPen;
 extern unsigned char CTASKS_STR_C;
 
-extern void PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern void STRING_AppendAtNull(char *dst, char *src);
 
 void NEWGRID_DrawGridCellText(struct RastPort *rp, char *primary,
                               char *secondary, long rightAlign)
@@ -39,7 +39,7 @@ void NEWGRID_DrawGridCellText(struct RastPort *rp, char *primary,
         strcpy(merged, secondary);
         merged[2] = '-';
         merged[3] = 0;
-        PARSEINI_JMPTBL_STRING_AppendAtNull(merged, secondary + 2);
+        STRING_AppendAtNull(merged, secondary + 2);
         secondary = merged;
     }
 

@@ -23,7 +23,7 @@
  *   summary: 4EBA against 6100 for the one cross-unit call. The whole difference.
  */
 
-extern void GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(void *srcBM, long srcX,
+extern void GRAPHICS_BltBitMapRastPort(void *srcBM, long srcX,
                                                        long srcY, void *destRP,
                                                        long destX, long destY,
                                                        long width, long height,
@@ -39,7 +39,7 @@ struct RastPort {
 
 void CLEANUP_DrawClockFormatFrame(void)
 {
-    GROUP_AD_JMPTBL_GRAPHICS_BltBitMapRastPort(
+    GRAPHICS_BltBitMapRastPort(
         NEWGRID_MainRastPortPtr->BitMap,
         NEWGRID_ColumnStartXPx + 36, 0L,
         NEWGRID_MainRastPortPtr,

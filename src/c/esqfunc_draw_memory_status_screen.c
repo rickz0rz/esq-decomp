@@ -41,12 +41,12 @@
 #include "esq-exec.h"
 #include "esq-graphics.h"
 
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, ...);
-extern void ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(struct RastPort *rp,
+extern void WDISP_SPrintf(char *buf, char *fmt, ...);
+extern void DISPLIB_DisplayTextAtPosition(struct RastPort *rp,
                                                          long x, long y,
                                                          char *text);
-extern long ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues(void);
-extern long ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax(void);
+extern long PARSEINI_ComputeHTCMaxValues(void);
+extern long PARSEINI_UpdateCtrlHDeltaMax(void);
 
 extern struct RastPort *Global_REF_RASTPORT_1;
 extern struct BitMap    Global_REF_696_400_BITMAP;
@@ -124,120 +124,120 @@ void ESQFUNC_DrawMemoryStatusScreen(void)
         SetDrMd(Global_REF_RASTPORT_1, 1L);
 
         if (ED_DiagnosticsViewMode == 0) {
-            GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_DATA_CMDS_CERRS_LERRS,
+            WDISP_SPrintf(buf, Global_STR_DATA_CMDS_CERRS_LERRS,
                                           (long)ESQIFF_ParseAttemptCount,
                                           (long)DATACErrs,
                                           (long)ESQIFF_LineErrorCount);
-            ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
+            DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
                                                          40L, 112L, buf);
 
-            GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_CTRL_CMDS_CERRS_LERRS,
+            WDISP_SPrintf(buf, Global_STR_CTRL_CMDS_CERRS_LERRS,
                                           (long)SCRIPT_CtrlCmdCount,
                                           (long)SCRIPT_CtrlCmdChecksumErrorCount,
                                           (long)SCRIPT_CtrlCmdLengthErrorCount);
-            ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
+            DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
                                                          40L, 142L, buf);
 
             if ((ED_DiagAvailMemMask & 7) == 7) {
                 chipFree    = (long)AvailMem(0x20002L);
                 fastFree    = (long)AvailMem(4L);
                 maxFree = (long)AvailMem(0x20000L);
-                GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_L_CHIP_FAST_MAX,
+                WDISP_SPrintf(buf, Global_STR_L_CHIP_FAST_MAX,
                                               chipFree, fastFree, maxFree);
             } else if ((ED_DiagAvailMemMask & 1) == 1) {
                 chipFree = (long)AvailMem(2L);
-                GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_CHIP_PLACEHOLDER,
+                WDISP_SPrintf(buf, Global_STR_CHIP_PLACEHOLDER,
                                               chipFree);
             } else if ((ED_DiagAvailMemMask & 2) == 2) {
                 fastFree = (long)AvailMem(4L);
-                GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_FAST_PLACEHOLDER,
+                WDISP_SPrintf(buf, Global_STR_FAST_PLACEHOLDER,
                                               fastFree);
             } else if ((ED_DiagAvailMemMask & 4) == 4) {
                 maxFree = (long)AvailMem(0x20000L);
-                GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_MAX_PLACEHOLDER,
+                WDISP_SPrintf(buf, Global_STR_MAX_PLACEHOLDER,
                                               maxFree);
             } else {
-                GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+                WDISP_SPrintf(buf,
                                               Global_STR_MEMORY_TYPES_DISABLED);
             }
-            ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
+            DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
                                                          40L, 172L, buf);
 
-            GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_DATA_OVERRUNS_FORMATTED,
+            WDISP_SPrintf(buf, Global_STR_DATA_OVERRUNS_FORMATTED,
                                           (long)ESQ_SerialRbfErrorCount);
-            ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
+            DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
                                                          40L, 202L, buf);
 
-            htc = ESQFUNC_JMPTBL_PARSEINI_ComputeHTCMaxValues();
-            GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_DATA_H_T_C_MAX_FORMATTED,
+            htc = PARSEINI_ComputeHTCMaxValues();
+            WDISP_SPrintf(buf, Global_STR_DATA_H_T_C_MAX_FORMATTED,
                                           (long)Global_WORD_H_VALUE,
                                           (long)Global_WORD_T_VALUE,
                                           htc,
                                           (long)Global_WORD_MAX_VALUE);
-            ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
+            DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
                                                          40L, 232L, buf);
 
-            htc = ESQFUNC_JMPTBL_PARSEINI_UpdateCtrlHDeltaMax();
-            GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_CTRL_H_T_C_MAX_FORMATTED,
+            htc = PARSEINI_UpdateCtrlHDeltaMax();
+            WDISP_SPrintf(buf, Global_STR_CTRL_H_T_C_MAX_FORMATTED,
                                           (long)CTRL_H,
                                           (long)CTRL_HPreviousSample,
                                           htc,
                                           (long)CTRL_HDeltaMax);
-            ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
+            DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
                                                          40L, 262L, buf);
         }
 
         if (ED_DiagnosticsViewMode == 1) {
-            GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_JULIAN_DAY_NEXT_FORMATTED,
+            WDISP_SPrintf(buf, Global_STR_JULIAN_DAY_NEXT_FORMATTED,
                                           (long)TEXTDISP_PrimaryGroupCode,
                                           (long)TEXTDISP_SecondaryGroupCode);
-            ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
+            DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
                                                          40L, 112L, buf);
 
-            GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_JDAY1_JDAY2_FORMATTED,
+            WDISP_SPrintf(buf, Global_STR_JDAY1_JDAY2_FORMATTED,
                                           (long)TEXTDISP_PrimaryGroupHeaderCode,
                                           (long)TEXTDISP_SecondaryGroupHeaderCode);
-            ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
+            DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
                                                          40L, 142L, buf);
 
-            GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_CURCLU_NXTCLU_FORMATTED,
+            WDISP_SPrintf(buf, Global_STR_CURCLU_NXTCLU_FORMATTED,
                                           (long)TEXTDISP_PrimaryGroupPresentFlag,
                                           (long)TEXTDISP_SecondaryGroupPresentFlag);
-            ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
+            DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
                                                          40L, 172L, buf);
 
-            GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+            WDISP_SPrintf(buf,
                                           Global_STR_C_DATE_C_MONTH_LP_YR_FORMATTED,
                                           (long)CLOCK_CacheDayIndex0,
                                           (long)CLOCK_CacheMonthIndex0,
                                           (long)ESQFUNC_CListLinePointer,
                                           (long)CLOCK_CacheYear);
-            ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
+            DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
                                                          40L, 202L, buf);
 
-            GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+            WDISP_SPrintf(buf,
                                           Global_STR_B_DATE_B_MONTH_LP_YR_FORMATTED,
                                           (long)CLOCK_CurrentDayOfMonth,
                                           (long)CLOCK_CurrentMonthIndex,
                                           (long)CLOCK_CurrentLeapYearFlag,
                                           (long)CLOCK_CurrentYearValue);
-            ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
+            DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
                                                          40L, 232L, buf);
 
-            GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+            WDISP_SPrintf(buf,
                                           Global_STR_C_DST_B_DST_PSHIFT_FORMATTED,
                                           (long)DST_PrimaryCountdown,
                                           (long)DST_SecondaryCountdown,
                                           (long)WDISP_BannerCharPhaseShift);
-            ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
+            DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
                                                          40L, 262L, buf);
 
-            GROUP_AM_JMPTBL_WDISP_SPrintf(buf,
+            WDISP_SPrintf(buf,
                                           Global_STR_C_HOUR_B_HOUR_CS_FORMATTED,
                                           (long)CLOCK_CacheHour,
                                           (long)Global_WORD_CURRENT_HOUR,
                                           (long)CLOCK_HalfHourSlotIndex);
-            ESQPARS_JMPTBL_DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
+            DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1,
                                                          40L, 292L, buf);
         }
     }

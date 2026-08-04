@@ -30,7 +30,7 @@ extern void ED_DrawScrollSpeedMenuText(void);
 extern void ED1_DrawDiagnosticsScreen(void);
 extern void ED_DrawSpecialFunctionsMenu(void);
 extern void ED_DrawBottomHelpBarBackground(void);
-extern long __asm ESQIFF_JMPTBL_MATH_DivS32(register __d0 long a,
+extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
 extern void ED_DrawEscMainMenuText(void);
 extern void DISPLIB_DisplayTextAtPosition(struct RastPort *rp, long x, long y,

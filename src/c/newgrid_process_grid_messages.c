@@ -99,9 +99,9 @@ struct HighlightMsg {
 
 extern void  NEWGRID_InitGridResources(void);
 extern void  NEWGRID_ClearHighlightArea(void);
-extern void  NEWGRID_JMPTBL_CLEANUP_DrawClockBanner(void);
-extern void  NEWGRID_JMPTBL_CLEANUP_DrawClockFormatList(long slot);
-extern void  NEWGRID_JMPTBL_CLEANUP_DrawClockFormatFrame(void);
+extern void  CLEANUP_DrawClockBanner(void);
+extern void  CLEANUP_DrawClockFormatList(long slot);
+extern void  CLEANUP_DrawClockFormatFrame(void);
 extern long  NEWGRID_AdjustClockStringBySlot(void *clock);
 extern long  NEWGRID_AdjustClockStringBySlotWithOffset(void *clock);
 extern short NEWGRID_ComputeDaySlotFromClock(void *clock);
@@ -109,7 +109,7 @@ extern short NEWGRID_ComputeDaySlotFromClockWithOffset(void *clock);
 extern void  NEWGRID2_DispatchOperationDefault(void);
 extern long  NEWGRID_MapSelectionToMode(long state, long daySlot);
 extern void  NEWGRID_ValidateSelectionCode(struct HighlightMsg *m, long zero);
-extern short NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel(
+extern short WDISP_UpdateSelectionPreviewPanel(
                  char *panel, struct HighlightMsg *m);
 extern void  NEWGRID_DrawClockFormatHeader(struct HighlightMsg *m, long slot);
 extern void  NEWGRID_DrawDateBanner(struct HighlightMsg *m);
@@ -152,12 +152,12 @@ void NEWGRID_ProcessGridMessages(void)
 
         NEWGRID_InitGridResources();
         NEWGRID_ClearHighlightArea();
-        NEWGRID_JMPTBL_CLEANUP_DrawClockBanner();
+        CLEANUP_DrawClockBanner();
 
-        NEWGRID_JMPTBL_CLEANUP_DrawClockFormatList(
+        CLEANUP_DrawClockFormatList(
             NEWGRID_AdjustClockStringBySlot(&CLOCK_CurrentDayOfWeekIndex));
 
-        NEWGRID_JMPTBL_CLEANUP_DrawClockFormatFrame();
+        CLEANUP_DrawClockFormatFrame();
 
         ESQPARS2_ReadModeFlags   = 0;
         NEWGRID_RefreshStateFlag = 2;
@@ -180,7 +180,7 @@ void NEWGRID_ProcessGridMessages(void)
         switch (NEWGRID_MainModeState) {
 
         case 1:
-            if (NEWGRID_JMPTBL_WDISP_UpdateSelectionPreviewPanel(msg->panel,
+            if (WDISP_UpdateSelectionPreviewPanel(msg->panel,
                                                                  msg) != 0)
                 break;
             NEWGRID_MainModeState = NEWGRID_MapSelectionToMode(

@@ -1,18 +1,18 @@
     XDEF    _FORMAT_RawDoFmtWithScratchBuffer
-    XDEF    UNKNOWN2A_Stub0
+    XDEF    _UNKNOWN2A_Stub0
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: uncertain   (Dead code: FORMAT_FormatToBuffer2/PARALLEL_RawDoFmtStackArgs wrapperuncertain)
+; FUNC: uncertain   (Dead code: _FORMAT_FormatToBuffer2/PARALLEL_RawDoFmtStackArgs wrapperuncertain)
 ; ARGS:
-;   stack +8: uncertain (arg for FORMAT_FormatToBuffer2)
-;   stack +12: uncertain (arg for FORMAT_FormatToBuffer2)
+;   stack +8: uncertain (arg for _FORMAT_FormatToBuffer2)
+;   stack +12: uncertain (arg for _FORMAT_FormatToBuffer2)
 ; RET:
 ;   D0: status/result from formatter callback path
 ; CLOBBERS:
 ;   D0/A0 uncertain
 ; CALLS:
-;   FORMAT_FormatToBuffer2, PARALLEL_RawDoFmtStackArgs
+;   _FORMAT_FormatToBuffer2, PARALLEL_RawDoFmtStackArgs
 ; READS:
 ;   _FORMAT_ScratchBuffer
 ; WRITES:
@@ -31,7 +31,7 @@
     MOVE.L  8(A5),-(A7)
     PEA     _FORMAT_ScratchBuffer
     MOVE.L  A0,-4(A5)
-    JSR     FORMAT_FormatToBuffer2(PC)
+    JSR     _FORMAT_FormatToBuffer2(PC)
 
     PEA     _FORMAT_ScratchBuffer
     JSR     PARALLEL_RawDoFmtStackArgs(PC)
@@ -43,7 +43,7 @@
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: _FORMAT_RawDoFmtWithScratchBuffer   (FORMAT_FormatToBuffer2/RawDoFmt wrapper)
+; FUNC: _FORMAT_RawDoFmtWithScratchBuffer   (_FORMAT_FormatToBuffer2/RawDoFmt wrapper)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +8: arg_2 (via 12(A5))
@@ -52,7 +52,7 @@
 ; CLOBBERS:
 ;   A0/A5/A7
 ; CALLS:
-;   FORMAT_FormatToBuffer2, PARALLEL_RawDoFmtStackArgs
+;   _FORMAT_FormatToBuffer2, PARALLEL_RawDoFmtStackArgs
 ; READS:
 ;   _FORMAT_ScratchBuffer
 ; WRITES:
@@ -69,7 +69,7 @@ _FORMAT_RawDoFmtWithScratchBuffer:
     MOVE.L  8(A5),-(A7)
     PEA     _FORMAT_ScratchBuffer
     MOVE.L  A0,-4(A5)
-    JSR     FORMAT_FormatToBuffer2(PC)
+    JSR     _FORMAT_FormatToBuffer2(PC)
 
     PEA     _FORMAT_ScratchBuffer
     JSR     PARALLEL_RawDoFmtStackArgs(PC)
@@ -83,14 +83,14 @@ _FORMAT_RawDoFmtWithScratchBuffer:
 ;------------------------------------------------------------------------------
 ; FUNC: uncertain   (Dead code: open log file and write LAB_2381uncertain)
 ; ARGS:
-;   stack +8: uncertain (arg for FORMAT_FormatToBuffer2)
-;   stack +12: uncertain (arg for FORMAT_FormatToBuffer2)
+;   stack +8: uncertain (arg for _FORMAT_FormatToBuffer2)
+;   stack +12: uncertain (arg for _FORMAT_FormatToBuffer2)
 ; RET:
 ;   D0: status/result from debug-log wrapper path
 ; CLOBBERS:
 ;   D0/A0 uncertain
 ; CALLS:
-;   _HANDLE_OpenWithMode, FORMAT_FormatToBuffer2, _FORMAT_FormatToCallbackBuffer, _UNKNOWN36_FinalizeRequest
+;   _HANDLE_OpenWithMode, _FORMAT_FormatToBuffer2, _FORMAT_FormatToCallbackBuffer, _UNKNOWN36_FinalizeRequest
 ; READS:
 ;   _Global_STR_A_PLUS, _Global_STR_DF1_DEBUG_LOG, _FORMAT_ScratchBuffer
 ; WRITES:
@@ -116,7 +116,7 @@ _FORMAT_RawDoFmtWithScratchBuffer:
     MOVE.L  8(A5),-(A7)
     PEA     _FORMAT_ScratchBuffer
     MOVE.L  A0,-4(A5)
-    JSR     FORMAT_FormatToBuffer2(PC)
+    JSR     _FORMAT_FormatToBuffer2(PC)
 
     PEA     _FORMAT_ScratchBuffer
     MOVE.L  -8(A5),-(A7)
@@ -135,7 +135,7 @@ _FORMAT_RawDoFmtWithScratchBuffer:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN2A_Stub0   (Stub)
+; FUNC: _UNKNOWN2A_Stub0   (Stub)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -153,5 +153,5 @@ _FORMAT_RawDoFmtWithScratchBuffer:
 ; NOTES:
 ;   Requires deeper reverse-engineering.
 ;------------------------------------------------------------------------------
-UNKNOWN2A_Stub0:
+_UNKNOWN2A_Stub0:
     RTS

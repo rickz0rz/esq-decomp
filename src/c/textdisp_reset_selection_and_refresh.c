@@ -11,10 +11,10 @@
  */
 extern short TEXTDISP_CurrentMatchIndex;
 extern void  SCRIPT_UpdateSerialShadowFromCtrlByte(long v);
-extern void  TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(long v);
+extern void  ESQIFF_PlayNextExternalAssetFrame(long v);
 void TEXTDISP_ResetSelectionAndRefresh(void)
 {
     SCRIPT_UpdateSerialShadowFromCtrlByte(3);
     TEXTDISP_CurrentMatchIndex = -1;
-    TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(0);
+    ESQIFF_PlayNextExternalAssetFrame(0);
 }

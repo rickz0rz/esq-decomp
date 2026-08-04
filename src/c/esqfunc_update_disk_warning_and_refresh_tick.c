@@ -36,8 +36,8 @@
  *   summary: 4EBA against 6100 for the three cross-unit calls.
  */
 
-extern void ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(void);
-extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(char *rp, char *text,
+extern void DISKIO_ProbeDrivesAndAssignPaths(void);
+extern void TLIBA3_DrawCenteredWrappedTextLines(char *rp, char *text,
                                                                long width);
 
 extern long DISKIO_Drive0WriteProtectedCode;
@@ -49,16 +49,16 @@ extern char Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0[];
 
 void ESQFUNC_UpdateDiskWarningAndRefreshTick(void)
 {
-    ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths();
+    DISKIO_ProbeDrivesAndAssignPaths();
 
     if (DISKIO_Drive0WriteProtectedCode) {
         Global_RefreshTickCounter = -1;
-        ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+        TLIBA3_DrawCenteredWrappedTextLines(
             WDISP_DisplayContextBase + 10,
             Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0, 90L);
     } else if (DISKIO_DriveMediaStatusCodeTable) {
         Global_RefreshTickCounter = -1;
-        ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+        TLIBA3_DrawCenteredWrappedTextLines(
             WDISP_DisplayContextBase + 10,
             Global_STR_DISK_0_IS_WRITE_PROTECTED, 90L);
     } else if (Global_RefreshTickCounter == -1) {

@@ -32,7 +32,7 @@ extern unsigned short NEWGRID_ColumnWidthPx;
 
 extern void NEWGRID_DrawGridFrame(struct GridPanel *panel, long style, long a,
                                   long b, long c);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(struct RastPort *rp,
+extern void BEVEL_DrawBevelFrameWithTopRight(struct RastPort *rp,
                 long x0, long y0, long x1, long y1);
 extern void NEWGRID_ValidateSelectionCode(struct GridPanel *panel, long code);
 
@@ -46,9 +46,9 @@ void NEWGRID_DrawGridMessageAlt(struct GridPanel *panel)
     NEWGRID_DrawGridFrame(panel, 7, GCOMMAND_PpvMessageFramePen,
                           GCOMMAND_PpvMessageFramePen, 33);
 
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(&panel->rp, 0, 0,
+    BEVEL_DrawBevelFrameWithTopRight(&panel->rp, 0, 0,
         (long)NEWGRID_ColumnStartXPx + 35, 33);
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(&panel->rp,
+    BEVEL_DrawBevelFrameWithTopRight(&panel->rp,
         (long)NEWGRID_ColumnStartXPx + 36, 0, 695, 33);
 
     SetAPen(&panel->rp, GCOMMAND_PpvMessageTextPen);

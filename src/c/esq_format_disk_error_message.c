@@ -25,7 +25,7 @@
 
 extern long DISKIO_QueryVolumeSoftErrorCount(char *scratch);
 extern long DISKIO_QueryDiskUsagePercentAndSetBufferSize(char *scratch);
-extern void GROUP_AE_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long v);
+extern void WDISP_SPrintf(char *buf, char *fmt, long v);
 
 extern char COMMON_QueryDiskSoftErrorCountScratch[];
 extern char COMMON_QueryDiskUsagePercentScratch[];
@@ -40,12 +40,12 @@ long ESQ_FormatDiskErrorMessage(void)
 
     errors = DISKIO_QueryVolumeSoftErrorCount(COMMON_QueryDiskSoftErrorCountScratch);
     if (errors > 0) {
-        GROUP_AE_JMPTBL_WDISP_SPrintf(DISKIO_ErrorMessageScratch,
+        WDISP_SPrintf(DISKIO_ErrorMessageScratch,
                                       Global_STR_DISK_ERRORS_FORMATTED, errors);
     } else {
         percent = DISKIO_QueryDiskUsagePercentAndSetBufferSize(
                       COMMON_QueryDiskUsagePercentScratch);
-        GROUP_AE_JMPTBL_WDISP_SPrintf(DISKIO_ErrorMessageScratch,
+        WDISP_SPrintf(DISKIO_ErrorMessageScratch,
                                       Global_STR_DISK_IS_FULL_FORMATTED, percent);
     }
     return 0;

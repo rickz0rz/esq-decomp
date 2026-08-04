@@ -39,9 +39,9 @@
 struct DiskIoBufferControl { void *BufferBase; long ErrorFlag; };
 struct DiskIoBufferState   { char *BufferPtr; long BufferSize; long Remaining; short SavedF45; };
 
-extern void GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(void);
+extern void ESQFUNC_ServiceUiTickIfRunning(void);
 extern void CTASKS_StartCloseTaskProcess(long fh);
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
+extern void MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
 extern struct DiskIoBufferControl DISKIO_BufferControl;
 extern struct DiskIoBufferState   DISKIO_BufferState;
 extern short CTASKS_CloseTaskCompletionFlag;
@@ -54,7 +54,7 @@ void DISKIO_CloseBufferedFileAndFlush(BPTR fh)
 {
     register long pending;
 
-    GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+    ESQFUNC_ServiceUiTickIfRunning();
     if (fh == 0)
         return;
 
@@ -63,19 +63,19 @@ void DISKIO_CloseBufferedFileAndFlush(BPTR fh)
     if (pending)
         Write(fh, DISKIO_BufferControl.BufferBase, pending);
 
-    GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+    ESQFUNC_ServiceUiTickIfRunning();
     CTASKS_StartCloseTaskProcess(fh);
 
     do {
-        GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+        ESQFUNC_ServiceUiTickIfRunning();
         Delay(5L);
-        GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+        ESQFUNC_ServiceUiTickIfRunning();
     } while (CTASKS_CloseTaskCompletionFlag == 0);
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO_C_2, 353,
+    MEMORY_DeallocateMemory(Global_STR_DISKIO_C_2, 353,
                                             DISKIO_BufferControl.BufferBase,
                                             DISKIO_BufferState.BufferSize);
-    GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+    ESQFUNC_ServiceUiTickIfRunning();
 
     if (DISKIO_OpenCount > 0)
         DISKIO_OpenCount--;

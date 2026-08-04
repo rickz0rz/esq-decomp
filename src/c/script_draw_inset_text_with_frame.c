@@ -35,7 +35,7 @@
 #include "esq-graphics.h"
 #include <string.h>
 
-extern void TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame(void *rp, long flag,
+extern void CLEANUP_DrawInsetRectFrame(void *rp, long flag,
                                                        long width, long height);
 
 void SCRIPT_DrawInsetTextWithFrame(struct RastPort *rp, char pen, char frameFlag,
@@ -48,7 +48,7 @@ void SCRIPT_DrawInsetTextWithFrame(struct RastPort *rp, char pen, char frameFlag
 
     if ((unsigned char)frameFlag != 255) {
         rp->cp_x += 4;
-        TEXTDISP_JMPTBL_CLEANUP_DrawInsetRectFrame(rp, (long)frameFlag,
+        CLEANUP_DrawInsetRectFrame(rp, (long)frameFlag,
                                                    (long)TextLength(rp, text,
                                                                     (long)strlen(text)),
                                                    (long)rp->TxHeight);

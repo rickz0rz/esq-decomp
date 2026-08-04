@@ -32,7 +32,7 @@
  */
 extern void ED_DrawESCMenuBottomHelp(void);
 extern void ED_DrawDiagnosticRegisterValues(void);
-extern void ED1_JMPTBL_ESQSHARED4_LoadDefaultPaletteToCopper_NoOp(void);
+extern void ESQSHARED4_LoadDefaultPaletteToCopper_NoOp(void);
 extern unsigned char ED_LastKeyCode;
 extern long ED_TempCopyOffset;
 extern long ED_StateRingIndex;
@@ -97,6 +97,6 @@ void ED_HandleDiagnosticNibbleEdit(void)
     }
 
     if (ED_TempCopyOffset >= 0 && ED_TempCopyOffset < 40)
-        ED1_JMPTBL_ESQSHARED4_LoadDefaultPaletteToCopper_NoOp();
+        ESQSHARED4_LoadDefaultPaletteToCopper_NoOp();
     ED_DrawDiagnosticRegisterValues();
 }

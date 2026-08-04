@@ -100,7 +100,7 @@ struct WDispContext {
     char           rastPort2Plus2[2];   /* +10 */
 };
 
-extern void *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(long index, long group);
+extern void *ESQDISP_GetEntryPointerByMode(long index, long group);
 extern void  TEXTDISP_BuildEntryShortName(void *entry, char *out);
 extern void  TEXTDISP_BuildChannelLabel(long which);
 extern void  TEXTDISP_TrimTextToPixelWidth(char *text, long width);
@@ -126,7 +126,7 @@ void TEXTDISP_DrawChannelBanner(short mode, short drawMode)
     else
         group = 2;
 
-    entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(
+    entry = ESQDISP_GetEntryPointerByMode(
                 (long)TEXTDISP_CurrentMatchIndex, group);
 
     TEXTDISP_BuildEntryShortName(entry, TEXTDISP_EntryShortNameScratch);

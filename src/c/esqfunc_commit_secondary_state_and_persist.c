@@ -38,17 +38,17 @@
  *   retest:  a compiler that emits JSR (d16,PC) for a call to an extern.
  */
 extern void ESQDISP_PropagatePrimaryTitleMetadataToSecondary(void);
-extern void ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup(void);
+extern void LOCAVAIL_RebuildFilterStateFromCurrentGroup(void);
 extern void ESQDISP_PromoteSecondaryGroupToPrimary(void);
 extern void ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty(void);
 extern void ESQDISP_PromoteSecondaryLineHeadTailIfMarked(void);
-extern void ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(void);
-extern void ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile(void);
-extern void ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(char *primary,
+extern void DISKIO2_FlushDataFilesIfNeeded(void);
+extern void LADFUNC_SaveTextAdsToFile(void);
+extern void LOCAVAIL_SaveAvailabilityDataFile(char *primary,
                                                              char *secondary);
 extern long DATETIME_SavePairToFile(char *window);
-extern void ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList(void);
-extern void ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(void);
+extern void P_TYPE_PromoteSecondaryList(void);
+extern void P_TYPE_WritePromoIdDataFile(void);
 extern void ESQFUNC_UpdateDiskWarningAndRefreshTick(void);
 
 extern short ESQPARS2_ReadModeFlags;
@@ -66,18 +66,18 @@ void ESQFUNC_CommitSecondaryStateAndPersist(void)
     ESQDISP_PendingGridReinitFlag = 1;
 
     ESQDISP_PropagatePrimaryTitleMetadataToSecondary();
-    ESQFUNC_JMPTBL_LOCAVAIL_RebuildFilterStateFromCurrentGroup();
+    LOCAVAIL_RebuildFilterStateFromCurrentGroup();
     ESQDISP_PromoteSecondaryGroupToPrimary();
     ESQDISP_MirrorPrimaryEntriesToSecondaryIfEmpty();
     ESQDISP_PromoteSecondaryLineHeadTailIfMarked();
 
-    ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded();
-    ESQPARS_JMPTBL_LADFUNC_SaveTextAdsToFile();
-    ESQPARS_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(LOCAVAIL_PrimaryFilterState,
+    DISKIO2_FlushDataFilesIfNeeded();
+    LADFUNC_SaveTextAdsToFile();
+    LOCAVAIL_SaveAvailabilityDataFile(LOCAVAIL_PrimaryFilterState,
                                                      LOCAVAIL_SecondaryFilterState);
     DATETIME_SavePairToFile(DST_BannerWindowPrimary);
-    ESQFUNC_JMPTBL_P_TYPE_PromoteSecondaryList();
-    ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile();
+    P_TYPE_PromoteSecondaryList();
+    P_TYPE_WritePromoIdDataFile();
     ESQFUNC_UpdateDiskWarningAndRefreshTick();
 
     ESQPARS2_ReadModeFlags = savedMode;

@@ -24,8 +24,8 @@ extern long GCOMMAND_NicheForceMode5Flag;
 extern char *GCOMMAND_DigitalNicheListingsTemplatePtr;
 
 extern void  FLIB2_LoadDigitalNicheDefaults(void);
-extern void  GROUP_AW_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
-extern long  ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern void  STRING_CopyPadNul(char *dst, char *src, long n);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern long  LADFUNC_ParseHexDigit(long c);
 extern char *ESQPARS_ReplaceOwnedString(char *src, char *owned);
 extern void  GCOMMAND_LoadCommandFile(void);
@@ -50,9 +50,9 @@ void GCOMMAND_ParseCommandOptions(char *cmd)
     if (*cmd == 0)
         return;
 
-    GROUP_AW_JMPTBL_STRING_CopyPadNul(scratch, cmd, 2);
+    STRING_CopyPadNul(scratch, cmd, 2);
     scratch[2] = 0;
-    end = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch) + 2;
+    end = PARSE_ReadSignedLongSkipClass3_Alt(scratch) + 2;
 
     i = 2;
     if (i < end) {

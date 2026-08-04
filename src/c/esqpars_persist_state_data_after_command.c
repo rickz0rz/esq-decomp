@@ -11,17 +11,17 @@
  */
 extern char DST_BannerWindowPrimary[];
 extern char LOCAVAIL_PrimaryFilterState[], LOCAVAIL_SecondaryFilterState[];
-extern void ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded(void);
+extern void DISKIO2_FlushDataFilesIfNeeded(void);
 extern void LADFUNC_SaveTextAdsToFile(void);
-extern void ESQPARS_JMPTBL_DATETIME_SavePairToFile(char *p);
+extern void DATETIME_SavePairToFile(char *p);
 extern void LOCAVAIL_SaveAvailabilityDataFile(char *a, char *b);
-extern void ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile(void);
+extern void P_TYPE_WritePromoIdDataFile(void);
 void ESQPARS_PersistStateDataAfterCommand(void)
 {
-    ESQPARS_JMPTBL_DISKIO2_FlushDataFilesIfNeeded();
+    DISKIO2_FlushDataFilesIfNeeded();
     LADFUNC_SaveTextAdsToFile();
-    ESQPARS_JMPTBL_DATETIME_SavePairToFile(DST_BannerWindowPrimary);
+    DATETIME_SavePairToFile(DST_BannerWindowPrimary);
     LOCAVAIL_SaveAvailabilityDataFile(LOCAVAIL_PrimaryFilterState,
                                       LOCAVAIL_SecondaryFilterState);
-    ESQPARS_JMPTBL_P_TYPE_WritePromoIdDataFile();
+    P_TYPE_WritePromoIdDataFile();
 }

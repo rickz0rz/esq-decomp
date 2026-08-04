@@ -33,9 +33,9 @@
 #include <string.h>
 
 extern long NEWGRID_SetRowColor(unsigned char *ctx, long a, long b);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(void *rp, long x0, long y0,
+extern void BEVEL_DrawBevelFrameWithTopRight(void *rp, long x0, long y0,
                                                              long x1, long y1);
-extern void NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(long slot, char *out);
+extern void CLEANUP_FormatClockFormatEntry(long slot, char *out);
 extern void NEWGRID_ValidateSelectionCode(unsigned char *ctx, long code);
 extern short NEWGRID_ColumnStartXPx;
 extern short NEWGRID_ColumnWidthPx;
@@ -71,21 +71,21 @@ void NEWGRID_DrawClockFormatHeader(unsigned char *ctx, long startSlot)
     SetDrMd(rp, 0L);
     SetAPen(rp, NEWGRID_SetRowColor(ctx, 0, 0));
     RectFill(rp, 0L, 0L, 695L, 33L);
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(rp, 0, 0,
+    BEVEL_DrawBevelFrameWithTopRight(rp, 0, 0,
                                                      NEWGRID_ColumnStartXPx + 35L, 33L);
 
     for (i = 0; i < 3; i++) {
         slot = startSlot + i;
         if (slot > 48)
             slot -= 48;
-        NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(slot, label);
+        CLEANUP_FormatClockFormatEntry(slot, label);
 
         x = NEWGRID_ColumnStartXPx + i * NEWGRID_ColumnWidthPx + 36;
         if (i == 2)
             right = 695;
         else
             right = NEWGRID_ColumnWidthPx + x - 1;
-        NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(rp, x, 0, right, 33);
+        BEVEL_DrawBevelFrameWithTopRight(rp, x, 0, right, 33);
 
         SetAPen(rp, 3L);
         w = TextLength(rp, label, (long)strlen(label));

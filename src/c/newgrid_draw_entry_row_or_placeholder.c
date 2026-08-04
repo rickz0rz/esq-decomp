@@ -47,7 +47,7 @@
  */
 extern void NEWGRID_DrawGridEntry(void *rp, void *entry, void *ctx, long x,
                                   long y, long bevel, long mode);
-extern void NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(void *dst,
+extern void DISPTEXT_LayoutAndAppendToBuffer(void *dst,
                                                              char *src);
 
 extern short NEWGRID_EntryPlaceholderModeFlag;
@@ -60,7 +60,7 @@ void NEWGRID_DrawEntryRowOrPlaceholder(void *rp, void *entry, void *ctx,
 {
     switch (kind) {
     case 0:
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(
+        DISPTEXT_LayoutAndAppendToBuffer(
             rp, SCRIPT_PtrOffAirPlaceholder);
         break;
 
@@ -75,7 +75,7 @@ void NEWGRID_DrawEntryRowOrPlaceholder(void *rp, void *entry, void *ctx,
         break;
 
     default:
-        NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(
+        DISPTEXT_LayoutAndAppendToBuffer(
             rp, SCRIPT_PtrNoDataPlaceholder);
         break;
     }

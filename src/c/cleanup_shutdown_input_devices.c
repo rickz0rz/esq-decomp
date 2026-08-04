@@ -51,10 +51,10 @@
 #include <devices/inputevent.h>
 #include "esq-exec.h"
 
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void MEMORY_DeallocateMemory(char *who, long line,
                                                     void *ptr, long size);
-extern void GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(void *port);
-extern void GROUP_AB_JMPTBL_IOSTDREQ_Free(void *req);
+extern void IOSTDREQ_CleanupSignalAndMsgport(void *port);
+extern void IOSTDREQ_Free(void *req);
 
 extern struct IOStdReq *Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE;
 extern struct IOStdReq *Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE;
@@ -69,16 +69,16 @@ void CLEANUP_ShutdownInputDevices(void)
     Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE->io_Data = Global_REF_DATA_INPUT_BUFFER;
     DoIO((struct IORequest *)Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE);
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_5, 127,
+    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_5, 127,
                                             Global_REF_DATA_INPUT_BUFFER,
                                             sizeof(struct InputEvent));
 
     CloseDevice((struct IORequest *)Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE);
     CloseDevice((struct IORequest *)Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE);
 
-    GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(Global_REF_INPUTDEVICE_MSGPORT);
-    GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(Global_REF_CONSOLEDEVICE_MSGPORT);
+    IOSTDREQ_CleanupSignalAndMsgport(Global_REF_INPUTDEVICE_MSGPORT);
+    IOSTDREQ_CleanupSignalAndMsgport(Global_REF_CONSOLEDEVICE_MSGPORT);
 
-    GROUP_AB_JMPTBL_IOSTDREQ_Free(Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE);
-    GROUP_AB_JMPTBL_IOSTDREQ_Free(Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE);
+    IOSTDREQ_Free(Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE);
+    IOSTDREQ_Free(Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE);
 }

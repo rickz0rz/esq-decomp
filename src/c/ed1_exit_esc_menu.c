@@ -49,19 +49,19 @@ extern short CTRL_H;
 extern short Global_UIBusyFlag;
 extern short ESQPARS2_ReadModeFlags;
 
-extern void ED1_JMPTBL_GCOMMAND_ResetHighlightMessages(void);
-extern void GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode(void);
-extern void ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState(void);
+extern void GCOMMAND_ResetHighlightMessages(void);
+extern void SCRIPT_PrimeBannerTransitionFromHexCode(void);
+extern void LADFUNC_UpdateHighlightState(void);
 extern void ESQFUNC_UpdateDiskWarningAndRefreshTick(void);
 extern void ED1_ClearEscMenuMode(void);
 extern void ESQFUNC_UpdateRefreshModeState(long suspend, long request);
-extern void ED1_JMPTBL_NEWGRID_DrawTopBorderLine(void);
-extern void ED1_JMPTBL_LADFUNC_SaveTextAdsToFile(void);
+extern void NEWGRID_DrawTopBorderLine(void);
+extern void LADFUNC_SaveTextAdsToFile(void);
 extern void ED1_WaitForFlagAndClearBit0(void);
-extern void ESQIFF_JMPTBL_BRUSH_FreeBrushList(char *head, long flags);
-extern void ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs(void);
+extern void BRUSH_FreeBrushList(char *head, long flags);
+extern void GCOMMAND_SeedBannerFromPrefs(void);
 extern void ED_DrawBottomHelpBarBackground(void);
-extern void ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(long mode);
+extern void TEXTDISP_SetRastForMode(long mode);
 extern void ESQIFF_RunCopperRiseTransition(void);
 
 void ED1_ExitEscMenu(void)
@@ -71,21 +71,21 @@ void ED1_ExitEscMenu(void)
     InitBitMap(&Global_REF_696_400_BITMAP, 3, 696, 400);
     SetFont(Global_REF_RASTPORT_1, Global_HANDLE_PREVUEC_FONT);
 
-    ED1_JMPTBL_GCOMMAND_ResetHighlightMessages();
+    GCOMMAND_ResetHighlightMessages();
     ED_DiagnosticsScreenActive = SCRIPT_StatusRefreshHoldFlag = 0;
-    GROUP_AM_JMPTBL_SCRIPT_PrimeBannerTransitionFromHexCode();
+    SCRIPT_PrimeBannerTransitionFromHexCode();
     ESQPARS2_EdDiagResetScratchFlag = 0;
-    ESQFUNC_JMPTBL_LADFUNC_UpdateHighlightState();
+    LADFUNC_UpdateHighlightState();
     ESQFUNC_UpdateDiskWarningAndRefreshTick();
     ED1_ClearEscMenuMode();
 
     NEWGRID_RefreshStateFlag = 1;
     ESQFUNC_UpdateRefreshModeState(NEWGRID_MessagePumpSuspendFlag,
                                    NEWGRID_LastRefreshRequest);
-    ED1_JMPTBL_NEWGRID_DrawTopBorderLine();
+    NEWGRID_DrawTopBorderLine();
 
     if (ED_SaveTextAdsOnExitFlag == 1)
-        ED1_JMPTBL_LADFUNC_SaveTextAdsToFile();
+        LADFUNC_SaveTextAdsToFile();
 
     LOCAVAIL_FilterPrevClassId = -1;
 
@@ -93,7 +93,7 @@ void ED1_ExitEscMenu(void)
         if (ED_DiagGraphModeChar != 78 && ED_SavedDiagGraphModeChar == 78)
             ED1_WaitForFlagAndClearBit0();
         if (ED_DiagGraphModeChar == 78 && ED_SavedDiagGraphModeChar != 78) {
-            ESQIFF_JMPTBL_BRUSH_FreeBrushList(&ESQIFF_GAdsBrushListHead, 0);
+            BRUSH_FreeBrushList(&ESQIFF_GAdsBrushListHead, 0);
             ESQIFF_GAdsBrushListCount = 0;
         }
     }
@@ -103,12 +103,12 @@ void ED1_ExitEscMenu(void)
 
     CTRL_BufferedByteCount = CTRL_HPreviousSample = CTRL_H = Global_UIBusyFlag = 0;
 
-    ED1_JMPTBL_GCOMMAND_SeedBannerFromPrefs();
+    GCOMMAND_SeedBannerFromPrefs();
     ED_DrawBottomHelpBarBackground();
 #if ESQ_FIX_ESCMENU
-    ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(2);
+    TEXTDISP_SetRastForMode(2);
 #else
-    ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(1);
+    TEXTDISP_SetRastForMode(1);
 #endif
     ESQIFF_RunCopperRiseTransition();
     ESQPARS2_ReadModeFlags = 0;

@@ -30,8 +30,8 @@
  */
 #include "esq-graphics.h"
 
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf();
-extern void ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(void *rp, char *s, long y);
+extern void WDISP_SPrintf();
+extern void TLIBA3_DrawCenteredWrappedTextLines(void *rp, char *s, long y);
 extern void *WDISP_DisplayContextBase;
 extern char CONFIG_NicheModeCycleBudget_Y;
 extern char CONFIG_NicheModeCycleBudget_Static;
@@ -50,23 +50,23 @@ void ED1_DrawStatusLine2(void)
 
     SetRast((struct RastPort *)((char *)WDISP_DisplayContextBase + 10), 2L);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(statusLine, ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D,
+    WDISP_SPrintf(statusLine, ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D,
                                   (long)CONFIG_NicheModeCycleBudget_Y,
                                   (long)CONFIG_NicheModeCycleBudget_Static,
                                   (long)CONFIG_NicheModeCycleBudget_Custom);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         (char *)WDISP_DisplayContextBase + 10, statusLine, 120);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(statusLine,
+    WDISP_SPrintf(statusLine,
                                   ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR,
                                   (long)CONFIG_ModeCycleEnabledFlag,
                                   CONFIG_ModeCycleGateDuration,
                                   CONFIG_TimeWindowMinutes);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         (char *)WDISP_DisplayContextBase + 10, statusLine, 150);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(statusLine, Global_STR_CLOCKCMD_EQUALS_PCT_C,
+    WDISP_SPrintf(statusLine, Global_STR_CLOCKCMD_EQUALS_PCT_C,
                                   (long)CTASKS_STR_1);
-    ESQFUNC_JMPTBL_TLIBA3_DrawCenteredWrappedTextLines(
+    TLIBA3_DrawCenteredWrappedTextLines(
         (char *)WDISP_DisplayContextBase + 10, statusLine, 180);
 }

@@ -25,9 +25,9 @@
  */
 #include "esq-graphics.h"
 
-extern char GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(long v);
-extern char GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble(long v);
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long v);
+extern char LADFUNC_GetPackedPenHighNibble(long v);
+extern char LADFUNC_GetPackedPenLowNibble(long v);
+extern void WDISP_SPrintf(char *buf, char *fmt, long v);
 extern void DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
 extern struct RastPort *Global_REF_RASTPORT_1;
 extern char Global_STR_CURRENT_COLOR_FORMATTED[];
@@ -37,17 +37,17 @@ void ED_DrawCurrentColorIndicator(char packed)
     char colorLabel[41];
     register unsigned char hi;
 
-    hi = GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble((long)(unsigned char)packed);
+    hi = LADFUNC_GetPackedPenHighNibble((long)(unsigned char)packed);
 
     SetAPen(Global_REF_RASTPORT_1, (long)hi);
     RectFill(Global_REF_RASTPORT_1, 204L, 250L, 474L, 275L);
 
     SetAPen(Global_REF_RASTPORT_1,
-            (long)(unsigned char)GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble(
+            (long)(unsigned char)LADFUNC_GetPackedPenLowNibble(
                 (long)(unsigned char)packed));
     SetBPen(Global_REF_RASTPORT_1, (long)hi);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(colorLabel, Global_STR_CURRENT_COLOR_FORMATTED,
+    WDISP_SPrintf(colorLabel, Global_STR_CURRENT_COLOR_FORMATTED,
                                   (long)(unsigned char)packed);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 205, 272, colorLabel);
 

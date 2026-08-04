@@ -37,7 +37,7 @@ struct DstBanner {
 };
 
 extern void  DST_FreeBannerStruct(struct DstBanner *b);
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
 extern char Global_STR_DST_C_4[];
 extern char Global_STR_DST_C_5[];
@@ -49,15 +49,15 @@ void *DST_AllocateBannerStruct(struct DstBanner *b)
 
     DST_FreeBannerStruct(b);
 
-    b = (struct DstBanner *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+    b = (struct DstBanner *)MEMORY_AllocateMemory(
         Global_STR_DST_C_4, 798L, 18L, MEMF_PUBLIC | MEMF_CLEAR);
 
     if (b != 0) {
-        b->first = (char *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+        b->first = (char *)MEMORY_AllocateMemory(
             Global_STR_DST_C_5, 803L, 22L, MEMF_PUBLIC | MEMF_CLEAR);
 
         if (b->first != 0) {
-            b->second = (char *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+            b->second = (char *)MEMORY_AllocateMemory(
                 Global_STR_DST_C_6, 807L, 22L, MEMF_PUBLIC | MEMF_CLEAR);
 
             if (b->second != 0) {

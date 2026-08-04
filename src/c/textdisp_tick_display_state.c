@@ -42,11 +42,11 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
-extern short TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan(void);
+extern short LOCAVAIL_GetFilterWindowHalfSpan(void);
 extern void  SCRIPT_AssertCtrlLineIfEnabled(void);
 extern void  TEXTDISP_UpdateHighlightOrPreview(void);
 extern void  TEXTDISP_ResetSelectionAndRefresh(void);
-extern void  TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations(void);
+extern void  ESQIFF_RunPendingCopperAnimations(void);
 
 extern short ESQ_GlobalTickCounter;
 extern short TEXTDISP_TickSuspendFlag;
@@ -68,7 +68,7 @@ void TEXTDISP_TickDisplayState(void)
     if (Global_UIBusyFlag != 0 || SCRIPT_RuntimeMode == 2) {
         if (Global_RefreshTickCounter + 1 != 0)
             Global_RefreshTickCounter = 0;
-        TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations();
+        ESQIFF_RunPendingCopperAnimations();
         return;
     }
 
@@ -81,7 +81,7 @@ void TEXTDISP_TickDisplayState(void)
             || TEXTDISP_DeferredActionCountdown == 2) {
 
             TEXTDISP_DeferredActionDelayTicks =
-                TEXTDISP2_JMPTBL_LOCAVAIL_GetFilterWindowHalfSpan();
+                LOCAVAIL_GetFilterWindowHalfSpan();
             SCRIPT_AssertCtrlLineIfEnabled();
             TEXTDISP_UpdateHighlightOrPreview();
 
@@ -98,5 +98,5 @@ void TEXTDISP_TickDisplayState(void)
         TEXTDISP_ResetSelectionAndRefresh();
     }
 
-    TEXTDISP2_JMPTBL_ESQIFF_RunPendingCopperAnimations();
+    ESQIFF_RunPendingCopperAnimations();
 }

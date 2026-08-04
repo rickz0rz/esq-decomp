@@ -28,7 +28,7 @@
 extern void ED_DrawBottomHelpBarBackground(void);
 extern void ED_DrawDiagnosticModeText(void);
 extern void DISPLIB_DisplayTextAtPosition(void *rp, long x, long y, char *s);
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf();
+extern void WDISP_SPrintf();
 extern long DISKIO_QueryDiskUsagePercentAndSetBufferSize(char *unit);
 extern long DISKIO_QueryVolumeSoftErrorCount(char *unit);
 
@@ -58,13 +58,13 @@ void ED1_DrawDiagnosticsScreen(void)
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 210, 360,
                                   WDISP_WeatherStatusLabelBuffer);
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(printfResult, Global_STR_BAUD_RATE_DIAGNOSTIC_MODE,
+    WDISP_SPrintf(printfResult, Global_STR_BAUD_RATE_DIAGNOSTIC_MODE,
                                   Global_REF_BAUD_RATE);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 410, 360, printfResult);
 
     pct  = DISKIO_QueryDiskUsagePercentAndSetBufferSize(ED2_DiagnosticDiskUsagePercent);
     errs = DISKIO_QueryVolumeSoftErrorCount(ED2_DiagnosticDiskSoftErrorCount);
-    GROUP_AM_JMPTBL_WDISP_SPrintf(printfResult,
+    WDISP_SPrintf(printfResult,
                                   Global_STR_DISK_0_IS_VAR_FULL_WITH_VAR_ERRORS,
                                   pct, errs);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40, 88, printfResult);

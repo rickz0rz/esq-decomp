@@ -42,10 +42,10 @@ struct GCommandNicheState {
     char *listings;             /* +28 */
 };
 
-extern BPTR GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(char *path, long mode);
-extern long GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(BPTR fh, char *src,
+extern BPTR DISKIO_OpenFileWithBuffer(char *path, long mode);
+extern long DISKIO_WriteBufferedBytes(BPTR fh, char *src,
                                                       long len);
-extern void GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(BPTR fh);
+extern void DISKIO_CloseBufferedFileAndFlush(BPTR fh);
 
 extern struct GCommandNicheState GCOMMAND_DigitalNicheEnabledFlag;
 extern char GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile[];
@@ -56,7 +56,7 @@ void GCOMMAND_LoadCommandFile(void)
     char *listings;
     BPTR  fh;
 
-    fh = GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(
+    fh = DISKIO_OpenFileWithBuffer(
         GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_CommandFile, 0x3eeL);
     if (fh == 0)
         return;
@@ -66,8 +66,8 @@ void GCOMMAND_LoadCommandFile(void)
     listings     = tmp.listings;
     tmp.listings = 0;
 
-    GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(fh, (char *)&tmp, 32L);
-    GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(fh, listings,
+    DISKIO_WriteBufferedBytes(fh, (char *)&tmp, 32L);
+    DISKIO_WriteBufferedBytes(fh, listings,
                                               (long)strlen(listings) + 1);
-    GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(fh);
+    DISKIO_CloseBufferedFileAndFlush(fh);
 }

@@ -25,27 +25,27 @@ extern char LOCAVAIL_PrimaryFilterState;
 extern char LOCAVAIL_SecondaryFilterState;
 extern char DST_BannerWindowPrimary;
 
-extern void GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(long mask,
+extern void ESQDISP_UpdateStatusMaskAndRefresh(long mask,
                                                                long on);
 extern void DISKIO2_DisplayStatusLine(char *text);
 extern void DISKIO2_FlushDataFilesIfNeeded(void);
-extern void ED1_JMPTBL_LADFUNC_SaveTextAdsToFile(void);
+extern void LADFUNC_SaveTextAdsToFile(void);
 extern void DISKIO_SaveConfigToFileHandle(void);
-extern void GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(char *primary,
+extern void LOCAVAIL_SaveAvailabilityDataFile(char *primary,
                                                               char *secondary);
 extern void DISKIO2_WriteQTableIniFile(void);
-extern void GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry(void);
+extern void PARSEINI_WriteErrorLogEntry(void);
 extern void DATETIME_SavePairToFile(char *window);
-extern void GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile(void);
-extern void GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile(void);
-extern void GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile(void);
-extern void GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate(void);
+extern void P_TYPE_WritePromoIdDataFile(void);
+extern void GCOMMAND_LoadCommandFile(void);
+extern void GCOMMAND_LoadMplexFile(void);
+extern void GCOMMAND_LoadPPVTemplate(void);
 
 void DISKIO2_RunDiskSyncWorkflow(long verbose)
 {
     char line[100];
 
-    GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(256, 1);
+    ESQDISP_UpdateStatusMaskAndRefresh(256, 1);
 
     *(struct SyncMessage *)line = DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT;
     if (verbose != 0)
@@ -55,7 +55,7 @@ void DISKIO2_RunDiskSyncWorkflow(long verbose)
     *(struct SyncMessage *)line = DISKIO2_STR_SAVING_TEXT_ADS_DOT;
     if (verbose != 0)
         DISKIO2_DisplayStatusLine(line);
-    ED1_JMPTBL_LADFUNC_SaveTextAdsToFile();
+    LADFUNC_SaveTextAdsToFile();
 
     *(struct SyncMessage *)line = DISKIO2_STR_SAVING_CONFIGURATION_FILE_DOT;
     if (verbose != 0)
@@ -65,7 +65,7 @@ void DISKIO2_RunDiskSyncWorkflow(long verbose)
     *(struct SyncMessage *)line = DISKIO2_STR_SAVING_LOCAL_AVAIL_CFG_DOT;
     if (verbose != 0)
         DISKIO2_DisplayStatusLine(line);
-    GROUP_AH_JMPTBL_LOCAVAIL_SaveAvailabilityDataFile(&LOCAVAIL_PrimaryFilterState,
+    LOCAVAIL_SaveAvailabilityDataFile(&LOCAVAIL_PrimaryFilterState,
                                                       &LOCAVAIL_SecondaryFilterState);
 
     *(struct SyncMessage *)line = DISKIO2_STR_SAVING_QTABLE_DOT;
@@ -76,7 +76,7 @@ void DISKIO2_RunDiskSyncWorkflow(long verbose)
     *(struct SyncMessage *)line = DISKIO2_STR_SAVING_ERROR_LOG_DOT;
     if (verbose != 0)
         DISKIO2_DisplayStatusLine(line);
-    GROUP_AK_JMPTBL_PARSEINI_WriteErrorLogEntry();
+    PARSEINI_WriteErrorLogEntry();
 
     *(struct SyncMessage *)line = DISKIO2_STR_SAVING_DST_DATA_DOT;
     if (verbose != 0)
@@ -86,14 +86,14 @@ void DISKIO2_RunDiskSyncWorkflow(long verbose)
     *(struct SyncMessage *)line = DISKIO2_STR_SAVING_PROMO_TYPES;
     if (verbose != 0)
         DISKIO2_DisplayStatusLine(line);
-    GROUP_AH_JMPTBL_P_TYPE_WritePromoIdDataFile();
+    P_TYPE_WritePromoIdDataFile();
 
     *(struct SyncMessage *)line = DISKIO2_STR_SAVING_DATA_VIEW_CONFIG;
     if (verbose != 0)
         DISKIO2_DisplayStatusLine(line);
-    GROUP_AH_JMPTBL_GCOMMAND_LoadCommandFile();
-    GROUP_AH_JMPTBL_GCOMMAND_LoadMplexFile();
-    GROUP_AH_JMPTBL_GCOMMAND_LoadPPVTemplate();
+    GCOMMAND_LoadCommandFile();
+    GCOMMAND_LoadMplexFile();
+    GCOMMAND_LoadPPVTemplate();
 
-    GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(256, 0);
+    ESQDISP_UpdateStatusMaskAndRefresh(256, 0);
 }

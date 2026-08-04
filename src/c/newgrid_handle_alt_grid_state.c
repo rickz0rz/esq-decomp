@@ -48,15 +48,15 @@ struct GridAux {
     char *slots[1];                 /* 56, indexed by the selector */
 };
 
-extern void *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(long index, long m);
-extern struct GridAux *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
+extern void *ESQDISP_GetEntryPointerByMode(long index, long m);
+extern struct GridAux *ESQDISP_GetEntryAuxPointerByMode(
                                                        long index, long m);
-extern short NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(void *daySlot);
-extern long  NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(
+extern short ESQ_GetHalfHourSlotIndex(void *daySlot);
+extern long  TLIBA_FindFirstWildcardMatchIndex(
                                                        struct GridAux *aux);
-extern void  NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(long width, long a,
+extern void  DISPTEXT_SetLayoutParams(long width, long a,
                                                       long b);
-extern long  NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(long mode);
+extern long  DISPTEXT_ComputeVisibleLineCount(long mode);
 extern void  NEWGRID_DrawGridEntry(struct RastPort *rp, void *entry,
                                    struct GridAux *aux, long selector,
                                    long a, long b, long c);
@@ -80,15 +80,15 @@ long NEWGRID_HandleAltGridState(struct GridCtx *ctx, long index, short selector)
     }
 
     if (NEWGRID_AltGridStateLatch == 4) {
-        entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(index, 1L);
-        aux   = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(index, 1L);
+        entry = ESQDISP_GetEntryPointerByMode(index, 1L);
+        aux   = ESQDISP_GetEntryAuxPointerByMode(index, 1L);
         if (aux != 0) {
             if (selector == 1 ||
-                NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(CLOCK_DaySlotIndex)
+                ESQ_GetHalfHourSlotIndex(CLOCK_DaySlotIndex)
                     == 1) {
-                index = NEWGRID2_JMPTBL_TLIBA_FindFirstWildcardMatchIndex(aux);
-                entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(index, 2L);
-                aux = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(index,
+                index = TLIBA_FindFirstWildcardMatchIndex(aux);
+                entry = ESQDISP_GetEntryPointerByMode(index, 2L);
+                aux = ESQDISP_GetEntryAuxPointerByMode(index,
                                                                        2L);
             }
         }
@@ -100,7 +100,7 @@ long NEWGRID_HandleAltGridState(struct GridCtx *ctx, long index, short selector)
         if (*aux->slots[selector] == 0)
             return NEWGRID_AltGridStateLatch;
 
-        NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(
+        DISPTEXT_SetLayoutParams(
             (long)NEWGRID_ColumnWidthPx * 3 - 12, 20L, 1L);
 
         if (NEWGRID_ShowtimeEntryVariantFlag != 0)
@@ -110,7 +110,7 @@ long NEWGRID_HandleAltGridState(struct GridCtx *ctx, long index, short selector)
             NEWGRID_DrawGridEntry(&ctx->rp, entry, aux, (long)selector,
                                   3L, 1L, 4L);
 
-        ctx->visibleLines = NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2L);
+        ctx->visibleLines = DISPTEXT_ComputeVisibleLineCount(2L);
         if (NEWGRID_DrawGridFrameAlt(ctx) != 0)
             state = 4;
         else

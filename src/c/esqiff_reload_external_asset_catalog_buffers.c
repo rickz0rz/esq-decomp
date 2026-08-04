@@ -50,13 +50,13 @@
 #include "esq-dos.h"
 #include "esq-exec.h"
 
-extern void ESQIFF_JMPTBL_BRUSH_FreeBrushList(void *head, long flags);
-extern void ESQIFF_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p,
+extern void BRUSH_FreeBrushList(void *head, long flags);
+extern void MEMORY_DeallocateMemory(char *who, long line, void *p,
                                                   long size);
-extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size,
+extern void *MEMORY_AllocateMemory(char *who, long line, long size,
                                                  long flags);
-extern long ESQIFF_JMPTBL_DOS_OpenFileWithMode(char *name, long mode);
-extern long ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle(long fh);
+extern long DOS_OpenFileWithMode(char *name, long mode);
+extern long DISKIO_GetFilesizeFromHandle(long fh);
 
 extern short CTASKS_IffTaskDoneFlag;
 extern unsigned char ED_DiagGraphModeChar;
@@ -91,26 +91,26 @@ void ESQIFF_ReloadExternalAssetCatalogBuffers(long mode)
     if (mode == 1 && ED_DiagGraphModeChar != 78
         && DISKIO_DriveWriteProtectStatusCodeDrive1 == 0) {
         Forbid();
-        ESQIFF_JMPTBL_BRUSH_FreeBrushList(&ESQIFF_GAdsBrushListHead, 0L);
+        BRUSH_FreeBrushList(&ESQIFF_GAdsBrushListHead, 0L);
         ESQIFF_GAdsBrushListCount = 0;
         ESQIFF_GAdsListLineIndex = 0;
         Permit();
 
         if (Global_REF_LONG_GFX_G_ADS_DATA && Global_REF_LONG_GFX_G_ADS_FILESIZE) {
-            ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQIFF_C_3, 882L,
+            MEMORY_DeallocateMemory(Global_STR_ESQIFF_C_3, 882L,
                                                   Global_REF_LONG_GFX_G_ADS_DATA,
                                                   Global_REF_LONG_GFX_G_ADS_FILESIZE + 1);
             Global_REF_LONG_GFX_G_ADS_DATA = 0;
             Global_REF_LONG_GFX_G_ADS_FILESIZE = 0;
         }
 
-        fh = ESQIFF_JMPTBL_DOS_OpenFileWithMode(Global_PTR_STR_GFX_G_ADS, 1005L);
+        fh = DOS_OpenFileWithMode(Global_PTR_STR_GFX_G_ADS, 1005L);
         if (fh > 0) {
             Global_REF_LONG_GFX_G_ADS_FILESIZE =
-                ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle(fh);
+                DISKIO_GetFilesizeFromHandle(fh);
             if (Global_REF_LONG_GFX_G_ADS_FILESIZE > 0) {
                 Global_REF_LONG_GFX_G_ADS_DATA = (char *)
-                    ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQIFF_C_4, 898L,
+                    MEMORY_AllocateMemory(Global_STR_ESQIFF_C_4, 898L,
                                                         Global_REF_LONG_GFX_G_ADS_FILESIZE + 1,
                                                         1L);
                 if (Read(fh, Global_REF_LONG_GFX_G_ADS_DATA,
@@ -129,26 +129,26 @@ void ESQIFF_ReloadExternalAssetCatalogBuffers(long mode)
 
     if (mode == 0 && DISKIO_Drive0WriteProtectedCode == 0) {
         Forbid();
-        ESQIFF_JMPTBL_BRUSH_FreeBrushList(&ESQIFF_LogoBrushListHead, 0L);
+        BRUSH_FreeBrushList(&ESQIFF_LogoBrushListHead, 0L);
         ESQIFF_LogoBrushListCount = 0;
         ESQIFF_LogoListLineIndex = 0;
         Permit();
 
         if (Global_REF_LONG_DF0_LOGO_LST_DATA && Global_REF_LONG_DF0_LOGO_LST_FILESIZE) {
-            ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQIFF_C_5, 963L,
+            MEMORY_DeallocateMemory(Global_STR_ESQIFF_C_5, 963L,
                                                   Global_REF_LONG_DF0_LOGO_LST_DATA,
                                                   Global_REF_LONG_DF0_LOGO_LST_FILESIZE + 1);
             Global_REF_LONG_DF0_LOGO_LST_DATA = 0;
             Global_REF_LONG_DF0_LOGO_LST_FILESIZE = 0;
         }
 
-        fh = ESQIFF_JMPTBL_DOS_OpenFileWithMode(Global_PTR_STR_DF0_LOGO_LST, 1005L);
+        fh = DOS_OpenFileWithMode(Global_PTR_STR_DF0_LOGO_LST, 1005L);
         if (fh > 0) {
             Global_REF_LONG_DF0_LOGO_LST_FILESIZE =
-                ESQIFF_JMPTBL_DISKIO_GetFilesizeFromHandle(fh);
+                DISKIO_GetFilesizeFromHandle(fh);
             if (Global_REF_LONG_DF0_LOGO_LST_FILESIZE > 0) {
                 Global_REF_LONG_DF0_LOGO_LST_DATA = (char *)
-                    ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQIFF_C_6, 979L,
+                    MEMORY_AllocateMemory(Global_STR_ESQIFF_C_6, 979L,
                                                         Global_REF_LONG_DF0_LOGO_LST_FILESIZE + 1,
                                                         1L);
                 if (Read(fh, Global_REF_LONG_DF0_LOGO_LST_DATA,

@@ -20,9 +20,9 @@ extern long  COI_TestEntryWithinTimeWindow(char *entry, char *aux, short slot,
 extern char *COI_GetAnimFieldPointerByMode(char *entry, short slot, short mode);
 extern long  CLEANUP_TestEntryFlagYAndBit1(char *entry, long slot, long kind);
 extern void  CLEANUP_UpdateEntryFlagBytes(char *entry, long slot);
-extern void  GROUP_AE_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, long a,
+extern void  WDISP_SPrintf(char *buf, char *fmt, long a,
                                            char *s, long b);
-extern void  GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern void  STRING_AppendAtNull(char *dst, char *src);
 
 void COI_FormatEntryDisplayText(char *entry, char *aux, long slot, char *out,
                                 long mode)
@@ -64,7 +64,7 @@ void COI_FormatEntryDisplayText(char *entry, char *aux, long slot, char *out,
 
     if (CLEANUP_TestEntryFlagYAndBit1(entry, slot, kind) != 0) {
         wrapped = COI_GetAnimFieldPointerByMode(entry, (short)slot, 6);
-        GROUP_AE_JMPTBL_WDISP_SPrintf(buf, COI_FMT_WRAP_CHAR_STRING_CHAR, 19,
+        WDISP_SPrintf(buf, COI_FMT_WRAP_CHAR_STRING_CHAR, 19,
                                       wrapped, 20);
         parts[4] = buf;
         CLEANUP_UpdateEntryFlagBytes(entry, slot);
@@ -74,8 +74,8 @@ void COI_FormatEntryDisplayText(char *entry, char *aux, long slot, char *out,
 
     for (i = 0; i < 5; i++) {
         if (parts[i] != 0 && *parts[i] != 0) {
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(out, COI_STR_SINGLE_SPACE);
-            GROUP_AI_JMPTBL_STRING_AppendAtNull(out, parts[i]);
+            STRING_AppendAtNull(out, COI_STR_SINGLE_SPACE);
+            STRING_AppendAtNull(out, parts[i]);
         }
     }
 }

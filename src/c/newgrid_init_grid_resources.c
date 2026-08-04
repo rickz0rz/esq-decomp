@@ -32,12 +32,12 @@ extern char  Global_STR_NEWGRID_C_2[];
 extern char  Global_STR_44_44_44[];
 
 extern void NEWGRID2_EnsureBuffersAllocated(void);
-extern void NEWGRID_JMPTBL_DISPTEXT_InitBuffers(void);
+extern void DISPTEXT_InitBuffers(void);
 extern void NEWGRID_InitShowtimeBuckets(void);
-extern struct RastPort *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who,
+extern struct RastPort *MEMORY_AllocateMemory(char *who,
                 long line, long size, long flags);
 extern void NEWGRID_DrawTopBorderLine(void);
-extern long __asm NEWGRID_JMPTBL_MATH_DivS32(register __d0 long a,
+extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
 
 void NEWGRID_InitGridResources(void)
@@ -47,10 +47,10 @@ void NEWGRID_InitGridResources(void)
     NEWGRID_GridResourcesInitializedFlag = 1;
 
     NEWGRID2_EnsureBuffersAllocated();
-    NEWGRID_JMPTBL_DISPTEXT_InitBuffers();
+    DISPTEXT_InitBuffers();
     NEWGRID_InitShowtimeBuckets();
 
-    NEWGRID_MainRastPortPtr = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+    NEWGRID_MainRastPortPtr = MEMORY_AllocateMemory(
         Global_STR_NEWGRID_C_1, 99, 100, MEMF_PUBLIC + MEMF_CLEAR);
     if (NEWGRID_MainRastPortPtr == 0)
         return;
@@ -59,7 +59,7 @@ void NEWGRID_InitGridResources(void)
     SetDrMd(NEWGRID_MainRastPortPtr, 0);
     SetFont(NEWGRID_MainRastPortPtr, Global_HANDLE_PREVUEC_FONT);
 
-    NEWGRID_HeaderRastPortPtr = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+    NEWGRID_HeaderRastPortPtr = MEMORY_AllocateMemory(
         Global_STR_NEWGRID_C_2, 112, 100, MEMF_PUBLIC + MEMF_CLEAR);
     if (NEWGRID_HeaderRastPortPtr == 0)
         return;

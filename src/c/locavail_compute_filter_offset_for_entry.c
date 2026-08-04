@@ -35,10 +35,10 @@ extern short WDISP_HighlightActive;
 extern char  LOCAVAIL_STR_YYLLZ_FilterGateCheck[];
 
 extern long  LOCAVAIL_MapFilterTokenCharToClass(long c);
-extern long __asm NEWGRID_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *s, long c);
-extern char  GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask(void);
+extern char *STR_FindCharPtr(char *s, long c);
+extern char  SCRIPT_ReadHandshakeBit5Mask(void);
 
 void LOCAVAIL_ComputeFilterOffsetForEntry(char *token, struct FilterCtx *ctx)
 {
@@ -95,9 +95,9 @@ void LOCAVAIL_ComputeFilterOffsetForEntry(char *token, struct FilterCtx *ctx)
         rec = slot->str;
         switch ((unsigned char)rec[bestSub]) {
         case 1:
-            if (GROUP_AS_JMPTBL_STR_FindCharPtr(LOCAVAIL_STR_YYLLZ_FilterGateCheck,
+            if (STR_FindCharPtr(LOCAVAIL_STR_YYLLZ_FilterGateCheck,
                     (long)ED_DiagVinModeChar) == 0
-                || GROUP_AY_JMPTBL_SCRIPT_ReadCiaBBit5Mask() == 0) {
+                || SCRIPT_ReadHandshakeBit5Mask() == 0) {
                 best = -1;
                 bestSub = -1;
             }

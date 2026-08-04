@@ -43,7 +43,7 @@ struct DstBanner {
     short leapFlag;  /* 20 */
 };
 
-extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer();
+extern void FORMAT_RawDoFmtWithScratchBuffer();
 extern char *Global_JMPTBL_SHORT_DAYS_OF_WEEK[];
 extern char *Global_JMPTBL_SHORT_MONTHS[];
 extern char DST_TAG_PM[], DST_TAG_AM[];
@@ -61,7 +61,7 @@ void DST_FormatBannerDateTime(char *out, struct DstBanner *r)
     zone = (r->zoneFlag == 1) ? DST_TAG_DST : DST_TAG_STD;
     yearKind = r->leapFlag ? DST_STR_LEAP_YEAR : DST_STR_NORM_YEAR;
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_,
         out,
         Global_JMPTBL_SHORT_DAYS_OF_WEEK[r->dayIdx],

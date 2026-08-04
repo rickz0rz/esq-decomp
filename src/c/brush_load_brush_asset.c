@@ -149,20 +149,20 @@ struct BrushNode {
     long             f368;              /* +368, node is 372 bytes */
 };
 
-extern long  GROUP_AG_JMPTBL_DOS_OpenFileWithMode(char *path, long mode);
-extern long  GROUP_AA_JMPTBL_STRING_CompareN(char *a, char *b, long n);
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern long  DOS_OpenFileWithMode(char *path, long mode);
+extern long  STRING_CompareN(char *a, char *b, long n);
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                      void *p, long size);
 extern long  BITMAP_ProcessIlbmImage(long fh, long *rowOffsets,
                                      unsigned char *palette, long size,
                                      void *buf, struct BrushSrc *src);
-extern void *GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(char *who, long line,
+extern void *GRAPHICS_AllocRaster(char *who, long line,
                                                   long width, long height);
-extern void  GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(char *who, long line, void *p,
+extern void  GRAPHICS_FreeRaster(char *who, long line, void *p,
                                                  long width, long height);
-extern long __asm GROUP_AG_JMPTBL_MATH_DivS32(register __d0 long a,
+extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
 extern void *ESQ_PackBitsDecode(void *src, void *dst, long words);
 
@@ -205,18 +205,18 @@ struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
     decode = decodeBase = 0;
     node   = 0;
 
-    fh = GROUP_AG_JMPTBL_DOS_OpenFileWithMode(src->name, 1005L);
+    fh = DOS_OpenFileWithMode(src->name, 1005L);
 
     if (fh != 0) {
 
         if (Read(fh, hdr, 6L) == 6) {
 
-            if (GROUP_AA_JMPTBL_STRING_CompareN(hdr, BRUSH_STR_IFF_FORM,
+            if (STRING_CompareN(hdr, BRUSH_STR_IFF_FORM,
                                                 4L) == 0) {
 
                 Seek(fh, 0L, -1L);
 
-                decode = decodeBase = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+                decode = decodeBase = MEMORY_AllocateMemory(
                              Global_STR_BRUSH_C_10, 977L, 130000L,
                              MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -262,7 +262,7 @@ struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
 
     if (failed == 0) {
 
-        node = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+        node = MEMORY_AllocateMemory(
                    Global_STR_BRUSH_C_11, 1064L, 372L,
                    MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -307,7 +307,7 @@ struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
 
             for (i = 0; i < (long)node->dims.depth && i < 5; i++) {
 
-                node->bitMap.Planes[i] = GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(
+                node->bitMap.Planes[i] = GRAPHICS_AllocRaster(
                     Global_STR_BRUSH_C_12, 1134L, (long)node->dims.width,
                     (long)node->dims.height);
                 planeSave[i] = node->bitMap.Planes[i];
@@ -334,7 +334,7 @@ struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
                 for (i = 0; i < 96; i++)
                     node->palette[i] = src->palette[i];
 
-                rowWords = (short)(GROUP_AG_JMPTBL_MATH_DivS32(
+                rowWords = (short)(MATH_DivS32(
                                        (long)src->dims.width + 15, 16L) * 2);
 
                 for (row = 0; row < node->dims.height; row++) {
@@ -355,14 +355,14 @@ struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
 
                 while (node->dims.depth != 0 && i < 5) {
                     if (node->bitMap.Planes[i] != 0)
-                        GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(
+                        GRAPHICS_FreeRaster(
                             Global_STR_BRUSH_C_13, 1202L,
                             node->bitMap.Planes[i], (long)node->dims.width,
                             (long)node->dims.height);
                     i++;
                 }
 
-                GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_14,
+                MEMORY_DeallocateMemory(Global_STR_BRUSH_C_14,
                                                         1205L, node, 372L);
                 node = 0;
             }
@@ -371,7 +371,7 @@ struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
 
     if (src->type == 11) {
 
-        node = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+        node = MEMORY_AllocateMemory(
                    Global_STR_BRUSH_C_15, 1220L, 372L,
                    MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -385,7 +385,7 @@ struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
     }
 
     if (decodeBase != 0)
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_16, 1236L,
+        MEMORY_DeallocateMemory(Global_STR_BRUSH_C_16, 1236L,
                                                 decodeBase, 130000L);
 
     return node;

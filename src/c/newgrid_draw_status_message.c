@@ -41,11 +41,11 @@ struct GridCtx {
 
 extern void  NEWGRID_DrawGridFrame(struct GridCtx *ctx, long a, long b, long c,
                                    long d);
-extern void  NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry(long code,
+extern void  CLEANUP_FormatClockFormatEntry(long code,
                                                             char *out);
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
-extern void  PARSEINI_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, ...);
-extern void  NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
+extern char *STR_SkipClass3Chars(char *s);
+extern void  WDISP_SPrintf(char *buf, char *fmt, ...);
+extern void  BEVEL_DrawBevelFrameWithTopRight(
                 struct RastPort *rp, long x0, long y0, long x1, long y1);
 extern void  NEWGRID_ValidateSelectionCode(struct GridCtx *ctx, long code);
 
@@ -64,13 +64,13 @@ void NEWGRID_DrawStatusMessage(struct GridCtx *ctx, short code)
 
     NEWGRID_DrawGridFrame(ctx, 7L, GCOMMAND_MplexMessageFramePen,
                           GCOMMAND_MplexMessageFramePen, 33L);
-    NEWGRID2_JMPTBL_CLEANUP_FormatClockFormatEntry((long)code, clock);
-    body = NEWGRID2_JMPTBL_STR_SkipClass3Chars(clock);
-    PARSEINI_JMPTBL_WDISP_SPrintf(text, GCOMMAND_MplexAtTemplatePtr, body);
+    CLEANUP_FormatClockFormatEntry((long)code, clock);
+    body = STR_SkipClass3Chars(clock);
+    WDISP_SPrintf(text, GCOMMAND_MplexAtTemplatePtr, body);
 
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(&ctx->rp, 0L, 0L,
+    BEVEL_DrawBevelFrameWithTopRight(&ctx->rp, 0L, 0L,
         (long)NEWGRID_ColumnStartXPx + 35, 33L);
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(&ctx->rp,
+    BEVEL_DrawBevelFrameWithTopRight(&ctx->rp,
         (long)NEWGRID_ColumnStartXPx + 36, 0L, 695L, 33L);
 
     SetAPen(&ctx->rp, GCOMMAND_MplexMessageTextPen);

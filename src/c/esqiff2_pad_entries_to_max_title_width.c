@@ -35,7 +35,7 @@
  */
 #include <string.h>
 
-extern void GROUP_AR_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern void STRING_AppendAtNull(char *dst, char *src);
 extern char  TEXTDISP_SecondaryGroupCode;
 extern char  TEXTDISP_PrimaryGroupCode;
 extern short TEXTDISP_SecondaryGroupEntryCount;
@@ -71,7 +71,7 @@ long ESQIFF2_PadEntriesToMaxTitleWidth(char groupCode)
             for (j = 0; j < 10; j++)
                 spaces[j] = ' ';
             spaces[pad] = 0;
-            GROUP_AR_JMPTBL_STRING_AppendAtNull(spaces, (char *)entry + 1);
+            STRING_AppendAtNull(spaces, (char *)entry + 1);
             strcpy((char *)entry + 1, spaces);
         }
     }

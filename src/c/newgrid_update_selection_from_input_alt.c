@@ -29,12 +29,12 @@ extern void NEWGRID_ClearMarkersIfSelectable(long mode, long entry);
 extern short NEWGRID_UpdatePresetEntry(char **entry, char **aux, long selector,
                                        long row);
 extern long NEWGRID_TestEntrySelectable(char *entry, char *aux, long mode);
-extern long NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(char *entry,
+extern long DISPLIB_FindPreviousValidEntryIndex(char *entry,
                 char *aux, long index);
-extern long NEWGRID2_JMPTBL_ESQ_TestBit1Based(char *bits, long slot);
-extern long NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(char *entry,
+extern long ESQ_TestBit1Based(char *bits, long slot);
+extern long COI_ProcessEntrySelectionState(char *entry,
                 char *aux, long index, long window, long fallback);
-extern long TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(char *aux,
+extern long ESQDISP_TestEntryGridEligibility(char *aux,
                 long index);
 
 long NEWGRID_UpdateSelectionFromInputAlt(long state,
@@ -99,20 +99,20 @@ long NEWGRID_UpdateSelectionFromInputAlt(long state,
 
                     if (entry != 0 && aux != 0) {
                         if (NEWGRID_AltSelectionEntryCursor == ctx->firstEntry)
-                            index = NEWGRID2_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(
+                            index = DISPLIB_FindPreviousValidEntryIndex(
                                         entry, aux, index);
 
                         if (index > 0
-                            && NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry + 28,
+                            && ESQ_TestBit1Based(entry + 28,
                                    index) == -1
                             && !(aux[index + 7] & 32)
                             && !(aux[NEWGRID_AltSelectionEntryCursor + 7] & 0x80)
                             && *(long *)(aux + index * 4 + 56) != 0
-                            && NEWGRID2_JMPTBL_COI_ProcessEntrySelectionState(
+                            && COI_ProcessEntrySelectionState(
                                    entry, aux, index, 1440,
                                    CONFIG_TimeWindowMinutes) != 0
                             && (mode != 1
-                                || TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(
+                                || ESQDISP_TestEntryGridEligibility(
                                        aux, index) != 0))
                             found = 1;
                         else

@@ -23,10 +23,10 @@ extern long  ED_SavedScrollSpeedIndex;
 extern short ESQPARS2_StateIndex;
 extern char  DST_BannerWindowPrimary;
 
-extern long ESQPARS_JMPTBL_DST_UpdateBannerQueue(char *window);
-extern void ESQPARS_JMPTBL_DST_RefreshBannerBuffer(void);
+extern long DST_UpdateBannerQueue(char *window);
+extern void DST_RefreshBannerBuffer(void);
 extern void ESQDISP_DrawStatusBanner(long highlight);
-extern void ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds(long minute, long offset);
+extern void ESQ_SeedMinuteEventThresholds(long minute, long offset);
 extern void ED_DrawDiagnosticModeText(void);
 
 void ESQIFF2_ApplyIncomingStatusPacket(char *packet)
@@ -48,8 +48,8 @@ void ESQIFF2_ApplyIncomingStatusPacket(char *packet)
     if (c >= 49 && c > 72)
         ESQ_STR_6 = 0x36;
 
-    if (ESQPARS_JMPTBL_DST_UpdateBannerQueue(&DST_BannerWindowPrimary) == 0)
-        ESQPARS_JMPTBL_DST_RefreshBannerBuffer();
+    if (DST_UpdateBannerQueue(&DST_BannerWindowPrimary) == 0)
+        DST_RefreshBannerBuffer();
     ESQDISP_DrawStatusBanner(1);
 
     c = CLOCK_MinuteEventBaseMinute;
@@ -59,7 +59,7 @@ void ESQIFF2_ApplyIncomingStatusPacket(char *packet)
     if (c <= 9 && !(c > 0))
         CLOCK_MinuteEventBaseOffset = 1;
 
-    ESQPARS_JMPTBL_ESQ_SeedMinuteEventThresholds(
+    ESQ_SeedMinuteEventThresholds(
         (long)CLOCK_MinuteEventBaseMinute, (long)CLOCK_MinuteEventBaseOffset);
 
     if (ED_DiagnosticsScreenActive != 0)

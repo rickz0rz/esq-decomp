@@ -34,8 +34,8 @@
 extern long  DISKIO_LoadFileToWorkBuffer(char *path);
 extern long  DISKIO_ParseLongFromWorkBuffer(void);
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *newstr, char *old);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
+extern char *ESQPARS_ReplaceOwnedString(char *newstr, char *old);
+extern void  MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
 extern long  Global_REF_LONG_FILE_SCRATCH;
 extern char *Global_PTR_WORK_BUFFER;
 extern char  TEXTDISP_PrimaryGroupCode;
@@ -68,12 +68,12 @@ long DISKIO2_LoadOinfoDataFile(void)
         tail = DISKIO_ConsumeCStringFromWorkBuffer();
         if (head != (char *)-1L && tail != (char *)-1L) {
             ESQIFF_PrimaryLineHeadPtr =
-                GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(head, ESQIFF_PrimaryLineHeadPtr);
+                ESQPARS_ReplaceOwnedString(head, ESQIFF_PrimaryLineHeadPtr);
             ESQIFF_PrimaryLineTailPtr =
-                GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(tail, ESQIFF_PrimaryLineTailPtr);
+                ESQPARS_ReplaceOwnedString(tail, ESQIFF_PrimaryLineTailPtr);
         }
     }
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_23, 1191, base, len + 1);
+    MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_23, 1191, base, len + 1);
     return 0;
 }

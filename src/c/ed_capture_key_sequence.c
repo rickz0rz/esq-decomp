@@ -35,8 +35,8 @@
  */
 #include <string.h>
 
-extern long ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit(long ch);
-extern long __asm GROUP_AG_JMPTBL_MATH_DivS32(register __d0 long a,
+extern long LADFUNC_ParseHexDigit(long ch);
+extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
 
 extern unsigned char ED_CustomPaletteTriplesDefaultTemplate24B[];
@@ -62,7 +62,7 @@ void ED_CaptureKeySequence(void)
     ED_LastKeyCode = key;
 
     if (WDISP_CharClassTable[key] & 0x80) {
-        digit = (unsigned char)ESQFUNC_JMPTBL_LADFUNC_ParseHexDigit((long)key);
+        digit = (unsigned char)LADFUNC_ParseHexDigit((long)key);
         if (ED_CustomPaletteCapturePhaseMod4 == 0) {
             ED_CustomPaletteCaptureIndexOrSentinel = digit;
         } else if (ED_CustomPaletteCaptureIndexOrSentinel < 0

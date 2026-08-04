@@ -23,12 +23,12 @@ extern char P_TYPE_STR_NXTDAY_COLON_LoadSection[];
 extern char P_TYPE_STR_TYPES_COLON[];
 extern char Global_STR_P_TYPE_C_6[];
 
-extern long  PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(char *path);
-extern char *P_TYPE_JMPTBL_STRING_FindSubstring(char *hay, char *needle);
-extern long  SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern long  DISKIO_LoadFileToWorkBuffer(char *path);
+extern char *STRING_FindSubstring(char *hay, char *needle);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern char *P_TYPE_AllocateEntry(long code, long count, char *text);
 extern void  P_TYPE_FreeEntry(char *entry);
-extern void  SCRIPT_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                    char *ptr, long size);
 
 long P_TYPE_LoadPromoIdDataFile(void)
@@ -44,7 +44,7 @@ long P_TYPE_LoadPromoIdDataFile(void)
     long  slot;
     char  saved;
 
-    if (PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(
+    if (DISKIO_LoadFileToWorkBuffer(
             P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load) == -1)
         return 1;
 
@@ -54,13 +54,13 @@ long P_TYPE_LoadPromoIdDataFile(void)
     strcpy(key, P_TYPE_STR_CURDAY_COLON_LoadSection);
 
     while (section != 2) {
-        cur = P_TYPE_JMPTBL_STRING_FindSubstring(buf, key);
+        cur = STRING_FindSubstring(buf, key);
         if (cur != 0) {
             cur += strlen(key);
             while (WDISP_CharClassTable[*cur] & 8)
                 cur++;
 
-            code = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(cur);
+            code = PARSE_ReadSignedLongSkipClass3_Alt(cur);
             if (TEXTDISP_PrimaryGroupCode == code)
                 slot = 0;
             else if (code == TEXTDISP_SecondaryGroupCode)
@@ -74,10 +74,10 @@ long P_TYPE_LoadPromoIdDataFile(void)
                 while (WDISP_CharClassTable[*cur] & 8)
                     cur++;
 
-                count = SCRIPT3_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(cur);
+                count = PARSE_ReadSignedLongSkipClass3_Alt(cur);
                 entry = 0;
                 if (count > 0) {
-                    cur = P_TYPE_JMPTBL_STRING_FindSubstring(cur,
+                    cur = STRING_FindSubstring(cur,
                               P_TYPE_STR_TYPES_COLON);
                     if (cur != 0) {
                         cur += 7;
@@ -105,7 +105,7 @@ long P_TYPE_LoadPromoIdDataFile(void)
         }
     }
 
-    SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_P_TYPE_C_6, 406, buf,
+    MEMORY_DeallocateMemory(Global_STR_P_TYPE_C_6, 406, buf,
                                           size + 1);
     return 1;
 }

@@ -27,24 +27,24 @@ extern long  ESQIFF_GAdsBrushListCount;
 extern char  ESQDISP_StatusRefreshPendingFlag;
 extern char  GCOMMAND_HighlightHoldoffTickCount;
 
-extern void ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(void);
+extern void DISKIO_ProbeDrivesAndAssignPaths(void);
 extern void ESQDISP_PollInputModeAndRefreshSelection(void);
 extern void ESQDISP_ProcessGridMessagesIfIdle(void);
 extern void ED_DispatchEscMenuState(void);
-extern void ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd(void);
-extern void ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts(void);
+extern void SCRIPT_HandleSerialCtrlCmd(void);
+extern void CLEANUP_ProcessAlerts(void);
 extern void ESQFUNC_CommitSecondaryStateAndPersist(void);
-extern void ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(void);
+extern void TEXTDISP_ResetSelectionAndRefresh(void);
 extern void ESQIFF_PlayNextExternalAssetFrame(long mode);
 extern void ESQIFF_QueueIffBrushLoad(long mode);
 extern void ESQIFF_ServiceExternalAssetSourceState(long mode);
-extern void ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState(void);
+extern void TEXTDISP_TickDisplayState(void);
 extern void ESQDISP_RefreshStatusIndicatorsFromCurrentMask(void);
 
 void ESQFUNC_ProcessUiFrameTick(void)
 {
     if (GCOMMAND_DriveProbeRequestedFlag != 0)
-        ESQFUNC_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths();
+        DISKIO_ProbeDrivesAndAssignPaths();
 
     if (ESQDISP_DisplayActiveFlag == 1)
         ESQDISP_PollInputModeAndRefreshSelection();
@@ -55,10 +55,10 @@ void ESQFUNC_ProcessUiFrameTick(void)
     ED_DispatchEscMenuState();
 
     if (Global_UIBusyFlag == 0)
-        ESQFUNC_JMPTBL_SCRIPT_HandleSerialCtrlCmd();
+        SCRIPT_HandleSerialCtrlCmd();
 
     if (CLEANUP_PendingAlertFlag != 0) {
-        ESQFUNC_JMPTBL_CLEANUP_ProcessAlerts();
+        CLEANUP_ProcessAlerts();
 
         if (ESQDISP_SecondaryPersistRequestFlag != 0) {
             ESQDISP_SecondaryPersistRequestFlag = 0;
@@ -68,7 +68,7 @@ void ESQFUNC_ProcessUiFrameTick(void)
         if (CTASKS_IffTaskDoneFlag != 0) {
             if ((ESQFUNC_IffTaskGateFlags & 2) && Global_UIBusyFlag == 0) {
                 ESQFUNC_IffTaskGateFlags &= ~2;
-                ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh();
+                TEXTDISP_ResetSelectionAndRefresh();
             } else if ((ESQFUNC_IffTaskGateFlags & 1) && Global_UIBusyFlag == 0) {
                 ESQFUNC_IffTaskGateFlags &= ~1;
                 ESQIFF_PlayNextExternalAssetFrame(1);
@@ -95,7 +95,7 @@ void ESQFUNC_ProcessUiFrameTick(void)
         }
     }
 
-    ESQFUNC_JMPTBL_TEXTDISP_TickDisplayState();
+    TEXTDISP_TickDisplayState();
 
     if (ESQDISP_StatusRefreshPendingFlag != 0
         && GCOMMAND_HighlightHoldoffTickCount == 0) {

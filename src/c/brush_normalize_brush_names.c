@@ -11,7 +11,7 @@
  */
 struct Brush5 { char name[1]; char pad[367]; struct Brush5 *next; };
 struct Brush5Head { struct Brush5 *first; };
-extern char *GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(char *s);
+extern char *GCOMMAND_FindPathSeparator(char *s);
 void BRUSH_NormalizeBrushNames(struct Brush5Head *h)
 {
     char scratch[40];
@@ -23,7 +23,7 @@ void BRUSH_NormalizeBrushNames(struct Brush5Head *h)
         d = scratch;
         while ((*d++ = *s++) != 0)
             ;
-        s = GROUP_AA_JMPTBL_GCOMMAND_FindPathSeparator(scratch);
+        s = GCOMMAND_FindPathSeparator(scratch);
         d = cur->name;
         while ((*d++ = *s++) != 0)
             ;

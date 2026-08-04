@@ -47,10 +47,10 @@ struct CoiEntry {
     struct SubEntry **table;     /* 38 */
 };
 
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *newstr, char *old);
-extern void  GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray(void *table, long stride,
+extern char *ESQPARS_ReplaceOwnedString(char *newstr, char *old);
+extern void  SCRIPT_DeallocateBufferArray(void *table, long stride,
                                                           long count);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p,
+extern void  MEMORY_DeallocateMemory(char *who, long line, void *p,
                                                      long size);
 extern char Global_STR_COI_C_4[];
 
@@ -70,18 +70,18 @@ void COI_FreeSubEntryTableEntries(unsigned char *ctx)
     for (i = 0; i < e->count; i++) {
         sub = e->table[i];
         sub->flag  = 0;
-        sub->name  = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, sub->name);
-        sub->city  = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, sub->city);
-        sub->order = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, sub->order);
-        sub->price = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, sub->price);
-        sub->tele  = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, sub->tele);
-        sub->event = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0, sub->event);
+        sub->name  = ESQPARS_ReplaceOwnedString(0, sub->name);
+        sub->city  = ESQPARS_ReplaceOwnedString(0, sub->city);
+        sub->order = ESQPARS_ReplaceOwnedString(0, sub->order);
+        sub->price = ESQPARS_ReplaceOwnedString(0, sub->price);
+        sub->tele  = ESQPARS_ReplaceOwnedString(0, sub->tele);
+        sub->event = ESQPARS_ReplaceOwnedString(0, sub->event);
         sub->tail  = 0;
     }
 
     if (e->count) {
-        GROUP_AE_JMPTBL_SCRIPT_DeallocateBufferArray(e->table, 30, (long)e->count);
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_COI_C_4, 876, e->table,
+        SCRIPT_DeallocateBufferArray(e->table, 30, (long)e->count);
+        MEMORY_DeallocateMemory(Global_STR_COI_C_4, 876, e->table,
                                                 (long)e->count * 4);
     }
 

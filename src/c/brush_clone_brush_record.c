@@ -27,9 +27,9 @@ extern char BRUSH_SnapshotHeader[];
 extern char Global_STR_BRUSH_C_17[];
 extern char Global_STR_BRUSH_C_18[];
 
-extern char *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern char *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
-extern long  GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(char *who, long line,
+extern long  GRAPHICS_AllocRaster(char *who, long line,
                                                   long width, long height);
 
 char *BRUSH_CloneBrushRecord(char *src)
@@ -38,7 +38,7 @@ char *BRUSH_CloneBrushRecord(char *src)
     long  i;
 
     dst = 0;
-    dst = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_BRUSH_C_17, 1248, 372,
+    dst = MEMORY_AllocateMemory(Global_STR_BRUSH_C_17, 1248, 372,
               MEMF_PUBLIC + MEMF_CLEAR);
     if (dst == 0)
         return dst;
@@ -85,7 +85,7 @@ char *BRUSH_CloneBrushRecord(char *src)
 
     i = 0;
     while (i < (long)*(unsigned char *)(dst + 184) && i < 5) {
-        *(long *)(dst + (i << 2) + 144) = GROUP_AA_JMPTBL_GRAPHICS_AllocRaster(
+        *(long *)(dst + (i << 2) + 144) = GRAPHICS_AllocRaster(
             Global_STR_BRUSH_C_18, 1302,
             (long)*(unsigned short *)(dst + 176),
             (long)*(unsigned short *)(dst + 178));

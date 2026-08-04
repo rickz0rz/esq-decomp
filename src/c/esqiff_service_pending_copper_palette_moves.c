@@ -41,8 +41,8 @@
  */
 #include "esq-exec.h"
 
-extern void ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(long start, long end);
-extern void ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(long start, long end);
+extern void ESQ_MoveCopperEntryTowardEnd(long start, long end);
+extern void ESQ_MoveCopperEntryTowardStart(long start, long end);
 
 extern short ACCUMULATOR_Row0_SaturateFlag;
 extern short WDISP_AccumulatorRow0_MoveFlags;
@@ -66,11 +66,11 @@ void __saveds ESQIFF_ServicePendingCopperPaletteMoves(void)
     if (ACCUMULATOR_Row0_SaturateFlag == 1 && WDISP_AccumulatorRow0_MoveFlags) {
         ACCUMULATOR_Row0_SaturateFlag = 0;
         if (WDISP_AccumulatorRow0_MoveFlags & 2)
-            ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(
+            ESQ_MoveCopperEntryTowardEnd(
                 (long)WDISP_AccumulatorRow0_CopperIndexStart,
                 (long)WDISP_AccumulatorRow0_CopperIndexEnd);
         else
-            ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(
+            ESQ_MoveCopperEntryTowardStart(
                 (long)WDISP_AccumulatorRow0_CopperIndexStart,
                 (long)WDISP_AccumulatorRow0_CopperIndexEnd);
     }
@@ -78,11 +78,11 @@ void __saveds ESQIFF_ServicePendingCopperPaletteMoves(void)
     if (ACCUMULATOR_Row1_SaturateFlag == 1 && WDISP_AccumulatorRow1_MoveFlags) {
         ACCUMULATOR_Row1_SaturateFlag = 0;
         if (WDISP_AccumulatorRow1_MoveFlags & 2)
-            ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(
+            ESQ_MoveCopperEntryTowardEnd(
                 (long)WDISP_AccumulatorRow1_CopperIndexStart,
                 (long)WDISP_AccumulatorRow1_CopperIndexEnd);
         else
-            ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(
+            ESQ_MoveCopperEntryTowardStart(
                 (long)WDISP_AccumulatorRow1_CopperIndexStart,
                 (long)WDISP_AccumulatorRow1_CopperIndexEnd);
     }
@@ -90,11 +90,11 @@ void __saveds ESQIFF_ServicePendingCopperPaletteMoves(void)
     if (ACCUMULATOR_Row2_SaturateFlag == 1 && WDISP_AccumulatorRow2_MoveFlags) {
         ACCUMULATOR_Row2_SaturateFlag = 0;
         if (WDISP_AccumulatorRow2_MoveFlags & 2)
-            ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(
+            ESQ_MoveCopperEntryTowardEnd(
                 (long)WDISP_AccumulatorRow2_CopperIndexStart,
                 (long)WDISP_AccumulatorRow2_CopperIndexEnd);
         else
-            ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(
+            ESQ_MoveCopperEntryTowardStart(
                 (long)WDISP_AccumulatorRow2_CopperIndexStart,
                 (long)WDISP_AccumulatorRow2_CopperIndexEnd);
     }
@@ -102,11 +102,11 @@ void __saveds ESQIFF_ServicePendingCopperPaletteMoves(void)
     if (ACCUMULATOR_Row3_SaturateFlag == 1 && WDISP_AccumulatorRow3_MoveFlags) {
         ACCUMULATOR_Row3_SaturateFlag = 0;
         if (WDISP_AccumulatorRow3_MoveFlags & 2)
-            ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardEnd(
+            ESQ_MoveCopperEntryTowardEnd(
                 (long)WDISP_AccumulatorRow3_CopperIndexStart,
                 (long)WDISP_AccumulatorRow3_CopperIndexEnd);
         else
-            ESQIFF_JMPTBL_ESQ_MoveCopperEntryTowardStart(
+            ESQ_MoveCopperEntryTowardStart(
                 (long)WDISP_AccumulatorRow3_CopperIndexStart,
                 (long)WDISP_AccumulatorRow3_CopperIndexEnd);
     }

@@ -49,9 +49,9 @@
 #include <exec/memory.h>
 #include "esq-exec.h"
 
-extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size,
+extern void *MEMORY_AllocateMemory(char *who, long line, long size,
                                                  long flags);
-extern void ESQFUNC_JMPTBL_ESQ_PollCtrlInput();
+extern void ESQ_PollCtrlInput();
 
 extern struct Interrupt *Global_REF_INTERRUPT_STRUCT_INTB_AUD1;
 extern char Global_STR_ESQFUNC_C_2[];
@@ -62,7 +62,7 @@ extern struct Interrupt *Global_REF_INTB_AUD1_INTERRUPT;
 void SETUP_INTERRUPT_INTB_AUD1(void)
 {
     Global_REF_INTERRUPT_STRUCT_INTB_AUD1 = (struct Interrupt *)
-        ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_2, 1172L,
+        MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_2, 1172L,
                                             (long)sizeof(struct Interrupt),
                                             MEMF_CHIP);
 
@@ -70,7 +70,7 @@ void SETUP_INTERRUPT_INTB_AUD1(void)
     Global_REF_INTERRUPT_STRUCT_INTB_AUD1->is_Node.ln_Pri = 0;
     Global_REF_INTERRUPT_STRUCT_INTB_AUD1->is_Node.ln_Name = Global_STR_JOYSTICK_INT;
     Global_REF_INTERRUPT_STRUCT_INTB_AUD1->is_Data = CTRL_SampleEntryScratch;
-    Global_REF_INTERRUPT_STRUCT_INTB_AUD1->is_Code = ESQFUNC_JMPTBL_ESQ_PollCtrlInput;
+    Global_REF_INTERRUPT_STRUCT_INTB_AUD1->is_Code = ESQ_PollCtrlInput;
 
     Global_REF_INTB_AUD1_INTERRUPT =
         SetIntVector(8L, Global_REF_INTERRUPT_STRUCT_INTB_AUD1);

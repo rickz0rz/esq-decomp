@@ -44,18 +44,18 @@ struct GridCtx {
 
 extern void NEWGRID_DrawGridFrame(struct GridCtx *ctx, long a, long b, long c,
                                   long d);
-extern long NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines(void);
-extern long NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
-extern long NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(void);
-extern void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(struct RastPort *rp,
+extern long DISPTEXT_HasMultipleLines(void);
+extern long DISPTEXT_IsCurrentLineLast(void);
+extern long DISPTEXT_IsLastLineSelected(void);
+extern void DISPTEXT_RenderCurrentLine(struct RastPort *rp,
                                                        long x, long y);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
+extern void BEVEL_DrawBevelFrameWithTopRight(
                 struct RastPort *rp, long x0, long y0, long x1, long y1);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(
+extern void BEVEL_DrawBeveledFrame(
                 struct RastPort *rp, long x0, long y0, long x1, long y1);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(
+extern void BEVEL_DrawBevelFrameWithTop(
                 struct RastPort *rp, long x0, long y0, long x1, long y1);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(
+extern void BEVEL_DrawVerticalBevelPair(
                 struct RastPort *rp, long x0, long y0, long x1, long y1);
 
 extern unsigned short NEWGRID_RowHeightPx;
@@ -68,53 +68,53 @@ long NEWGRID_DrawGridFrameAlt(struct GridCtx *ctx)
 
     NEWGRID_DrawGridFrame(ctx, 7L, 6L, 6L, (long)NEWGRID_RowHeightPx + 3);
     x = (long)NEWGRID_ColumnStartXPx + 42;
-    multiLine = NEWGRID2_JMPTBL_DISPTEXT_HasMultipleLines();
+    multiLine = DISPTEXT_HasMultipleLines();
 
     row = 0;
     top = 0;
-    while (row < 2 && NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0) {
+    while (row < 2 && DISPTEXT_IsCurrentLineLast() == 0) {
         baseline = ctx->rp.Font->tf_Baseline;
         y = top;
         if (row == 0 && multiLine != 0)
             y += ((long)NEWGRID_RowHeightPx / 2 - baseline - 4) / 2
                  + baseline + 3;
-        else if (NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected() != 0)
+        else if (DISPTEXT_IsLastLineSelected() != 0)
             y += ((long)NEWGRID_RowHeightPx / 2 - baseline - 4) / 2
                  + baseline - 1;
         else
             y += ((long)NEWGRID_RowHeightPx / 2 - baseline) / 2
                  + baseline - 1;
 
-        NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(&ctx->rp, x, y);
+        DISPTEXT_RenderCurrentLine(&ctx->rp, x, y);
         row++;
         top += (long)NEWGRID_RowHeightPx / 2 + DISPTEXT_ControlMarkerXOffsetPx;
     }
 
-    last = NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast();
+    last = DISPTEXT_IsCurrentLineLast();
     if (multiLine != 0) {
         height = NEWGRID_RowHeightPx;
         if (last != 0) {
-            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(&ctx->rp, 0L, 0L,
+            BEVEL_DrawBevelFrameWithTopRight(&ctx->rp, 0L, 0L,
                 (long)NEWGRID_ColumnStartXPx + 35, height - 1);
-            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(&ctx->rp,
+            BEVEL_DrawBevelFrameWithTopRight(&ctx->rp,
                 (long)NEWGRID_ColumnStartXPx + 36, 0L, 695L, height - 1);
         } else {
-            NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(&ctx->rp, 0L, 0L,
+            BEVEL_DrawBeveledFrame(&ctx->rp, 0L, 0L,
                 (long)NEWGRID_ColumnStartXPx + 35, height - 1);
-            NEWGRID2_JMPTBL_BEVEL_DrawBeveledFrame(&ctx->rp,
+            BEVEL_DrawBeveledFrame(&ctx->rp,
                 (long)NEWGRID_ColumnStartXPx + 36, 0L, 695L, height - 1);
         }
     } else {
         height = top;
         if (last != 0) {
-            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(&ctx->rp, 0L, 0L,
+            BEVEL_DrawBevelFrameWithTop(&ctx->rp, 0L, 0L,
                 (long)NEWGRID_ColumnStartXPx + 35, height - 1);
-            NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(&ctx->rp,
+            BEVEL_DrawBevelFrameWithTop(&ctx->rp,
                 (long)NEWGRID_ColumnStartXPx + 36, 0L, 695L, height - 1);
         } else {
-            NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(&ctx->rp, 0L, 0L,
+            BEVEL_DrawVerticalBevelPair(&ctx->rp, 0L, 0L,
                 (long)NEWGRID_ColumnStartXPx + 35, height - 1);
-            NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(&ctx->rp,
+            BEVEL_DrawVerticalBevelPair(&ctx->rp,
                 (long)NEWGRID_ColumnStartXPx + 36, 0L, 695L, height - 1);
         }
     }

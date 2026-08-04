@@ -64,12 +64,12 @@ struct NgpCtx {
     struct TextFont *font;              /* +112 */
 };
 
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
-extern void  NEWGRID2_JMPTBL_STRING_AppendN(char *dst, char *src, long n);
-extern void  PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern char *STR_SkipClass3Chars(char *s);
+extern void  STRING_AppendN(char *dst, char *src, long n);
+extern void  STRING_AppendAtNull(char *dst, char *src);
 extern void  NEWGRID_DrawGridFrame(struct NgpCtx *ctx, long a, long b, long c,
                                    long h);
-extern void  NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
+extern void  BEVEL_DrawBevelFrameWithTopRight(
                  struct RastPort *rp, long a, long b, long c, long d);
 extern void  NEWGRID_ValidateSelectionCode(struct NgpCtx *ctx, long code);
 
@@ -96,32 +96,32 @@ void NEWGRID_DrawShowtimesPrompt(struct NgpCtx *ctx, char *entry, long mode)
     if (entry == 0)
         return;
 
-    tail   = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entry + 19);
-    suffix = NEWGRID2_JMPTBL_STR_SkipClass3Chars(entry + 1);
+    tail   = STR_SkipClass3Chars(entry + 19);
+    suffix = STR_SkipClass3Chars(entry + 1);
 
     if (mode == 0)
         strcpy(prompt, SCRIPT_PtrSummaryOfPrefix);
     else
         strcpy(prompt, SCRIPT_PtrSportsOnPrefix);
 
-    NEWGRID2_JMPTBL_STRING_AppendN(prompt, tail, strlen(tail));
+    STRING_AppendN(prompt, tail, strlen(tail));
 
     if (suffix != 0 && *suffix != 0) {
 
-        PARSEINI_JMPTBL_STRING_AppendAtNull(prompt, SCRIPT_PtrChannelSuffix);
+        STRING_AppendAtNull(prompt, SCRIPT_PtrChannelSuffix);
 
         if (Global_WORD_SELECT_CODE_IS_RAVESC != 0) {
 
             strcpy(sbuf, suffix);
             sbuf[2] = 0;
 
-            PARSEINI_JMPTBL_STRING_AppendAtNull(prompt, sbuf);
-            PARSEINI_JMPTBL_STRING_AppendAtNull(prompt,
+            STRING_AppendAtNull(prompt, sbuf);
+            STRING_AppendAtNull(prompt,
                                                 NEWGRID_ShowtimeRangeDash);
-            PARSEINI_JMPTBL_STRING_AppendAtNull(prompt, suffix + 2);
+            STRING_AppendAtNull(prompt, suffix + 2);
 
         } else {
-            PARSEINI_JMPTBL_STRING_AppendAtNull(prompt, suffix);
+            STRING_AppendAtNull(prompt, suffix);
         }
     }
 
@@ -131,10 +131,10 @@ void NEWGRID_DrawShowtimesPrompt(struct NgpCtx *ctx, char *entry, long mode)
 
     NEWGRID_DrawGridFrame(ctx, 7L, 6L, 6L, (long)NEWGRID_RowHeightPx + 3);
 
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
+    BEVEL_DrawBevelFrameWithTopRight(
         &ctx->rp, 0L, 0L, (long)NEWGRID_ColumnStartXPx + 35, 33L);
 
-    NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTopRight(
+    BEVEL_DrawBevelFrameWithTopRight(
         &ctx->rp, (long)NEWGRID_ColumnStartXPx + 36, 0L, 695L, 33L);
 
     SetAPen(&ctx->rp, 3L);

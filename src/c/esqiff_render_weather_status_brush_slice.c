@@ -33,10 +33,10 @@ extern char  ESQIFF_WeatherSliceValidateGateFlag;
 extern short ESQFUNC_WeatherSliceWidthInitGate;
 extern unsigned char CONFIG_NewgridSelectionCode16EnabledFlag;
 
-extern void ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(struct WeatherBrush *brush,
+extern void BRUSH_SelectBrushSlot(struct WeatherBrush *brush,
                 long x, long flags, long right, long width,
                 struct RastPort *rp, long srcOffset);
-extern void ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(struct GridPanel *panel,
+extern void NEWGRID_ValidateSelectionCode(struct GridPanel *panel,
                 long code);
 
 short ESQIFF_RenderWeatherStatusBrushSlice(struct GridPanel *panel,
@@ -65,21 +65,21 @@ short ESQIFF_RenderWeatherStatusBrushSlice(struct GridPanel *panel,
 
     if (brush->kind == 9) {
         x = 42;
-        ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(brush, x, 0,
+        BRUSH_SelectBrushSlot(brush, x, 0,
             (long)brush->originX + x, (long)width, &panel->rp,
             (long)ESQIFF_WeatherSliceSourceOffset);
         x = 654 - brush->originX - 1;
-        ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(brush, x, 0,
+        BRUSH_SelectBrushSlot(brush, x, 0,
             (long)brush->originX + x, (long)width, &panel->rp,
             (long)ESQIFF_WeatherSliceSourceOffset);
     } else {
         x = (696 - brush->originX) / 2 - 1;
-        ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(brush, x, 0,
+        BRUSH_SelectBrushSlot(brush, x, 0,
             (long)brush->originX + x, (long)width, &panel->rp,
             (long)ESQIFF_WeatherSliceSourceOffset);
         if (brush->kind == 11 && ESQIFF_WeatherSliceValidateGateFlag == 1
             && CONFIG_NewgridSelectionCode16EnabledFlag == 89) {
-            ESQIFF_JMPTBL_NEWGRID_ValidateSelectionCode(panel, 16);
+            NEWGRID_ValidateSelectionCode(panel, 16);
             ESQIFF_WeatherSliceValidateGateFlag = 0;
         }
     }

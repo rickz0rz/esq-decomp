@@ -26,12 +26,12 @@
 #include "esq-graphics.h"
 
 extern void NEWGRID_DrawGridFrame(unsigned char *ctx, long pen, long a, long b, long h);
-extern long NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
-extern long NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected(void);
-extern void NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(void *rp, long x, long y);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(void *rp, long x0, long y0,
+extern long DISPTEXT_IsCurrentLineLast(void);
+extern long DISPTEXT_IsLastLineSelected(void);
+extern void DISPTEXT_RenderCurrentLine(void *rp, long x, long y);
+extern void BEVEL_DrawBevelFrameWithTop(void *rp, long x0, long y0,
                                                         long x1, long y1);
-extern void NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(void *rp, long x0, long y0,
+extern void BEVEL_DrawVerticalBevelPair(void *rp, long x0, long y0,
                                                         long x1, long y1);
 extern short NEWGRID_RowHeightPx;
 extern short NEWGRID_ColumnStartXPx;
@@ -66,10 +66,10 @@ long NEWGRID_DrawGridHeaderRows(unsigned char *ctx, long a, long b)
     xBase = NEWGRID_ColumnStartXPx + 42L;
     yAccum = 0;
     for (i = 0; i < 2; i++) {
-        if (NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast())
+        if (DISPTEXT_IsCurrentLineLast())
             break;
         rowY = yAccum;
-        if (NEWGRID2_JMPTBL_DISPTEXT_IsLastLineSelected()) {
+        if (DISPTEXT_IsLastLineSelected()) {
             v = NEWGRID_RowHeightPx / 2;
             font = ((struct DispCtx *)ctx)->rp.Font;
             v = (v - font->tf_Baseline - 4) / 2 + font->tf_Baseline - 1;
@@ -80,24 +80,24 @@ long NEWGRID_DrawGridHeaderRows(unsigned char *ctx, long a, long b)
             v = (v - font->tf_Baseline) / 2 + font->tf_Baseline - 1;
             rowY += v;
         }
-        NEWGRID2_JMPTBL_DISPTEXT_RenderCurrentLine(&((struct DispCtx *)ctx)->rp, xBase, rowY);
+        DISPTEXT_RenderCurrentLine(&((struct DispCtx *)ctx)->rp, xBase, rowY);
         yAccum += NEWGRID_RowHeightPx / 2;
     }
 
-    isLast = NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast();
+    isLast = DISPTEXT_IsCurrentLineLast();
     if (isLast) {
         yAccum += DISPTEXT_ControlMarkerXOffsetPx;
-        NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(&((struct DispCtx *)ctx)->rp, 0, 0,
+        BEVEL_DrawBevelFrameWithTop(&((struct DispCtx *)ctx)->rp, 0, 0,
                                                     NEWGRID_ColumnStartXPx + 35L,
                                                     yAccum - 1);
-        NEWGRID2_JMPTBL_BEVEL_DrawBevelFrameWithTop(&((struct DispCtx *)ctx)->rp,
+        BEVEL_DrawBevelFrameWithTop(&((struct DispCtx *)ctx)->rp,
                                                     NEWGRID_ColumnStartXPx + 36L, 0,
                                                     695L, yAccum - 1);
     } else {
-        NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(&((struct DispCtx *)ctx)->rp, 0, 0,
+        BEVEL_DrawVerticalBevelPair(&((struct DispCtx *)ctx)->rp, 0, 0,
                                                     NEWGRID_ColumnStartXPx + 35L,
                                                     yAccum - 1);
-        NEWGRID2_JMPTBL_BEVEL_DrawVerticalBevelPair(&((struct DispCtx *)ctx)->rp,
+        BEVEL_DrawVerticalBevelPair(&((struct DispCtx *)ctx)->rp,
                                                     NEWGRID_ColumnStartXPx + 36L, 0,
                                                     695L, yAccum - 1);
     }

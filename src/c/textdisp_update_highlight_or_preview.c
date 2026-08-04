@@ -55,7 +55,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
-extern void TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(long which);
+extern void ESQIFF_PlayNextExternalAssetFrame(long which);
 extern void TEXTDISP_DrawNextEntryPreview(void);
 extern void TEXTDISP_ResetSelectionAndRefresh(void);
 
@@ -75,14 +75,14 @@ void TEXTDISP_UpdateHighlightOrPreview(void)
             cls = LOCAVAIL_FilterPrevClassId;
 
         if (ED_DiagGraphModeChar != 'N' && cls == 2)
-            TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(1L);
+            ESQIFF_PlayNextExternalAssetFrame(1L);
         else if (WDISP_HighlightActive == 1 && cls == 3)
             TEXTDISP_DrawNextEntryPreview();
         else
             TEXTDISP_ResetSelectionAndRefresh();
     } else {
         if (ED_DiagGraphModeChar != 'N')
-            TEXTDISP2_JMPTBL_ESQIFF_PlayNextExternalAssetFrame(1L);
+            ESQIFF_PlayNextExternalAssetFrame(1L);
         else if (WDISP_HighlightActive == 1)
             TEXTDISP_DrawNextEntryPreview();
         else

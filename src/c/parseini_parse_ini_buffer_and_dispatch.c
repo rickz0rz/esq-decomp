@@ -102,14 +102,14 @@ extern char PARSEINI_DelimSpaceTab_Section6[];
 extern char PARSEINI_DelimSpaceTab_Section7[];
 extern char PARSEINI_DelimSpaceTab_Section8[];
 
-extern long  PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(char *path);
-extern char *PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer(void);
-extern char *PARSEINI_JMPTBL_STR_FindCharPtr(char *s, long c);
-extern char *PARSEINI_JMPTBL_STR_FindAnyCharPtr(char *s, char *set);
-extern long  PARSEINI_JMPTBL_STRING_CompareNoCase(char *a, char *b);
-extern char *PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(char *newText,
+extern long  DISKIO_LoadFileToWorkBuffer(char *path);
+extern char *DISKIO_ConsumeLineFromWorkBuffer(void);
+extern char *STR_FindCharPtr(char *s, long c);
+extern char *STR_FindAnyCharPtr(char *s, char *set);
+extern long  STRING_CompareNoCase(char *a, char *b);
+extern char *ESQPARS_ReplaceOwnedString(char *newText,
                                                         char *oldText);
-extern void  PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(void *table);
+extern void  GCOMMAND_InitPresetTableFromPalette(void *table);
 extern void  TEXTDISP_ClearSourceConfig(void);
 extern void  TEXTDISP_AddSourceConfigEntry(char *key, char *value);
 extern void  PARSEINI_ProcessWeatherBlocks(char *key, char *value);
@@ -117,9 +117,9 @@ extern void  PARSEINI_ParseRangeKeyValue(char *line, void *table);
 extern void  PARSEINI_ParseColorTable(char *key, char *value, long section);
 extern void  PARSEINI_LoadWeatherStrings(char *key, char *value);
 extern void  PARSEINI_LoadWeatherMessageStrings(char *key, char *value);
-extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size,
+extern void *MEMORY_AllocateMemory(char *who, long line, long size,
                                                  long flags);
-extern void  SCRIPT_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p,
+extern void  MEMORY_DeallocateMemory(char *who, long line, void *p,
                                                    long size);
 
 long PARSEINI_ParseIniBufferAndDispatch(char *path)
@@ -138,14 +138,14 @@ long PARSEINI_ParseIniBufferAndDispatch(char *path)
     section = 0;
     aliasIndex = -1;
 
-    if (PARSEINI_JMPTBL_DISKIO_LoadFileToWorkBuffer(path) == -1)
+    if (DISKIO_LoadFileToWorkBuffer(path) == -1)
         return -1;
 
     fileLen = Global_REF_LONG_FILE_SCRATCH;
     work = Global_PTR_WORK_BUFFER;
 
     for (;;) {
-        line = PARSEINI_JMPTBL_DISKIO_ConsumeLineFromWorkBuffer();
+        line = DISKIO_ConsumeLineFromWorkBuffer();
         if (line == (char *)-1)
             break;
 
@@ -153,48 +153,48 @@ long PARSEINI_ParseIniBufferAndDispatch(char *path)
             line++;
 
         if (*line == 91) {
-            marker = PARSEINI_JMPTBL_STR_FindCharPtr(line + 1, 93L);
+            marker = STR_FindCharPtr(line + 1, 93L);
             if (marker == 0)
                 continue;
             *marker = 0;
 
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(line + 1,
+            if (STRING_CompareNoCase(line + 1,
                                                      P_TYPE_STR_QTABLE) == 0) {
                 section = 1;
-            } else if (PARSEINI_JMPTBL_STRING_CompareNoCase(
+            } else if (STRING_CompareNoCase(
                            line + 1, P_TYPE_TAG_BACKDROP) == 0) {
                 section = 2;
-            } else if (PARSEINI_JMPTBL_STRING_CompareNoCase(
+            } else if (STRING_CompareNoCase(
                            line + 1, P_TYPE_TAG_GRADIENT) == 0) {
                 section = 3;
-                PARSEINI_JMPTBL_GCOMMAND_InitPresetTableFromPalette(
+                GCOMMAND_InitPresetTableFromPalette(
                     GCOMMAND_GradientPresetTable);
-            } else if (PARSEINI_JMPTBL_STRING_CompareNoCase(
+            } else if (STRING_CompareNoCase(
                            line + 1, P_TYPE_TAG_TEXTADS) == 0) {
                 section = 4;
-            } else if (PARSEINI_JMPTBL_STRING_CompareNoCase(
+            } else if (STRING_CompareNoCase(
                            line + 1, P_TYPE_TAG_BRUSH) == 0) {
                 section = 5;
-            } else if (PARSEINI_JMPTBL_STRING_CompareNoCase(
+            } else if (STRING_CompareNoCase(
                            line + 1, P_TYPE_TAG_BANNER) == 0) {
                 section = 6;
                 P_TYPE_WeatherBrushRefreshPendingFlag = 0;
-            } else if (PARSEINI_JMPTBL_STRING_CompareNoCase(
+            } else if (STRING_CompareNoCase(
                            line + 1, P_TYPE_STR_DEFAULT_TEXT) == 0) {
                 section = 7;
                 P_TYPE_WeatherCurrentMsgPtr =
-                    PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(
+                    ESQPARS_ReplaceOwnedString(
                         Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE,
                         P_TYPE_WeatherCurrentMsgPtr);
                 P_TYPE_WeatherForecastMsgPtr =
-                    PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(
+                    ESQPARS_ReplaceOwnedString(
                         SCRIPT_PtrNoForecastWeatherData,
                         P_TYPE_WeatherForecastMsgPtr);
                 P_TYPE_WeatherBottomLineMsgPtr =
-                    PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(
+                    ESQPARS_ReplaceOwnedString(
                         SCRIPT_PtrWeatherDataAvailabilityDisclaimer,
                         P_TYPE_WeatherBottomLineMsgPtr);
-            } else if (PARSEINI_JMPTBL_STRING_CompareNoCase(
+            } else if (STRING_CompareNoCase(
                            line + 1, P_TYPE_STR_SOURCE_CONFIG) == 0) {
                 TEXTDISP_ClearSourceConfig();
                 section = 8;
@@ -207,7 +207,7 @@ long PARSEINI_ParseIniBufferAndDispatch(char *path)
         switch (section) {
 
         case 1:
-            value = PARSEINI_JMPTBL_STR_FindCharPtr(line, 61L);
+            value = STR_FindCharPtr(line, 61L);
             if (value == 0) {
                 TEXTDISP_AliasCount = 0;
                 continue;
@@ -216,7 +216,7 @@ long PARSEINI_ParseIniBufferAndDispatch(char *path)
             value++;
             while ((WDISP_CharClassTable[(unsigned char)*value] & 8) != 0)
                 value++;
-            marker = PARSEINI_JMPTBL_STR_FindAnyCharPtr(
+            marker = STR_FindAnyCharPtr(
                 line, PARSEINI_DelimSpaceTab_Section1);
             if (marker != 0)
                 *marker = 0;
@@ -229,40 +229,40 @@ long PARSEINI_ParseIniBufferAndDispatch(char *path)
 
             aliasIndex = aliasIndex + 1;
             TEXTDISP_AliasPtrTable[aliasIndex] = (struct AliasEntry *)
-                SCRIPT_JMPTBL_MEMORY_AllocateMemory(Global_STR_PARSEINI_C_1,
+                MEMORY_AllocateMemory(Global_STR_PARSEINI_C_1,
                                                     219L, 8L,
                                                     MEMF_PUBLIC | MEMF_CLEAR);
             entry = TEXTDISP_AliasPtrTable[aliasIndex];
             entry->key = entry->value = 0;
-            entry->key = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(line,
+            entry->key = ESQPARS_ReplaceOwnedString(line,
                                                                     entry->key);
 
-            quote = PARSEINI_JMPTBL_STR_FindCharPtr(value, 34L);
+            quote = STR_FindCharPtr(value, 34L);
             if (quote == 0) {
                 TEXTDISP_AliasCount = 0;
                 return 0;
             }
             value = quote + 1;
-            quote = PARSEINI_JMPTBL_STR_FindCharPtr(value, 34L);
+            quote = STR_FindCharPtr(value, 34L);
             if (quote == 0) {
                 TEXTDISP_AliasCount = 0;
                 return 0;
             }
             *quote = 0;
-            entry->value = PARSEINI_JMPTBL_ESQPARS_ReplaceOwnedString(
+            entry->value = ESQPARS_ReplaceOwnedString(
                 value, entry->value);
             TEXTDISP_AliasCount = (short)(aliasIndex + 1);
             break;
 
         case 2:
-            value = PARSEINI_JMPTBL_STR_FindCharPtr(line, 61L);
+            value = STR_FindCharPtr(line, 61L);
             if (value == 0)
                 continue;
             *value = 0;
             value++;
             while ((WDISP_CharClassTable[(unsigned char)*value] & 8) != 0)
                 value++;
-            marker = PARSEINI_JMPTBL_STR_FindAnyCharPtr(
+            marker = STR_FindAnyCharPtr(
                 line, PARSEINI_DelimSpaceTab_Section2);
             if (marker != 0)
                 *marker = 0;
@@ -281,14 +281,14 @@ long PARSEINI_ParseIniBufferAndDispatch(char *path)
 
         case 4:
         case 5:
-            value = PARSEINI_JMPTBL_STR_FindCharPtr(line, 61L);
+            value = STR_FindCharPtr(line, 61L);
             if (value == 0)
                 continue;
             *value = 0;
             value++;
             while ((WDISP_CharClassTable[(unsigned char)*value] & 8) != 0)
                 value++;
-            marker = PARSEINI_JMPTBL_STR_FindAnyCharPtr(
+            marker = STR_FindAnyCharPtr(
                 line, PARSEINI_DelimSpaceTab_Section4_5);
             if (marker != 0)
                 *marker = 0;
@@ -302,14 +302,14 @@ long PARSEINI_ParseIniBufferAndDispatch(char *path)
             break;
 
         case 6:
-            value = PARSEINI_JMPTBL_STR_FindCharPtr(line, 61L);
+            value = STR_FindCharPtr(line, 61L);
             if (value == 0)
                 continue;
             *value = 0;
             value++;
             while ((WDISP_CharClassTable[(unsigned char)*value] & 8) != 0)
                 value++;
-            marker = PARSEINI_JMPTBL_STR_FindAnyCharPtr(
+            marker = STR_FindAnyCharPtr(
                 line, PARSEINI_DelimSpaceTab_Section6);
             if (marker != 0)
                 *marker = 0;
@@ -323,14 +323,14 @@ long PARSEINI_ParseIniBufferAndDispatch(char *path)
             break;
 
         case 7:
-            value = PARSEINI_JMPTBL_STR_FindCharPtr(line, 61L);
+            value = STR_FindCharPtr(line, 61L);
             if (value == 0)
                 continue;
             *value = 0;
             value++;
             while ((WDISP_CharClassTable[(unsigned char)*value] & 8) != 0)
                 value++;
-            marker = PARSEINI_JMPTBL_STR_FindAnyCharPtr(
+            marker = STR_FindAnyCharPtr(
                 line, PARSEINI_DelimSpaceTab_Section7);
             if (marker != 0)
                 *marker = 0;
@@ -344,14 +344,14 @@ long PARSEINI_ParseIniBufferAndDispatch(char *path)
             break;
 
         case 8:
-            value = PARSEINI_JMPTBL_STR_FindCharPtr(line, 61L);
+            value = STR_FindCharPtr(line, 61L);
             if (value == 0)
                 continue;
             *value = 0;
             value++;
             while ((WDISP_CharClassTable[(unsigned char)*value] & 8) != 0)
                 value++;
-            marker = PARSEINI_JMPTBL_STR_FindAnyCharPtr(
+            marker = STR_FindAnyCharPtr(
                 line, PARSEINI_DelimSpaceTab_Section8);
             if (marker != 0)
                 *marker = 0;
@@ -369,6 +369,6 @@ long PARSEINI_ParseIniBufferAndDispatch(char *path)
         }
     }
 
-    SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_PARSEINI_C_2, 403L, work,
+    MEMORY_DeallocateMemory(Global_STR_PARSEINI_C_2, 403L, work,
                                           fileLen + 1);
 }

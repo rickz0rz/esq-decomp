@@ -1426,6 +1426,52 @@ Reach for `__saveds` when the ORIGINAL opens `MOVE.L A4,-(A7)` / `LEA <data>,A4`
 `_LOCAVAIL2_AutoRequestNoOp` is the worked example. An interrupt server that
 never touches A4 does not want it.
 
+### C code does NOT need the jump tables, and no longer uses them
+
+A jump table entry is one `JMP target`. The tables exist because the ORIGINAL's
+translation units could not reach each other with a 16-bit PC-relative call. A C
+restoration has no such constraint, so `GROUP_AG_JMPTBL_MEMORY_AllocateMemory(...)`
+is just a slower, uglier way to write `MEMORY_AllocateMemory(...)`.
+
+**The emitted bytes are IDENTICAL either way**, because the call target is a
+RELOCATION and `cmatch` masks it. Measured on `brush_load_brush_asset.c`: 1336
+bytes and the same divergence point both ways, and the two byte strings compare
+equal. `mismatches.py --recheck` reports NO status changes across all 875
+restorations, and both byte gates stay green.
+
+```sh
+python3 tools/detunk_c.py            # report
+python3 tools/detunk_c.py --write    # apply, then run check_c_symbols.py --fix
+```
+
+2,882 call sites in 346 files became direct calls on 2026-08-03. The program
+loses one `JMP` per call at run time.
+
+**Four things the tool must not do, each of which it got wrong first:**
+
+1. **Do not rewrite inside COMMENTS.** A restoration header names the thunk and
+   the module it lives in as documentation. Renaming that text makes the header
+   describe a symbol the assembly does not have. Several headers were corrupted
+   before this was fixed.
+2. **Do not rewrite a thunk the file DEFINES.** Some restorations implement a
+   jump-table entry as a C forwarder, named on the `RESTORES:` line.
+   `lib_handle_close_all_and_return_with_code.c` defines
+   `UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode`; renaming the definition produced
+   a duplicate symbol and a function that called itself.
+3. **`extern` is what separates a declaration from a definition.** A multi-line
+   extern prototype has no semicolon on its first line either, and treating
+   those as definitions silently suppressed 890 legitimate rewrites.
+4. **`Global_JMPTBL_*` is NOT a thunk.** `Global_JMPTBL_DAYS_OF_WEEK`,
+   `..._MONTHS` and their siblings are DATA TABLES of pointers.
+
+**Range is not a concern for the maximum-C build.** `CODE=FAR` makes every call
+`JSR abs.L`, which has unlimited range. The byte-exact manifest does not use
+`CODE=FAR`, but no file in `src/c/replacements.txt` calls a thunk at all, so that
+lane never changed. `check_pcrel_range` still guards both.
+
+The thunks themselves STAY in assembly. Assembly modules still call them, and
+`jmptbl_to_c.py` still converts whole tables where every target is restored.
+
 ### Aliases: five modules name one function twice
 
 A module can carry two labels on ONE address, with only a comment between them:

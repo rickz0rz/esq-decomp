@@ -35,8 +35,8 @@
  */
 #include <string.h>
 
-extern char *GROUP_AI_JMPTBL_STR_FindCharPtr(char *s, long ch);
-extern char *GROUP_AH_JMPTBL_STR_FindAnyCharPtr(char *s, char *set);
+extern char *STR_FindCharPtr(char *s, long ch);
+extern char *STR_FindAnyCharPtr(char *s, char *set);
 extern char NEWGRID_EntrySplitDelimiterMask[];
 
 char *DISKIO2_CopyAndSanitizeSlotString(char *dst, unsigned char *entry,
@@ -60,12 +60,12 @@ char *DISKIO2_CopyAndSanitizeSlotString(char *dst, unsigned char *entry,
 
     strcpy(dst, result);
 
-    p = GROUP_AI_JMPTBL_STR_FindCharPtr(dst, '"');
+    p = STR_FindCharPtr(dst, '"');
     if (p) {
         p++;
-        p = GROUP_AI_JMPTBL_STR_FindCharPtr(p, '"');
+        p = STR_FindCharPtr(p, '"');
         if (p) {
-            q = GROUP_AH_JMPTBL_STR_FindAnyCharPtr(p, NEWGRID_EntrySplitDelimiterMask);
+            q = STR_FindAnyCharPtr(p, NEWGRID_EntrySplitDelimiterMask);
             if (q)
                 p = q;
             while (*p && *p != ' ')

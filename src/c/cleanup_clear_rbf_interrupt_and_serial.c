@@ -41,9 +41,9 @@
 
 extern volatile unsigned short INTENA;
 
-extern void GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(void *port);
-extern void GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField(void *p);
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p,
+extern void IOSTDREQ_CleanupSignalAndMsgport(void *port);
+extern void STRUCT_FreeWithSizeField(void *p);
+extern void MEMORY_DeallocateMemory(char *who, long line, void *p,
                                                     long size);
 
 extern struct IORequest *WDISP_SerialIoRequestPtr;
@@ -63,14 +63,14 @@ void CLEANUP_ClearRbfInterruptAndSerial(void)
     INTENA = 0x800;
 
     CloseDevice(WDISP_SerialIoRequestPtr);
-    GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(WDISP_SerialMessagePortPtr);
-    GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField(WDISP_SerialIoRequestPtr);
+    IOSTDREQ_CleanupSignalAndMsgport(WDISP_SerialMessagePortPtr);
+    STRUCT_FreeWithSizeField(WDISP_SerialIoRequestPtr);
 
     SetIntVector(11L, Global_REF_INTB_RBF_INTERRUPT);
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_3, 113L,
+    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_3, 113L,
                                             Global_REF_INTB_RBF_64K_BUFFER, 64000L);
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_4, 118L,
+    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_4, 118L,
                                             Global_REF_INTERRUPT_STRUCT_INTB_RBF,
                                             (long)sizeof(struct Interrupt));
 }

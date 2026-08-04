@@ -56,7 +56,7 @@ extern short TEXTDISP_ActiveGroupId;
 extern char  TEXTDISP_BannerFallbackEntryIndex[];
 extern char  TEXTDISP_BannerSelectedEntryIndex[];
 
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *src, char *owned);
+extern char *ESQPARS_ReplaceOwnedString(char *src, char *owned);
 
 void SCRIPT_LoadCtrlContextSnapshot(struct CtrlSnapshot *s)
 {
@@ -67,7 +67,7 @@ void SCRIPT_LoadCtrlContextSnapshot(struct CtrlSnapshot *s)
     SCRIPT_PendingTextdispCmdChar    = s->textdispCmdChar;
     SCRIPT_PendingTextdispCmdArg     = s->textdispCmdArg;
 
-    SCRIPT_CommandTextPtr = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(
+    SCRIPT_CommandTextPtr = ESQPARS_ReplaceOwnedString(
         s->commandText, SCRIPT_CommandTextPtr);
 
     SCRIPT_PrimarySearchFirstFlag = s->searchFirstFlag;

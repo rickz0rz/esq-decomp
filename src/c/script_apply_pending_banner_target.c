@@ -37,7 +37,7 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
-extern long SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(void);
+extern long GCOMMAND_GetBannerChar(void);
 extern void SCRIPT_BeginBannerCharTransition(long ch, long speed);
 
 extern short SCRIPT_PendingBannerTargetChar;
@@ -50,7 +50,7 @@ void SCRIPT_ApplyPendingBannerTarget(void)
 {
     long current;
 
-    current = SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar();
+    current = GCOMMAND_GetBannerChar();
 
     if (SCRIPT_PendingBannerTargetChar == -2) {
         SCRIPT_PendingBannerTargetChar = -1;

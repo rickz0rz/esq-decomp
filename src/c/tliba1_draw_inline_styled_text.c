@@ -83,12 +83,12 @@
 extern char *STR_FindCharPtr(char *s, long ch);
 extern void  MEM_Move(char *src, char *dst, long n);
 extern unsigned char TLIBA1_ParseStyleCodeChar(long ch);
-extern long  TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble(long b);
-extern long  TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble(long b);
+extern long  LADFUNC_GetPackedPenHighNibble(long b);
+extern long  LADFUNC_GetPackedPenLowNibble(long b);
 extern void  TLIBA1_DrawTextWithInsetSegments(struct RastPort *rp, long x,
                                               long y, long low, long high,
                                               char *text);
-extern void  UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(struct RastPort *rp,
+extern void  DISPLIB_DisplayTextAtPosition(struct RastPort *rp,
                                                           long x, long y,
                                                           char *text);
 
@@ -189,7 +189,7 @@ void TLIBA1_DrawInlineStyledText(struct RastPort *rp, long x, long y,
     seg = STR_FindCharPtr(text, 23L);
 
     if (seg == 0) {
-        UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(rp, x, y, text);
+        DISPLIB_DisplayTextAtPosition(rp, x, y, text);
         return;
     }
 
@@ -199,12 +199,12 @@ void TLIBA1_DrawInlineStyledText(struct RastPort *rp, long x, long y,
     d = d / 2;
     x += d;
 
-    styleA = (unsigned char)TLIBA1_JMPTBL_LADFUNC_ExtractHighNibble(
+    styleA = (unsigned char)LADFUNC_GetPackedPenHighNibble(
                  (long)(unsigned char)*seg);
     if (styleA < 1 || styleA > 7)
         styleA = 0xff;
 
-    styleB = TLIBA1_JMPTBL_LADFUNC_ExtractLowNibble(
+    styleB = LADFUNC_GetPackedPenLowNibble(
                  (long)(unsigned char)*seg);
     if ((unsigned char)styleB < 1 || (unsigned char)styleB > 7)
         styleB = -1;

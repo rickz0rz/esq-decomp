@@ -45,7 +45,7 @@ struct LocavailState {
     void *data;                 /* +20 */
 };
 
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
 extern char Global_STR_LOCAVAIL_C_4[];
 extern char Global_STR_LOCAVAIL_C_5[];
@@ -55,13 +55,13 @@ long LOCAVAIL_AllocNodeArraysForState(struct LocavailState *s)
     long r = 0;
 
     if (s->count > 0 && s->count < 100) {
-        s->nodes = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+        s->nodes = MEMORY_AllocateMemory(
             Global_STR_LOCAVAIL_C_4, 218L, 4L, MEMF_PUBLIC | MEMF_CLEAR);
 
         if (s->nodes != 0) {
             *(long *)s->nodes = 0;
 
-            s->data = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+            s->data = MEMORY_AllocateMemory(
                 Global_STR_LOCAVAIL_C_5, 229L, s->count * 10,
                 MEMF_PUBLIC | MEMF_CLEAR);
 

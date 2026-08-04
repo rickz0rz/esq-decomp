@@ -37,7 +37,7 @@
 #include "esq-dos.h"
 #include "esq-exec.h"
 
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p,
+extern void MEMORY_DeallocateMemory(char *who, long line, void *p,
                                                     long size);
 
 extern long CTASKS_CloseTaskFileHandle;
@@ -53,7 +53,7 @@ void __saveds CTASKS_CloseTaskTeardown(void)
     }
 
     Forbid();
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CTASKS_C_3, 194L,
+    MEMORY_DeallocateMemory(Global_STR_CTASKS_C_3, 194L,
                                             Global_REF_LIST_CLOSE_TASK_PROC, 14L);
     CTASKS_CloseTaskCompletionFlag = 1;
 }

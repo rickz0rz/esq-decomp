@@ -106,7 +106,7 @@ _GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   UNKNOWN2A_Stub0
+;   _UNKNOWN2A_Stub0
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -117,7 +117,7 @@ _GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AB_JMPTBL_UNKNOWN2A_Stub0:
-    JMP     UNKNOWN2A_Stub0
+    JMP     _UNKNOWN2A_Stub0
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources   (Routine at _GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources)
@@ -172,7 +172,7 @@ _GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   GRAPHICS_FreeRaster
+;   _GRAPHICS_FreeRaster
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -183,7 +183,7 @@ _GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AB_JMPTBL_GRAPHICS_FreeRaster:
-    JMP     GRAPHICS_FreeRaster
+    JMP     _GRAPHICS_FreeRaster
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AB_JMPTBL_IOSTDREQ_Free   (Routine at _GROUP_AB_JMPTBL_IOSTDREQ_Free)

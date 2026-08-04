@@ -35,8 +35,8 @@
 #include "esq-exec.h"
 #include <string.h>
 
-extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size, long flags);
-extern void  ESQIFF_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
+extern void *MEMORY_AllocateMemory(char *who, long line, long size, long flags);
+extern void  MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
 extern char Global_STR_ESQPARS_C_5[];
 extern char Global_STR_ESQPARS_C_6[];
 
@@ -48,7 +48,7 @@ char *ESQPARS_ReplaceOwnedString(char *newstr, char *old)
 
     if (old) {
         oldLen = (long)strlen(old) + 1;
-        ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_5, 1081, old,
+        MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_5, 1081, old,
                                               oldLen);
     }
 
@@ -61,7 +61,7 @@ char *ESQPARS_ReplaceOwnedString(char *newstr, char *old)
 
     p = 0;
     if ((long)AvailMem(MEMF_PUBLIC) > 0x2710)
-        p = ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQPARS_C_6, 1100,
+        p = MEMORY_AllocateMemory(Global_STR_ESQPARS_C_6, 1100,
                                                 newLen, MEMF_PUBLIC);
     if (p)
         strcpy(p, newstr);

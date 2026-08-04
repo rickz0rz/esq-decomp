@@ -23,11 +23,11 @@ extern char Global_STR_ATTENTION_SYSTEM_ENGINEER_1[];
 extern char Global_STR_REPORT_CODE_ER003[];
 extern char Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE[];
 
-extern void GROUP_MAIN_B_JMPTBL_DOS_Delay(long ticks);
-extern long __asm GROUP_MAIN_B_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern void DOS_Delay(long ticks);
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
-extern void GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString(char *text);
-extern void GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode(long code);
+extern void STREAM_BufferedWriteString(char *text);
+extern void BUFFER_FlushAllAndCloseWithCode(long code);
 
 void ESQ_CheckTopazFontGuard(void)
 {
@@ -44,16 +44,16 @@ void ESQ_CheckTopazFontGuard(void)
     view = screen + 0xb8;
 
     if (view[5] != 2) {
-        GROUP_MAIN_B_JMPTBL_STREAM_BufferedWriteString(
+        STREAM_BufferedWriteString(
             Global_STR_YOU_CANNOT_RE_RUN_THE_SOFTWARE);
-        GROUP_MAIN_B_JMPTBL_BUFFER_FlushAllAndCloseWithCode(0);
+        BUFFER_FlushAllAndCloseWithCode(0);
         return;
     }
 
     window = *(struct Window **)((char *)IntuitionBase + 0x34);
 
     if (((struct Library *)IntuitionBase)->lib_Version <= 33) {
-        GROUP_MAIN_B_JMPTBL_DOS_Delay(250);
+        DOS_Delay(250);
 
         SetAPen((struct RastPort *)(screen + 0x54), 2);
         RectFill((struct RastPort *)(screen + 0x54), 0, 0, 639, 199);
@@ -73,7 +73,7 @@ void ESQ_CheckTopazFontGuard(void)
 
     height = *(short *)(screen + 14);
     SizeWindow(window, 0, 50 - (long)*(short *)((char *)window + 10));
-    GROUP_MAIN_B_JMPTBL_DOS_Delay(100);
+    DOS_Delay(100);
 
     *(short *)(screen + 14) = 50;
     *(short *)(view + 2) = 50;
@@ -84,7 +84,7 @@ void ESQ_CheckTopazFontGuard(void)
     *(long *)(view + 12) = 0;
 
     top = base + 4000;
-    limit = raster + (GROUP_MAIN_B_JMPTBL_MATH_Mulu32(height, 640) >> 3);
+    limit = raster + (MATH_Mulu32(height, 640) >> 3);
 
     RemakeDisplay();
     FreeMem((void *)top, limit - top);

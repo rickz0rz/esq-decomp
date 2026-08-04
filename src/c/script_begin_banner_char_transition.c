@@ -19,10 +19,10 @@ extern short SCRIPT_BannerTransitionStepBudget;
 extern short SCRIPT_PendingBannerSpeedMs;
 extern short Global_WORD_SELECT_CODE_IS_RAVESC;
 
-extern short SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar(void);
-extern long __asm SCRIPT3_JMPTBL_MATH_DivS32(register __d0 long a,
+extern short GCOMMAND_GetBannerChar(void);
+extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
-extern long __asm SCRIPT3_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
 
 long SCRIPT_BeginBannerCharTransition(short target, unsigned short rate)
@@ -47,7 +47,7 @@ long SCRIPT_BeginBannerCharTransition(short target, unsigned short rate)
     else if (rate > 7500)
         rate = 7500;
 
-    current = SCRIPT3_JMPTBL_GCOMMAND_GetBannerChar();
+    current = GCOMMAND_GetBannerChar();
 
     if (SCRIPT_BannerTransitionActive != 0)
         return result;
@@ -77,7 +77,7 @@ long SCRIPT_BeginBannerCharTransition(short target, unsigned short rate)
             delta = -delta;
 
         SCRIPT_BannerTransitionStepDelta = delta / step;
-        delta -= SCRIPT3_JMPTBL_MATH_Mulu32(
+        delta -= MATH_Mulu32(
                      (long)SCRIPT_BannerTransitionStepDelta, step);
         if (delta > 0)
             SCRIPT_BannerTransitionStepBudget = step / delta;

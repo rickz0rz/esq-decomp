@@ -44,7 +44,7 @@ struct NewGridScanEntry {
     unsigned char flags47;      /* +47 */
 };
 
-extern struct NewGridScanEntry *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(
+extern struct NewGridScanEntry *ESQDISP_GetEntryPointerByMode(
     long index, long mode);
 
 extern unsigned char  TEXTDISP_PrimaryGroupPresentFlag;
@@ -67,7 +67,7 @@ long NEWGRID_FindNextFlaggedEntry(long op, long index)
         return index;
 
     while (!found && index < TEXTDISP_PrimaryGroupEntryCount) {
-        e = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(index, 1L);
+        e = ESQDISP_GetEntryPointerByMode(index, 1L);
         if (e != 0 && (e->flags47 & 1) && (e->flags40 & 0x80))
             found = 1;
         else

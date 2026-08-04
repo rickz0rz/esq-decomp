@@ -43,8 +43,8 @@ struct SelWin {
     short slotEnd;   /* 24 */
 };
 
-extern unsigned char *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(long i, long mode);
-extern long NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(void *p);
+extern unsigned char *ESQDISP_GetEntryPointerByMode(long i, long mode);
+extern long ESQ_GetHalfHourSlotIndex(void *p);
 extern short TEXTDISP_PrimaryGroupEntryCount;
 extern long  GCOMMAND_PpvSelectionWindowMinutes;
 extern short CLOCK_DaySlotIndex;
@@ -63,13 +63,13 @@ void NEWGRID_InitSelectionWindow(struct SelWin *w, short mode)
     if (mode) {
         w->first = TEXTDISP_PrimaryGroupEntryCount;
         for (i = 0; i < w->first; i++) {
-            entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, 1);
+            entry = ESQDISP_GetEntryPointerByMode(i, 1);
             if (entry[47] & 0x10)
                 w->first = i;
         }
         w->last = w->first;
         for (i = TEXTDISP_PrimaryGroupEntryCount; i > w->last; i--) {
-            entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i - 1, 1);
+            entry = ESQDISP_GetEntryPointerByMode(i - 1, 1);
             if (entry[47] & 0x10)
                 w->last = i;
         }
@@ -81,7 +81,7 @@ void NEWGRID_InitSelectionWindow(struct SelWin *w, short mode)
     if (mode < 48) {
         if (mode == 1)
             w->slot += 48;
-        else if (NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) == 1)
+        else if (ESQ_GetHalfHourSlotIndex(&CLOCK_DaySlotIndex) == 1)
             w->slot += 48;
     }
 

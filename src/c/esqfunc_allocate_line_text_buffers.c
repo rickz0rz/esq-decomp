@@ -27,7 +27,7 @@
  *   summary: 4EBA against 6100 for the one cross-unit call.
  */
 
-extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size,
+extern void *MEMORY_AllocateMemory(char *who, long line, long size,
                                                  long flags);
 
 extern char *LADFUNC_LineTextBufferPtrs[];
@@ -41,7 +41,7 @@ long ESQFUNC_AllocateLineTextBuffers(void)
 
     for (i = 0; i < 20; i++)
         LADFUNC_LineTextBufferPtrs[i] =
-            (char *)ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_5,
+            (char *)MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_5,
                                                         1222L, 60L, 0x00010001L);
     LADFUNC_LineSlotSecondaryIndex = LADFUNC_LineSlotWriteIndex = 0;
     return 0;

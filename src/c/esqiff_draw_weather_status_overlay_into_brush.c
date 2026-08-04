@@ -84,20 +84,20 @@ struct WsOverlay {
     long  f360;                         /* +360 */
 };
 
-extern struct WsOverlay *ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(char *name,
+extern struct WsOverlay *BRUSH_FindBrushByPredicate(char *name,
                                                                   void *head);
 extern char *ESQPARS_ReplaceOwnedString(char *newStr, char *old);
-extern void  ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(struct WsOverlay *b, long z0,
+extern void  BRUSH_SelectBrushSlot(struct WsOverlay *b, long z0,
                                                  long z1, long w, long h,
                                                  struct RastPort *rp,
                                                  long z2);
-extern long __asm ESQIFF_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
-extern long __asm ESQIFF_JMPTBL_MATH_DivS32(register __d0 long a,
+extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
 extern long  ESQFUNC_TrimTextToPixelWidthWordBoundary(struct RastPort *rp,
                                                       long width, char *text);
-extern void  ESQIFF_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                    void *p, long size);
 
 extern char *ESQFUNC_STR_I5[];
@@ -131,7 +131,7 @@ void ESQIFF_DrawWeatherStatusOverlayIntoBrush(struct WsBrush *brush)
     segCount = 0;
     segIdx   = 0;
 
-    overlay = ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(
+    overlay = BRUSH_FindBrushByPredicate(
                   ESQFUNC_STR_I5[WDISP_WeatherStatusBrushIndex],
                   &ESQFUNC_PwBrushListHead);
 
@@ -170,22 +170,22 @@ void ESQIFF_DrawWeatherStatusOverlayIntoBrush(struct WsBrush *brush)
 
     overlay->f360 = overlay->f356 = 1;
 
-    ESQIFF_JMPTBL_BRUSH_SelectBrushSlot(overlay, 0L, 0L,
+    BRUSH_SelectBrushSlot(overlay, 0L, 0L,
                                         (long)brush->w176,
                                         (long)brush->w178, rp, 0L);
 
     fontHeight = Global_HANDLE_PREVUEC_FONT->tf_YSize;
     halfCount  = (segCount + 1) / 2;
 
-    lineStep = ESQIFF_JMPTBL_MATH_DivS32(
-                   160 - ESQIFF_JMPTBL_MATH_Mulu32(fontHeight, halfCount),
+    lineStep = MATH_DivS32(
+                   160 - MATH_Mulu32(fontHeight, halfCount),
                    halfCount + 1);
 
     halfWidth = ((long)brush->w176 - (long)overlay->w176) / 2;
 
     while (segIdx < segCount) {
 
-        y = ESQIFF_JMPTBL_MATH_Mulu32(segIdx / 2, lineStep + fontHeight)
+        y = MATH_Mulu32(segIdx / 2, lineStep + fontHeight)
             + lineStep + (long)Global_HANDLE_PREVUEC_FONT->tf_Baseline;
 
         if (y + (long)Global_HANDLE_PREVUEC_FONT->tf_YSize
@@ -222,7 +222,7 @@ void ESQIFF_DrawWeatherStatusOverlayIntoBrush(struct WsBrush *brush)
         cursor += strlen(cursor) + 1;
     }
 
-    ESQIFF_JMPTBL_MEMORY_DeallocateMemory(Global_STR_ESQIFF_C_1, 672L,
+    MEMORY_DeallocateMemory(Global_STR_ESQIFF_C_1, 672L,
                                           textBase, textLen1);
 
     SetDrMd(rp, (long)savedDrMd);

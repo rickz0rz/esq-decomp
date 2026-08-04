@@ -38,8 +38,8 @@
 
 extern long  DST_UpdateBannerQueue(void *window);
 extern void  DST_RefreshBannerBuffer(void);
-extern void  ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData(long *slots, void *clock);
-extern void  ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner(void);
+extern void  PARSEINI_NormalizeClockData(long *slots, void *clock);
+extern void  CLEANUP_DrawClockBanner(void);
 extern void  ESQDISP_DrawStatusBanner_Impl(long which);
 
 extern long   CLOCK_DaySlotIndex[];
@@ -51,7 +51,7 @@ void ESQDISP_NormalizeClockAndRedrawBanner(void *clock)
 {
     struct BitMap *saved;
 
-    ESQFUNC_JMPTBL_PARSEINI_NormalizeClockData(CLOCK_DaySlotIndex, clock);
+    PARSEINI_NormalizeClockData(CLOCK_DaySlotIndex, clock);
 
     if (DST_UpdateBannerQueue(DST_BannerWindowPrimary) == 0)
         DST_RefreshBannerBuffer();
@@ -59,7 +59,7 @@ void ESQDISP_NormalizeClockAndRedrawBanner(void *clock)
     saved = Global_REF_RASTPORT_1->BitMap;
     Global_REF_RASTPORT_1->BitMap = &Global_REF_696_400_BITMAP;
 
-    ESQFUNC_JMPTBL_CLEANUP_DrawClockBanner();
+    CLEANUP_DrawClockBanner();
 
     Global_REF_RASTPORT_1->BitMap = saved;
 

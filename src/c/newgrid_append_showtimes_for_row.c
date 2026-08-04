@@ -84,17 +84,17 @@ struct NgRowReq {
     short  slot;                        /* +20 */
 };
 
-extern char *NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(void *entry, long idx,
+extern char *COI_SelectAnimFieldPointer(void *entry, long idx,
                                                         long field);
-extern long  TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(void *aux,
+extern long  ESQDISP_TestEntryGridEligibility(void *aux,
                                                               long idx);
 extern void  TEXTDISP_FormatEntryTimeForIndex(char *buf, long idx, void *aux);
 extern short NEWGRID_UpdatePresetEntry(struct NgRowEntry **e,
                                        struct NgRowAux **a, long row,
                                        long col);
-extern long  NEWGRID2_JMPTBL_ESQ_TestBit1Based(char *bits, long idx);
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
-extern void  PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
+extern long  ESQ_TestBit1Based(char *bits, long idx);
+extern char *STR_SkipClass3Chars(char *s);
+extern void  STRING_AppendAtNull(char *dst, char *src);
 
 extern char Global_STR_SHOWTIMES_AND_SINGLE_SPACE[];
 extern char Global_STR_SHOWING_AT_AND_SINGLE_SPACE[];
@@ -155,17 +155,17 @@ void NEWGRID_AppendShowtimesForRow(void *unused, struct NgRowReq *req,
         off = 0;
     titlePtr += off;
 
-    field1 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(req->entry,
+    field1 = COI_SelectAnimFieldPointer(req->entry,
                                                         (long)slot, 1L);
-    field2 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(req->entry,
+    field2 = COI_SelectAnimFieldPointer(req->entry,
                                                         (long)slot, 2L);
-    field6 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(req->entry,
+    field6 = COI_SelectAnimFieldPointer(req->entry,
                                                         (long)slot, 6L);
-    field7 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(req->entry,
+    field7 = COI_SelectAnimFieldPointer(req->entry,
                                                         (long)slot, 7L);
 
     if (mode == 1
-        && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(req->aux,
+        && ESQDISP_TestEntryGridEligibility(req->aux,
                                                             (long)slot) != 0)
         elig = 1;
     else
@@ -196,7 +196,7 @@ void NEWGRID_AppendShowtimesForRow(void *unused, struct NgRowReq *req,
         if (aux2 == 0)
             continue;
 
-        if (NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry2->bits, (long)idx) != -1)
+        if (ESQ_TestBit1Based(entry2->bits, (long)idx) != -1)
             continue;
 
         if (aux2->flags[idx] & 0x20)
@@ -218,13 +218,13 @@ void NEWGRID_AppendShowtimesForRow(void *unused, struct NgRowReq *req,
             title2 += off;
         }
 
-        g1 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry2, (long)idx, 1L);
-        g2 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry2, (long)idx, 2L);
-        g6 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry2, (long)idx, 6L);
-        g7 = NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer(entry2, (long)idx, 7L);
+        g1 = COI_SelectAnimFieldPointer(entry2, (long)idx, 1L);
+        g2 = COI_SelectAnimFieldPointer(entry2, (long)idx, 2L);
+        g6 = COI_SelectAnimFieldPointer(entry2, (long)idx, 6L);
+        g7 = COI_SelectAnimFieldPointer(entry2, (long)idx, 7L);
 
         if (mode == 1
-            && TEXTDISP_JMPTBL_ESQDISP_TestEntryGridEligibility(
+            && ESQDISP_TestEntryGridEligibility(
                    aux2, (long)idx) != 0)
             elig2 = 1;
         else
@@ -272,15 +272,15 @@ void NEWGRID_AppendShowtimesForRow(void *unused, struct NgRowReq *req,
 
         if (*out == 0) {
             strcpy(out, Global_STR_SHOWTIMES_AND_SINGLE_SPACE);
-            textPtr = NEWGRID2_JMPTBL_STR_SkipClass3Chars(timeBuf);
-            PARSEINI_JMPTBL_STRING_AppendAtNull(out, textPtr);
+            textPtr = STR_SkipClass3Chars(timeBuf);
+            STRING_AppendAtNull(out, textPtr);
         }
 
         TEXTDISP_FormatEntryTimeForIndex(timeBuf, (long)idx, aux2);
-        textPtr = NEWGRID2_JMPTBL_STR_SkipClass3Chars(timeBuf);
+        textPtr = STR_SkipClass3Chars(timeBuf);
 
-        PARSEINI_JMPTBL_STRING_AppendAtNull(out, NEWGRID_ShowtimeListSeparator);
-        PARSEINI_JMPTBL_STRING_AppendAtNull(out, textPtr);
+        STRING_AppendAtNull(out, NEWGRID_ShowtimeListSeparator);
+        STRING_AppendAtNull(out, textPtr);
 
         aux2->flags[idx] |= 0x20;
     }
@@ -289,6 +289,6 @@ void NEWGRID_AppendShowtimesForRow(void *unused, struct NgRowReq *req,
         return;
 
     strcpy(out, Global_STR_SHOWING_AT_AND_SINGLE_SPACE);
-    textPtr = NEWGRID2_JMPTBL_STR_SkipClass3Chars(timeBuf);
-    PARSEINI_JMPTBL_STRING_AppendAtNull(out, textPtr);
+    textPtr = STR_SkipClass3Chars(timeBuf);
+    STRING_AppendAtNull(out, textPtr);
 }

@@ -59,7 +59,7 @@ struct DiskioProgInfoRec {
 };
 #endif
 
-extern void GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(char *fmt, ...);
+extern void FORMAT_RawDoFmtWithScratchBuffer(char *fmt, ...);
 
 extern char **Global_REF_STR_CLOCK_FORMAT;
 
@@ -85,63 +85,63 @@ void DISKIO1_DumpProgramInfoRecordVerbose(struct DiskioProgInfoRec *rec,
 {
     register long i;
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_PROGRAM_INFO_PCT_LD, num);
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+    FORMAT_RawDoFmtWithScratchBuffer(
         DISKIO_FMT_PROG_SRCE_PCT_S_VerboseProgramInfo, rec);
 
     /* The null test comes AFTER both calls above. That is the original's order. */
     if (rec == 0) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NewlineOnly_A);
+        FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NewlineOnly_A);
         return;
     }
 
     for (i = 1; i < 49; i++) {
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_FMT_PCT_02LD_PCT_S_COLON_ATTR_PCT_02LX, i,
             Global_REF_STR_CLOCK_FORMAT[i], (long)rec->attr[i]);
 
         /* A whole-byte comparison, not a bit test. */
         if (rec->attr[i] == 1)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_NONE_VerboseProgramAttrFlags);
 
         if (rec->attr[i] & 2)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_MOVIE_VerboseProgramAttrFlags);
 
         if (rec->attr[i] & 4)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_ALTHILITE_PROG_VerboseProgramAttrFlags);
 
         if (rec->attr[i] & 8)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_TAG_PROG_VerboseProgramAttrFlags);
 
         if (rec->attr[i] & 0x10)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_0X10);
+            FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_0X10);
 
         if (rec->attr[i] & 0x20)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_0X20_VerboseProgramAttrFlags);
 
         if (rec->attr[i] & 0x40)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_0X40);
+            FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_0X40);
 
         if (rec->attr[i] & 0x80)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_STR_PREV_DAYS_DATA_VerboseProgramAttrFlags);
 
-        GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             DISKIO_STR_ProgramAttrCloseAndProgPrefix);
 
         if (rec->str[i] != 0)
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+            FORMAT_RawDoFmtWithScratchBuffer(
                 DISKIO_FMT_PCT_S_VerboseProgramStringLine, rec->str[i]);
         else
-            GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NullLine);
+            FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NullLine);
     }
 
-    GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NewlineOnly_B);
+    FORMAT_RawDoFmtWithScratchBuffer(DISKIO_STR_NewlineOnly_B);
 }

@@ -75,13 +75,13 @@ extern unsigned char *TEXTDISP_FindControlToken(unsigned char *s);
 extern long TEXTDISP_FindQuotedSpan(unsigned char *s, unsigned char **span,
                                     unsigned char *tok, long *quoted);
 extern long STRING_CompareNoCase(unsigned char *a, unsigned char *b);
-extern struct TextDispGroup *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(long i, long mode);
-extern struct TextDispEntry *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(long i, long mode);
-extern long TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(struct TextDispEntry *e,
+extern struct TextDispGroup *ESQDISP_GetEntryAuxPointerByMode(long i, long mode);
+extern struct TextDispEntry *ESQDISP_GetEntryPointerByMode(long i, long mode);
+extern long DISPLIB_FindPreviousValidEntryIndex(struct TextDispEntry *e,
                                                               struct TextDispGroup *g,
                                                               long count);
-extern long TLIBA2_JMPTBL_ESQ_TestBit1Based(unsigned char *bits, long index);
-extern long TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(unsigned char *hay,
+extern long ESQ_TestBit1Based(unsigned char *bits, long index);
+extern long ESQ_FindSubstringCaseFold(unsigned char *hay,
                                                      unsigned char *needle);
 
 long TEXTDISP_FindEntryMatchIndex(unsigned char *input, short mode, char flagMask)
@@ -109,11 +109,11 @@ long TEXTDISP_FindEntryMatchIndex(unsigned char *input, short mode, char flagMas
         idx = 1;
 
     if (TEXTDISP_ActiveGroupId == 1) {
-        group = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(TEXTDISP_CurrentMatchIndex, 1L);
-        entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(TEXTDISP_CurrentMatchIndex, 1L);
+        group = ESQDISP_GetEntryAuxPointerByMode(TEXTDISP_CurrentMatchIndex, 1L);
+        entry = ESQDISP_GetEntryPointerByMode(TEXTDISP_CurrentMatchIndex, 1L);
     } else {
-        group = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(TEXTDISP_CurrentMatchIndex, 2L);
-        entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(TEXTDISP_CurrentMatchIndex, 2L);
+        group = ESQDISP_GetEntryAuxPointerByMode(TEXTDISP_CurrentMatchIndex, 2L);
+        entry = ESQDISP_GetEntryPointerByMode(TEXTDISP_CurrentMatchIndex, 2L);
     }
 
     if (mode == 2) {
@@ -122,7 +122,7 @@ long TEXTDISP_FindEntryMatchIndex(unsigned char *input, short mode, char flagMas
         else
             idx = 1;
     } else if (mode == 1) {
-        idx = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, group, idx);
+        idx = DISPLIB_FindPreviousValidEntryIndex(entry, group, idx);
         if (idx == 0 || (group->flags[idx] & 0x80)) {
             if (TEXTDISP_ActiveGroupId == 1)
                 idx = CLOCK_HalfHourSlotIndex;
@@ -130,7 +130,7 @@ long TEXTDISP_FindEntryMatchIndex(unsigned char *input, short mode, char flagMas
                 idx = 1;
         }
     } else if (mode == 3) {
-        idx = TLIBA1_JMPTBL_DISPLIB_FindPreviousValidEntryIndex(entry, group, idx - 1);
+        idx = DISPLIB_FindPreviousValidEntryIndex(entry, group, idx - 1);
         if (idx == 0 || (group->flags[idx] & 0x80)) {
             if (TEXTDISP_ActiveGroupId == 1)
                 idx = CLOCK_HalfHourSlotIndex;
@@ -149,7 +149,7 @@ long TEXTDISP_FindEntryMatchIndex(unsigned char *input, short mode, char flagMas
     while (idx < 49) {
         if (group->text[idx]
             && (group->flags[idx] & flagMask) == flagMask
-            && TLIBA2_JMPTBL_ESQ_TestBit1Based(entry->bits, idx) + 1 == 0) {
+            && ESQ_TestBit1Based(entry->bits, idx) + 1 == 0) {
 
             entryText = group->text[idx];
             entTok = TEXTDISP_FindControlToken(entryText);
@@ -169,7 +169,7 @@ long TEXTDISP_FindEntryMatchIndex(unsigned char *input, short mode, char flagMas
                     if (entQuoted && inLen == entLen)
                         textMatch = (STRING_CompareNoCase(inSpan, entSpan) == 0);
                 } else if (inLen <= entLen) {
-                    textMatch = (TLIBA1_JMPTBL_ESQ_FindSubstringCaseFold(entSpan, inSpan) != 0);
+                    textMatch = (ESQ_FindSubstringCaseFold(entSpan, inSpan) != 0);
                 }
 
                 entSpan[entLen] = savedEntChar;

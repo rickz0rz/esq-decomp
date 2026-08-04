@@ -1070,7 +1070,7 @@ _Global_REF_320_240_BITMAP:
 ; TYPE: pointer[4]
 ; PURPOSE: Stores four 352x240 raster allocations used by display setup/teardown.
 ; USED BY: _ESQ_MainInitAndRun, _CLEANUP_ReleaseDisplayResources
-; NOTES: Each entry is allocated via GRAPHICS_AllocRaster and zero-cleared.
+; NOTES: Each entry is allocated via _GRAPHICS_AllocRaster and zero-cleared.
 ;------------------------------------------------------------------------------
 _WDISP_352x240RasterPtrTable:
     DS.L    8

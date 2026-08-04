@@ -46,7 +46,7 @@ struct LocavailState {
     char *data;                 /* +20 */
 };
 
-extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void MEMORY_DeallocateMemory(char *who, long line,
                                                    void *p, long size);
 extern void LOCAVAIL_FreeNodeAtPointer(char *node);
 extern void LOCAVAIL_ResetFilterStateStruct(struct LocavailState *s);
@@ -67,13 +67,13 @@ void LOCAVAIL_FreeResourceChain(struct LocavailState *s)
 
         if (s->data != 0 && s->count > 0 && *s->nodes == 0) {
 
-            NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LOCAVAIL_C_2,
+            MEMORY_DeallocateMemory(Global_STR_LOCAVAIL_C_2,
                                                    159L, s->nodes, 4L);
 
             for (i = 0; i < s->count; i++)
                 LOCAVAIL_FreeNodeAtPointer(s->data + i * 10);
 
-            NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LOCAVAIL_C_3,
+            MEMORY_DeallocateMemory(Global_STR_LOCAVAIL_C_3,
                                                    164L, s->data,
                                                    s->count * 10);
         }

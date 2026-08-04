@@ -642,7 +642,7 @@ _ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   DOS_OpenFileWithMode
+;   _DOS_OpenFileWithMode
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -653,7 +653,7 @@ _ESQIFF_JMPTBL_CTASKS_StartIffTaskProcess:
 ;   No local logic; argument/return behavior matches forwarded routine.
 ;------------------------------------------------------------------------------
 _ESQIFF_JMPTBL_DOS_OpenFileWithMode:
-    JMP     DOS_OpenFileWithMode
+    JMP     _DOS_OpenFileWithMode
 
 ;------------------------------------------------------------------------------
 ; FUNC: _ESQIFF_JMPTBL_ESQ_IncCopperListsTowardsTargets   (Jump-table forwarder)

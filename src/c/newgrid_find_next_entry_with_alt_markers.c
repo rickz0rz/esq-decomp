@@ -75,7 +75,7 @@ struct NewGridAltAux {
 extern short NEWGRID_UpdatePresetEntry(struct NewGridAltEntry **entry,
                                        struct NewGridAltAux **aux,
                                        long selector, long index);
-extern long  NEWGRID2_JMPTBL_ESQ_TestBit1Based(char *bits, long slot);
+extern long  ESQ_TestBit1Based(char *bits, long slot);
 
 extern unsigned short TEXTDISP_PrimaryGroupEntryCount;
 extern unsigned char  TEXTDISP_PrimaryGroupPresentFlag;
@@ -106,7 +106,7 @@ long NEWGRID_FindNextEntryWithAltMarkers(long op, register long index,
         if (entry != 0 && aux != 0
             && (entry->state46 & 8)
             && (entry->marker40 & 0x80)
-            && NEWGRID2_JMPTBL_ESQ_TestBit1Based(entry->bitset, (long)slot) == -1
+            && ESQ_TestBit1Based(entry->bitset, (long)slot) == -1
             && !(aux->selectorFlags[selector] & 0x80)
             && *(long *)((char *)aux + slot * 4 + 56) != 0)
             found = 1;

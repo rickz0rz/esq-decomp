@@ -36,14 +36,14 @@
  *   summary: the original pops the argument frame before storing the result,
  *            SAS/C after. Same instructions, same bytes, different order.
  */
-extern void  ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle(void);
-extern void  ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle(void);
-extern void  ESQIFF_JMPTBL_BRUSH_FreeBrushList(void *head, long mode);
-extern void  GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(char *path);
-extern void  GROUP_AU_JMPTBL_BRUSH_PopulateBrushList(void *descriptors, void *head);
-extern void  ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel(char *tag);
-extern void *ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(char *tag, void *head);
-extern void *ESQIFF_JMPTBL_BRUSH_FindType3Brush(void *head);
+extern void  DISKIO_ForceUiRefreshIfIdle(void);
+extern void  DISKIO_ResetCtrlInputStateIfIdle(void);
+extern void  BRUSH_FreeBrushList(void *head, long mode);
+extern void  PARSEINI_ParseIniBufferAndDispatch(char *path);
+extern void  BRUSH_PopulateBrushList(void *descriptors, void *head);
+extern void  BRUSH_SelectBrushByLabel(char *tag);
+extern void *BRUSH_FindBrushByPredicate(char *tag, void *head);
+extern void *BRUSH_FindType3Brush(void *head);
 
 extern void *ESQIFF_BrushIniListHead;
 extern void *PARSEINI_ParsedDescriptorListHead;
@@ -58,19 +58,19 @@ void ESQIFF_HandleBrushIniReloadHotkey(char key)
     if (key != 'a')
         return;
 
-    ESQIFF_JMPTBL_DISKIO_ForceUiRefreshIfIdle();
-    ESQIFF_JMPTBL_BRUSH_FreeBrushList(&ESQIFF_BrushIniListHead, 0);
-    GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_BRUSH_INI_2);
-    GROUP_AU_JMPTBL_BRUSH_PopulateBrushList(PARSEINI_ParsedDescriptorListHead,
+    DISKIO_ForceUiRefreshIfIdle();
+    BRUSH_FreeBrushList(&ESQIFF_BrushIniListHead, 0);
+    PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_BRUSH_INI_2);
+    BRUSH_PopulateBrushList(PARSEINI_ParsedDescriptorListHead,
                                             &ESQIFF_BrushIniListHead);
-    ESQIFF_JMPTBL_BRUSH_SelectBrushByLabel(ESQIFF_TAG_DT);
+    BRUSH_SelectBrushByLabel(ESQIFF_TAG_DT);
 
     if (BRUSH_SelectedNode == 0)
-        BRUSH_SelectedNode = ESQIFF_JMPTBL_BRUSH_FindBrushByPredicate(
+        BRUSH_SelectedNode = BRUSH_FindBrushByPredicate(
                                  ESQIFF_TAG_DITHER, &ESQIFF_BrushIniListHead);
 
     ESQFUNC_FallbackType3BrushNode =
-        ESQIFF_JMPTBL_BRUSH_FindType3Brush(&ESQIFF_BrushIniListHead);
+        BRUSH_FindType3Brush(&ESQIFF_BrushIniListHead);
 
-    ESQIFF_JMPTBL_DISKIO_ResetCtrlInputStateIfIdle();
+    DISKIO_ResetCtrlInputStateIfIdle();
 }

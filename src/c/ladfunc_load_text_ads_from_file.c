@@ -32,13 +32,13 @@ extern char  Global_STR_LADFUNC_C_12[];
 extern char  Global_STR_LADFUNC_C_13[];
 
 extern long  LADFUNC_ComposePackedPenByte(long hi, long lo);
-extern long  GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(char *path);
+extern long  DISKIO_LoadFileToWorkBuffer(char *path);
 extern void  LADFUNC_ResetEntryTextBuffers(void);
-extern long  GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer(void);
-extern char *GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer(void);
-extern char *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern long  DISKIO_ParseLongFromWorkBuffer(void);
+extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
+extern char *MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                     char *ptr, long size);
 extern long  LADFUNC_ParseHexDigit(long c);
 extern long  LADFUNC_SetPackedPenHighNibble(long nibble, long pen);
@@ -58,7 +58,7 @@ long LADFUNC_LoadTextAdsFromFile(void)
 
     pen = LADFUNC_ComposePackedPenByte(2, 1);
 
-    if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(KYBD_PATH_DF0_LOCAL_ADS) == -1)
+    if (DISKIO_LoadFileToWorkBuffer(KYBD_PATH_DF0_LOCAL_ADS) == -1)
         return -1;
 
     size = Global_REF_LONG_FILE_SCRATCH;
@@ -68,10 +68,10 @@ long LADFUNC_LoadTextAdsFromFile(void)
     row = 0;
     while (row < 46) {
         entry = LADFUNC_EntryPtrTable[row];
-        entry->flags0 = GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
-        entry->flags2 = GROUP_AY_JMPTBL_DISKIO_ParseLongFromWorkBuffer();
+        entry->flags0 = DISKIO_ParseLongFromWorkBuffer();
+        entry->flags2 = DISKIO_ParseLongFromWorkBuffer();
 
-        cursor = GROUP_AY_JMPTBL_DISKIO_ConsumeCStringFromWorkBuffer();
+        cursor = DISKIO_ConsumeCStringFromWorkBuffer();
         len = strlen(cursor);
         start = cursor;
 
@@ -84,12 +84,12 @@ long LADFUNC_LoadTextAdsFromFile(void)
         }
 
         if (len > 0) {
-            entry->text = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+            entry->text = MEMORY_AllocateMemory(
                 Global_STR_LADFUNC_C_9, 591, len + 1, MEMF_PUBLIC + MEMF_CLEAR);
             if (entry->text == 0)
                 return -1;
 
-            entry->attr = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+            entry->attr = MEMORY_AllocateMemory(
                 Global_STR_LADFUNC_C_10, 600, len, MEMF_PUBLIC + MEMF_CLEAR);
             if (entry->attr == 0)
                 return -1;
@@ -113,11 +113,11 @@ long LADFUNC_LoadTextAdsFromFile(void)
             entry->text[pos] = 0;
         } else if (entry->text != 0) {
             len = strlen(entry->text);
-            NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_11, 638,
+            MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_11, 638,
                                                    entry->text, len + 1);
             entry->text = 0;
             if (entry->attr != 0) {
-                NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_12,
+                MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_12,
                                                        642, entry->attr, len);
                 entry->attr = 0;
             }
@@ -125,7 +125,7 @@ long LADFUNC_LoadTextAdsFromFile(void)
         row++;
     }
 
-    NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_13, 653, buf,
+    MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_13, 653, buf,
                                            size + 1);
     return 0;
 }

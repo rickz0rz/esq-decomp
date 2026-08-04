@@ -101,7 +101,7 @@ _GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit:
 ; CLOBBERS:
 ;   D0
 ; CALLS:
-;   EXEC_CallVector_48
+;   _EXEC_CallVector_48
 ; READS:
 ;   (none observed)
 ; WRITES:
@@ -112,7 +112,7 @@ _GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit:
 ;   Auto-refined from instruction scan; verify semantics during deeper analysis.
 ;------------------------------------------------------------------------------
 _GROUP_AV_JMPTBL_EXEC_CallVector_48:
-    JMP     EXEC_CallVector_48
+    JMP     _EXEC_CallVector_48
 
 ;!======
 

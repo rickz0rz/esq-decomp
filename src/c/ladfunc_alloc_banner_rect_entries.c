@@ -11,7 +11,7 @@
  */
 extern char *LADFUNC_EntryPtrTable[];
 extern char  Global_STR_LADFUNC_C_1[];
-extern char *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size, long flags);
+extern char *MEMORY_AllocateMemory(char *who, long line, long size, long flags);
 #define MEMF_PUBLIC 1
 #define MEMF_CLEAR  65536
 void LADFUNC_AllocBannerRectEntries(void)
@@ -20,6 +20,6 @@ void LADFUNC_AllocBannerRectEntries(void)
 
     for (i = 0; i < 46; i++)
         LADFUNC_EntryPtrTable[i] =
-            NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_1, 116, 14,
+            MEMORY_AllocateMemory(Global_STR_LADFUNC_C_1, 116, 14,
                                                  MEMF_PUBLIC + MEMF_CLEAR);
 }

@@ -49,7 +49,7 @@ struct NewGridEditorEntry {
     unsigned char flags27;      /* +27 */
 };
 
-extern char *NEWGRID2_JMPTBL_STR_SkipClass3Chars(char *s);
+extern char *STR_SkipClass3Chars(char *s);
 
 long NEWGRID_ShouldOpenEditor(struct NewGridEditorEntry *e)
 {
@@ -59,8 +59,8 @@ long NEWGRID_ShouldOpenEditor(struct NewGridEditorEntry *e)
     if (e == 0)
         return r;
 
-    a = NEWGRID2_JMPTBL_STR_SkipClass3Chars(e->text19);
-    b = NEWGRID2_JMPTBL_STR_SkipClass3Chars(e->text1);
+    a = STR_SkipClass3Chars(e->text19);
+    b = STR_SkipClass3Chars(e->text1);
 
     if ((a == 0 || *a == 0) && (b == 0 || *b == 0) && (e->flags27 & 0x20))
         r = 1;

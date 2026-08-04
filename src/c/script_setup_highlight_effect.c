@@ -89,16 +89,16 @@ extern void  TLIBA3_ClearViewModeRastPort(long mode, long zero);
 extern struct ShCtx *TLIBA3_BuildDisplayContextForViewMode(long mode,
                                                            long zero,
                                                            long arg);
-extern void  WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
-extern void  WDISP_JMPTBL_ESQIFF_RunCopperDropTransition(void);
-extern void  WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
+extern void  ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void  ESQIFF_RunCopperDropTransition(void);
+extern void  ESQIFF_RestoreBasePaletteTriples(void);
 extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
 extern void  SCRIPT_BeginBannerCharTransition(long steps, long delay);
 extern void  STRING_CopyPadNul(char *dst, char *src, long n);
 extern void  SCRIPT_DrawInsetTextWithFrame(struct RastPort *rp, long low,
                                            long high, char *text);
-extern void  TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition(void);
+extern void  ESQIFF_RunCopperRiseTransition(void);
 
 extern struct ShCtx *WDISP_DisplayContextBase;
 extern short WDISP_AccumulatorCaptureActive;
@@ -134,13 +134,13 @@ void SCRIPT_SetupHighlightEffect(char *text)
     WDISP_DisplayContextBase =
         TLIBA3_BuildDisplayContextForViewMode(4L, 0L, 3L);
 
-    WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+    ESQ_SetCopperEffect_OnEnableHighlight();
 
     h        = WDISP_DisplayContextBase->w4;
     ctxWidth = WDISP_DisplayContextBase->w2;
 
-    WDISP_JMPTBL_ESQIFF_RunCopperDropTransition();
-    WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
+    ESQIFF_RunCopperDropTransition();
+    ESQIFF_RestoreBasePaletteTriples();
 
     if (WDISP_DisplayContextBase->w0 & 4)
         div = 2;
@@ -260,5 +260,5 @@ void SCRIPT_SetupHighlightEffect(char *text)
         TLIBA3_BuildDisplayContextForViewMode(4L, 0L, 3L);
 
 returnPath:
-    TEXTDISP_JMPTBL_ESQIFF_RunCopperRiseTransition();
+    ESQIFF_RunCopperRiseTransition();
 }

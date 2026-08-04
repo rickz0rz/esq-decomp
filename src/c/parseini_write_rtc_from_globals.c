@@ -52,11 +52,11 @@ struct ParseIniRtcRecord {
 };
 
 extern short PARSEINI_AdjustHoursTo24HrFormat(long hour, long ampm);
-extern long  PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(
+extern long  CLOCK_CheckDateOrSecondsFromEpoch(
     struct ParseIniRtcRecord *r);
-extern long  PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch(
+extern long  CLOCK_SecondsFromEpoch(
     struct ParseIniRtcRecord *r);
-extern void  PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock(
+extern void  BATTCLOCK_WriteSecondsToBatteryBackedClock(
     long seconds);
 
 extern long  Global_REF_UTILITY_LIBRARY;
@@ -89,8 +89,8 @@ void PARSEINI_WriteRtcFromGlobals(void)
     rec.minute = CLOCK_CacheMinuteOrSecond;
     rec.f0     = Global_REF_CLOCKDATA_STRUCT;
 
-    if (PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(&rec)) {
-        seconds = PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch(&rec);
-        PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock(seconds);
+    if (CLOCK_CheckDateOrSecondsFromEpoch(&rec)) {
+        seconds = CLOCK_SecondsFromEpoch(&rec);
+        BATTCLOCK_WriteSecondsToBatteryBackedClock(seconds);
     }
 }

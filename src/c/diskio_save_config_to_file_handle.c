@@ -70,7 +70,7 @@
  *            version; see docs/compiler-version.md.
  */
 extern long DISKIO_OpenFileWithBuffer(char *path, long mode);
-extern void GROUP_AE_JMPTBL_WDISP_SPrintf(char *buf, char *fmt, ...);
+extern void WDISP_SPrintf(char *buf, char *fmt, ...);
 extern long DISKIO_WriteBufferedBytes(long fh, char *buf, long len);
 extern long DISKIO_CloseBufferedFileAndFlush(long fh);
 
@@ -135,7 +135,7 @@ long DISKIO_SaveConfigToFileHandle(void)
     tag        = 67;
     bannerHead = (char)(CONFIG_BannerCopperHeadByte & 0xff);
 
-    GROUP_AE_JMPTBL_WDISP_SPrintf(
+    WDISP_SPrintf(
         buf, Global_STR_DEFAULT_CONFIG_FORMATTED,
         CONFIG_RefreshIntervalMinutes,
         CTASKS_STR_C,

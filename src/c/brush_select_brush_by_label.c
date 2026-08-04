@@ -48,8 +48,8 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
-extern long  GROUP_AA_JMPTBL_STRING_CompareN(char *a, char *b, long n);
-extern void  GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
+extern long  STRING_CompareN(char *a, char *b, long n);
+extern void  STRING_CopyPadNul(char *dst, char *src, long n);
 extern void *BRUSH_FindBrushByPredicate(char *name, void *head);
 
 struct BrushSelectNode {
@@ -84,16 +84,16 @@ void BRUSH_SelectBrushByLabel(char *label)
     node = ESQIFF_BrushIniListHead;
     BRUSH_SelectedNode = 0;
 
-    if (GROUP_AA_JMPTBL_STRING_CompareN(label, BRUSH_STR_ALIAS_CODE_00, 2L) != 0
-        && GROUP_AA_JMPTBL_STRING_CompareN(label, BRUSH_STR_ALIAS_CODE_11, 2L) != 0)
-        GROUP_AG_JMPTBL_STRING_CopyPadNul(code, label, 2L);
+    if (STRING_CompareN(label, BRUSH_STR_ALIAS_CODE_00, 2L) != 0
+        && STRING_CompareN(label, BRUSH_STR_ALIAS_CODE_11, 2L) != 0)
+        STRING_CopyPadNul(code, label, 2L);
     else
-        GROUP_AG_JMPTBL_STRING_CopyPadNul(code, BRUSH_STR_ALIAS_CODE_DT, 2L);
+        STRING_CopyPadNul(code, BRUSH_STR_ALIAS_CODE_DT, 2L);
 
     code[2] = 0;
 
     while (node != 0) {
-        if (GROUP_AA_JMPTBL_STRING_CompareN(node->code, code, 2L) == 0) {
+        if (STRING_CompareN(node->code, code, 2L) == 0) {
             BRUSH_SelectedNode = node;
             node = node->link368;
             break;

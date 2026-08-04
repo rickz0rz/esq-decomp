@@ -12,7 +12,7 @@
 extern short ESQDISP_GridMessagePumpBlockFlag;
 extern short Global_UIBusyFlag;
 extern long  NEWGRID_MessagePumpSuspendFlag;
-extern void  ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages(void);
+extern void  NEWGRID_ProcessGridMessages(void);
 void ESQDISP_ProcessGridMessagesIfIdle(void)
 {
     if (ESQDISP_GridMessagePumpBlockFlag != 0)
@@ -21,5 +21,5 @@ void ESQDISP_ProcessGridMessagesIfIdle(void)
         return;
     if (NEWGRID_MessagePumpSuspendFlag != 0)
         return;
-    ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages();
+    NEWGRID_ProcessGridMessages();
 }

@@ -17,13 +17,13 @@
  *
  * This class is what hung the machine on the first whole-program C run.
  */
-extern void GROUP_AZ_JMPTBL_ESQ_ColdReboot(void);
+extern void ESQ_ColdReboot(void);
 long LOCAVAIL2_DisplayAlertDelayAndReboot(void)
 {
     long i;
 
     for (i = 0; i < 1000000L; i++)
         ;
-    GROUP_AZ_JMPTBL_ESQ_ColdReboot();
+    ESQ_ColdReboot();
     return 0;
 }

@@ -29,7 +29,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the five cross-unit format calls.
  */
-extern void GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(char *fmt, long v);
+extern void FORMAT_RawDoFmtWithScratchBuffer(char *fmt, long v);
 extern char LADFUNC_FMT_ControlCharCaretEscape[];
 extern char LADFUNC_FMT_ReplacementQuoteChar[];
 extern char LADFUNC_FMT_ReplacementCommaChar[];
@@ -43,30 +43,30 @@ void LADFUNC2_EmitEscapedCharToScratch(char c)
     ch = c;
 
     if (ch < 32) {
-        GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             LADFUNC_FMT_ControlCharCaretEscape, (long)ch + 64);
         return;
     }
 
     if (ch == 168) {
         ch = 34;
-        GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             LADFUNC_FMT_ReplacementQuoteChar, (long)ch);
         return;
     }
 
     if (ch == 169) {
         ch = 44;
-        GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             LADFUNC_FMT_ReplacementCommaChar, (long)ch);
         return;
     }
 
     if (ch > 126) {
-        GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
+        FORMAT_RawDoFmtWithScratchBuffer(
             LADFUNC_FMT_HexEscapeByte, (long)ch);
         return;
     }
 
-    GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(LADFUNC_FMT_LiteralChar, (long)ch);
+    FORMAT_RawDoFmtWithScratchBuffer(LADFUNC_FMT_LiteralChar, (long)ch);
 }

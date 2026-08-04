@@ -56,10 +56,10 @@
 
 struct DiskIoBufferState { char *BufferPtr; long BufferSize; long Remaining; short SavedF45; };
 
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size, long flags);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
-extern long __asm GROUP_AG_JMPTBL_MATH_Mulu32(register __d0 long a, register __d1 long b);
-extern long __asm GROUP_AG_JMPTBL_MATH_DivS32(register __d0 long a, register __d1 long b);
+extern void *MEMORY_AllocateMemory(char *who, long line, long size, long flags);
+extern void  MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
+extern long __asm MATH_Mulu32(register __d0 long a, register __d1 long b);
+extern long __asm MATH_DivS32(register __d0 long a, register __d1 long b);
 extern struct DiskIoBufferState DISKIO_BufferState;
 extern char Global_STR_DISKIO_C_5[];
 extern char Global_STR_DISKIO_C_6[];
@@ -76,17 +76,17 @@ long DISKIO_QueryDiskUsagePercentAndSetBufferSize(char *path)
     if (lock == 0)
         return pct;
 
-    info = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(Global_STR_DISKIO_C_5, 567,
+    info = MEMORY_AllocateMemory(Global_STR_DISKIO_C_5, 567,
                                                  (long)sizeof(struct InfoData),
                                                  MEMF_CLEAR);
     if (info) {
         if (Info((BPTR)lock, info)) {
-            pct = GROUP_AG_JMPTBL_MATH_DivS32(
-                  GROUP_AG_JMPTBL_MATH_Mulu32((long)info->id_NumBlocksUsed, 100L),
+            pct = MATH_DivS32(
+                  MATH_Mulu32((long)info->id_NumBlocksUsed, 100L),
                   (long)info->id_NumBlocks);
             DISKIO_BufferState.BufferSize = info->id_BytesPerBlock * 2;
         }
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO_C_6, 574, info,
+        MEMORY_DeallocateMemory(Global_STR_DISKIO_C_6, 574, info,
                                                 (long)sizeof(struct InfoData));
     }
 

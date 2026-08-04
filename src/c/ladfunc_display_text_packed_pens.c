@@ -38,7 +38,7 @@
 
 extern unsigned char LADFUNC_GetPackedPenLowNibble(long packed);
 extern unsigned char LADFUNC_GetPackedPenHighNibble(long packed);
-extern void GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition(struct RastPort *rp,
+extern void DISPLIB_DisplayTextAtPosition(struct RastPort *rp,
                                                           long x, long y,
                                                           char *text);
 
@@ -48,5 +48,5 @@ void LADFUNC_DisplayTextPackedPens(struct RastPort *rp, long x, long y,
     SetAPen(rp, (long)LADFUNC_GetPackedPenLowNibble((long)(unsigned char)packed));
     SetBPen(rp, (long)LADFUNC_GetPackedPenHighNibble((long)(unsigned char)packed));
 
-    GROUP_AW_JMPTBL_DISPLIB_DisplayTextAtPosition(rp, x, y, text);
+    DISPLIB_DisplayTextAtPosition(rp, x, y, text);
 }

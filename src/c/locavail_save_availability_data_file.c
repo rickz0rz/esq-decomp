@@ -36,12 +36,12 @@ extern struct LineBlob LOCAVAIL_STR_LA_VER_1_COLON_CURDAY;
 extern struct LineBlob LOCAVAIL_STR_LA_VER_1_COLON_NXTDAY;
 extern char LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Save[];
 
-extern long GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(char *path, long mode);
-extern void GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(long fh, char *buf,
+extern long DISKIO_OpenFileWithBuffer(char *path, long mode);
+extern void DISKIO_WriteBufferedBytes(long fh, char *buf,
                                                       long n);
-extern void GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(long fh, long value);
-extern void GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(long fh);
-extern long __asm NEWGRID_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern void DISKIO_WriteDecimalField(long fh, long value);
+extern void DISKIO_CloseBufferedFileAndFlush(long fh);
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
 
 long LOCAVAIL_SaveAvailabilityDataFile(struct AvailCtx *primary,
@@ -61,7 +61,7 @@ long LOCAVAIL_SaveAvailabilityDataFile(struct AvailCtx *primary,
     ok = 1;
     *(struct TagBlob *)tag = LOCAVAIL_TAG_UVGTI;
 
-    fh = GROUP_AY_JMPTBL_DISKIO_OpenFileWithBuffer(
+    fh = DISKIO_OpenFileWithBuffer(
              LOCAVAIL_PATH_DF0_COLON_LOCAVAIL_DOT_DAT_Save, 1006);
     if (fh == 0) {
         ok = 0;
@@ -72,20 +72,20 @@ long LOCAVAIL_SaveAvailabilityDataFile(struct AvailCtx *primary,
     *(struct LineBlob *)line = LOCAVAIL_STR_LA_VER_1_COLON_CURDAY;
 
     do {
-        GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(fh, line, strlen(line) + 1);
-        GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fh, (long)ctx->day);
-        GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fh, ctx->count);
+        DISKIO_WriteBufferedBytes(fh, line, strlen(line) + 1);
+        DISKIO_WriteDecimalField(fh, (long)ctx->day);
+        DISKIO_WriteDecimalField(fh, ctx->count);
 
         line[0] = ctx->mark;
         line[1] = 0;
-        GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(fh, line, strlen(line) + 1);
+        DISKIO_WriteBufferedBytes(fh, line, strlen(line) + 1);
 
         row = 0;
         while (row < ctx->count) {
             rec = (struct AvailRec *)(ctx->table + row * stride);
-            GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fh, (long)rec->id);
-            GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fh, (long)rec->group);
-            GROUP_AY_JMPTBL_DISKIO_WriteDecimalField(fh, (long)rec->count);
+            DISKIO_WriteDecimalField(fh, (long)rec->id);
+            DISKIO_WriteDecimalField(fh, (long)rec->group);
+            DISKIO_WriteDecimalField(fh, (long)rec->count);
 
             col = 0;
             while (col < (long)rec->count) {
@@ -105,7 +105,7 @@ long LOCAVAIL_SaveAvailabilityDataFile(struct AvailCtx *primary,
             }
             line[col] = 0;
 
-            GROUP_AY_JMPTBL_DISKIO_WriteBufferedBytes(fh, line, strlen(line) + 1);
+            DISKIO_WriteBufferedBytes(fh, line, strlen(line) + 1);
             row++;
         }
 
@@ -114,6 +114,6 @@ long LOCAVAIL_SaveAvailabilityDataFile(struct AvailCtx *primary,
         *(struct LineBlob *)line = LOCAVAIL_STR_LA_VER_1_COLON_NXTDAY;
     } while (ctx != 0);
 
-    GROUP_AY_JMPTBL_DISKIO_CloseBufferedFileAndFlush(fh);
+    DISKIO_CloseBufferedFileAndFlush(fh);
     return ok;
 }

@@ -34,8 +34,8 @@
  */
 #include "esq-exec.h"
 
-extern void  GROUP_AU_JMPTBL_BRUSH_PopulateBrushList(unsigned char *desc, void **out);
-extern void *GROUP_AU_JMPTBL_BRUSH_AppendBrushNode(void *head, void *node);
+extern void  BRUSH_PopulateBrushList(unsigned char *desc, void **out);
+extern void *BRUSH_AppendBrushNode(void *head, void *node);
 extern short CTASKS_IffTaskState;
 extern void *ESQIFF_LogoBrushListHead;
 extern long  ESQIFF_LogoBrushListCount;
@@ -49,18 +49,18 @@ void GCOMMAND_SaveBrushResult(unsigned char *desc)
 
     node = 0;
     CTASKS_IffTaskState = desc[190];
-    GROUP_AU_JMPTBL_BRUSH_PopulateBrushList(desc, &node);
+    BRUSH_PopulateBrushList(desc, &node);
 
     if (CTASKS_IffTaskState == 4 && node) {
         Forbid();
         ESQIFF_LogoBrushListHead =
-            GROUP_AU_JMPTBL_BRUSH_AppendBrushNode(ESQIFF_LogoBrushListHead, node);
+            BRUSH_AppendBrushNode(ESQIFF_LogoBrushListHead, node);
         ESQIFF_LogoBrushListCount++;
         Permit();
     } else if (CTASKS_IffTaskState == 5 && node) {
         Forbid();
         ESQIFF_GAdsBrushListHead =
-            GROUP_AU_JMPTBL_BRUSH_AppendBrushNode(ESQIFF_GAdsBrushListHead, node);
+            BRUSH_AppendBrushNode(ESQIFF_GAdsBrushListHead, node);
         ESQIFF_GAdsBrushListCount++;
         Permit();
     } else if (CTASKS_IffTaskState == 6 && node) {

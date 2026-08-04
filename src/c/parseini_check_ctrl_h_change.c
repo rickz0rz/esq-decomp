@@ -28,7 +28,7 @@
  * SASC-MISMATCH: external-call-width
  *   summary: 4EBA against 6100 for the two cross-unit calls.
  */
-extern void SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(long mask, long on);
+extern void ESQDISP_UpdateStatusMaskAndRefresh(long mask, long on);
 extern short CTRL_H;
 extern short CTRL_HPreviousSample;
 extern short PARSEINI_CtrlHChangeGateFlag;
@@ -48,7 +48,7 @@ long PARSEINI_CheckCtrlHChange(void)
         PARSEINI_CtrlHChangeGateCounter = 0;
         if (PARSEINI_CtrlHChangePendingFlag != 1) {
             PARSEINI_CtrlHChangePendingFlag = 1;
-            SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(16, 1);
+            ESQDISP_UpdateStatusMaskAndRefresh(16, 1);
         }
         return changed;
     }
@@ -67,6 +67,6 @@ long PARSEINI_CheckCtrlHChange(void)
     }
 
     PARSEINI_CtrlHChangePendingFlag = 0;
-    SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(16, 0);
+    ESQDISP_UpdateStatusMaskAndRefresh(16, 0);
     return changed;
 }

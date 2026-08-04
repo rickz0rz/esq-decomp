@@ -95,14 +95,14 @@ struct WDayEntry {                  /* 20 bytes */
     long forecast;                  /* 16 non-zero = multi-line forecast */
 };
 
-extern struct WBrush *WDISP_JMPTBL_BRUSH_FindBrushByPredicate(char *name,
+extern struct WBrush *BRUSH_FindBrushByPredicate(char *name,
                                                   struct WBrushHead *head);
-extern long WDISP_JMPTBL_BRUSH_PlaneMaskForIndex(long index);
-extern void WDISP_JMPTBL_BRUSH_SelectBrushSlot(struct WBrush *b, long x0,
+extern long BRUSH_PlaneMaskForIndex(long index);
+extern void BRUSH_SelectBrushSlot(struct WBrush *b, long x0,
                                                long y0, long x1, long y1,
                                                struct RastPort *rp, long z);
-extern void WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples(void);
-extern char *WDISP_JMPTBL_NEWGRID_DrawWrappedText(struct RastPort *rp, long x,
+extern void ESQIFF_RestoreBasePaletteTriples(void);
+extern char *NEWGRID_DrawWrappedText(struct RastPort *rp, long x,
                                                   long y, long width,
                                                   char *text, long draw);
 extern void WDISP_SPrintf(char *buf, char *fmt, ...);
@@ -153,7 +153,7 @@ void WDISP_DrawWeatherStatusDayEntry(struct RastPort *rp, long day,
         brushIndex = 2;
     }
 
-    brush = WDISP_JMPTBL_BRUSH_FindBrushByPredicate(ESQFUNC_STR_I5[brushIndex],
+    brush = BRUSH_FindBrushByPredicate(ESQFUNC_STR_I5[brushIndex],
                                                     &ESQFUNC_PwBrushListHead);
     if (brush != 0) {
         brushHeight = brush->h;
@@ -170,10 +170,10 @@ void WDISP_DrawWeatherStatusDayEntry(struct RastPort *rp, long day,
         WDISP_AccumulatorFlushPending = 0;
 
         if (usePalette == 0) {
-            WDISP_JMPTBL_ESQIFF_RestoreBasePaletteTriples();
+            ESQIFF_RestoreBasePaletteTriples();
         } else {
-            planeA = WDISP_JMPTBL_BRUSH_PlaneMaskForIndex(5L) * 3;
-            planeB = WDISP_JMPTBL_BRUSH_PlaneMaskForIndex(
+            planeA = BRUSH_PlaneMaskForIndex(5L) * 3;
+            planeB = BRUSH_PlaneMaskForIndex(
                          (long)brush->planeSel) * 3;
 
             for (i = 0; i < planeB && i < planeA; i++)
@@ -188,7 +188,7 @@ void WDISP_DrawWeatherStatusDayEntry(struct RastPort *rp, long day,
             x = colX + (colWidth - brushWidth) / 2;
             y = panelHeight - brushHeight
                 - (long)Global_HANDLE_PREVUEC_FONT->tf_Baseline - 5;
-            WDISP_JMPTBL_BRUSH_SelectBrushSlot(brush, x, y, x + brushWidth,
+            BRUSH_SelectBrushSlot(brush, x, y, x + brushWidth,
                                                y + brushHeight, rp, 0L);
         }
 
@@ -226,7 +226,7 @@ void WDISP_DrawWeatherStatusDayEntry(struct RastPort *rp, long day,
             while (WDISP_CharClassTable[*p] & 8)
                 p++;
 
-            split = WDISP_JMPTBL_NEWGRID_DrawWrappedText(rp, colX, yOffset,
+            split = NEWGRID_DrawWrappedText(rp, colX, yOffset,
                                                          colWidth, p, 0L);
             if (split != 0) {
                 saved = *split;
@@ -235,7 +235,7 @@ void WDISP_DrawWeatherStatusDayEntry(struct RastPort *rp, long day,
                 *split = saved;
                 drawn = TextLength(rp, p, len);
                 x = colX + (colWidth - drawn + 20) / 2;
-                p = WDISP_JMPTBL_NEWGRID_DrawWrappedText(rp, x, yOffset,
+                p = NEWGRID_DrawWrappedText(rp, x, yOffset,
                                                          colWidth, p, 1L);
                 yOffset += (long)Global_HANDLE_PREVUEC_FONT->tf_YSize + 4;
                 lineIndex++;
@@ -243,7 +243,7 @@ void WDISP_DrawWeatherStatusDayEntry(struct RastPort *rp, long day,
                 len = (long)strlen(p);
                 drawn = TextLength(rp, p, len);
                 x = colX + (colWidth - drawn + 20) / 2;
-                p = WDISP_JMPTBL_NEWGRID_DrawWrappedText(rp, x, yOffset,
+                p = NEWGRID_DrawWrappedText(rp, x, yOffset,
                                                          colWidth, p, 1L);
             }
         }

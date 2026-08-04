@@ -33,11 +33,11 @@ extern char  Global_STR_LADFUNC_C_7[];
 extern char  Global_STR_LADFUNC_C_8[];
 
 extern long  LADFUNC_ComposePackedPenByte(long hi, long lo);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *s, long c);
+extern char *STR_FindCharPtr(char *s, long c);
 extern void  LADFUNC_ResetEntryTextBuffers(void);
-extern char *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern char *MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                     char *ptr, long size);
 extern long  LADFUNC_ParseHexDigit(long c);
 extern long  LADFUNC_SetPackedPenHighNibble(long nibble, long pen);
@@ -62,7 +62,7 @@ long LADFUNC_ParseBannerEntryData(char kind, char *data)
     if ((long)index == 146) {
         if (kind == 76 || kind == 116) {
             if (ESQIFF_StatusPacketReadyFlag == 1
-                && GROUP_AS_JMPTBL_STR_FindCharPtr(
+                && STR_FindCharPtr(
                        LADFUNC_TAG_RS_ResetTriggerSet,
                        (long)ED_DiagTextModeChar) != 0)
                 LADFUNC_ResetEntryTextBuffers();
@@ -73,7 +73,7 @@ long LADFUNC_ParseBannerEntryData(char kind, char *data)
     if (kind != 76 && kind != 116)
         return 0;
 
-    if (GROUP_AS_JMPTBL_STR_FindCharPtr(LADFUNC_TAG_RS_ParseAllowedSet,
+    if (STR_FindCharPtr(LADFUNC_TAG_RS_ParseAllowedSet,
             (long)ED_DiagTextModeChar) == 0)
         return 0;
     if (index >= 46)
@@ -90,7 +90,7 @@ long LADFUNC_ParseBannerEntryData(char kind, char *data)
     entry->flags2 = 0x30;
     pos = 0;
 
-    attrs = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_5, 367,
+    attrs = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_5, 367,
                 304, MEMF_PUBLIC + MEMF_CLEAR);
     if (attrs == 0)
         return 0;
@@ -127,15 +127,15 @@ long LADFUNC_ParseBannerEntryData(char kind, char *data)
     entry->text = ESQPARS_ReplaceOwnedString(text, entry->text);
 
     if (entry->attr != 0)
-        NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_6, 412,
+        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_6, 412,
                                                entry->attr, 304);
 
-    entry->attr = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_7,
+    entry->attr = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_7,
                       413, (long)pos, MEMF_PUBLIC + MEMF_CLEAR);
     if (entry->attr != 0)
         memcpy(entry->attr, attrs, (long)pos);
 
-    NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_8, 416, attrs,
+    MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_8, 416, attrs,
                                            304);
     LADFUNC_UpdateHighlightState();
     return 1;

@@ -11,12 +11,12 @@
  */
 struct PTypeEntry { char pad[2]; long size; char *data; };
 extern char Global_STR_P_TYPE_C_4[], Global_STR_P_TYPE_C_5[];
-extern void SCRIPT_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
+extern void MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
 void P_TYPE_FreeEntry(struct PTypeEntry *e)
 {
     if (e == 0)
         return;
     if (e->data != 0)
-        SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_P_TYPE_C_4, 92, e->data, e->size);
-    SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_P_TYPE_C_5, 95, e, 10);
+        MEMORY_DeallocateMemory(Global_STR_P_TYPE_C_4, 92, e->data, e->size);
+    MEMORY_DeallocateMemory(Global_STR_P_TYPE_C_5, 95, e, 10);
 }

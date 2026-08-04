@@ -29,17 +29,17 @@ extern short WDISP_AccumulatorCaptureActive;
 extern void  ESQIFF_RunCopperDropTransition(void);
 extern void  ESQIFF_RunCopperRiseTransition(void);
 extern void  ESQIFF_RestoreBasePaletteTriples(void);
-extern void  GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight(void);
-extern void  ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(long mode);
-extern char *ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(long mode,
+extern void  ESQ_SetCopperEffect_OffDisableHighlight(void);
+extern void  TEXTDISP_SetRastForMode(long mode);
+extern char *TLIBA3_BuildDisplayContextForViewMode(long mode,
                  long a, long b);
 extern void  ESQDISP_ProcessGridMessagesIfIdle(void);
-extern void  ESQIFF_JMPTBL_ESQ_NoOp(void);
-extern void  ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled(void);
+extern void  ESQ_NoOp(void);
+extern void  SCRIPT_AssertCtrlLineIfEnabled(void);
 extern void  ESQIFF_ShowExternalAssetWithCopperFx(long mode);
 extern void  ESQIFF_SetApenToBrightestPaletteIndex(void);
-extern void  ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner(long a, long b);
-extern char *ESQIFF_JMPTBL_BRUSH_PopBrushHead(char *head);
+extern void  TEXTDISP_DrawChannelBanner(long a, long b);
+extern char *BRUSH_PopBrushHead(char *head);
 extern void  ESQIFF_ServiceExternalAssetSourceState(long mode);
 
 void ESQIFF_PlayNextExternalAssetFrame(short mode)
@@ -55,12 +55,12 @@ void ESQIFF_PlayNextExternalAssetFrame(short mode)
         if (TEXTDISP_PrimaryGroupEntryCount < ESQIFF_ExternalAssetStateTable
             && mode == 0 && ESQIFF_ExternalAssetPathCommaFlag == 0) {
             ESQIFF_RestoreBasePaletteTriples();
-            GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight();
-            ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(2);
+            ESQ_SetCopperEffect_OffDisableHighlight();
+            TEXTDISP_SetRastForMode(2);
         } else {
-            GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight();
+            ESQ_SetCopperEffect_OffDisableHighlight();
             WDISP_DisplayContextBase =
-                ESQIFF_JMPTBL_TLIBA3_BuildDisplayContextForViewMode(4, 0, 1);
+                TLIBA3_BuildDisplayContextForViewMode(4, 0, 1);
             SetRast((struct RastPort *)(WDISP_DisplayContextBase + 10), 2);
             ESQDISP_ProcessGridMessagesIfIdle();
 
@@ -69,11 +69,11 @@ void ESQIFF_PlayNextExternalAssetFrame(short mode)
             else
                 head = ESQIFF_LogoBrushListHead;
 
-            ESQIFF_JMPTBL_ESQ_NoOp();
+            ESQ_NoOp();
 
             if (mode == 1 && (TEXTDISP_DeferredActionCountdown == 2
                               || TEXTDISP_DeferredActionCountdown == 3))
-                ESQIFF_JMPTBL_SCRIPT_AssertCtrlLineIfEnabled();
+                SCRIPT_AssertCtrlLineIfEnabled();
 
             ESQIFF_ShowExternalAssetWithCopperFx((long)mode);
 
@@ -81,7 +81,7 @@ void ESQIFF_PlayNextExternalAssetFrame(short mode)
                 SetDrMd((struct RastPort *)(WDISP_DisplayContextBase + 10), 0);
                 ESQIFF_SetApenToBrightestPaletteIndex();
                 TEXTDISP_CurrentMatchIndex = ESQIFF_ExternalAssetStateTable;
-                ESQIFF_JMPTBL_TEXTDISP_DrawChannelBanner(1, 2);
+                TEXTDISP_DrawChannelBanner(1, 2);
                 SetDrMd((struct RastPort *)(WDISP_DisplayContextBase + 10), 1);
             }
             SetAPen((struct RastPort *)(WDISP_DisplayContextBase + 10), 1);
@@ -90,18 +90,18 @@ void ESQIFF_PlayNextExternalAssetFrame(short mode)
             if (mode != 0) {
                 ESQIFF_GAdsBrushListCount--;
                 ESQIFF_GAdsBrushListHead =
-                    ESQIFF_JMPTBL_BRUSH_PopBrushHead(ESQIFF_GAdsBrushListHead);
+                    BRUSH_PopBrushHead(ESQIFF_GAdsBrushListHead);
             } else {
                 ESQIFF_LogoBrushListCount--;
                 ESQIFF_LogoBrushListHead =
-                    ESQIFF_JMPTBL_BRUSH_PopBrushHead(ESQIFF_LogoBrushListHead);
+                    BRUSH_PopBrushHead(ESQIFF_LogoBrushListHead);
             }
             Permit();
         }
     } else {
         ESQIFF_RestoreBasePaletteTriples();
-        GROUP_AM_JMPTBL_ESQ_SetCopperEffect_OffDisableHighlight();
-        ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(2);
+        ESQ_SetCopperEffect_OffDisableHighlight();
+        TEXTDISP_SetRastForMode(2);
     }
 
     savedCapture = WDISP_AccumulatorCaptureActive;

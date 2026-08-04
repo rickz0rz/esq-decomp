@@ -16,7 +16,7 @@
 #include <string.h>
 #include "esq-graphics.h"
 
-extern void UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(struct RastPort *rp,
+extern void DISPLIB_DisplayTextAtPosition(struct RastPort *rp,
                 long x, long y, char *text);
 
 void TLIBA3_DrawCenteredWrappedTextLines(struct RastPort *rp, char *text, long y)
@@ -62,7 +62,7 @@ void TLIBA3_DrawCenteredWrappedTextLines(struct RastPort *rp, char *text, long y
         savedChar = c;
 
         if (x >= 0)
-            UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition(rp, x, y, text);
+            DISPLIB_DisplayTextAtPosition(rp, x, y, text);
 
         y += rp->Font->tf_YSize + 1;
         text += len;

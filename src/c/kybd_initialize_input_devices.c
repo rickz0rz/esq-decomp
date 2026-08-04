@@ -39,11 +39,11 @@
 #include <exec/interrupts.h>
 #include "esq-exec.h"
 
-extern void GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths(void);
-extern void *GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal(char *name, long sig);
-extern struct IOStdReq *GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq(void *port);
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size, long flags);
-extern void GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit(void);
+extern void DISKIO_ProbeDrivesAndAssignPaths(void);
+extern void *SIGNAL_CreateMsgPortWithSignal(char *name, long sig);
+extern struct IOStdReq *ALLOCATE_AllocAndInitializeIOStdReq(void *port);
+extern void *MEMORY_AllocateMemory(char *who, long line, long size, long flags);
+extern void ESQ_InvokeGcommandInit(void);
 
 extern void *Global_REF_INPUTDEVICE_MSGPORT;
 extern void *Global_REF_CONSOLEDEVICE_MSGPORT;
@@ -62,17 +62,17 @@ extern char Global_STR_KYBD_C[];
 
 void KYBD_InitializeInputDevices(void)
 {
-    GROUP_AV_JMPTBL_DISKIO_ProbeDrivesAndAssignPaths();
+    DISKIO_ProbeDrivesAndAssignPaths();
 
     Global_REF_INPUTDEVICE_MSGPORT =
-        GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal(Global_STR_INPUTDEVICE, 0);
+        SIGNAL_CreateMsgPortWithSignal(Global_STR_INPUTDEVICE, 0);
     Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE =
-        GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq(Global_REF_INPUTDEVICE_MSGPORT);
+        ALLOCATE_AllocAndInitializeIOStdReq(Global_REF_INPUTDEVICE_MSGPORT);
 
     Global_REF_CONSOLEDEVICE_MSGPORT =
-        GROUP_AV_JMPTBL_SIGNAL_CreateMsgPortWithSignal(Global_STR_CONSOLEDEVICE, 0);
+        SIGNAL_CreateMsgPortWithSignal(Global_STR_CONSOLEDEVICE, 0);
     Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE =
-        GROUP_AV_JMPTBL_ALLOCATE_AllocAndInitializeIOStdReq(Global_REF_CONSOLEDEVICE_MSGPORT);
+        ALLOCATE_AllocAndInitializeIOStdReq(Global_REF_CONSOLEDEVICE_MSGPORT);
 
     OpenDevice(Global_STR_INPUT_DEVICE, 0L,
                (struct IORequest *)Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE, 0L);
@@ -83,9 +83,9 @@ void KYBD_InitializeInputDevices(void)
         Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE->io_Device;
 
     Global_REF_DATA_INPUT_BUFFER =
-        NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_KYBD_C, 121, 22, MEMF_PUBLIC);
+        MEMORY_AllocateMemory(Global_STR_KYBD_C, 121, 22, MEMF_PUBLIC);
     Global_REF_DATA_INPUT_BUFFER->is_Data = &INPUTDEVICE_HandlerUserDataLong;
-    Global_REF_DATA_INPUT_BUFFER->is_Code = GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit;
+    Global_REF_DATA_INPUT_BUFFER->is_Code = ESQ_InvokeGcommandInit;
     Global_REF_DATA_INPUT_BUFFER->is_Node.ln_Pri = 0x33;
 
     Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE->io_Command = 9;

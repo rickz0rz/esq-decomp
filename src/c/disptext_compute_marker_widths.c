@@ -40,7 +40,7 @@
  */
 #include "esq-graphics.h"
 
-extern void GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers(long a, long b,
+extern void NEWGRID_SetSelectionMarkers(long a, long b,
                                                         char *m1, char *m2,
                                                         char *m3, char *m4);
 extern long DISPTEXT_ControlMarkerWidthPx;
@@ -50,7 +50,7 @@ void DISPTEXT_ComputeMarkerWidths(struct RastPort *rp, long a, long b)
     char m1, m2, m3, m4;
     long w1, w3;
 
-    GROUP_AI_JMPTBL_NEWGRID_SetSelectionMarkers(a, b, &m1, &m2, &m3, &m4);
+    NEWGRID_SetSelectionMarkers(a, b, &m1, &m2, &m3, &m4);
 
     if (m1)
         w1 = TextLength(rp, &m1, 1L);

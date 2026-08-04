@@ -61,7 +61,7 @@ struct CtrlSnapshot {
     char *commandText;       /* 440 */
 };
 
-extern char *ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(char *newstr, char *old);
+extern char *ESQPARS_ReplaceOwnedString(char *newstr, char *old);
 extern char  SCRIPT_Type20SubtypeCache;
 extern char  SCRIPT_PendingWeatherCommandChar;
 extern char  SCRIPT_PendingTextdispCmdChar;
@@ -92,7 +92,7 @@ void SCRIPT_SaveCtrlContextSnapshot(struct CtrlSnapshot *s)
     s->textdispCmd   = SCRIPT_PendingTextdispCmdChar;
     s->textdispArg   = SCRIPT_PendingTextdispCmdArg;
 
-    s->commandText = ESQPROTO_JMPTBL_ESQPARS_ReplaceOwnedString(SCRIPT_CommandTextPtr,
+    s->commandText = ESQPARS_ReplaceOwnedString(SCRIPT_CommandTextPtr,
                                                                 s->commandText);
 
     s->primaryFirst   = SCRIPT_PrimarySearchFirstFlag;

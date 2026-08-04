@@ -13,8 +13,8 @@ extern short         Global_RefreshTickCounter;
 extern char          ESQDISP_LatchedInputModeBit;
 extern long          ESQDISP_InputModeDebounceCount;
 
-extern void ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(long mode);
-extern void ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh(void);
+extern void TEXTDISP_SetRastForMode(long mode);
+extern void TEXTDISP_ResetSelectionAndRefresh(void);
 
 void ESQDISP_PollInputModeAndRefreshSelection(void)
 {
@@ -36,8 +36,8 @@ void ESQDISP_PollInputModeAndRefreshSelection(void)
         zero = 0;
         ESQDISP_InputModeDebounceCount = zero;
         if ((char)bit == 0)
-            ESQFUNC_JMPTBL_TEXTDISP_SetRastForMode(zero);
+            TEXTDISP_SetRastForMode(zero);
         else
-            ESQFUNC_JMPTBL_TEXTDISP_ResetSelectionAndRefresh();
+            TEXTDISP_ResetSelectionAndRefresh();
     }
 }

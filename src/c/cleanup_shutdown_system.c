@@ -37,28 +37,28 @@ extern char  Global_STR_CLEANUP_C_14[];
 extern char  Global_STR_CLEANUP_C_15[];
 extern char  Global_STR_CLEANUP_C_16[];
 
-extern void GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(char *state);
+extern void LOCAVAIL_FreeResourceChain(char *state);
 extern void BRUSH_FreeBrushList(char **head, long flags);
 extern void CLEANUP_ClearVertbInterruptServer(void);
 extern void CLEANUP_ClearAud1InterruptVector(void);
 extern void CLEANUP_ClearRbfInterruptAndSerial(void);
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void MEMORY_DeallocateMemory(char *who, long line,
                                                     char *ptr, long size);
 extern void CLEANUP_ShutdownInputDevices(void);
 extern void CLEANUP_ReleaseDisplayResources(void);
-extern void GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries(void);
-extern void GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers(void);
-extern void GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(long mode);
-extern void GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData(void);
-extern void GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(long mode);
-extern void GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers(void);
-extern void GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources(void);
-extern long __asm GROUP_AG_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern void LADFUNC_FreeBannerRectEntries(void);
+extern void ESQPARS_ClearAliasStringPointers(void);
+extern void ESQIFF2_ClearLineHeadTailByMode(long mode);
+extern void ESQIFF_DeallocateAdsAndLogoLstData(void);
+extern void ESQPARS_RemoveGroupEntryAndReleaseStrings(long mode);
+extern void ESQFUNC_FreeLineTextBuffers(void);
+extern void NEWGRID_ShutdownGridResources(void);
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
-extern void GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(char *who, long line, long ptr,
+extern void GRAPHICS_FreeRaster(char *who, long line, long ptr,
                                                 long width, long height);
-extern char *GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(char *src, char *owned);
-extern void GROUP_AB_JMPTBL_UNKNOWN2A_Stub0(void);
+extern char *ESQPARS_ReplaceOwnedString(char *src, char *owned);
+extern void UNKNOWN2A_Stub0(void);
 
 void CLEANUP_ShutdownSystem(void)
 {
@@ -70,8 +70,8 @@ void CLEANUP_ShutdownSystem(void)
 
     Forbid();
 
-    GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(&LOCAVAIL_PrimaryFilterState);
-    GROUP_AB_JMPTBL_LOCAVAIL_FreeResourceChain(&LOCAVAIL_SecondaryFilterState);
+    LOCAVAIL_FreeResourceChain(&LOCAVAIL_PrimaryFilterState);
+    LOCAVAIL_FreeResourceChain(&LOCAVAIL_SecondaryFilterState);
 
     BRUSH_FreeBrushList(&ESQIFF_BrushIniListHead, 0);
     BRUSH_FreeBrushList(&ESQIFF_GAdsBrushListHead, 0);
@@ -82,34 +82,34 @@ void CLEANUP_ShutdownSystem(void)
     CLEANUP_ClearAud1InterruptVector();
     CLEANUP_ClearRbfInterruptAndSerial();
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_13, 260,
+    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_13, 260,
                                             ESQIFF_RecordBufferPtr, 9000);
 
     CLEANUP_ShutdownInputDevices();
     CLEANUP_ReleaseDisplayResources();
-    GROUP_AB_JMPTBL_LADFUNC_FreeBannerRectEntries();
-    GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers();
-    GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(1);
-    GROUP_AB_JMPTBL_ESQIFF2_ClearLineHeadTailByMode(2);
-    GROUP_AB_JMPTBL_ESQIFF_DeallocateAdsAndLogoLstData();
-    GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(2);
-    GROUP_AB_JMPTBL_ESQPARS_RemoveGroupEntryAndReleaseStrings(1);
-    GROUP_AB_JMPTBL_ESQFUNC_FreeLineTextBuffers();
+    LADFUNC_FreeBannerRectEntries();
+    ESQPARS_ClearAliasStringPointers();
+    ESQIFF2_ClearLineHeadTailByMode(1);
+    ESQIFF2_ClearLineHeadTailByMode(2);
+    ESQIFF_DeallocateAdsAndLogoLstData();
+    ESQPARS_RemoveGroupEntryAndReleaseStrings(2);
+    ESQPARS_RemoveGroupEntryAndReleaseStrings(1);
+    ESQFUNC_FreeLineTextBuffers();
 
     COP1LCH = *(long *)((char *)GfxBase + 38);
 
-    GROUP_AB_JMPTBL_NEWGRID_ShutdownGridResources();
+    NEWGRID_ShutdownGridResources();
 
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_14, 318,
+    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_14, 318,
                                             ESQ_HighlightMsgPort, 34);
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_15, 319,
+    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_15, 319,
                                             ESQ_HighlightReplyPort, 34);
 
     row = 0;
     while (row < 4) {
         col = 0;
         while (col < 3) {
-            GROUP_AB_JMPTBL_GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_16, 329,
+            GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_16, 329,
                 *(long *)(ESQDISP_HighlightBitmapTable + row * stride
                           + (col << 2) + 8),
                 696, (long)WDISP_HighlightRasterHeightPx);
@@ -118,10 +118,10 @@ void CLEANUP_ShutdownSystem(void)
         row++;
     }
 
-    WDISP_WeatherStatusTextPtr = GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0,
+    WDISP_WeatherStatusTextPtr = ESQPARS_ReplaceOwnedString(0,
         WDISP_WeatherStatusTextPtr);
     WDISP_WeatherStatusOverlayTextPtr =
-        GROUP_AE_JMPTBL_ESQPARS_ReplaceOwnedString(0,
+        ESQPARS_ReplaceOwnedString(0,
             WDISP_WeatherStatusOverlayTextPtr);
 
     SetFunction((struct Library *)IntuitionBase, -348,
@@ -134,6 +134,6 @@ void CLEANUP_ShutdownSystem(void)
     if (ESQ_ProcessWindowPtrBackup != 0)
         *(long *)(WDISP_ExecBaseHookPtr + 184) = ESQ_ProcessWindowPtrBackup;
 
-    GROUP_AB_JMPTBL_UNKNOWN2A_Stub0();
+    UNKNOWN2A_Stub0();
     Permit();
 }

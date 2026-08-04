@@ -56,11 +56,11 @@
 #include "esq-exec.h"
 #include "esq-dos.h"
 
-extern void *GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal(long a, long b);
-extern void *GROUP_AG_JMPTBL_STRUCT_AllocWithOwner(void *port, long size);
-extern void GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField(void *p);
-extern void GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(void *port);
-extern short GROUP_AG_JMPTBL_SCRIPT_CheckPathExists(char *path);
+extern void *SIGNAL_CreateMsgPortWithSignal(long a, long b);
+extern void *STRUCT_AllocWithOwner(void *port, long size);
+extern void STRUCT_FreeWithSizeField(void *p);
+extern void IOSTDREQ_CleanupSignalAndMsgport(void *port);
+extern short SCRIPT_CheckPathExists(char *path);
 
 extern void *DISKIO_TrackdiskMsgPortPtr;
 extern struct IOStdReq *DISKIO_TrackdiskIoReqPtr;
@@ -92,9 +92,9 @@ void DISKIO_ProbeDrivesAndAssignPaths(void)
     long err;
     short savedFlags;
 
-    DISKIO_TrackdiskMsgPortPtr = GROUP_AG_JMPTBL_SIGNAL_CreateMsgPortWithSignal(0L, 0L);
+    DISKIO_TrackdiskMsgPortPtr = SIGNAL_CreateMsgPortWithSignal(0L, 0L);
     DISKIO_TrackdiskIoReqPtr = (struct IOStdReq *)
-        GROUP_AG_JMPTBL_STRUCT_AllocWithOwner(DISKIO_TrackdiskMsgPortPtr, 56L);
+        STRUCT_AllocWithOwner(DISKIO_TrackdiskMsgPortPtr, 56L);
 
     for (unit = 0; unit < 4; unit++) {
         (&DISKIO_Drive0WriteProtectedCode)[unit] = 0;
@@ -124,8 +124,8 @@ void DISKIO_ProbeDrivesAndAssignPaths(void)
         }
     }
 
-    GROUP_AG_JMPTBL_STRUCT_FreeWithSizeField(DISKIO_TrackdiskIoReqPtr);
-    GROUP_AG_JMPTBL_IOSTDREQ_CleanupSignalAndMsgport(DISKIO_TrackdiskMsgPortPtr);
+    STRUCT_FreeWithSizeField(DISKIO_TrackdiskIoReqPtr);
+    IOSTDREQ_CleanupSignalAndMsgport(DISKIO_TrackdiskMsgPortPtr);
 
     if (ESQ_MainLoopUiTickEnabledFlag == 0)
         return;
@@ -153,7 +153,7 @@ void DISKIO_ProbeDrivesAndAssignPaths(void)
     }
 
     if (DISKIO_Drive1GfxAssignDoneFlag && DISKIO_DriveWriteProtectStatusCodeDrive1 == 0) {
-        if (GROUP_AG_JMPTBL_SCRIPT_CheckPathExists(DISKIO_PATH_DF1_G_ADS))
+        if (SCRIPT_CheckPathExists(DISKIO_PATH_DF1_G_ADS))
             Execute(DISKIO_CMD_ASSIGN_GFX_DF1, 0L, 0L);
         else
             Execute(DISKIO_CMD_ASSIGN_GFX_PC1, 0L, 0L);

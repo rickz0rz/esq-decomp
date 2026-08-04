@@ -11,7 +11,7 @@
 ; CLOBBERS:
 ;   D0/D6-D7/A3
 ; CALLS:
-;   _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning, DOS_OpenFileWithMode, _MEMORY_AllocateMemory
+;   _GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning, _DOS_OpenFileWithMode, _MEMORY_AllocateMemory
 ; READS:
 ;   _DISKIO_OpenCount, _ESQPARS2_ReadModeFlags, _DISKIO_BufferState+Struct_DiskIoBufferState__BufferSize
 ; WRITES:

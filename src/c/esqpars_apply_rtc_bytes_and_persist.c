@@ -36,7 +36,7 @@
  *            version; see docs/compiler-version.md.
  */
 extern void ESQDISP_NormalizeClockAndRedrawBanner(void *clock);
-extern void ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals(void);
+extern void PARSEINI_WriteRtcFromGlobals(void);
 
 extern short ESQPARS2_ReadModeFlags;
 
@@ -58,6 +58,6 @@ void ESQPARS_ApplyRtcBytesAndPersist(char *rtc)
 
     savedMode = ESQPARS2_ReadModeFlags;
     ESQPARS2_ReadModeFlags = 256;
-    ESQPARS_JMPTBL_PARSEINI_WriteRtcFromGlobals();
+    PARSEINI_WriteRtcFromGlobals();
     ESQPARS2_ReadModeFlags = savedMode;
 }

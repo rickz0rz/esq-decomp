@@ -51,7 +51,7 @@
 #include <exec/memory.h>
 #include "esq-exec.h"
 
-extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size,
+extern void *MEMORY_AllocateMemory(char *who, long line, long size,
                                                  long flags);
 extern void  NEWGRID_RebuildIndexCache(void);
 
@@ -64,10 +64,10 @@ extern char   Global_STR_NEWGRID2_C_4[];
 void NEWGRID2_EnsureBuffersAllocated(void)
 {
     if (NEWGRID2_BufferAllocationFlag) {
-        NEWGRID_SecondaryIndexCachePtr = SCRIPT_JMPTBL_MEMORY_AllocateMemory(
+        NEWGRID_SecondaryIndexCachePtr = MEMORY_AllocateMemory(
             Global_STR_NEWGRID2_C_3, 4153L, 1208L, MEMF_PUBLIC | MEMF_CLEAR);
         NEWGRID_RebuildIndexCache();
-        NEWGRID_EntryTextScratchPtr = SCRIPT_JMPTBL_MEMORY_AllocateMemory(
+        NEWGRID_EntryTextScratchPtr = MEMORY_AllocateMemory(
             Global_STR_NEWGRID2_C_4, 4156L, 1000L, MEMF_PUBLIC | MEMF_CLEAR);
         NEWGRID2_BufferAllocationFlag = 0;
     }

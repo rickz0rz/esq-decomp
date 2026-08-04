@@ -89,12 +89,12 @@ struct LfState {                        /* 24 bytes */
 };
 
 extern void  LOCAVAIL_ResetFilterStateStruct(struct LfState *st);
-extern char *GROUP_AS_JMPTBL_STR_FindCharPtr(char *s, long ch);
-extern long  NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern char *STR_FindCharPtr(char *s, long ch);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern long  LOCAVAIL_AllocNodeArraysForState(struct LfState *st);
-extern long __asm NEWGRID_JMPTBL_MATH_Mulu32(register __d0 long a,
+extern long __asm MATH_Mulu32(register __d0 long a,
                         register __d1 long b);
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
 extern void  LOCAVAIL_FreeResourceChain(struct LfState *st);
 extern void  LOCAVAIL_CopyFilterStateStructRetainRefs(struct LfState *dst,
@@ -129,7 +129,7 @@ long LOCAVAIL_ParseFilterStateFromBuffer(char *buf, struct LfState *dest)
 
     scratch[0] = (char)c;
 
-    if (GROUP_AS_JMPTBL_STR_FindCharPtr(LOCAVAIL_TAG_FV,
+    if (STR_FindCharPtr(LOCAVAIL_TAG_FV,
                                         (long)scratch[0]) == 0) {
         ok = 0;
         goto finish;
@@ -141,7 +141,7 @@ long LOCAVAIL_ParseFilterStateFromBuffer(char *buf, struct LfState *dest)
         scratch[i] = *buf++;
     scratch[i] = 0;
 
-    st.count = NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+    st.count = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
 
     if (LOCAVAIL_AllocNodeArraysForState(&st) == 0) {
         if (st.count != 0)
@@ -162,7 +162,7 @@ long LOCAVAIL_ParseFilterStateFromBuffer(char *buf, struct LfState *dest)
             scratch[j] = *buf++;
         scratch[j] = 0;
 
-        v = NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+        v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
         node->id = (unsigned char)v;
 
         if (node->id == 0 || node->id >= 100) {
@@ -174,7 +174,7 @@ long LOCAVAIL_ParseFilterStateFromBuffer(char *buf, struct LfState *dest)
             scratch[j] = *buf++;
         scratch[j] = 0;
 
-        v = NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+        v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
         node->time = (short)v;
 
         if (node->time <= 0 || node->time >= 0xe11) {
@@ -186,7 +186,7 @@ long LOCAVAIL_ParseFilterStateFromBuffer(char *buf, struct LfState *dest)
             scratch[j] = *buf++;
         scratch[j] = 0;
 
-        v = NEWGRID2_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(scratch);
+        v = PARSE_ReadSignedLongSkipClass3_Alt(scratch);
         node->len = (short)v;
 
         if (node->len <= 0 || node->len >= 100) {
@@ -194,7 +194,7 @@ long LOCAVAIL_ParseFilterStateFromBuffer(char *buf, struct LfState *dest)
             continue;
         }
 
-        node->data = NEWGRID_JMPTBL_MEMORY_AllocateMemory(
+        node->data = MEMORY_AllocateMemory(
                          Global_STR_LOCAVAIL_C_6, 341L, (long)node->len,
                          MEMF_PUBLIC | MEMF_CLEAR);
 

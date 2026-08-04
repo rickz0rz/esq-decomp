@@ -56,7 +56,7 @@ struct NewGridClockData {
 };
 #endif
 
-extern unsigned short NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(
+extern unsigned short ESQ_GetHalfHourSlotIndex(
     struct NewGridClockData *c);
 extern long GCOMMAND_MplexClockOffsetMinutes;
 
@@ -67,7 +67,7 @@ long NEWGRID_ComputeDaySlotFromClockWithOffset(struct NewGridClockData *src)
     long offset;
 
     tmp    = *src;
-    slot   = (long)NEWGRID2_JMPTBL_ESQ_GetHalfHourSlotIndex(&tmp);
+    slot   = (long)ESQ_GetHalfHourSlotIndex(&tmp);
     offset = GCOMMAND_MplexClockOffsetMinutes;
 
     if ((long)tmp.minutes >= 60 - offset

@@ -10,10 +10,10 @@
  *            SAS/C version; see docs/compiler-version.md.
  */
 extern char CTASKS_PATH_QTABLE_INI[];
-extern void GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers(void);
-extern void GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(char *path);
+extern void ESQPARS_ClearAliasStringPointers(void);
+extern void PARSEINI_ParseIniBufferAndDispatch(char *path);
 void DISKIO2_ParseIniFileFromDisk(void)
 {
-    GROUP_AH_JMPTBL_ESQPARS_ClearAliasStringPointers();
-    GROUP_AK_JMPTBL_PARSEINI_ParseIniBufferAndDispatch(CTASKS_PATH_QTABLE_INI);
+    ESQPARS_ClearAliasStringPointers();
+    PARSEINI_ParseIniBufferAndDispatch(CTASKS_PATH_QTABLE_INI);
 }

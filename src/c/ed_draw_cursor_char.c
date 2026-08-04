@@ -56,8 +56,8 @@
  */
 #include "esq-graphics.h"
 
-extern unsigned char GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble(long packed);
-extern unsigned char GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(long packed);
+extern unsigned char LADFUNC_GetPackedPenLowNibble(long packed);
+extern unsigned char LADFUNC_GetPackedPenHighNibble(long packed);
 extern void ED_UpdateCursorPosFromIndex(long index);
 
 extern struct RastPort *Global_REF_RASTPORT_1;
@@ -72,11 +72,11 @@ void ED_DrawCursorChar(void)
     long x;
 
     SetAPen(Global_REF_RASTPORT_1,
-            (long)GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble(
+            (long)LADFUNC_GetPackedPenLowNibble(
                 (long)ED_EditBufferLive[ED_EditCursorOffset]));
 
     SetBPen(Global_REF_RASTPORT_1,
-            (long)GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(
+            (long)LADFUNC_GetPackedPenHighNibble(
                 (long)ED_EditBufferLive[ED_EditCursorOffset]));
 
     ED_UpdateCursorPosFromIndex(ED_EditCursorOffset);

@@ -54,9 +54,9 @@
 #include "esq-exec.h"
 #include <string.h>
 
-extern long  GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(char *path);
+extern long  DISKIO_LoadFileToWorkBuffer(char *path);
 extern char *ESQPARS_ReplaceOwnedString(char *newStr, char *old);
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                     void *p, long size);
 
 extern char *Global_PTR_WORK_BUFFER;
@@ -71,7 +71,7 @@ long GCOMMAND_LoadDefaultTable(void)
     char *buf;
     long  len;
 
-    if (GROUP_AY_JMPTBL_DISKIO_LoadFileToWorkBuffer(
+    if (DISKIO_LoadFileToWorkBuffer(
             GCOMMAND_PATH_DF0_COLON_DIGITAL_NICHE_DOT_DAT_DefaultTable) != -1) {
 
         buf = Global_PTR_WORK_BUFFER;
@@ -84,7 +84,7 @@ long GCOMMAND_LoadDefaultTable(void)
         GCOMMAND_DigitalNicheListingsTemplatePtr =
             ESQPARS_ReplaceOwnedString(Global_PTR_WORK_BUFFER, 0);
 
-        NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_GCOMMAND_C_1, 335L,
+        MEMORY_DeallocateMemory(Global_STR_GCOMMAND_C_1, 335L,
                                                buf, len + 1);
     }
     return 1;

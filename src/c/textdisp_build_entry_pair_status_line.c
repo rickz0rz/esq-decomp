@@ -16,14 +16,14 @@ extern char SCRIPT_AlignedPrefixEmptyD[];
 extern char SCRIPT_AlignedPrefixEmptyE[];
 extern char SCRIPT_SpacerTripleC[];
 
-extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(long row, long kind);
-extern char *TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode(long row, long kind);
-extern long  TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(char *entry, char *aux,
+extern char *ESQDISP_GetEntryAuxPointerByMode(long row, long kind);
+extern char *ESQDISP_GetEntryPointerByMode(long row, long kind);
+extern long  COI_TestEntryWithinTimeWindow(char *entry, char *aux,
                  long slot, long window, long fallback);
-extern char *TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(char *entry, long slot,
+extern char *COI_GetAnimFieldPointerByMode(char *entry, long slot,
                  long mode);
 extern void  STRING_AppendAtNull(char *dst, char *src);
-extern void  TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(char *line, long flag,
+extern void  CLEANUP_BuildAlignedStatusLine(char *line, long flag,
                  long row, long slot, long a, long b);
 extern void  SCRIPT_SetupHighlightEffect(char *line);
 
@@ -35,23 +35,23 @@ void TEXTDISP_BuildEntryPairStatusLine(short flag, short row, short slot)
     char *first;
     char *second;
 
-    aux = TLIBA1_JMPTBL_ESQDISP_GetEntryAuxPointerByMode((long)row,
+    aux = ESQDISP_GetEntryAuxPointerByMode((long)row,
               flag != 0 ? 1 : 2);
-    entry = TLIBA1_JMPTBL_ESQDISP_GetEntryPointerByMode((long)row,
+    entry = ESQDISP_GetEntryPointerByMode((long)row,
               flag != 0 ? 1 : 2);
 
     if (entry == 0 || aux == 0)
         return;
 
-    if (TLIBA1_JMPTBL_COI_TestEntryWithinTimeWindow(entry, aux, (long)slot, 30,
+    if (COI_TestEntryWithinTimeWindow(entry, aux, (long)slot, 30,
             CONFIG_TimeWindowMinutes) == 0)
         return;
 
     if (slot < 1 || slot > 48)
         slot = -1;
 
-    first  = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (long)slot, 2);
-    second = TLIBA1_JMPTBL_COI_GetAnimFieldPointerByMode(entry, (long)slot, 3);
+    first  = COI_GetAnimFieldPointerByMode(entry, (long)slot, 2);
+    second = COI_GetAnimFieldPointerByMode(entry, (long)slot, 3);
 
     if (first != 0) {
         strcpy(line, SCRIPT_AlignedPrefixEmptyD);
@@ -67,7 +67,7 @@ void TEXTDISP_BuildEntryPairStatusLine(short flag, short row, short slot)
         STRING_AppendAtNull(line, second);
     }
 
-    TEXTDISP_JMPTBL_CLEANUP_BuildAlignedStatusLine(line, (long)flag, (long)row,
+    CLEANUP_BuildAlignedStatusLine(line, (long)flag, (long)row,
                                                    (long)slot, 0, 0);
     if (line[0] != 0)
         SCRIPT_SetupHighlightEffect(line);

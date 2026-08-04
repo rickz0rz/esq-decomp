@@ -82,18 +82,18 @@ _GROUP_AI_JMPTBL_TLIBA1_DrawTextWithInsetSegments:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   FORMAT_FormatToBuffer2
+;   _FORMAT_FormatToBuffer2
 ; READS:
 ;   (none observed)
 ; WRITES:
 ;   (none observed)
 ; DESC:
-;   Jump stub to FORMAT_FormatToBuffer2.
+;   Jump stub to _FORMAT_FormatToBuffer2.
 ; NOTES:
 ;   Callable entry point.
 ;------------------------------------------------------------------------------
 _GROUP_AI_JMPTBL_FORMAT_FormatToBuffer2:
-    JMP     FORMAT_FormatToBuffer2
+    JMP     _FORMAT_FormatToBuffer2
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AI_JMPTBL_STR_SkipClass3Chars   (JumpStub_STR_SkipClass3Chars)

@@ -32,7 +32,7 @@
  */
 #include <string.h>
 
-extern void SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(char *s, long max);
+extern void ESQSHARED_ApplyProgramTitleTextFilters(char *s, long max);
 extern char TEXTDISP_PrimarySearchText[];
 extern char TEXTDISP_SecondarySearchText[];
 
@@ -58,9 +58,9 @@ void SCRIPT_SplitAndNormalizeSearchBuffer(char *buf, long len)
 
     p = TEXTDISP_PrimarySearchText;
     if (p && *p)
-        SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(p, 128);
+        ESQSHARED_ApplyProgramTitleTextFilters(p, 128);
 
     p = TEXTDISP_SecondarySearchText;
     if (p && *p)
-        SCRIPT3_JMPTBL_ESQSHARED_ApplyProgramTitleTextFilters(p, 128);
+        ESQSHARED_ApplyProgramTitleTextFilters(p, 128);
 }

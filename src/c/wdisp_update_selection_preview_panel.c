@@ -35,12 +35,12 @@ extern char  WDISP_WeatherStatusCountdown;
 extern short WDISP_WeatherCycleOffsetCount;
 extern long  P_TYPE_WeatherBrushRefreshPendingFlag;
 
-extern short WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice(
+extern short ESQIFF_RenderWeatherStatusBrushSlice(
                  struct GridPanel *panel, char *brush);
-extern void  WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock(char *block);
-extern void  WDISP_JMPTBL_NEWGRID_ResetRowTable(struct GridPanel *panel);
-extern void  WDISP_JMPTBL_BRUSH_FreeBrushList(char **head, long flags);
-extern void  WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad(long mode);
+extern void  GCOMMAND_ExpandPresetBlock(char *block);
+extern void  NEWGRID_ResetRowTable(struct GridPanel *panel);
+extern void  BRUSH_FreeBrushList(char **head, long flags);
+extern void  ESQIFF_QueueIffBrushLoad(long mode);
 
 long WDISP_UpdateSelectionPreviewPanel(struct PreviewCtx *ctx,
                                        struct GridPanel *panel)
@@ -60,24 +60,24 @@ long WDISP_UpdateSelectionPreviewPanel(struct PreviewCtx *ctx,
 
     if (TLIBA1_PreviewSlotRefreshState == 0) {
         TLIBA1_PreviewSlotRenderResult =
-            WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice(panel,
+            ESQIFF_RenderWeatherStatusBrushSlice(panel,
                 WDISP_WeatherStatusBrushListHead);
         if (TLIBA1_PreviewSlotRenderResult != 0)
             TLIBA1_PreviewSlotRefreshState = 7;
         if (WDISP_WeatherStatusBrushListHead != 0) {
-            WDISP_JMPTBL_GCOMMAND_ExpandPresetBlock(
+            GCOMMAND_ExpandPresetBlock(
                 WDISP_WeatherStatusBrushListHead + 0xe8);
-            WDISP_JMPTBL_NEWGRID_ResetRowTable(panel);
+            NEWGRID_ResetRowTable(panel);
         }
     } else if (TLIBA1_PreviewSlotRefreshState == 7) {
         TLIBA1_PreviewSlotRenderResult =
-            WDISP_JMPTBL_ESQIFF_RenderWeatherStatusBrushSlice(panel,
+            ESQIFF_RenderWeatherStatusBrushSlice(panel,
                 WDISP_WeatherStatusBrushListHead);
         panel->visibleLines = -1;
     }
 
     if (TLIBA1_PreviewSlotRenderResult == 0) {
-        WDISP_JMPTBL_BRUSH_FreeBrushList(&WDISP_WeatherStatusBrushListHead, 0);
+        BRUSH_FreeBrushList(&WDISP_WeatherStatusBrushListHead, 0);
 
         /* Zero held in a local, not written as a literal: the original tests it
          * and emits the reload block below, which is unreachable there as well. */
@@ -87,7 +87,7 @@ long WDISP_UpdateSelectionPreviewPanel(struct PreviewCtx *ctx,
                 && WDISP_WeatherStatusCountdown != 0
                 && WDISP_WeatherCycleOffsetCount <= 1
                 && P_TYPE_WeatherBrushRefreshPendingFlag == 0)
-                WDISP_JMPTBL_ESQIFF_QueueIffBrushLoad(2);
+                ESQIFF_QueueIffBrushLoad(2);
         }
 
         TLIBA1_PreviewSlotRefreshState = 8;

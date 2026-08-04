@@ -63,13 +63,13 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
-extern void  SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(long mask,
+extern void  ESQDISP_UpdateStatusMaskAndRefresh(long mask,
                                                                long flag);
 extern long  PARSEINI_CheckCtrlHChange(void);
 extern long  SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte(void);
 extern void  SCRIPT_HandleBrushCommand(void *ctx, char *buf, long len);
 extern void  SCRIPT_ApplyPendingBannerTarget(void);
-extern void  WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight(void);
+extern void  ESQ_SetCopperEffect_OnEnableHighlight(void);
 extern void  TEXTDISP_SetRastForMode(long mode);
 extern void  SCRIPT_ProcessCtrlContextPlaybackTick(void *ctx);
 extern void  TEXTDISP_ResetSelectionAndRefresh(void);
@@ -121,7 +121,7 @@ void SCRIPT_HandleSerialCtrlCmd(void)
 
         if (Global_WORD_CLOCK_SECONDS >= 3) {
             SCRIPT_StatusMaskRefreshPending = 0;
-            SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(32L, 0L);
+            ESQDISP_UpdateStatusMaskAndRefresh(32L, 0L);
         }
     }
 
@@ -190,7 +190,7 @@ void SCRIPT_HandleSerialCtrlCmd(void)
     case 2:
         if ((long)(unsigned char)b != (long)SCRIPT_CTRL_CHECKSUM) {
 
-            SCRIPT3_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(32L, 1L);
+            ESQDISP_UpdateStatusMaskAndRefresh(32L, 1L);
             Global_WORD_CLOCK_SECONDS = Global_REF_CLOCKDATA_STRUCT;
             SCRIPT_CtrlCmdChecksumErrorCount++;
             SCRIPT_StatusMaskRefreshPending = 1;
@@ -201,7 +201,7 @@ void SCRIPT_HandleSerialCtrlCmd(void)
                                       SCRIPT_CTRL_CMD_BUFFER,
                                       (long)SCRIPT_CTRL_READ_INDEX);
             SCRIPT_ApplyPendingBannerTarget();
-            WDISP_JMPTBL_ESQ_SetCopperEffect_OnEnableHighlight();
+            ESQ_SetCopperEffect_OnEnableHighlight();
             TEXTDISP_SetRastForMode(0L);
 
         } else if (TEXTDISP_DeferredActionCountdown == 0

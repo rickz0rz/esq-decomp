@@ -49,9 +49,9 @@
 #include <exec/memory.h>
 #include "esq-exec.h"
 
-extern void *ESQIFF_JMPTBL_MEMORY_AllocateMemory(char *who, long line, long size,
+extern void *MEMORY_AllocateMemory(char *who, long line, long size,
                                                  long flags);
-extern void ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt();
+extern void ESQ_HandleSerialRbfInterrupt();
 
 extern struct Interrupt *Global_REF_INTERRUPT_STRUCT_INTB_RBF;
 extern char Global_STR_ESQFUNC_C_3[];
@@ -63,19 +63,19 @@ extern char Global_STR_ESQFUNC_C_4[];
 void SETUP_INTERRUPT_INTB_RBF(void)
 {
     Global_REF_INTERRUPT_STRUCT_INTB_RBF = (struct Interrupt *)
-        ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_3, 1195L,
+        MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_3, 1195L,
                                             (long)sizeof(struct Interrupt),
                                             MEMF_PUBLIC);
 
     Global_REF_INTB_RBF_64K_BUFFER = (char *)
-        ESQIFF_JMPTBL_MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_4, 1197L, 64000L,
+        MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_4, 1197L, 64000L,
                                             MEMF_PUBLIC | MEMF_CLEAR);
 
     Global_REF_INTERRUPT_STRUCT_INTB_RBF->is_Node.ln_Type = 2;
     Global_REF_INTERRUPT_STRUCT_INTB_RBF->is_Node.ln_Pri = 0;
     Global_REF_INTERRUPT_STRUCT_INTB_RBF->is_Node.ln_Name = Global_STR_RS232_RECEIVE_HANDLER;
     Global_REF_INTERRUPT_STRUCT_INTB_RBF->is_Data = Global_REF_INTB_RBF_64K_BUFFER;
-    Global_REF_INTERRUPT_STRUCT_INTB_RBF->is_Code = ESQFUNC_JMPTBL_ESQ_HandleSerialRbfInterrupt;
+    Global_REF_INTERRUPT_STRUCT_INTB_RBF->is_Code = ESQ_HandleSerialRbfInterrupt;
 
     Global_REF_INTB_RBF_INTERRUPT =
         SetIntVector(11L, Global_REF_INTERRUPT_STRUCT_INTB_RBF);

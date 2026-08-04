@@ -1,5 +1,5 @@
-    XDEF    CLOCK_CheckDateOrSecondsFromEpoch
-    XDEF    CLOCK_SecondsFromEpoch
+    XDEF    _CLOCK_CheckDateOrSecondsFromEpoch
+    XDEF    _CLOCK_SecondsFromEpoch
     XDEF    PARALLEL_CheckReady
     XDEF    PARALLEL_CheckReadyStub
     XDEF    PARALLEL_RawDoFmt
@@ -11,7 +11,7 @@
     XDEF    PARALLEL_WriteStringLoop
 
 ;------------------------------------------------------------------------------
-; FUNC: CLOCK_CheckDateOrSecondsFromEpoch   (CheckDateOrSecondsFromEpochuncertain)
+; FUNC: _CLOCK_CheckDateOrSecondsFromEpoch   (CheckDateOrSecondsFromEpochuncertain)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -29,7 +29,7 @@
 ; NOTES:
 ;   The return semantics of CheckDate are treated as-is; callers interpret D0.
 ;------------------------------------------------------------------------------
-CLOCK_CheckDateOrSecondsFromEpoch:
+_CLOCK_CheckDateOrSecondsFromEpoch:
     MOVE.L  A6,-(A7)
 
     SetOffsetForStack 1
@@ -44,7 +44,7 @@ CLOCK_CheckDateOrSecondsFromEpoch:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: CLOCK_SecondsFromEpoch
+; FUNC: _CLOCK_SecondsFromEpoch
 ; ARGS:
 ;   stack +4: clockData (ClockDatauncertain)
 ; RET:
@@ -62,7 +62,7 @@ CLOCK_CheckDateOrSecondsFromEpoch:
 ; NOTES:
 ;   Assumes input was already validated.
 ;------------------------------------------------------------------------------
-CLOCK_SecondsFromEpoch:
+_CLOCK_SecondsFromEpoch:
     MOVE.L  A6,-(A7)
 
     MOVEA.L _Global_REF_UTILITY_LIBRARY,A6

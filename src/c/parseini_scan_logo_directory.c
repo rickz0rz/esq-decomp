@@ -78,17 +78,17 @@
 #define MEMF_PUBLIC 1L
 #define MEMF_CLEAR  0x10000L
 
-extern long  PARSEINI_JMPTBL_HANDLE_OpenWithMode(char *path, char *mode);
-extern long  PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(char *buf, long limit,
+extern long  HANDLE_OpenWithMode(char *path, char *mode);
+extern long  STREAM_ReadLineWithLimit(char *buf, long limit,
                                                       long handle);
-extern char *PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(char *s);
-extern void *SCRIPT_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern char *GCOMMAND_FindPathSeparator(char *s);
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                  long size, long flags);
-extern void  SCRIPT_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                    void *p, long size);
-extern long  PARSEINI_JMPTBL_STRING_CompareNoCase(char *a, char *b);
-extern void  PARSEINI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
-extern void  PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(long handle);
+extern long  STRING_CompareNoCase(char *a, char *b);
+extern void  STRING_AppendAtNull(char *dst, char *src);
+extern void  UNKNOWN36_FinalizeRequest(long handle);
 
 extern char Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK[];
 extern char Global_STR_DELETE_NIL_DH2_LOGOS[];
@@ -125,13 +125,13 @@ void PARSEINI_ScanLogoDirectory(void)
 
     Execute(Global_STR_LIST_RAM_LOGODIR_TXT_DH2_LOGOS_NOHEAD_QUICK, 0L, 0L);
 
-    ph = PARSEINI_JMPTBL_HANDLE_OpenWithMode(
+    ph = HANDLE_OpenWithMode(
              PARSEINI_PATH_DF0_COLON_LOGO_DOT_LST,
              PARSEINI_STR_RB_LogoListPrimary);
     if (ph == 0)
         primaryOk = 0;
 
-    sh = PARSEINI_JMPTBL_HANDLE_OpenWithMode(
+    sh = HANDLE_OpenWithMode(
              PARSEINI_PATH_RAM_COLON_LOGODIR_DOT_TXT,
              PARSEINI_STR_RB_LogoListSecondary);
     if (sh == 0)
@@ -140,7 +140,7 @@ void PARSEINI_ScanLogoDirectory(void)
     n = 0;
     while (primaryOk != 0 && n < 100) {
 
-        primaryOk = PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(line, 99L, ph);
+        primaryOk = STREAM_ReadLineWithLimit(line, 99L, ph);
 
         len = strlen(line);
         for (j = 0; j < len; j++) {
@@ -148,9 +148,9 @@ void PARSEINI_ScanLogoDirectory(void)
                 line[j] = 0;
         }
 
-        p = PARSEINI_JMPTBL_GCOMMAND_FindPathSeparator(line);
+        p = GCOMMAND_FindPathSeparator(line);
 
-        primary[n] = SCRIPT_JMPTBL_MEMORY_AllocateMemory(
+        primary[n] = MEMORY_AllocateMemory(
                          Global_STR_PARSEINI_C_4, 1263L, strlen(p) + 1,
                          MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -161,7 +161,7 @@ void PARSEINI_ScanLogoDirectory(void)
     n = 0;
     while (secondaryOk != 0 && n < 100) {
 
-        secondaryOk = PARSEINI_JMPTBL_STREAM_ReadLineWithLimit(line, 99L, sh);
+        secondaryOk = STREAM_ReadLineWithLimit(line, 99L, sh);
 
         len = strlen(line);
         for (j = 0; j < len; j++) {
@@ -169,7 +169,7 @@ void PARSEINI_ScanLogoDirectory(void)
                 line[j] = 0;
         }
 
-        secondary[n] = SCRIPT_JMPTBL_MEMORY_AllocateMemory(
+        secondary[n] = MEMORY_AllocateMemory(
                            Global_STR_PARSEINI_C_5, 1287L, strlen(line) + 1,
                            MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -182,7 +182,7 @@ void PARSEINI_ScanLogoDirectory(void)
         matched = 0;
 
         for (j = 0; primary[j] != 0; j++) {
-            if (PARSEINI_JMPTBL_STRING_CompareNoCase(secondary[i],
+            if (STRING_CompareNoCase(secondary[i],
                                                      primary[j]) == 0)
                 matched = 1;
         }
@@ -190,23 +190,23 @@ void PARSEINI_ScanLogoDirectory(void)
         if (matched == 0) {
             memcpy(delCmd, Global_STR_DELETE_NIL_DH2_LOGOS, 24);
             delCmd[24] = 0;
-            PARSEINI_JMPTBL_STRING_AppendAtNull(delCmd, secondary[i]);
+            STRING_AppendAtNull(delCmd, secondary[i]);
             Execute(delCmd, 0L, 0L);
         }
 
-        SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_PARSEINI_C_6, 1323L,
+        MEMORY_DeallocateMemory(Global_STR_PARSEINI_C_6, 1323L,
                                               secondary[i],
                                               strlen(secondary[i]) + 1);
     }
 
     for (i = 0; primary[i] != 0; i++)
-        SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_PARSEINI_C_7, 1329L,
+        MEMORY_DeallocateMemory(Global_STR_PARSEINI_C_7, 1329L,
                                               primary[i],
                                               strlen(primary[i]) + 1);
 
     if (ph != 0)
-        PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(ph);
+        UNKNOWN36_FinalizeRequest(ph);
 
     if (sh != 0)
-        PARSEINI_JMPTBL_UNKNOWN36_FinalizeRequest(sh);
+        UNKNOWN36_FinalizeRequest(sh);
 }

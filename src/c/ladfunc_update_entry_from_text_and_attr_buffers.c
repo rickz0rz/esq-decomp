@@ -27,9 +27,9 @@ extern char Global_STR_LADFUNC_C_29[];
 extern char Global_STR_LADFUNC_C_30[];
 
 extern void  LADFUNC_RepackEntryTextAndAttrBuffers(char *text, char *attr);
-extern char *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern char *MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                     char *ptr, long size);
 extern char *ESQPARS_ReplaceOwnedString(char *src, char *owned);
 
@@ -42,7 +42,7 @@ void LADFUNC_UpdateEntryFromTextAndAttrBuffers(long index, char *text,
 
     if (LADFUNC_EntryPtrTable[index] == 0) {
         LADFUNC_EntryPtrTable[index] = (struct LadEntry *)
-            NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_28, 1362,
+            MEMORY_AllocateMemory(Global_STR_LADFUNC_C_28, 1362,
                 14, MEMF_PUBLIC + MEMF_CLEAR);
         if (LADFUNC_EntryPtrTable[index] != 0) {
             LADFUNC_EntryPtrTable[index]->flags0 = 0;
@@ -62,12 +62,12 @@ void LADFUNC_UpdateEntryFromTextAndAttrBuffers(long index, char *text,
         LADFUNC_EntryPtrTable[index]->text);
 
     if (len != 0 && LADFUNC_EntryPtrTable[index]->attr != 0)
-        NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_29, 1386,
+        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_29, 1386,
             LADFUNC_EntryPtrTable[index]->attr, len);
 
     len = strlen(LADFUNC_EntryPtrTable[index]->text);
     LADFUNC_EntryPtrTable[index]->attr =
-        NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_30, 1389, len,
+        MEMORY_AllocateMemory(Global_STR_LADFUNC_C_30, 1389, len,
             MEMF_PUBLIC + MEMF_CLEAR);
 
     if (LADFUNC_EntryPtrTable[index]->attr == 0)

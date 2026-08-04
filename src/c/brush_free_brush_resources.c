@@ -12,7 +12,7 @@
 struct BrushRes { char pad[234]; struct BrushRes *next; };
 struct BrushResHead { struct BrushRes *first; };
 extern char Global_STR_BRUSH_C_9[];
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
+extern void MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
 void BRUSH_FreeBrushResources(struct BrushResHead *h)
 {
     struct BrushRes *next = 0;
@@ -20,7 +20,7 @@ void BRUSH_FreeBrushResources(struct BrushResHead *h)
 
     while (cur != 0) {
         next = cur->next;
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_9, 887, cur, 238);
+        MEMORY_DeallocateMemory(Global_STR_BRUSH_C_9, 887, cur, 238);
         cur = next;
     }
     h->first = 0;

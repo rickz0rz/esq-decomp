@@ -31,8 +31,8 @@
  *   summary: 4EBA against 6100 for the seven cross-unit calls.
  */
 extern void ESQFUNC_WaitForClockChangeAndServiceUi(void);
-extern char ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
-extern long ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern char SCRIPT_ReadNextRbfByte(void);
+extern long PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 extern char ESQIFF_RecordChecksumByte;
 
 long ESQIFF2_ReadSerialSizedTextRecord(char *buf, long size)
@@ -50,26 +50,26 @@ long ESQIFF2_ReadSerialSizedTextRecord(char *buf, long size)
     pos = 0;
     while (count < size && count < 0x2328) {
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        buf[pos] = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        buf[pos] = SCRIPT_ReadNextRbfByte();
         count++;
         pos++;
     }
 
     buf[pos] = 0;
-    want = ESQPARS_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(buf);
+    want = PARSE_ReadSignedLongSkipClass3_Alt(buf);
     buf[pos] = ' ';
 
     count = 0;
     while (buf[pos - 1] && count < want && (unsigned short)pos < 0x2328) {
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        buf[pos] = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        buf[pos] = SCRIPT_ReadNextRbfByte();
         count++;
         pos++;
     }
 
     if (buf[pos - 1] == 0 && count == want) {
         ESQFUNC_WaitForClockChangeAndServiceUi();
-        ESQIFF_RecordChecksumByte = ESQPARS_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        ESQIFF_RecordChecksumByte = SCRIPT_ReadNextRbfByte();
     } else {
         pos = 0;
         buf[0] = 0;

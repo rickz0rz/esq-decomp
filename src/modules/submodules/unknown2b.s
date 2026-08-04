@@ -1,16 +1,16 @@
     XDEF    _STREAM_BufferedGetc
     XDEF    _STREAM_BufferedPutcOrFlush
-    XDEF    STREAM_BufferedWriteString
-    XDEF    GRAPHICS_AllocRaster
-    XDEF    GRAPHICS_FreeRaster
+    XDEF    _STREAM_BufferedWriteString
+    XDEF    _GRAPHICS_AllocRaster
+    XDEF    _GRAPHICS_FreeRaster
     XDEF    DOS_MovepWordReadCallback
-    XDEF    DOS_OpenFileWithMode
+    XDEF    _DOS_OpenFileWithMode
     XDEF    ESQ_MainEntryNoOpHook
     XDEF    ESQ_MainExitNoOpHook
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GRAPHICS_AllocRaster   (AllocRaster wrapper)
+; FUNC: _GRAPHICS_AllocRaster   (AllocRaster wrapper)
 ; ARGS:
 ;   stack +16: D7 = width
 ;   stack +20: D6 = height
@@ -29,7 +29,7 @@
 ; NOTES:
 ;   Thin wrapper used by brush/display setup code.
 ;------------------------------------------------------------------------------
-GRAPHICS_AllocRaster:
+_GRAPHICS_AllocRaster:
     LINK.W  A5,#-4
     MOVEM.L D6-D7,-(A7)
     MOVE.L  16(A5),D7   ; Width
@@ -46,7 +46,7 @@ GRAPHICS_AllocRaster:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: GRAPHICS_FreeRaster   (FreeRaster wrapper)
+; FUNC: _GRAPHICS_FreeRaster   (FreeRaster wrapper)
 ; ARGS:
 ;   stack +16: A3 = raster pointer
 ;   stack +20: D7 = width
@@ -64,9 +64,9 @@ GRAPHICS_AllocRaster:
 ; DESC:
 ;   Frees a raster via graphics.library.
 ; NOTES:
-;   Thin wrapper paired with GRAPHICS_AllocRaster.
+;   Thin wrapper paired with _GRAPHICS_AllocRaster.
 ;------------------------------------------------------------------------------
-GRAPHICS_FreeRaster:
+_GRAPHICS_FreeRaster:
     LINK.W  A5,#0
     MOVEM.L D6-D7/A3,-(A7)
 
@@ -86,7 +86,7 @@ GRAPHICS_FreeRaster:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: DOS_OpenFileWithMode   (DOS Open wrapper)
+; FUNC: _DOS_OpenFileWithMode   (DOS Open wrapper)
 ; ARGS:
 ;   stack +8: A3 = filename pointer
 ;   stack +12: D7 = access mode
@@ -105,7 +105,7 @@ GRAPHICS_FreeRaster:
 ; NOTES:
 ;   Direct pass-through to dos.library Open(name, mode).
 ;------------------------------------------------------------------------------
-DOS_OpenFileWithMode:
+_DOS_OpenFileWithMode:
     MOVEM.L D2/D6-D7/A3,-(A7)
 
     SetOffsetForStack 4
@@ -172,7 +172,7 @@ ESQ_MainExitNoOpHook:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: STREAM_BufferedWriteString   (Buffered write of stringuncertain)
+; FUNC: _STREAM_BufferedWriteString   (Buffered write of stringuncertain)
 ; ARGS:
 ;   stack +8: A3 = string pointer
 ; RET:
@@ -192,7 +192,7 @@ ESQ_MainExitNoOpHook:
 ; NOTES:
 ;   Uses a byte-at-a-time loop until NUL.
 ;------------------------------------------------------------------------------
-STREAM_BufferedWriteString:
+_STREAM_BufferedWriteString:
     MOVEM.L D6-D7/A3,-(A7)
 
     SetOffsetForStack 3

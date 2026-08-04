@@ -34,22 +34,22 @@ extern short NEWGRID_PrimeTimeLayoutEnable;
 extern char  Global_STR_NEWGRID2_C_1[];
 extern char  Global_STR_NEWGRID2_C_2[];
 
-extern void  NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(long width, long lead,
+extern void  DISPTEXT_SetLayoutParams(long width, long lead,
                                                       long pen);
 extern short NEWGRID_TestPrimeTimeWindow(long slot, char *entry);
 extern void  NEWGRID_DrawGridEntry(struct RastPort *rp, char *entry, char *aux,
                                    long slot, long mode, long flag, long pen);
-extern char *SCRIPT_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern char *MEMORY_AllocateMemory(char *who, long line,
                                                  long size, long flags);
-extern void  SCRIPT_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                    char *ptr, long size);
-extern void  NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(long index);
+extern void  DISPTEXT_SetCurrentLineIndex(long index);
 extern void  NEWGRID_AppendShowtimesForRow(struct GridPanel *panel,
                  struct ShowtimesCtx *ctx, char *buf, long extra);
-extern void  NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(struct RastPort *rp,
+extern void  DISPTEXT_LayoutAndAppendToBuffer(struct RastPort *rp,
                                                               char *buf);
 extern long  NEWGRID_DrawGridFrameVariant4(struct GridPanel *panel);
-extern long  NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(long mode);
+extern long  DISPTEXT_ComputeVisibleLineCount(long mode);
 
 long NEWGRID2_ProcessGridState(struct GridPanel *panel, struct ShowtimesCtx *ctx,
                                long extra)
@@ -71,7 +71,7 @@ long NEWGRID2_ProcessGridState(struct GridPanel *panel, struct ShowtimesCtx *ctx
         if (ctx->aux == 0)
             return NEWGRID_RenderStateLatch;
 
-        NEWGRID2_JMPTBL_DISPTEXT_SetLayoutParams(612, 20, 1);
+        DISPTEXT_SetLayoutParams(612, 20, 1);
 
         slot = ctx->selector;
         if (slot > 48)
@@ -85,20 +85,20 @@ long NEWGRID2_ProcessGridState(struct GridPanel *panel, struct ShowtimesCtx *ctx
             NEWGRID_DrawGridEntry(&panel->rp, ctx->entry, ctx->aux, (long)slot,
                                   3, 1, 3);
 
-        buf = SCRIPT_JMPTBL_MEMORY_AllocateMemory(Global_STR_NEWGRID2_C_1, 3947,
+        buf = MEMORY_AllocateMemory(Global_STR_NEWGRID2_C_1, 3947,
                   2000, MEMF_PUBLIC + MEMF_CLEAR);
         if (buf != 0) {
-            NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex(3);
+            DISPTEXT_SetCurrentLineIndex(3);
             NEWGRID_AppendShowtimesForRow(panel, ctx, buf, extra);
-            NEWGRID2_JMPTBL_DISPTEXT_LayoutAndAppendToBuffer(&panel->rp, buf);
-            SCRIPT_JMPTBL_MEMORY_DeallocateMemory(Global_STR_NEWGRID2_C_2, 3953,
+            DISPTEXT_LayoutAndAppendToBuffer(&panel->rp, buf);
+            MEMORY_DeallocateMemory(Global_STR_NEWGRID2_C_2, 3953,
                                                   buf, 2000);
         }
 
         NEWGRID_RenderStateLatch =
             NEWGRID_DrawGridFrameVariant4(panel) ? 4 : 5;
         panel->visibleLines =
-            NEWGRID2_JMPTBL_DISPTEXT_ComputeVisibleLineCount(2);
+            DISPTEXT_ComputeVisibleLineCount(2);
         break;
 
     case 5:

@@ -109,20 +109,20 @@ extern short ED_DiagnosticsScreenActive;
 extern struct RastPort *Global_REF_RASTPORT_1;
 extern char  BRUSH_SnapshotHeader[];
 
-extern void  GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(long mask,
+extern void  ESQDISP_UpdateStatusMaskAndRefresh(long mask,
                                                                 long mode);
-extern void  GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi(void);
-extern unsigned char GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte(void);
-extern char  GROUP_AH_JMPTBL_ESQ_WildcardMatch(char *pattern, char *text);
-extern void  GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay(long kind);
-extern long  GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3(char *s);
-extern void  GROUP_AG_JMPTBL_STRING_CopyPadNul(char *dst, char *src, long n);
-extern long  GROUP_AG_JMPTBL_DOS_OpenFileWithMode(char *name, long mode);
-extern void  GROUP_AI_JMPTBL_STRING_AppendAtNull(char *dst, char *src);
-extern void  GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, long a, long b);
-extern void *GROUP_AG_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void  ESQFUNC_WaitForClockChangeAndServiceUi(void);
+extern unsigned char SCRIPT_ReadNextRbfByte(void);
+extern char  ESQ_WildcardMatch(char *pattern, char *text);
+extern void  ESQIFF2_ShowAttentionOverlay(long kind);
+extern long  PARSE_ReadSignedLongSkipClass3(char *s);
+extern void  STRING_CopyPadNul(char *dst, char *src, long n);
+extern long  DOS_OpenFileWithMode(char *name, long mode);
+extern void  STRING_AppendAtNull(char *dst, char *src);
+extern void  WDISP_SPrintf(char *dst, char *fmt, long a, long b);
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
-extern void  GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                      void *p, long size);
 extern void  DISPLIB_DisplayTextAtPosition(struct RastPort *rp, long x, long y,
                                            char *text);
@@ -151,7 +151,7 @@ long DISKIO2_HandleInteractiveFileTransfer(char mode)
     unsigned char count;
     unsigned char b;
 
-    GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(4L, 1L);
+    ESQDISP_UpdateStatusMaskAndRefresh(4L, 1L);
     ok = 1;
     count = 0;
 
@@ -160,20 +160,20 @@ long DISKIO2_HandleInteractiveFileTransfer(char mode)
     else
         DISKIO2_TransferXorChecksumByte = 0xb7;
 
-    GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+    ESQFUNC_WaitForClockChangeAndServiceUi();
 
     while (count < 0x1f) {
-        b = GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        b = SCRIPT_ReadNextRbfByte();
         if (b == 0)
             break;
         DISKIO2_TransferFilenameBuffer[count++] = b;
         DISKIO2_TransferXorChecksumByte = DISKIO2_TransferXorChecksumByte ^ b;
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
     }
     DISKIO2_TransferFilenameBuffer[count] = 0;
 
     if (count == 13 &&
-        GROUP_AH_JMPTBL_ESQ_WildcardMatch(DISKIO2_TransferFilenameExtPtr,
+        ESQ_WildcardMatch(DISKIO2_TransferFilenameExtPtr,
                                           CTASKS_EXT_GRF) == 0) {
         ok = 0;
         if (ED_DiagnosticsScreenActive != 0)
@@ -183,7 +183,7 @@ long DISKIO2_HandleInteractiveFileTransfer(char mode)
 
     /* Stage into RAM: by overwriting the arriving volume prefix. */
     strcpy(targetPath, DISKIO2_TransferFilenameBuffer);
-    GROUP_AG_JMPTBL_STRING_CopyPadNul(targetPath, Global_STR_RAM, 4L);
+    STRING_CopyPadNul(targetPath, Global_STR_RAM, 4L);
 
     if (ED_DiagnosticsScreenActive != 0) {
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40L, 180L,
@@ -192,63 +192,63 @@ long DISKIO2_HandleInteractiveFileTransfer(char mode)
                                       DISKIO2_TransferFilenameBuffer);
     }
 
-    GROUP_AG_JMPTBL_STRING_CopyPadNul(volName, DISKIO2_TransferFilenameBuffer,
+    STRING_CopyPadNul(volName, DISKIO2_TransferFilenameBuffer,
                                       4L);
     volName[4] = 0;
 
     if (mode != 0) {
         count = 0;
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
         while (count < 8) {
-            b = GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+            b = SCRIPT_ReadNextRbfByte();
             if (b == 0)
                 break;
             DISKIO2_TransferSizeTokenBuffer[count++] = b;
             DISKIO2_TransferXorChecksumByte =
                 DISKIO2_TransferXorChecksumByte ^ b;
-            GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
+            ESQFUNC_WaitForClockChangeAndServiceUi();
         }
         DISKIO2_TransferSizeTokenBuffer[count] = 0;
 
         lock = Lock(volName, -2L);
         if (lock != 0) {
-            info = (struct InfoData *)GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+            info = (struct InfoData *)MEMORY_AllocateMemory(
                 Global_STR_DISKIO2_C_24, 1312, (long)sizeof(struct InfoData),
                 MEMF_CLEAR);
             if (info != 0) {
                 if (Info(lock, info) != 0)
                     freeSpace = ((0x6deL - info->id_NumBlocksUsed) << 8) * 2 -
                                 0x1000;
-                GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(
+                MEMORY_DeallocateMemory(
                     Global_STR_DISKIO2_C_25, 1318, info,
                     (long)sizeof(struct InfoData));
             }
             UnLock(lock);
         }
 
-        requestedSize = GROUP_AH_JMPTBL_PARSE_ReadSignedLongSkipClass3(
+        requestedSize = PARSE_ReadSignedLongSkipClass3(
             DISKIO2_TransferSizeTokenBuffer);
         if (requestedSize > freeSpace) {
             strcpy(BRUSH_SnapshotHeader, DISKIO2_TransferFilenameBuffer);
-            GROUP_AH_JMPTBL_ESQIFF2_ShowAttentionOverlay(2L);
+            ESQIFF2_ShowAttentionOverlay(2L);
             DISKIO2_InteractiveTransferArmedFlag = 0;
-            GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(4L, 0L);
+            ESQDISP_UpdateStatusMaskAndRefresh(4L, 0L);
             return -2;
         }
     }
 
-    GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-    ESQIFF_RecordChecksumByte = GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+    ESQFUNC_WaitForClockChangeAndServiceUi();
+    ESQIFF_RecordChecksumByte = SCRIPT_ReadNextRbfByte();
     if (ESQIFF_RecordChecksumByte != DISKIO2_TransferXorChecksumByte)
         goto clearOverlay;
     if (ok != 1)
         goto clearOverlay;
 
-    DISKIO_WriteFileHandle = GROUP_AG_JMPTBL_DOS_OpenFileWithMode(targetPath,
+    DISKIO_WriteFileHandle = DOS_OpenFileWithMode(targetPath,
                                                                  MODE_NEWFILE);
     if (DISKIO_WriteFileHandle == 0) {
         DISKIO_DrawTransferErrorMessageIfDiagnostics(5L);
-        GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(4L, 0L);
+        ESQDISP_UpdateStatusMaskAndRefresh(4L, 0L);
         return -1;
     }
 
@@ -256,24 +256,24 @@ long DISKIO2_HandleInteractiveFileTransfer(char mode)
     ESQPARS2_ReadModeFlags = 0x100;
     DISKIO2_TransferCrcErrorCount = 0;
     DISKIO2_TransferBlockSequence = 0;
-    DISKIO2_TransferBlockBufferPtr = GROUP_AG_JMPTBL_MEMORY_AllocateMemory(
+    DISKIO2_TransferBlockBufferPtr = MEMORY_AllocateMemory(
         Global_STR_DISKIO2_C_26, 1389, 4352, MEMF_PUBLIC | MEMF_CLEAR);
     ESQPARS2_ReadModeFlags = DISKIO_SavedReadModeFlags;
     DISKIO2_TransferBufferedByteCount = 0;
 
     for (;;) {
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-        b = GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
+        b = SCRIPT_ReadNextRbfByte();
         if (b != 85)
             continue;
 
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-        b = GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
+        b = SCRIPT_ReadNextRbfByte();
         if (b != 170)
             continue;
 
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-        b = GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
+        b = SCRIPT_ReadNextRbfByte();
 
         if (b == 72 || b == 61) {
             if (b == 61)
@@ -288,16 +288,16 @@ long DISKIO2_HandleInteractiveFileTransfer(char mode)
 
         if (b != 187)
             continue;
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-        b = GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
+        b = SCRIPT_ReadNextRbfByte();
         if (b != 187)
             continue;
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-        b = GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
+        b = SCRIPT_ReadNextRbfByte();
         if (b != 0)
             continue;
-        GROUP_AH_JMPTBL_ESQFUNC_WaitForClockChangeAndServiceUi();
-        b = GROUP_AH_JMPTBL_SCRIPT_ReadSerialRbfByte();
+        ESQFUNC_WaitForClockChangeAndServiceUi();
+        b = SCRIPT_ReadNextRbfByte();
         if (b != 255)
             continue;
         result = 4;
@@ -307,7 +307,7 @@ long DISKIO2_HandleInteractiveFileTransfer(char mode)
     DISKIO_SavedReadModeFlags = ESQPARS2_ReadModeFlags;
     ESQPARS2_ReadModeFlags = 0x100;
     Close(DISKIO_WriteFileHandle);
-    GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_27, 1499,
+    MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_27, 1499,
                                             DISKIO2_TransferBlockBufferPtr,
                                             4352);
 
@@ -330,10 +330,10 @@ long DISKIO2_HandleInteractiveFileTransfer(char mode)
         *cd++ = *cs++;
         *cd++ = *cs++;
 
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(cmdLine, targetPath);
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(
+        STRING_AppendAtNull(cmdLine, targetPath);
+        STRING_AppendAtNull(
             cmdLine, DISKIO2_STR_ShellCommandArgSeparator);
-        GROUP_AI_JMPTBL_STRING_AppendAtNull(cmdLine,
+        STRING_AppendAtNull(cmdLine,
                                             DISKIO2_TransferFilenameBuffer);
         Execute(cmdLine, 0L, 0L);
         DeleteFile(targetPath);
@@ -351,14 +351,14 @@ long DISKIO2_HandleInteractiveFileTransfer(char mode)
 
 clearOverlay:
     DISKIO2_InteractiveTransferArmedFlag = 0;
-    GROUP_AH_JMPTBL_ESQDISP_UpdateStatusMaskAndRefresh(4L, 0L);
+    ESQDISP_UpdateStatusMaskAndRefresh(4L, 0L);
 
     if (ED_DiagnosticsScreenActive != 0) {
         usage = DISKIO_QueryDiskUsagePercentAndSetBufferSize(
             DISKIO2_DiagnosticsDiskUsagePercentBuffer);
         softErrors = DISKIO_QueryVolumeSoftErrorCount(
             DISKIO2_DiagnosticsSoftErrorCountBuffer);
-        GROUP_AM_JMPTBL_WDISP_SPrintf(
+        WDISP_SPrintf(
             targetPath, Global_STR_DISK_0_IS_FULL_WITH_ERRORS_FORMATTED, usage,
             softErrors);
         DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40L, 90L,

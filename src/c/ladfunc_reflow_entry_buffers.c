@@ -62,11 +62,11 @@
 #define MEMF_PUBLIC 1L
 #define MEMF_CLEAR  0x10000L
 
-extern void *NEWGRID_JMPTBL_MEMORY_AllocateMemory(char *who, long line,
+extern void *MEMORY_AllocateMemory(char *who, long line,
                                                   long size, long flags);
-extern void  NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                     void *p, long size);
-extern long __asm NEWGRID_JMPTBL_MATH_DivS32(register __d0 long a,
+extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
 
 extern long ED_TextLimit;
@@ -96,11 +96,11 @@ void LADFUNC_ReflowEntryBuffers(char *text, char *attr)
 
     srcLen = strlen(text);
 
-    textCopy = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_20,
+    textCopy = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_20,
                                                     1025L, srcLen + 1,
                                                     MEMF_PUBLIC | MEMF_CLEAR);
 
-    attrCopy = NEWGRID_JMPTBL_MEMORY_AllocateMemory(Global_STR_LADFUNC_C_21,
+    attrCopy = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_21,
                                                     1026L, srcLen,
                                                     MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -170,14 +170,14 @@ void LADFUNC_ReflowEntryBuffers(char *text, char *attr)
             if (indent > 0 && pad > 0) {
 
                 k = 0;
-                while (k < NEWGRID_JMPTBL_MATH_DivS32(pad, indent)) {
+                while (k < MATH_DivS32(pad, indent)) {
                     text[outPos] = 32;
                     attr[outPos] = attrByte;
                     k++;
                     outPos++;
                 }
 
-                pad -= NEWGRID_JMPTBL_MATH_DivS32(pad, indent);
+                pad -= MATH_DivS32(pad, indent);
             }
 
             k = 0;
@@ -207,10 +207,10 @@ void LADFUNC_ReflowEntryBuffers(char *text, char *attr)
     }
 
     if (textCopy != 0)
-        NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_22, 1146L,
+        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_22, 1146L,
                                                textCopy, srcLen + 1);
 
     if (attrCopy != 0)
-        NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_23, 1148L,
+        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_23, 1148L,
                                                attrCopy, srcLen);
 }

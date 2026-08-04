@@ -45,9 +45,9 @@ struct NewGridAuxRecord {
     char slots[49];             /* +7, indexed 1..48 */
 };
 
-extern void *NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(long index,
+extern void *ESQDISP_GetEntryPointerByMode(long index,
                                                            long mode);
-extern struct NewGridAuxRecord *NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(
+extern struct NewGridAuxRecord *ESQDISP_GetEntryAuxPointerByMode(
     long index, long mode);
 extern long NEWGRID_TestEntrySelectable(void *entry, void *aux, long mode);
 
@@ -69,8 +69,8 @@ void NEWGRID_ClearMarkersIfSelectable(long mode, short limit)
     for (i = 0; i < TEXTDISP_PrimaryGroupEntryCount
                 && TEXTDISP_PrimaryGroupPresentFlag != 0; i++) {
 
-        entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, 1L);
-        aux   = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, 1L);
+        entry = ESQDISP_GetEntryPointerByMode(i, 1L);
+        aux   = ESQDISP_GetEntryAuxPointerByMode(i, 1L);
 
         if (NEWGRID_TestEntrySelectable(entry, aux, mode))
             for (slot = 1; slot < 49; slot++)
@@ -80,8 +80,8 @@ void NEWGRID_ClearMarkersIfSelectable(long mode, short limit)
     for (i = 0; i < TEXTDISP_SecondaryGroupEntryCount
                 && TEXTDISP_SecondaryGroupPresentFlag != 0; i++) {
 
-        entry = NEWGRID2_JMPTBL_ESQDISP_GetEntryPointerByMode(i, 2L);
-        aux   = NEWGRID2_JMPTBL_ESQDISP_GetEntryAuxPointerByMode(i, 2L);
+        entry = ESQDISP_GetEntryPointerByMode(i, 2L);
+        aux   = ESQDISP_GetEntryAuxPointerByMode(i, 2L);
 
         if (NEWGRID_TestEntrySelectable(entry, aux, mode))
             for (slot = 1; slot < 49; slot++)

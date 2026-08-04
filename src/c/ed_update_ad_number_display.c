@@ -51,7 +51,7 @@
  */
 #include "esq-graphics.h"
 
-extern void GROUP_AM_JMPTBL_WDISP_SPrintf(char *dst, char *fmt, long a);
+extern void WDISP_SPrintf(char *dst, char *fmt, long a);
 extern void DISPLIB_DisplayTextAtPosition(struct RastPort *rp, long x, long y,
                                           char *text);
 extern void ED_UpdateActiveInactiveIndicator(void);
@@ -71,7 +71,7 @@ void ED_UpdateAdNumberDisplay(void)
 {
     char buf[40];
 
-    GROUP_AM_JMPTBL_WDISP_SPrintf(buf, Global_STR_AD_NUMBER_FORMATTED,
+    WDISP_SPrintf(buf, Global_STR_AD_NUMBER_FORMATTED,
                                   Global_REF_LONG_CURRENT_EDITING_AD_NUMBER);
     DISPLIB_DisplayTextAtPosition(Global_REF_RASTPORT_1, 40L, 180L, buf);
 

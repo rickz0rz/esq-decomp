@@ -11,14 +11,14 @@
  */
 struct LocAvailNode3 { char pad[4]; short count; long data; };
 extern char Global_STR_LOCAVAIL_C_1[];
-extern void NEWGRID_JMPTBL_MEMORY_DeallocateMemory(char *who, long line, long ptr, long size);
+extern void MEMORY_DeallocateMemory(char *who, long line, long ptr, long size);
 extern void LOCAVAIL_FreeNodeRecord(struct LocAvailNode3 *n);
 void LOCAVAIL_FreeNodeAtPointer(struct LocAvailNode3 *n)
 {
     if (n == 0)
         return;
     if (n->data != 0 && n->count > 0)
-        NEWGRID_JMPTBL_MEMORY_DeallocateMemory(Global_STR_LOCAVAIL_C_1, 106,
+        MEMORY_DeallocateMemory(Global_STR_LOCAVAIL_C_1, 106,
                                                n->data, (long)n->count);
     LOCAVAIL_FreeNodeRecord(n);
 }

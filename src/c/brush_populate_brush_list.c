@@ -56,7 +56,7 @@ struct BrushDescriptor {
 };
 
 extern struct BrushListNode *BRUSH_LoadBrushAsset(struct BrushDescriptor *d);
-extern void GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(char *who, long line,
+extern void MEMORY_DeallocateMemory(char *who, long line,
                                                     void *p, long size);
 extern void BRUSH_NormalizeBrushNames(struct BrushListNode **head);
 
@@ -84,7 +84,7 @@ void BRUSH_PopulateBrushList(struct BrushDescriptor *desc,
         node = BRUSH_LoadBrushAsset(desc);
         next = desc->next234;
 
-        GROUP_AG_JMPTBL_MEMORY_DeallocateMemory(Global_STR_BRUSH_C_8, 845L,
+        MEMORY_DeallocateMemory(Global_STR_BRUSH_C_8, 845L,
                                                 desc, 238L);
         desc = next;
 

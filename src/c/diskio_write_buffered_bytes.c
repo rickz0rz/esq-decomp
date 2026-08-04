@@ -42,7 +42,7 @@
 struct DiskIoBufferControl { void *BufferBase; long ErrorFlag; };
 struct DiskIoBufferState   { char *BufferPtr; long BufferSize; long Remaining; short SavedF45; };
 
-extern void GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning(void);
+extern void ESQFUNC_ServiceUiTickIfRunning(void);
 extern struct DiskIoBufferControl DISKIO_BufferControl;
 extern struct DiskIoBufferState   DISKIO_BufferState;
 
@@ -62,7 +62,7 @@ long DISKIO_WriteBufferedBytes(BPTR fh, char *src, long len)
     if (fh == 0)                               return 0;
 
     do {
-        GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+        ESQFUNC_ServiceUiTickIfRunning();
 
         do {
             *DISKIO_BufferState.BufferPtr++ = *src++;
@@ -70,7 +70,7 @@ long DISKIO_WriteBufferedBytes(BPTR fh, char *src, long len)
             remaining--;
         } while (DISKIO_BufferState.Remaining != 0 && remaining != 0);
 
-        GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+        ESQFUNC_ServiceUiTickIfRunning();
 
         if (DISKIO_BufferState.Remaining == 0) {
             result = Write(fh, DISKIO_BufferControl.BufferBase,
@@ -82,7 +82,7 @@ long DISKIO_WriteBufferedBytes(BPTR fh, char *src, long len)
             result = total;
             DISKIO_BufferState.BufferPtr = DISKIO_BufferControl.BufferBase;
             DISKIO_BufferState.Remaining = DISKIO_BufferState.BufferSize;
-            GROUP_AG_JMPTBL_ESQFUNC_ServiceUiTickIfRunning();
+            ESQFUNC_ServiceUiTickIfRunning();
         }
     } while (remaining != 0);
 
