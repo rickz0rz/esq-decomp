@@ -212,6 +212,7 @@ modules/submodules/unknown2b_stream_bufferedwritestring.s              c/lib_str
 
 modules/submodules/unknown27_format_buffer2writechar.s                 c/lib_format_buffer2_write_char.c
 modules/submodules/unknown27_format_formattobuffer2.s                  c/lib_format_to_buffer2.c
+modules/submodules/unknown27_p0.s                                      c/lib_format_parse_format_spec.c
 
 # THE VERTICAL-BLANK INTERRUPT SERVER, IN C. gen_all_manifest.py screens this as
 # "entered by the OS with a register convention", and for this function that is
