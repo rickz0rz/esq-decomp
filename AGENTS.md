@@ -1257,12 +1257,68 @@ interpreter. **ESQ is a broadcast receiver.** With no head-end feeding it
 listings, nothing marks data dirty, so nothing is written, and a keyboard-only
 harness cannot reach the write path however it is driven.
 
-So `fileio_esq.sh` is correct and currently has nothing to measure. **The SAS/C
-stdio write layer -- `STREAM_BufferedPutcOrFlush` and `STREAM_BufferedGetc` --
-therefore has NO runtime coverage of any kind, and restoring it would be both
-unverifiable and unexercised.** Getting coverage means driving the SERIAL port
-(`serial_port` in the fs-uae config, ESQ opens it at baud 2400) with RBF
-commands. That is a new harness, not a longer key sequence.
+So `fileio_esq.sh` is correct and has nothing to measure on its own. Coverage
+needs the SERIAL line, which is the next section.
+
+### SOLVED: the serial harness reaches the write path (2026-08-04)
+
+```sh
+tools/serial_esq.sh <binary> <label> [secs]          # drive it, capture the drive
+SELECT=ZZ99999 tools/serial_esq.sh <binary> control   # the wrong-address control
+python3 tools/rbf.py --show --config <file>           # print the frames only
+```
+
+`tools/rbf.py` speaks the RBF protocol and `tools/serial_esq.sh` runs the whole
+thing. **This is the only harness that exercises the SAS/C stdio layer.**
+
+**Measured on `ESQ.known-good-36cf56ed`, 190 seconds, WITH A CONTROL:**
+
+| selection code | files written |
+|---|---:|
+| `GA24005` (right) | **18** -- `config.dat`, `oinfo.dat`, `qtable.ini`, `local.ads`, `nxtday.dat`, `dst.dat`, `curday.dat.*`, `dbg.log`, fonts |
+| `ZZ99999` (wrong) | **0** |
+
+Same binary, same shutdown, same timing, same link. Only the address differs, so
+the writes belong to the frames.
+
+**The wire format, read out of the dispatcher rather than guessed:**
+
+```
+select:  55 AA 'A' <code> 00 <ck>      ck = ('A' ^ FF) ^ XOR(code)
+config:  55 AA 'f' <sub> <hi> <lo> <data> <ck>
+         len = ndata + 1               the dispatcher subtracts one
+         seed = 'f' ^ sub ^ hi ^ lo
+         ck = (seed ^ FF) ^ XOR(data)
+```
+
+`'f'` calls `DISKIO_ParseConfigBuffer` and then `DISKIO_SaveConfigToFileHandle`,
+which is a real write. Until a selection code matches, only `A`, `W` and `w` are
+accepted. **The selection code is `argv[1]`** -- `ESQ_StartupEntry` does
+`strcpy(ESQ_SelectCodeBuffer, argv[1])` and the drive launches `esq GA24005` in
+`S/uv-startup`. The harness reads that file rather than hardcoding it.
+
+**Four things had to be right, and each failed silently first:**
+
+1. **FS-UAE LISTENS on the serial port. Start the emulator FIRST.** Binding
+   `127.0.0.1:1234` from the host makes fs-uae fail with `bind() failed ... 48`
+   and boot with NO serial port. Only the emulator log says so.
+2. **Delete `fs-uae.log.txt` before the run**, as `probe_esq.sh` does. The log
+   sits at 45056 bytes, so a stale one reads as this run's output.
+3. **Stop the emulator with SIGTERM, not SIGKILL.** FS-UAE flushes the log on a
+   clean exit only, so `baud=2400` never appears after a `kill -9`.
+4. **Snapshot the MODIFICATION TIME as well as the hash.** `config.dat` is
+   rewritten byte-identically, so mtime is the only thing that sees the one
+   write that proves the command ran.
+
+**ALWAYS RUN THE WRONG-ADDRESS CONTROL.** The first successful-looking run
+changed two things at once -- the frames landed and the shutdown moved from
+SIGKILL to SIGTERM -- and a clean shutdown can flush writes by itself. The
+control is what separates them.
+
+`serial_esq.sh` exits 2 when no frame went out and 3 when ESQ never reached its
+serial setup. Those are different failures from "the frames were rejected", and
+collapsing them into one verdict is what sent an earlier investigation after the
+floppy drive.
 
 ```sh
 tools/menusweep_esq.sh <binary> <label> [items] [reps]   # all six ESC-menu items
