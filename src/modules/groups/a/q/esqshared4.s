@@ -1,5 +1,9 @@
 
+    XDEF    _ESQSHARED4_StartBannerSweepFromConfigHead
+    XDEF    _ESQSHARED4_StartBannerSweepGuarded
+
     ; Dead code
+_ESQSHARED4_StartBannerSweepFromConfigHead:
     MOVEM.L D0-D1/A0-A4,-(A7)
     MOVE.W  _ESQSHARED_BannerColorModeWord,D0
     BSR.S   _ESQSHARED4_ResetBannerColorSweepState
@@ -17,6 +21,7 @@
 ;!======
 
     ; Dead code.
+_ESQSHARED4_StartBannerSweepGuarded:
     MOVEM.L D0-D1/A0-A4,-(A7)
     MOVE.W  _ESQSHARED_BannerColorModeWord,D0
     BSR.S   _ESQSHARED4_ResetBannerColorSweepState

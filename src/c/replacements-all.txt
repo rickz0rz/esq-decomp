@@ -346,9 +346,11 @@ modules/groups/a/o/esqpars_esqpars_removegroupentryandreleasestrings.s c/esqpars
 modules/groups/a/o/esqpars_esqpars_replaceownedstring.s                c/esqpars_replace_owned_string.c
 modules/groups/a/q/esqshared4_esqshared4_clearbannerworkrasterwithones.s c/esqshared4_clear_banner_work_raster_with_ones.c
 modules/groups/a/q/esqshared4_esqshared4_computebannerrowblitgeometry.s c/esqshared4_compute_banner_row_blit_geometry.c
+modules/groups/a/q/esqshared4_esqshared4_decodergbnibbletriplet.s      c/esqshared4_decode_rgb_nibble_triplet.c
 modules/groups/a/q/esqshared4_esqshared4_loaddefaultpalettetocopper_noop.s c/esqshared4_load_default_palette_noop.c
 modules/groups/a/q/esqshared4_p3_esqshared4_programdisplaywindowandcopper.s c/esqshared4_program_display_window_and_copper.c
 modules/groups/a/q/esqshared4_esqshared4_resetbannercolorsweepstate.s  c/esqshared4_reset_banner_color_sweep_state.c
+modules/groups/a/q/esqshared4_esqshared4_setbannercolorbaseandlimit.s  c/esqshared4_set_banner_color_base_and_limit.c
 modules/groups/a/q/esqshared4_esqshared4_snapshotdisplaybufferbases.s  c/esqshared4_snapshot_display_buffer_bases.c
 modules/groups/a/p/esqshared_esqshared_applyprogramtitletextfilters.s  c/esqshared_apply_program_title_text_filters.c
 modules/groups/a/p/esqshared_p2.s                                      c/esqshared_compress_closed_captioned_tag.c
@@ -845,6 +847,10 @@ modules/groups/a/n/esqdispb_p0_esqdisp_testentrybits0and2_core_esqdisp_testentry
 modules/groups/a/n/esqdispb_p0_p1_p0_esqdisp_drawstatusbanner_impl_esqdisp_drawstatusbanner_impl.s c/esqdispb_p0_p1_p0_esqdisp_drawstatusbanner_impl_esqdisp_drawstatusbanner_impl_merged.c
 modules/groups/a/o/esqiff2_p2.s                                        c/esqiff2_p2_merged.c
 modules/groups/a/p/esqshared_esqshared_replacetvratingtoken_esqshared_replacetvratingtoken.s c/esqshared_esqshared_replacetvratingtoken_esqshared_replacetvratingtoken_merged.c
+modules/groups/a/q/esqshared4.s                                        c/esqshared4_merged.c
+modules/groups/a/q/esqshared4_p3_p0.s                                  c/esqshared4_p3_p0_merged.c
+modules/groups/a/q/esqshared4_esqshared4_copylongwordblockdbfloop_esqshared4_copylongwordblockdbfloop_esqshared4_copyliveplanestosnapshot.s c/esqshared4_esqshared4_copylongwordblockdbfloop_esqshared4_copylongwordblockdbfloop_esqshared4_copyliveplanestosnapshot_merged.c
+modules/groups/a/q/esqshared4_p5.s                                     c/esqshared4_p5_merged.c
 modules/groups/a/w/ladfunc_p1_p0.s                                     c/ladfunc_p1_p0_merged.c
 modules/groups/b/a/newgrid_p2_p0.s                                     c/newgrid_p2_p0_merged.c
 modules/groups/b/a/newgrid_p4.s                                        c/newgrid_p4_merged.c

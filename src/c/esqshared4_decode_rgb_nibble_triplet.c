@@ -1,29 +1,44 @@
 /* RESTORES: ESQSHARED4_DecodeRgbNibbleTriplet
- * MODULE:   modules/groups/a/q/esqshared4.s
+ * MODULE:   modules/groups/a/q/esqshared4_esqshared4_decodergbnibbletriplet.s
  * STATUS:   behavioural
- * DO-NOT-LINK: takes its arguments in REGISTERS, so the compiled C reads the
- *   stack and gets garbage. Proven: esq_dec_color_step.c linked alone over a
- *   clean 356-entry build paints a green panel over the grid area, and
- *   ESQ_SetCopperEffect_Custom compiles to 610000004e75 -- a call and a
- *   return, doing none of the work. Kept for the analysis, never linked.
+ * LINKABLE SINCE 2026-08-04, AS AN `__asm` REGISTER FUNCTION. The triple
+ *   pointer arrives in A1 and the packed colour comes back in D0, which
+ *   `register __a1` and the return value express exactly.
+ *
+ *   The clobber that used to make this unlinkable is gone by construction: the
+ *   original works in D1 and D2 and restores neither, and a compiled C body
+ *   saves every callee-saved register it touches. That was the reason
+ *   esqshared4_blit_banner_rows.c INLINES this decode rather than calling it,
+ *   and the inline is kept -- see below.
+ *
+ * IT HAS NO CALLER LEFT, and that is worth saying plainly rather than leaving
+ * for the next reader to rediscover. Its one caller was
+ * ESQSHARED4_LoadCopperColorWordsFromNibbleTable in esqshared4_p4.s, which is
+ * now esqshared4_blit_banner_rows.c and inlines the three nibble reads. So this
+ * function is restored to take the module out of assembly, not because anything
+ * reaches it. Leaving the inline alone is deliberate: it is what the caller's
+ * own restoration was measured against.
+ *
+ * THE POINTER IS ADVANCED BY 3 IN THE ORIGINAL AND IS NOT HERE. `MOVE.B (A1)+`
+ * three times leaves A1 past the triple, and C cannot return a register. No
+ * caller depends on it today, and the inline in the caller does its own
+ * advance. This is the same register-threaded-pointer divergence recorded in
+ * esq_bump_color_toward_targets.c.
  *
  * SASC-MISMATCH: register-argument-convention
- *   ref:     1419121910190242000f0241000f0240000fe14ae949d041d0424e75
- *   got:     48e707042a6f00147000101d720fc0812e007000101dc0812c007000101dc0812a003006e9403205d2403007e140d240700030014cdf20e04e75
- *   summary: The original takes its arguments in REGISTERS rather than on the stack, so it is callable only from assembly. No C function can express that convention; this restoration documents the logic but cannot be linked in.
- *   retest:  re-run tools/mismatches.py --recheck against a different
- *            SAS/C version; see docs/compiler-version.md.
- *
- * DO NOT LINK. This restoration is valid as ANALYSIS and its byte comparison
- * stands, but it must never be substituted into a build: entered with a live address register set by the caller.
- * A C function with an ordinary prologue is not a different encoding of that,
- * it is wrong. tools/gen_all_manifest.py excludes it automatically; this note
- * is here so the reason survives if the tooling changes.
- *
- * This class is what hung the machine on the first whole-program C run.
+ *   ref:     1419121910190242000f0241000f0240000fe14ae949d041d0424e75   (28)
+ *   summary: SAS/C copies A1 into a callee-saved register of its own and
+ *            zero-extends each nibble through a MOVEQ/MOVE.B pair, where the
+ *            original loads the byte straight and masks the word. The three
+ *            masks, the two shifts and the two adds are the same arithmetic in
+ *            the same order.
+ *   tried:   `register` on the locals changes nothing; the parameter is
+ *            already in a register and the copy is what `__asm` does.
+ *   scope:   every `__asm` register function in the program.
+ *   retest:  a compiler that works in the argument register directly.
  */
-/* Register-argument function: the triple pointer arrives in A1. */
-long ESQSHARED4_DecodeRgbNibbleTriplet(unsigned char *p)
+/* The triple pointer arrives in A1. */
+long __asm ESQSHARED4_DecodeRgbNibbleTriplet(register __a1 unsigned char *p)
 {
     unsigned short r = *p++ & 15;
     unsigned short g = *p++ & 15;

@@ -176,7 +176,13 @@ def bridged(mod, prev_label, name, restores):
     stmts = [s.strip() for s in body.split(';') if s.strip()]
     if not stmts:
         return False
-    return re.match(r'^' + re.escape(name) + r'\s*\(', stmts[-1]) is not None
+    # Splitting on ';' leaves the CLOSING BRACES of any preceding block glued
+    # to the front of the last statement, so a bridge that follows an if/else
+    # arrives as "}\n    NAME()" and a bare anchored match misses it. That is
+    # the common shape, not the exception -- the arm above the bridge normally
+    # ends in a `return`.
+    last = re.sub(r'^[}\s]*', '', stmts[-1])
+    return re.match(r'^' + re.escape(name) + r'\s*\(', last) is not None
 
 
 def falls_through(mod, restores=None):

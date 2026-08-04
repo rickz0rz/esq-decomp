@@ -2,8 +2,15 @@
     XDEF    _ESQSHARED4_ResetBannerColorToStart
     XDEF    ESQSHARED4_SetBannerCopperColorAndThreshold
     XDEF    ESQSHARED4_ApplyBannerColorStep_Return
+    XDEF    _ESQSHARED4_LoadBannerPaletteFromPreset
+    XDEF    _ESQSHARED4_StepBannerColorDown
+    XDEF    _ESQSHARED4_ReapplyBannerCopperColor
+    XDEF    _ESQSHARED4_StepBannerColorUp
+    XDEF    _ESQSHARED4_RestartBannerColorSweep
+    XDEF    _ESQSHARED4_ClampBannerColorAtSweepEnd
 
 
+_ESQSHARED4_LoadBannerPaletteFromPreset:
     MOVEM.L D0-D4/A0-A4,-(A7)
     LEA     _ESQ_BannerPaletteWordsA,A2
     LEA     _ESQ_BannerPaletteWordsB,A3
@@ -60,6 +67,7 @@ ESQSHARED4_SetBannerCopperColorAndThreshold:
 
 ;!======
 
+_ESQSHARED4_StepBannerColorDown:
     LEA     _ESQPARS2_BannerColorBaseValue,A4
     MOVEQ   #0,D0
     MOVE.W  (A4),D0
@@ -145,6 +153,7 @@ ESQSHARED4_ApplyBannerColorStep:
 
 ;!======
 
+_ESQSHARED4_ReapplyBannerCopperColor:
     MOVEM.L D2-D7/A2-A6,-(A7)
     LEA     _ESQ_CopperListBannerA,A4
     MOVEQ   #0,D0
@@ -156,6 +165,7 @@ ESQSHARED4_ApplyBannerColorStep:
 
 ;!======
 
+_ESQSHARED4_StepBannerColorUp:
     LEA     _ESQPARS2_BannerColorBaseValue,A4
     MOVEQ   #0,D0
     MOVE.W  (A4),D0
@@ -187,6 +197,7 @@ ESQSHARED4_ApplyBannerColorStep:
     SUBQ.W  #1,D0
     BRA.S   ESQSHARED4_ApplyBannerColorStep
 
+_ESQSHARED4_RestartBannerColorSweep:
     LEA     _ESQ_CopperListBannerA,A4
     MOVE.W  #$62,_ESQPARS2_BannerColorStepCounter
     MOVE.W  #$19,D0
@@ -196,6 +207,7 @@ ESQSHARED4_ApplyBannerColorStep:
 
 ;!======
 
+_ESQSHARED4_ClampBannerColorAtSweepEnd:
     MOVEM.L D0-D1/A2,-(A7)
     MOVE.W  _ESQ_BannerPlane0DstPtrReset_LoWord,D0
     MOVE.W  _ESQ_BannerSnapshotPlane0DstPtrLoWord,D1

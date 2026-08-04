@@ -1,4 +1,6 @@
     XDEF    _ESQSHARED4_TickCopperAndBannerTransitions
+    XDEF    _ESQSHARED4_MirrorSnapshotPlanePointers
+    XDEF    _ESQSHARED4_AdvancePlanePointersOneRow
 
 
 ;------------------------------------------------------------------------------
@@ -105,6 +107,7 @@ _ESQSHARED4_TickCopperAndBannerTransitions:
 
 ;!======
 
+_ESQSHARED4_MirrorSnapshotPlanePointers:
     MOVE.W  _ESQ_BannerSnapshotPlane0DstPtrLoWord,_ESQPARS2_BannerSnapshotPlane0DstPtrLo
     MOVE.W  _ESQ_BannerSnapshotPlane0DstPtrHiWord,_ESQPARS2_BannerSnapshotPlane0DstPtr
     MOVE.W  _ESQ_BannerSnapshotPlane1DstPtrLoWord,_ESQPARS2_BannerSnapshotPlane1DstPtrLo
@@ -115,6 +118,7 @@ _ESQSHARED4_TickCopperAndBannerTransitions:
 
 ;!======
 
+_ESQSHARED4_AdvancePlanePointersOneRow:
     MOVE.L  #$b0,D1
     MOVEQ   #1,D0
     ADD.W   D1,_ESQ_BannerSnapshotPlane0DstPtrLoWord
