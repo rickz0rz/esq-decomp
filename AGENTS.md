@@ -1192,6 +1192,41 @@ silently with error 1002 and the run is a no-op that looks like a pass.
 > `tools/menusweep_esq.sh`, which reaches all six items using ordinary keys. See
 > the OPEN section below; this one fact invalidated several published conclusions.
 
+### NOTHING JUDGED WHAT A BUILD WRITES TO DISK, and the reason is worse
+
+Every harness above judges a build by what is ON SCREEN. `tools/fileio_esq.sh`
+adds the drive side: it hashes the emulated drive, boots a build, captures every
+created or modified file, and RESTORES the drive from a backup taken outside it.
+`tools/fileiodiff.py` compares two captures with clock stamps masked, and
+reports line-ending changes separately because CRLF versus LF is the most likely
+stdio defect.
+
+```sh
+tools/fileio_esq.sh <pure-build> pure 90 53:5 19:3 36:6 36:4 53:6 53:10
+tools/fileio_esq.sh <candidate>  cand 90 53:5 19:3 36:6 36:4 53:6 53:10
+python3 tools/fileiodiff.py pure cand
+```
+
+**IT CURRENTLY CAPTURES NOTHING, AND THAT IS THE FINDING.** Measured 2026-08-04:
+an idle soak changes no file; driving the ad editor changes none; driving Edit
+Attributes and exiting the ESC menu changes none, even though that path sets
+`ED_SaveTextAdsOnExitFlag` and `ED1_ExitEscMenu` calls
+`LADFUNC_SaveTextAdsToFile` when it is 1.
+
+ESQ's data paths are all `df0:` -- `"df0:locavail.dat"`, `"df0:config.dat"`,
+`"df0:err.log"`. **`df0:` is the FLOPPY**, and the fs-uae config mounts
+`BLANK.ADF` there, unchanged since May 2025. The startup assigns only redirect
+`SYS:`, `C:`, `FONTS:` and friends to `DH2:` -- none redirects `DF0:`.
+
+So in this emulator setup ESQ's writes appear to go to a blank floppy and fail.
+That also explains why no harness ever caught a file-I/O defect: there has never
+been a file to catch one in. **`fileiodiff.py` exits 2 rather than 0 when neither
+build wrote anything**, because a clean result there proves nothing.
+
+Settle it before restoring `STREAM_BufferedPutcOrFlush`: diff `BLANK.ADF` around
+a run, and check whether the `DF0:`->`DH2:` patch in `docs/reference-binary.md`
+covers the DATA paths or only the program's own path.
+
 ```sh
 tools/menusweep_esq.sh <binary> <label> [items] [reps]   # all six ESC-menu items
 tools/keyprobe_esq.sh  <binary> <label> <key:wait>...    # one boot, arbitrary keys
