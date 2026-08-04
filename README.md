@@ -43,16 +43,16 @@ map for that. A contributor in `build/ESQ.map` whose name ends `.asm` is
 assembly and everything else is C.
 
 ```
-maximum-C build, CODE hunk   96.1%   [######################################..]
-                                     225,076 of 234,264 bytes come from C
+maximum-C build, CODE hunk   96.2%   [######################################..]
+                                     225,380 of 234,312 bytes come from C
 ```
 
 | measure | value |
 |---|---|
-| maximum-C manifest | 814 entries (`src/c/replacements-all.txt`) |
-| assembly remaining | 9,188 of 234,264 CODE bytes (3.9%) |
+| maximum-C manifest | 821 entries (`src/c/replacements-all.txt`) |
+| assembly remaining | 8,932 of 234,312 CODE bytes (3.8%) |
 | module includes still assembly | 236, of which 150 are EMPTY and 10 are pads |
-| modules holding real code | 76 (`python3 tools/lastmile.py`) |
+| modules holding real code | 32, and NO jump tables (`python3 tools/lastmile.py`) |
 
 Two things once recorded as impossible are now done. The SAS/C arithmetic
 helpers are C (`src/c/lib_math_helpers.c`), so every divide and multiply in the

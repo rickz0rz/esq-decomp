@@ -436,6 +436,7 @@ modules/submodules/unknown16.s                                         c/lib_buf
 modules/submodules/unknown41.s                                         c/lib_clock_convert_amiga_seconds.c
 modules/submodules/unknown22_dos_closewithsignalcheck.s                c/lib_dos_close_with_signal_check.c
 modules/submodules/unknown40_dos_delay.s                               c/lib_dos_delay_and_system.c
+modules/submodules/unknown2b_dos_openfilewithmode.s                    c/lib_dos_open_file_with_mode.c
 modules/submodules/unknown20.s                                         c/lib_dos_open_with_error_state.c
 modules/submodules/unknown19.s                                         c/lib_dos_read_with_error_state.c
 modules/submodules/unknown11.s                                         c/lib_dos_seek_by_index.c
@@ -448,14 +449,19 @@ modules/submodules/unknown27_format_buffer2writechar.s                 c/lib_for
 modules/submodules/unknown27_format_formattobuffer2.s                  c/lib_format_to_buffer2.c
 modules/submodules/unknown8.s                                          c/lib_format_u32_to_decimal_string.c
 modules/submodules/unknown9.s                                          c/lib_format_u32_to_octal_string.c
+modules/submodules/unknown2b_graphics_allocraster.s                    c/lib_graphics_alloc_raster.c
 modules/submodules/unknown39.s                                         c/lib_graphics_blt_bitmap_rastport.c
+modules/submodules/unknown2b_graphics_freeraster.s                     c/lib_graphics_free_raster.c
 modules/submodules/unknown37.s                                         c/lib_handle_close_by_index.c
 modules/submodules/unknown23.s                                         c/lib_handle_get_entry_by_index.c
 modules/submodules/unknown10_handle_openentrywithflags.s               c/lib_handle_open_entry_with_flags.c
 modules/submodules/unknown14.s                                         c/lib_handle_open_from_mode_string.c
 modules/submodules/unknown35.s                                         c/lib_handle_open_with_mode.c
+modules/submodules/unknown2b_esq_mainentrynoophook.s                   c/lib_main_entry_hook.c
+modules/submodules/unknown2b_esq_mainexitnoophook.s                    c/lib_main_exit_hook.c
 modules/submodules/unknown22_signal_createmsgportwithsignal.s          c/lib_signal_create_msgport_with_signal.c
 modules/submodules/unknown38.s                                         c/lib_signal_poll_and_dispatch.c
+modules/submodules/unknown2b_stream_bufferedwritestring.s              c/lib_stream_buffered_write_string.c
 modules/submodules/unknown15.s                                         c/lib_stream_read_line_with_limit.c
 modules/submodules/unknown6.s                                          c/lib_string_append_at_null.c
 modules/submodules/unknown3.s                                          c/lib_string_to_upper_char.c
@@ -770,6 +776,7 @@ modules/submodules/unknown2a.s                                         c/lib_for
 modules/groups/a/a/app2_p8_esq_tickglobalcounters.s                    c/esq_tick_global_counters.c
 modules/groups/a/a/xjump.s                                             c/jmptbl_a_a_xjump.c
 modules/groups/_main/a/xjump.s                                         c/jmptbl__main_a_xjump.c
+modules/groups/_main/b/xjump.s                                         c/jmptbl__main_b_xjump.c
 modules/groups/a/b/xjump.s                                             c/jmptbl_a_b_xjump.c
 modules/groups/a/c/xjump.s                                             c/jmptbl_a_c_xjump.c
 modules/groups/a/i/xjump.s                                             c/jmptbl_a_i_xjump.c

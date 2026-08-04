@@ -201,6 +201,15 @@ modules/submodules/unknown36_unknown36_finalizerequest.s               c/lib_unk
 
 # Split out of unknown27.s so the 950-byte FORMAT_ParseFormatSpec can stay in
 # assembly while these two small routines link.
+# Split out of unknown2b.s so the SAS/C stdio group beside them stays in
+# assembly. All six were byte-neutral splits.
+modules/submodules/unknown2b_graphics_allocraster.s                    c/lib_graphics_alloc_raster.c
+modules/submodules/unknown2b_graphics_freeraster.s                     c/lib_graphics_free_raster.c
+modules/submodules/unknown2b_dos_openfilewithmode.s                    c/lib_dos_open_file_with_mode.c
+modules/submodules/unknown2b_esq_mainentrynoophook.s                   c/lib_main_entry_hook.c
+modules/submodules/unknown2b_esq_mainexitnoophook.s                    c/lib_main_exit_hook.c
+modules/submodules/unknown2b_stream_bufferedwritestring.s              c/lib_stream_buffered_write_string.c
+
 modules/submodules/unknown27_format_buffer2writechar.s                 c/lib_format_buffer2_write_char.c
 modules/submodules/unknown27_format_formattobuffer2.s                  c/lib_format_to_buffer2.c
 
@@ -222,6 +231,7 @@ modules/submodules/unknown27_format_formattobuffer2.s                  c/lib_for
 modules/groups/a/a/app2_p8_esq_tickglobalcounters.s                    c/esq_tick_global_counters.c
 modules/groups/a/a/xjump.s                                             c/jmptbl_a_a_xjump.c
 modules/groups/_main/a/xjump.s                                         c/jmptbl__main_a_xjump.c
+modules/groups/_main/b/xjump.s                                         c/jmptbl__main_b_xjump.c
 modules/groups/a/b/xjump.s                                             c/jmptbl_a_b_xjump.c
 modules/groups/a/c/xjump.s                                             c/jmptbl_a_c_xjump.c
 modules/groups/a/i/xjump.s                                             c/jmptbl_a_i_xjump.c

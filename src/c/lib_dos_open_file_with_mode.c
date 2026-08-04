@@ -1,5 +1,5 @@
 /* RESTORES: _DOS_OpenFileWithMode
- * MODULE:   modules/submodules/unknown2b.s   (1 of its 9 labels)
+ * MODULE:   modules/submodules/unknown2b_dos_openfilewithmode.s
  * STATUS:   behavioural
  *
  * ESQ's wrapper over dos.library Open. Two arguments, both passed straight
@@ -17,10 +17,9 @@
  * it once here, but there is only one call so the two forms agree -- and there
  * is deliberately no `esq-dos-leaf.h` in this project. See AGENTS.md.
  *
- * NOT LINKED YET, for the same reason as `lib_graphics_raster.c`: `unknown2b.s`
- * holds nine labels and a C file replaces a whole module. It is written now so
- * `jmptbl_to_c.py` can read the signature and unblock the two jump tables that
- * forward here.
+ * SPLIT OUT OF unknown2b.s, which held nine labels including the SAS/C stdio
+ * routines. `tools/split_module.py` cut this onto its own `;!======` boundary,
+ * byte-neutral, so it links while the stdio group stays in assembly.
  */
 #include "esq-dos.h"
 
