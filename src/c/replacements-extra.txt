@@ -15,19 +15,17 @@
 # A line whose C file the generator already emitted is ignored, so an override
 # that later becomes unnecessary is harmless.
 
-# WITHDRAWN 2026-08-03. This override linked
-# c/esqshared4_blit_banner_rows.c, which CORRUPTS THE GRID TIME BANNER --
-# horizontal colour streaks through the slot labels. Bisected against the
-# known-good build and against pure assembly, so it is neither an original
-# defect nor the far-call rewrite. The file now carries DO-NOT-LINK: with the
-# full evidence and the candidates already ruled out. Do not re-add it until
-# the copper-list dump comes back clean.
+# RESTORED 2026-08-03. This was withdrawn earlier the same day because the file
+# streaked the grid time banner. The cause was TIMING, not logic: the original
+# copies are 306 moves with zero branches because they race the raster from the
+# vertical-blank interrupt, and a C `for` loop overran the beam. The copies are
+# macros now, the emitted code is branch-free, and the banner renders clean.
+# The file header carries the full analysis. DO NOT re-roll those loops.
 #
-# The override itself was correct about the module: it holds
-# ESQSHARED4_BlitBannerRowsForActiveField AND the routine beneath it, and
-# gen_all_manifest.py reads only the first RESTORES: name so it measures the
-# wrong module. Restore this line when the file is fixed.
-# modules/groups/a/q/esqshared4_p4.s                                   c/esqshared4_blit_banner_rows.c
+# The module holds ESQSHARED4_BlitBannerRowsForActiveField AND the routine
+# beneath it, and gen_all_manifest.py reads only the first RESTORES: name, so it
+# measures the wrong module -- which is why this needs an override at all.
+modules/groups/a/q/esqshared4_p4.s                                     c/esqshared4_blit_banner_rows.c
 
 # Screened `register-args`. Its only caller is restored alongside it and passes
 # the arguments in the registers the original expects.
