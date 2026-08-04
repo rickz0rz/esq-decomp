@@ -1,7 +1,7 @@
     XDEF    _ESQPROTO_CopyLabelToGlobal
     XDEF    _ESQPROTO_ParseDigitLabelAndDisplay
-    XDEF    UNKNOWN_ParseListAndUpdateEntries
-    XDEF    UNKNOWN_ParseRecordAndUpdateDisplay
+    XDEF    _UNKNOWN_ParseListAndUpdateEntries
+    XDEF    _UNKNOWN_ParseRecordAndUpdateDisplay
     XDEF    _ESQPROTO_VerifyChecksumAndParseList
     XDEF    _ESQPROTO_VerifyChecksumAndParseRecord
     XDEF    _UNKNOWN_JMPTBL_DISPLIB_DisplayTextAtPosition
@@ -12,7 +12,7 @@
     XDEF    _UNKNOWN_JMPTBL_ESQ_WildcardMatch
 
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN_ParseRecordAndUpdateDisplay   (Parse record, update globals, and display.)
+; FUNC: _UNKNOWN_ParseRecordAndUpdateDisplay   (Parse record, update globals, and display.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +12: arg_2 (via 16(A5))
@@ -32,7 +32,7 @@
 ; NOTES:
 ;   Uses 0x12 sentinel and max length 10 for local buffer.
 ;------------------------------------------------------------------------------
-UNKNOWN_ParseRecordAndUpdateDisplay:
+_UNKNOWN_ParseRecordAndUpdateDisplay:
     LINK.W  A5,#-16
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -111,7 +111,7 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN_ParseListAndUpdateEntries   (Parse list and update _WDISP_StatusDayEntry0 entries.)
+; FUNC: _UNKNOWN_ParseListAndUpdateEntries   (Parse list and update _WDISP_StatusDayEntry0 entries.)
 ; ARGS:
 ;   stack +4: arg_1 (via 8(A5))
 ;   stack +11: arg_2 (via 15(A5))
@@ -134,7 +134,7 @@ UNKNOWN_ParseRecordAndUpdateDisplay:
 ; NOTES:
 ;   Uses 0x12 sentinel and max length 10 for local buffer.
 ;------------------------------------------------------------------------------
-UNKNOWN_ParseListAndUpdateEntries:
+_UNKNOWN_ParseListAndUpdateEntries:
     LINK.W  A5,#-36
     MOVEM.L D4-D7/A3,-(A7)
     MOVEA.L 8(A5),A3
@@ -411,13 +411,13 @@ UNKNOWN_ParseListAndUpdateEntries:
 ; CLOBBERS:
 ;   A7/D0/D1/D7
 ; CALLS:
-;   UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer, UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte, UNKNOWN_ParseRecordAndUpdateDisplay
+;   UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer, UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte, _UNKNOWN_ParseRecordAndUpdateDisplay
 ; READS:
 ;   _ESQIFF_RecordBufferPtr, _ESQIFF_RecordChecksumByte, _DATACErrs
 ; WRITES:
 ;   _ESQIFF_ParseAttemptCount, _ESQIFF_RecordLength, _DATACErrs
 ; DESC:
-;   Computes a checksum and, on success, invokes UNKNOWN_ParseRecordAndUpdateDisplay; otherwise bumps error count.
+;   Computes a checksum and, on success, invokes _UNKNOWN_ParseRecordAndUpdateDisplay; otherwise bumps error count.
 ; NOTES:
 ;   Uses stack param byte at 11(A7).
 ;------------------------------------------------------------------------------
@@ -451,7 +451,7 @@ _ESQPROTO_VerifyChecksumAndParseRecord:
     BNE.S   .checksum_mismatch
 
     MOVE.L  _ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   UNKNOWN_ParseRecordAndUpdateDisplay
+    BSR.W   _UNKNOWN_ParseRecordAndUpdateDisplay
 
     ADDQ.W  #4,A7
     BRA.S   .return
@@ -475,13 +475,13 @@ _ESQPROTO_VerifyChecksumAndParseRecord:
 ; CLOBBERS:
 ;   A7/D0/D1/D7
 ; CALLS:
-;   UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer, UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte, UNKNOWN_ParseListAndUpdateEntries
+;   UNKNOWN_JMPTBL_ESQIFF2_ReadSerialRecordIntoBuffer, UNKNOWN_JMPTBL_ESQ_GenerateXorChecksumByte, _UNKNOWN_ParseListAndUpdateEntries
 ; READS:
 ;   _ESQIFF_RecordBufferPtr, _ESQIFF_RecordChecksumByte, _DATACErrs
 ; WRITES:
 ;   _ESQIFF_ParseAttemptCount, _ESQIFF_RecordLength, _DATACErrs
 ; DESC:
-;   Computes a checksum and, on success, invokes UNKNOWN_ParseListAndUpdateEntries; otherwise bumps error count.
+;   Computes a checksum and, on success, invokes _UNKNOWN_ParseListAndUpdateEntries; otherwise bumps error count.
 ; NOTES:
 ;   Uses stack param byte at 11(A7).
 ;------------------------------------------------------------------------------
@@ -515,7 +515,7 @@ _ESQPROTO_VerifyChecksumAndParseList:
     BNE.S   .checksum_mismatch
 
     MOVE.L  _ESQIFF_RecordBufferPtr,-(A7)
-    BSR.W   UNKNOWN_ParseListAndUpdateEntries
+    BSR.W   _UNKNOWN_ParseListAndUpdateEntries
 
     ADDQ.W  #4,A7
     BRA.S   .return

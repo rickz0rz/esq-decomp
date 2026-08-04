@@ -44,13 +44,13 @@ assembly and everything else is C.
 
 ```
 maximum-C build, CODE hunk   95.9%   [######################################..]
-                                     223,768 of 233,444 bytes come from C
+                                     223,812 of 233,480 bytes come from C
 ```
 
 | measure | value |
 |---|---|
-| maximum-C manifest | 806 entries (`src/c/replacements-all.txt`) |
-| assembly remaining | 9,676 of 233,444 CODE bytes (4.1%) |
+| maximum-C manifest | 807 entries (`src/c/replacements-all.txt`) |
+| assembly remaining | 9,668 of 233,480 CODE bytes (4.1%) |
 | module includes still assembly | 236, of which 150 are EMPTY and 10 are pads |
 | modules holding real code | 76 (`python3 tools/lastmile.py`) |
 

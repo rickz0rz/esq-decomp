@@ -765,6 +765,7 @@ modules/submodules/unknown22_p0.s                                      c/lib_mat
 modules/submodules/unknown2a.s                                         c/lib_format_rawdofmt_scratch.c
 modules/groups/a/a/app2_p8_esq_tickglobalcounters.s                    c/esq_tick_global_counters.c
 modules/groups/a/a/xjump.s                                             c/jmptbl_a_a_xjump.c
+modules/groups/_main/a/xjump.s                                         c/jmptbl__main_a_xjump.c
 modules/groups/a/b/xjump.s                                             c/jmptbl_a_b_xjump.c
 modules/groups/a/c/xjump.s                                             c/jmptbl_a_c_xjump.c
 modules/groups/a/j/xjump.s                                             c/jmptbl_a_j_xjump.c

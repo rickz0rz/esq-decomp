@@ -206,6 +206,7 @@ modules/submodules/unknown2a.s                                         c/lib_for
 # It also returns `MOVEQ #0,D0` before its RTS, matching the original's D0=0.
 modules/groups/a/a/app2_p8_esq_tickglobalcounters.s                    c/esq_tick_global_counters.c
 modules/groups/a/a/xjump.s                                             c/jmptbl_a_a_xjump.c
+modules/groups/_main/a/xjump.s                                         c/jmptbl__main_a_xjump.c
 modules/groups/a/b/xjump.s                                             c/jmptbl_a_b_xjump.c
 modules/groups/a/c/xjump.s                                             c/jmptbl_a_c_xjump.c
 modules/groups/a/j/xjump.s                                             c/jmptbl_a_j_xjump.c

@@ -435,7 +435,7 @@ _ESQ_STR_A:
 ; SYM: _WDISP_WeatherStatusOverlayTextPtr   (weather overlay text pointer)
 ; TYPE: pointer
 ; PURPOSE: Dynamic text pointer used by weather/status overlay formatting paths.
-; USED BY: UNKNOWN_ParseRecordAndUpdateDisplay, WDISP weather draw paths, ESQIFF helpers
+; USED BY: _UNKNOWN_ParseRecordAndUpdateDisplay, WDISP weather draw paths, ESQIFF helpers
 ; NOTES: Updated through _ESQPARS_ReplaceOwnedString-style realloc/copy helper flows.
 ;------------------------------------------------------------------------------
 _WDISP_WeatherStatusOverlayTextPtr:

@@ -200,7 +200,7 @@ _PREALLOC_HandleNode2_InitRecord:
 ; SYM: _PREALLOC_DefaultHandleFlagsSeed   (startup default handle flags)
 ; TYPE: u32
 ; PURPOSE: Initial value read through Global_DefaultHandleFlags (A4-1016).
-; USED BY: ESQ_ParseCommandLineAndRun, _HANDLE_OpenFromModeString
+; USED BY: _ESQ_ParseCommandLineAndRun, _HANDLE_OpenFromModeString
 ; NOTES: Seed is `$00008000` in the shipped image (low-byte bits 0..7 clear).
 ;------------------------------------------------------------------------------
 _PREALLOC_DefaultHandleFlagsSeed:

@@ -10,7 +10,7 @@ _TLIBA1_DayEntryModeCounter:
 ; SYM: _WDISP_StatusDayEntry0.._WDISP_StatusDayEntry3   (status-day entry ring)
 ; TYPE: struct[4]
 ; PURPOSE: Four consecutive day-entry structs consumed by banner/status rendering and shifted each update tick.
-; USED BY: UNKNOWN_ParseListAndUpdateEntries, _ESQDISP_DrawStatusBanner, WDISP_DrawStatusBannerSlots
+; USED BY: _UNKNOWN_ParseListAndUpdateEntries, _ESQDISP_DrawStatusBanner, WDISP_DrawStatusBannerSlots
 ; NOTES: Per-entry layout is likely: +0 day code, +4/+8/+12 numeric fields, +16 active/pending flag.
 ;------------------------------------------------------------------------------
 _WDISP_StatusDayEntry0:

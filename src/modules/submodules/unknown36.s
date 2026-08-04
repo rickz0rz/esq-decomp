@@ -2,7 +2,7 @@
     XDEF    _DEBUG_STR_Continue
     XDEF    _DEBUG_STR_Abort
     XDEF    _UNKNOWN36_FinalizeRequest
-    XDEF    UNKNOWN36_ShowAbortRequester
+    XDEF    _UNKNOWN36_ShowAbortRequester
 
 ;------------------------------------------------------------------------------
 ; Struct offsets (UNKNOWN36 request struct)
@@ -91,7 +91,7 @@ _UNKNOWN36_FinalizeRequest:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: UNKNOWN36_ShowAbortRequester   (Emit abort request to console or open dialog.)
+; FUNC: _UNKNOWN36_ShowAbortRequester   (Emit abort request to console or open dialog.)
 ; ARGS:
 ;   none (uses globals via A4)
 ; RET:
@@ -112,7 +112,7 @@ _UNKNOWN36_FinalizeRequest:
 ; NOTES:
 ;   Uses the byte at -1(A0) as a length, clamped to 79.
 ;------------------------------------------------------------------------------
-UNKNOWN36_ShowAbortRequester:
+_UNKNOWN36_ShowAbortRequester:
     LINK.W  A5,#-104
     MOVEM.L D2-D3/D6-D7/A6,-(A7)
 

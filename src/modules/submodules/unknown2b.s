@@ -5,8 +5,8 @@
     XDEF    _GRAPHICS_FreeRaster
     XDEF    DOS_MovepWordReadCallback
     XDEF    _DOS_OpenFileWithMode
-    XDEF    ESQ_MainEntryNoOpHook
-    XDEF    ESQ_MainExitNoOpHook
+    XDEF    _ESQ_MainEntryNoOpHook
+    XDEF    _ESQ_MainExitNoOpHook
 
 ;!======
 ;------------------------------------------------------------------------------
@@ -126,7 +126,7 @@ _DOS_OpenFileWithMode:
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_MainEntryNoOpHook   (Main pre-run no-op hook)
+; FUNC: _ESQ_MainEntryNoOpHook   (Main pre-run no-op hook)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -142,14 +142,14 @@ _DOS_OpenFileWithMode:
 ; DESC:
 ;   Reserved pre-run hook; currently no-op.
 ; NOTES:
-;   Called immediately before ESQ_ParseCommandLineAndRun.
+;   Called immediately before _ESQ_ParseCommandLineAndRun.
 ;------------------------------------------------------------------------------
-ESQ_MainEntryNoOpHook:
+_ESQ_MainEntryNoOpHook:
     RTS
 
 ;!======
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_MainExitNoOpHook   (Main shutdown no-op hook)
+; FUNC: _ESQ_MainExitNoOpHook   (Main shutdown no-op hook)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -167,7 +167,7 @@ ESQ_MainEntryNoOpHook:
 ; NOTES:
 ;   Called after cleanup and dos.library close.
 ;------------------------------------------------------------------------------
-ESQ_MainExitNoOpHook:
+_ESQ_MainExitNoOpHook:
     RTS
 
 ;!======

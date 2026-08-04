@@ -1,8 +1,8 @@
-    XDEF    ESQ_ParseCommandLineAndRun
+    XDEF    _ESQ_ParseCommandLineAndRun
     XDEF    UNKNOWN29_JMPTBL_ESQ_MainInitAndRun
 
 ;------------------------------------------------------------------------------
-; FUNC: ESQ_ParseCommandLineAndRun   (Parse command line, init handles, run main.)
+; FUNC: _ESQ_ParseCommandLineAndRun   (Parse command line, init handles, run main.)
 ; ARGS:
 ;   stack +6: A3 = command line buffer
 ; RET:
@@ -23,7 +23,7 @@
 ; NOTES:
 ;   Handles quoted strings and whitespace; uses '*' as default output when args exist.
 ;------------------------------------------------------------------------------
-ESQ_ParseCommandLineAndRun:
+_ESQ_ParseCommandLineAndRun:
     LINK.W  A5,#-16
     MOVEM.L D2/D7/A2-A3/A6,-(A7)
 
@@ -231,7 +231,7 @@ ESQ_ParseCommandLineAndRun:
     MOVE.L  D7,D0
     ORI.W   #$80,D0
     MOVE.L  D0,Global_PreallocHandleNode2_OpenFlags(A4) ; special mode bit ($80) remains unresolved
-    LEA     UNKNOWN36_ShowAbortRequester(PC),A0
+    LEA     _UNKNOWN36_ShowAbortRequester(PC),A0
     MOVE.L  A0,Global_SignalCallbackPtr(A4)
     MOVE.L  Global_ArgvPtr(A4),-(A7)
     MOVE.L  Global_ArgCount(A4),-(A7)

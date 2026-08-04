@@ -277,7 +277,7 @@ _ESQFUNC_CListLinePointer:
 ; SYM: _WDISP_WeatherStatusLabelBuffer   (weather/status label buffer)
 ; TYPE: char[13]
 ; PURPOSE: Stores a short label used for wildcard match tests and serialized status text.
-; USED BY: UNKNOWN_ParseRecordAndUpdateDisplay, _ESQPROTO_ParseDigitLabelAndDisplay, DISKIO2_*
+; USED BY: _UNKNOWN_ParseRecordAndUpdateDisplay, _ESQPROTO_ParseDigitLabelAndDisplay, DISKIO2_*
 ; NOTES: Backed by `DS.L 2` + `DS.W 1` + `DS.B 1`; copied as a NUL-terminated byte string.
 ;------------------------------------------------------------------------------
 _WDISP_WeatherStatusLabelBuffer:
@@ -288,7 +288,7 @@ _WDISP_WeatherStatusLabelBuffer:
 ; SYM: _WDISP_StatusListMatchPattern   (status list wildcard pattern buffer)
 ; TYPE: char[11]
 ; PURPOSE: Stores a short wildcard/match pattern for status-list record parsing.
-; USED BY: UNKNOWN_ParseListAndUpdateEntries, _ESQPROTO_CopyLabelToGlobal
+; USED BY: _UNKNOWN_ParseListAndUpdateEntries, _ESQPROTO_CopyLabelToGlobal
 ; NOTES: Backed by `DS.B 1` + `DS.L 2` + `DS.W 1`; written as a NUL-terminated byte string.
 ;------------------------------------------------------------------------------
 _WDISP_StatusListMatchPattern:

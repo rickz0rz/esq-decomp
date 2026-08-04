@@ -58,7 +58,7 @@ Global_DefaultHandleFlags        = Global_AllocBlockSize-Type_Long_Size         
 ; SYM: Global_PreallocHandleNode0/1/2   (startup preallocated handle nodes)
 ; TYPE: struct array (34-byte node stride)
 ; PURPOSE: Early handle-state nodes used before/alongside dynamic handle nodes.
-; USED BY: ESQ_ParseCommandLineAndRun, _HANDLE_OpenWithMode,
+; USED BY: _ESQ_ParseCommandLineAndRun, _HANDLE_OpenWithMode,
 ;          _BUFFER_FlushAllAndCloseWithCode, _STREAM_BufferedWriteString
 ; NOTES: Field meanings are partial/inferred:
 ;        +0 next, +4 cursor, +8 read remaining, +12 write remaining,

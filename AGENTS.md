@@ -1264,15 +1264,15 @@ far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
 BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
 278-entry parent, also clean and additionally proven on all six ESC-menu items.
 
-`src/c/replacements-all.txt` is the one to grow. It stands at **806 entries**,
+`src/c/replacements-all.txt` is the one to grow. It stands at **807 entries**,
 every DATA module among them, with 28 restorations held out as unsafe to link.
 It went 440 -> 464 from new restorations and 464 -> 614 from SPLITTING modules,
 which is the cheaper lever of the two and was sitting unused. It went 770 -> 790
 on 2026-08-03 from CONVERTING JUMP TABLES and from the alias forwarders that
 unblocked them. Both are described under "The last mile to 100% C" below.
 
-**At 806 it is PROVEN END TO END** (2026-08-03), on the same sequence that
-proved 440: `check_pcrel_range` 0 truncated of 50 calls, `a6_audit` 0 of 805,
+**At 807 it is PROVEN END TO END** (2026-08-03), on the same sequence that
+proved 440: `check_pcrel_range` 0 truncated of 50 calls, `a6_audit` 0 of 806,
 `data_shape_audit` and `extern_width_audit` clean, `data_offset_audit` 50 data
 modules in agreement, `soak_esq.sh` PASS at 150 seconds twice and at 300 once
 (10 of 10 distinct frames, 10 of 10 holding Amiga content, 1 exception line,
@@ -1312,8 +1312,8 @@ been RUN.** Soak before treating a new size as good.
 still assembly and that is misleading: 150 of them are EMPTY files and 10 hold
 only an alignment pad. The honest number comes from the link map.
 
-**The maximum-C build is 95.9% C by CODE byte.** 223,768 bytes of 233,444 come
-from compiled C. 9,676 bytes are assembly.
+**The maximum-C build is 95.9% C by CODE byte.** 223,812 bytes of 233,480 come
+from compiled C. 9,668 bytes are assembly.
 
 ```sh
 python3 tools/lastmile.py                  # module buckets, plus the code worklist
@@ -1827,6 +1827,18 @@ shifted by thousands of bytes when nothing was wrong with them.
 `data_to_c.py` now peels the trailing byte off an odd-sized struct span into its
 own symbol, which is byte-neutral and leaves a 40-byte struct needing no
 padding.
+
+**A STRING LITERAL IS AN INITIALISED STATIC, INCLUDING A ONE-CHARACTER ONE.**
+`Open("*", MODE_OLDFILE)` in `lib_parse_command_line_and_run.c` emitted a 4-byte
+DATA hunk, in a file whose own header warned about exactly this. Write the text
+a character at a time into a local instead. The original has the same problem in
+reverse and solves it by keeping its template PC-relative in the CODE section
+(`LEA .loc(PC),A1` then four MOVE.L and a MOVE.W).
+
+**`objbytes.py` PRINTS NO `xdef:` LINE WHEN THE OBJECT HAS A SECOND UNIT**, which
+is what a stray string literal produces. A missing xdef line on a file whose
+functions are not static is therefore a reliable tell that a DATA hunk crept in.
+Dump the hunk structure to confirm.
 
 **A second source of DATA growth is an initialised static in ORDINARY C code.**
 `lib_hex_parse_sprintf.c` held `static char kHexDigitTable[16]`. The original
