@@ -1,5 +1,8 @@
+    XDEF    _TLIBA3_GetVmArrayRuntimeWord
+
 
     ; Dead code.
+_TLIBA3_GetVmArrayRuntimeWord:
     MOVE.L  D7,-(A7)
     MOVE.L  8(A7),D7
     MOVE.L  D7,D0

@@ -61,6 +61,8 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different SAS/C
  *            version; see docs/compiler-version.md.
  */
+#ifndef PARSEINICLOCKDATA_DEFINED
+#define PARSEINICLOCKDATA_DEFINED
 struct ParseIniClockData {
     short weekday;              /* +0  */
     short month;                /* +2  */
@@ -74,8 +76,15 @@ struct ParseIniClockData {
     short hourWasPm;            /* +18 */
     short leapYear;             /* +20 */
 };
+#endif
 
-extern short DATETIME_IsLeapYear(long year);
+/* Declared `short` here until 2026-08-04, against a definition and three
+ * other callers that all say `long`. Merging the module caught it: the
+ * disagreement is invisible to the linker and only shows when two files land
+ * in one translation unit. Same family as the three prototypes AGENTS.md
+ * records under "Merging beats splitting". The result is only tested for
+ * zero, so the emitted code does not move. */
+extern long DATETIME_IsLeapYear(long year);
 extern void  ESQ_CalcDayOfYearFromMonthDay(
     struct ParseIniClockData *c);
 

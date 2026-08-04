@@ -1,4 +1,8 @@
+    XDEF    _TLIBA3_DumpCurrentViewModePattern
+    XDEF    _TLIBA3_DumpAllViewModePatterns
 
+
+_TLIBA3_DumpCurrentViewModePattern:
     LINK.W  A5,#-80
 
     MOVE.L  _TLIBA1_CurrentViewModeIndex,-(A7)
@@ -22,6 +26,7 @@
 ;!======
 
     ; Dead code.
+_TLIBA3_DumpAllViewModePatterns:
     LINK.W  A5,#-84
     MOVE.L  D7,-(A7)
     MOVEQ   #0,D7

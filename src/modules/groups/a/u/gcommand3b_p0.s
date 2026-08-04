@@ -1,5 +1,8 @@
+    XDEF    _GCOMMAND_DumpGradientTable
 
 
+
+_GCOMMAND_DumpGradientTable:
     MOVEM.L D6-D7/A2-A3,-(A7)
     MOVEA.L 20(A7),A3
     MOVEA.L 24(A7),A2

@@ -1,6 +1,9 @@
+    XDEF    _COI_AppendAnimFieldWithTrailingSpace
+
     XDEF    COI_AppendAnimFieldWithTrailingSpace_Return
 
 
+_COI_AppendAnimFieldWithTrailingSpace:
     LINK.W  A5,#-4
     MOVEM.L D7/A2-A3,-(A7)
     MOVEA.L 8(A5),A3

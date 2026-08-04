@@ -1,6 +1,10 @@
+    XDEF    _WDISP_TickWeatherCycleOffset
+    XDEF    _WDISP_RenderWeatherStatusBrushSliceForIndex
+
 
 
     ; Dead code.
+_WDISP_TickWeatherCycleOffset:
     MOVEM.L D2-D3,-(A7)
 
     MOVE.W  _WDISP_WeatherStatusDigitChar,D0
@@ -28,6 +32,7 @@
 ;!======
 
     ; Dead code.
+_WDISP_RenderWeatherStatusBrushSliceForIndex:
     LINK.W  A5,#-8
     MOVEM.L D7/A3,-(A7)
 

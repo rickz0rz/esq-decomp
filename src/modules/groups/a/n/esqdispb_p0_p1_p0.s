@@ -1,6 +1,12 @@
+    XDEF    _ESQDISP_IsSlotBeyond23
+    XDEF    _ESQDISP_IsDayOfYearBeyondLimit
+    XDEF    _ESQDISP_IsSlotNegative
+    XDEF    _ESQDISP_IsSlotBelowOne
+
 
 
 ; Unreferenced Code
+_ESQDISP_IsSlotBeyond23:
     MOVE.L  D7,-(A7)
     MOVE.W  10(A7),D7
 
@@ -17,6 +23,7 @@
 ;!======
 
 ; Unreferenced Code
+_ESQDISP_IsDayOfYearBeyondLimit:
     MOVEM.L D5-D7,-(A7)
     MOVE.W  18(A7),D7
     MOVE.W  22(A7),D6
@@ -52,6 +59,7 @@
 ;!======
 
 ; Unreferenced Code
+_ESQDISP_IsSlotNegative:
     MOVE.L  D7,-(A7)
     MOVE.W  10(A7),D7
 
@@ -67,6 +75,7 @@
 ;!======
 
 ; Unreferenced Code
+_ESQDISP_IsSlotBelowOne:
     MOVE.L  D7,-(A7)
     MOVE.W  10(A7),D7
 

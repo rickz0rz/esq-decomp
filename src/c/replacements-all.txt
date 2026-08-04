@@ -63,6 +63,7 @@ modules/groups/a/b/cleanup_p1_p0.s                                     c/cleanup
 modules/groups/a/e/cleanup4_cleanup_testentryflagyandbit1.s            c/cleanup_test_entry_flag_y_and_bit1.c
 modules/groups/a/e/cleanup4_cleanup_updateentryflagbytes.s             c/cleanup_update_entry_flag_bytes.c
 modules/groups/a/e/coi_coi_allocsubentrytable.s                        c/coi_alloc_sub_entry_table.c
+modules/groups/a/e/coi_p4_p0.s                                         c/coi_append_anim_field_with_trailing_space.c
 modules/groups/a/e/coi_coi_clearanimobjectstrings_coi_clearanimobjectstrings.s c/coi_clear_anim_object_strings.c
 modules/groups/a/e/coi_coi_computeentrytimedeltaminutes_coi_computeentrytimedeltaminutes.s c/coi_compute_entry_time_delta_minutes.c
 modules/groups/a/e/coi_coi_countescape14beforenull.s                   c/coi_count_escape14_before_null.c
@@ -302,6 +303,7 @@ modules/groups/a/n/esqfunc_esqfunc_freelinetextbuffers.s               c/esqfunc
 modules/groups/a/n/esqfunc_p1_esqfunc_processuiframetick.s             c/esqfunc_process_ui_frame_tick.c
 modules/groups/a/n/esqfunc_esqfunc_rebuildpwbrushlistfromtagtable.s    c/esqfunc_rebuild_pw_brush_list_from_tag_table.c
 modules/groups/a/n/esqfunc_p4_p0_esqfunc_selectandapplybrushforcurrententry.s c/esqfunc_select_and_apply_brush_for_current_entry.c
+modules/groups/a/n/esqfunc_p2.s                                        c/esqfunc_service_grid_alerts_and_tick.c
 modules/groups/a/n/esqfunc_esqfunc_serviceuitickifrunning.s            c/esqfunc_service_ui_tick_if_running.c
 modules/groups/a/n/esqfunc_p5.s                                        c/esqfunc_trim_text_to_pixel_width_word_boundary.c
 modules/groups/a/n/esqfunc_esqfunc_updatediskwarningandrefreshtick.s   c/esqfunc_update_disk_warning_and_refresh_tick.c
@@ -377,6 +379,7 @@ modules/groups/a/u/gcommand3b_gcommand_consumebannerqueueentry.s       c/gcomman
 modules/groups/a/t/gcommand2_gcommand_copygfxtoworkifavailable.s       c/gcommand_copy_gfx_to_work_if_available.c
 modules/groups/a/u/gcommand3b_p3_p1_gcommand_copyimagedatatobitmap.s   c/gcommand_copy_image_data_to_bitmap.c
 modules/groups/a/u/gcommand3b_gcommand_disablehighlight.s              c/gcommand_disable_highlight.c
+modules/groups/a/u/gcommand3b_p0.s                                     c/gcommand_dump_gradient_table.c
 modules/groups/a/u/gcommand3_gcommandenablehighlight.s                 c/gcommand_enable_highlight.c
 modules/groups/a/u/gcommand3b_p0_gcommand_expandpresetblock.s          c/gcommand_expand_preset_block.c
 modules/groups/a/t/gcommand2.s                                         c/gcommand_find_path_separator.c
@@ -706,6 +709,7 @@ modules/groups/b/a/tliba3_p1_p1_tliba3_drawviewmodeoverlay.s           c/tliba3_
 modules/groups/b/a/tliba3_p4_tliba3_formatpatternregisterdump.s        c/tliba3_format_pattern_register_dump.c
 modules/groups/b/a/tliba3_tliba3_getviewmodeheight.s                   c/tliba3_get_view_mode_height.c
 modules/groups/b/a/tliba3_tliba3_getviewmoderastport.s                 c/tliba3_get_view_mode_rast_port.c
+modules/groups/b/a/tliba3_p2.s                                         c/tliba3_get_vm_array_runtime_word.c
 modules/groups/b/a/tliba3_tliba3_initpatterntable.s                    c/tliba3_init_pattern_table.c
 modules/groups/b/a/tliba3_p5_tliba3_initruntimeentries.s               c/tliba3_init_runtime_entries.c
 modules/groups/b/a/tliba3_tliba3_initruntimeentry.s                    c/tliba3_init_runtime_entry.c
@@ -843,7 +847,9 @@ modules/groups/a/g/diskio1_p1.s                                        c/diskio1
 modules/groups/a/k/ed1_p0.s                                            c/ed1_p0_merged.c
 modules/groups/a/l/ed3bb_p0.s                                          c/ed3bb_p0_merged.c
 modules/groups/a/l/ed3bbbb_p1.s                                        c/ed3bbbb_p1_merged.c
+modules/groups/a/n/esqdispb_p0.s                                       c/esqdispb_p0_merged.c
 modules/groups/a/n/esqdispb_p0_esqdisp_testentrybits0and2_core_esqdisp_testentrybits0and2.s c/esqdispb_p0_esqdisp_testentrybits0and2_core_esqdisp_testentrybits0and2_merged.c
+modules/groups/a/n/esqdispb_p0_p1_p0.s                                 c/esqdispb_p0_p1_p0_merged.c
 modules/groups/a/n/esqdispb_p0_p1_p0_esqdisp_drawstatusbanner_impl_esqdisp_drawstatusbanner_impl.s c/esqdispb_p0_p1_p0_esqdisp_drawstatusbanner_impl_esqdisp_drawstatusbanner_impl_merged.c
 modules/groups/a/o/esqiff2_p2.s                                        c/esqiff2_p2_merged.c
 modules/groups/a/p/esqshared_esqshared_replacetvratingtoken_esqshared_replacetvratingtoken.s c/esqshared_esqshared_replacetvratingtoken_esqshared_replacetvratingtoken_merged.c
@@ -856,10 +862,13 @@ modules/groups/b/a/newgrid_p2_p0.s                                     c/newgrid
 modules/groups/b/a/newgrid_p4.s                                        c/newgrid_p4_merged.c
 modules/groups/b/a/newgrid1b_p1_2_p0_p0.s                              c/newgrid1b_p1_2_p0_p0_merged.c
 modules/groups/b/a/newgrid1b_p2_p0.s                                   c/newgrid1b_p2_p0_merged.c
+modules/groups/b/a/parseini2_p1.s                                      c/parseini2_p1_merged.c
 modules/groups/b/a/script3b_p0.s                                       c/script3b_p0_merged.c
 modules/groups/b/a/textdisp_p2_p1.s                                    c/textdisp_p2_p1_merged.c
 modules/groups/b/a/textdisp2_p0_p0.s                                   c/textdisp2_p0_p0_merged.c
 modules/groups/b/a/textdisp3_p1_p1_p0.s                                c/textdisp3_p1_p1_p0_merged.c
 modules/groups/b/a/tliba1_p1.s                                         c/tliba1_p1_merged.c
+modules/groups/b/a/tliba3_p4_p0.s                                      c/tliba3_p4_p0_merged.c
+modules/groups/b/a/wdisp_p1.s                                          c/wdisp_p1_merged.c
 modules/submodules/unknown.s                                           c/unknown_merged.c
 modules/submodules/unknown29.s                                         c/unknown29_merged.c

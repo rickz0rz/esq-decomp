@@ -1,4 +1,7 @@
+    XDEF    _ESQFUNC_ServiceGridAlertsAndTick
 
+
+_ESQFUNC_ServiceGridAlertsAndTick:
     JSR     _ESQDISP_ProcessGridMessagesIfIdle(PC)
 
     TST.W   _CLEANUP_PendingAlertFlag
