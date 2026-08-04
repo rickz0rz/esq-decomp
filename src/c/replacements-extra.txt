@@ -199,6 +199,11 @@ modules/submodules/unknown40_p0.s                                      c/lib_exe
 # move them into the DATA hunk and shift every symbol after it.
 modules/submodules/unknown36_unknown36_finalizerequest.s               c/lib_unknown36_finalize_request.c
 
+# Split out of unknown27.s so the 950-byte FORMAT_ParseFormatSpec can stay in
+# assembly while these two small routines link.
+modules/submodules/unknown27_format_buffer2writechar.s                 c/lib_format_buffer2_write_char.c
+modules/submodules/unknown27_format_formattobuffer2.s                  c/lib_format_to_buffer2.c
+
 # THE VERTICAL-BLANK INTERRUPT SERVER, IN C. gen_all_manifest.py screens this as
 # "entered by the OS with a register convention", and for this function that is
 # wrong. It was checked three ways rather than assumed:
@@ -219,6 +224,7 @@ modules/groups/a/a/xjump.s                                             c/jmptbl_
 modules/groups/_main/a/xjump.s                                         c/jmptbl__main_a_xjump.c
 modules/groups/a/b/xjump.s                                             c/jmptbl_a_b_xjump.c
 modules/groups/a/c/xjump.s                                             c/jmptbl_a_c_xjump.c
+modules/groups/a/i/xjump.s                                             c/jmptbl_a_i_xjump.c
 modules/groups/a/j/xjump.s                                             c/jmptbl_a_j_xjump.c
 modules/groups/a/v/xjump.s                                             c/jmptbl_a_v_xjump.c
 modules/groups/a/x/xjump.s                                             c/jmptbl_a_x_xjump.c

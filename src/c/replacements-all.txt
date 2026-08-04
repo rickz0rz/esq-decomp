@@ -444,6 +444,8 @@ modules/submodules/unknown40_dos_systemtaglist.s                       c/lib_dos
 modules/submodules/unknown26.s                                         c/lib_dos_write_by_index.c
 modules/submodules/unknown17.s                                         c/lib_dos_write_with_error_state.c
 modules/submodules/unknown40_p0.s                                      c/lib_exec_call_vector_48.c
+modules/submodules/unknown27_format_buffer2writechar.s                 c/lib_format_buffer2_write_char.c
+modules/submodules/unknown27_format_formattobuffer2.s                  c/lib_format_to_buffer2.c
 modules/submodules/unknown8.s                                          c/lib_format_u32_to_decimal_string.c
 modules/submodules/unknown9.s                                          c/lib_format_u32_to_octal_string.c
 modules/submodules/unknown39.s                                         c/lib_graphics_blt_bitmap_rastport.c
@@ -770,6 +772,7 @@ modules/groups/a/a/xjump.s                                             c/jmptbl_
 modules/groups/_main/a/xjump.s                                         c/jmptbl__main_a_xjump.c
 modules/groups/a/b/xjump.s                                             c/jmptbl_a_b_xjump.c
 modules/groups/a/c/xjump.s                                             c/jmptbl_a_c_xjump.c
+modules/groups/a/i/xjump.s                                             c/jmptbl_a_i_xjump.c
 modules/groups/a/j/xjump.s                                             c/jmptbl_a_j_xjump.c
 modules/groups/a/v/xjump.s                                             c/jmptbl_a_v_xjump.c
 modules/groups/a/x/xjump.s                                             c/jmptbl_a_x_xjump.c
