@@ -80,13 +80,13 @@ void DST_BuildBannerTimeEntry(short slot, unsigned char day, short *outRow,
     block.dayOfYear = dayOfYear;
     block.hourFlag = 0;
     block.minute = GROUP_AG_JMPTBL_MATH_Mulu32(30,
-        ((long)slot - 1) % 2);
+        (((long)slot - 1) - (((long)slot - 1) / 2) * 2));
 
-    block.month = (((long)slot - 1) / 2 + 5) % 12;
+    block.month = ((((long)slot - 1) / 2 + 5) - ((((long)slot - 1) / 2 + 5) / 12) * 12);
     if (block.month == 0)
         block.month = 12;
 
-    if ((((long)slot - 1) / 2 + 5) % 24 > 11)
+    if (((((long)slot - 1) / 2 + 5) - ((((long)slot - 1) / 2 + 5) / 24) * 24) > 11)
         block.overflow = -1;
     else
         block.overflow = 0;

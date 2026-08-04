@@ -48,9 +48,9 @@ void TEXTDISP_FormatEntryTimeForIndex(char *out, short row,
 
     mins = ((unsigned char)entry[4] - 48) * 10 + (unsigned char)entry[5] - 48;
     slot += CLOCK_FormatVariantCode / 30;
-    if (mins % 30 < CLOCK_FormatVariantCode % 30)
+    if ((mins - (mins / 30) * 30) < (CLOCK_FormatVariantCode - (CLOCK_FormatVariantCode / 30) * 30))
         slot++;
-    mins = mins % 30;
+    mins = (mins - (mins / 30) * 30);
     if (slot > 48)
         slot -= 48;
 
@@ -58,5 +58,5 @@ void TEXTDISP_FormatEntryTimeForIndex(char *out, short row,
 
     mins = ((unsigned char)out[3] - 48) * 10 + mins;
     out[3] = mins / 10 + 48;
-    out[4] = mins % 10 + 48;
+    out[4] = (mins - (mins / 10) * 10) + 48;
 }

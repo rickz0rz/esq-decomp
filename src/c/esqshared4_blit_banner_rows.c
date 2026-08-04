@@ -5,6 +5,51 @@
  * MODULE:   modules/groups/a/q/esqshared4_p4.s
  * STATUS:   behavioural
  *
+ * DO-NOT-LINK: corrupts the grid time banner. The slot labels "7:30 PM",
+ * "8:00 PM" and "8:30 PM" render with horizontal colour streaks through the
+ * glyphs, while the live clock beside them, the date row and the standby banner
+ * all stay clean. Bisected on 2026-08-03 against the 795-entry manifest:
+ *
+ *     795 entries                              STREAKED
+ *     794, this file removed                   CLEAN
+ *     794, esqshared4_bind_and_clear removed   STREAKED
+ *     793, both removed                        CLEAN
+ *     pure assembly with ESQ_FARCALLS=1        CLEAN
+ *     ESQ.known-good-36cf56ed                  CLEAN
+ *
+ * So it is this file, it is not the far-call rewrite, and it is not a defect in
+ * the original. The last two controls matter: the ESC-menu grey turned out to be
+ * original behaviour, and this one was checked the same way before being blamed
+ * on the reconstruction.
+ *
+ * THE CAUSE IS NOT YET FOUND, and the obvious candidates were checked and
+ * cleared. Read this before re-deriving it:
+ *
+ *   - Both copy loops match the original's STRUCTURE exactly, counted from the
+ *     encoding rather than by eye. CopyInterleavedRowWordsFromOffset: 51 MOVE.W
+ *     = 17 groups of 3, 16 A1 steps, 15 A2 steps, tail source reloaded from the
+ *     base. CopyBannerRowsWithByteOffset: 17 MOVE.W and 289 MOVE.L = 17 rows of
+ *     one word plus 17 longs, 16 A1 steps, 15 A2 steps. The C reproduces all of
+ *     those counts.
+ *   - Source and destination are the right way round: the original writes
+ *     `MOVE.W 6(A2),6(A1)` with A1 the destination, and copy_row_words(dst,src)
+ *     is called as copy_row_words(dst, src).
+ *   - The three scratch rasters are POINTERS and are read as pointers, matching
+ *     `LEA sym,A1 / MOVEA.L (A1),A0`. The copper lists are arrays and are passed
+ *     as addresses, matching `LEA sym,A0`.
+ *   - LoadCopperColorWordsFromNibbleTable really IS dead. Its only caller is the
+ *     unlabelled block at the head of esqshared4_p5.s, reachable only by
+ *     fall-through from _ESQSHARED4_LoadDefaultPaletteToCopper_NoOp, which is a
+ *     bare RTS. Verified in the source, not assumed.
+ *   - The caller, _ESQSHARED4_TickCopperAndBannerTransitions, restores
+ *     D0-D3/A0-A6 from its own entry MOVEM immediately after the call, so the
+ *     dropped `MOVEM.L D0/A0-A1` is not the cause either.
+ *
+ * The streaks are horizontal COLOUR bands, which is a copper-list symptom rather
+ * than a bitmap one. That points at CopyInterleavedRowWordsFromOffset, whose
+ * whole job is writing copper colour words. Next step: dump
+ * ESQ_CopperListBannerA before and after one call under both builds and diff.
+ *
  * The whole module in one file, because a C replacement substitutes for a whole
  * module and these four labels share it.
  *

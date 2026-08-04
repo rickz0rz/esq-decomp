@@ -27,11 +27,11 @@ long DATETIME_IsLeapYear(long year)
 
     if (year < 0x76c)
         year += 0x76c;
-    if (year % 4 != 0)
-        leap = (year % 400 == 0);
-    else if (year % 100 != 0)
+    if ((year - (year / 4) * 4) != 0)
+        leap = ((year - (year / 400) * 400) == 0);
+    else if ((year - (year / 100) * 100) != 0)
         leap = 1;
     else
-        leap = (year % 400 == 0);
+        leap = ((year - (year / 400) * 400) == 0);
     return leap;
 }

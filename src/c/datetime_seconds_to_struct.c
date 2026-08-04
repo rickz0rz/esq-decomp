@@ -55,16 +55,16 @@ struct EsqDateTime *DATETIME_SecondsToStruct(long secs, struct EsqDateTime *dt)
     if (secs < 0)
         secs = 0;
 
-    dt->second = secs % 60;
+    dt->second = (secs - (secs / 60) * 60);
     secs /= 60;
-    dt->minute = secs % 60;
+    dt->minute = (secs - (secs / 60) * 60);
     secs /= 60;                       /* secs is now whole HOURS */
 
     blocks = secs / 35064;            /* whole four-year blocks */
     dt->year = blocks * 4;
     dt->year += 1970;
     days = blocks * 1461;
-    secs = secs % 35064;
+    secs = (secs - (secs / 35064) * 35064);
 
     for (;;) {
         yearHours = 8760;
@@ -77,11 +77,11 @@ struct EsqDateTime *DATETIME_SecondsToStruct(long secs, struct EsqDateTime *dt)
         secs -= yearHours;
     }
 
-    dt->hour = secs % 24;
+    dt->hour = (secs - (secs / 24) * 24);
     secs /= 24;                       /* day index within the year */
 
     days += secs + 4;                 /* +4 = the epoch's weekday offset */
-    dt->dayOfWeek = days % 7;
+    dt->dayOfWeek = (days - (days / 7) * 7);
 
     doy = secs + 1;
     dt->dayOfYear = doy;

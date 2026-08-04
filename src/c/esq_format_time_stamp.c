@@ -62,17 +62,17 @@ void ESQ_FormatTimeStamp(char *buf, struct ClockRec *c)
     *--p = ' ';
 
     v = c->second;
-    *--p = v % 10 + '0';
+    *--p = (v - (v / 10) * 10) + '0';
     *--p = v / 10 + '0';
     *--p = ':';
 
     v = c->minute;
-    *--p = v % 10 + '0';
+    *--p = (v - (v / 10) * 10) + '0';
     *--p = v / 10 + '0';
     *--p = ':';
 
     v = c->hour;
-    *--p = v % 10 + '0';
+    *--p = (v - (v / 10) * 10) + '0';
     v = v / 10;
     if (v == 0)
         *--p = ' ';

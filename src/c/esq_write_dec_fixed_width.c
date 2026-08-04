@@ -24,7 +24,7 @@ void ESQ_WriteDecFixedWidth(char *buf, int value, int width)
     *buf = 0;
     width--;
     do {
-        *--buf = (char)(value % 10) + '0';
+        *--buf = (char)((value - (value / 10) * 10)) + '0';
         value /= 10;
     } while (width--);
 }

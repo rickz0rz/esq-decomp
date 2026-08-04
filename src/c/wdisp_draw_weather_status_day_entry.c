@@ -251,7 +251,7 @@ void WDISP_DrawWeatherStatusDayEntry(struct RastPort *rp, long day,
     }
 
     strcpy(hi, Global_JMPTBL_DAYS_OF_WEEK[
-               ((long)CLOCK_CurrentDayOfWeekIndex + day + 1) % 7]);
+               (((long)CLOCK_CurrentDayOfWeekIndex + day + 1) - (((long)CLOCK_CurrentDayOfWeekIndex + day + 1) / 7) * 7)]);
     len = (long)strlen(hi);
     drawn = TextLength(rp, hi, len);
     x = colX + (colWidth - drawn) / 2;

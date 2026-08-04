@@ -29,7 +29,7 @@ extern long ED_EditCursorOffset;
 
 void ED_UpdateCursorPosFromIndex(long index)
 {
-    ED_CursorColumnIndex = index % 40;
+    ED_CursorColumnIndex = (index - (index / 40) * 40);
     ED_ViewportOffset    = index / 40;
 
     while (ED_ViewportOffset >= ED_TextLimit) {

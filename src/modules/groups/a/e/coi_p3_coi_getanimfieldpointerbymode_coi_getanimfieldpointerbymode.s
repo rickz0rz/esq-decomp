@@ -1,12 +1,12 @@
     XDEF    _COI_GetAnimFieldPointerByMode
-    XDEF    COI_SelectAnimFieldPointer
+    XDEF    _COI_SelectAnimFieldPointer
     XDEF    COI_GetAnimFieldPointerByMode_Return
 
 
 
 
 ;------------------------------------------------------------------------------
-; FUNC: COI_SelectAnimFieldPointer   (Select animation field pointer by key/mode)
+; FUNC: _COI_SelectAnimFieldPointer   (Select animation field pointer by key/mode)
 ; ARGS:
 ;   (none observed)
 ; RET:
@@ -23,7 +23,7 @@
 ;   Entry-point routine; static scan captures calls and symbol accesses.
 ; NOTES:
 ;------------------------------------------------------------------------------
-COI_SelectAnimFieldPointer:
+_COI_SelectAnimFieldPointer:
 ;------------------------------------------------------------------------------
 ; FUNC: _COI_GetAnimFieldPointerByMode   (Routine at _COI_GetAnimFieldPointerByMode)
 ; ARGS:

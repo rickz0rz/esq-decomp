@@ -69,7 +69,7 @@ long NEWGRID_AdjustClockStringBySlot(char *clock)
 
     memcpy(tmp, clock, 22);
     secs = NEWGRID_JMPTBL_DATETIME_NormalizeStructToSeconds(tmp);
-    secs -= 60 * ((long)CLOCK_FormatVariantCode % 30);
+    secs -= 60 * (((long)CLOCK_FormatVariantCode - ((long)CLOCK_FormatVariantCode / 30) * 30));
     NEWGRID_JMPTBL_DATETIME_SecondsToStruct(secs, tmp);
 
     return NEWGRID_ComputeDaySlotFromClock((struct NewGridClockData *)tmp);

@@ -27,7 +27,7 @@ extern long TLIBA3_BuildDisplayContextForViewMode(long mode, long a, long b);
 extern void TLIBA3_DrawViewModeOverlay(long mode, long a, long b);
 void TLIBA3_SelectNextViewMode(void)
 {
-    long mode = (TLIBA1_CurrentViewModeIndex + 1) % 9;
+    long mode = ((TLIBA1_CurrentViewModeIndex + 1) - ((TLIBA1_CurrentViewModeIndex + 1) / 9) * 9);
 
     TLIBA1_CurrentViewModeIndex = mode;
     WDISP_DisplayContextBase = TLIBA3_BuildDisplayContextForViewMode(mode, 0, -1);

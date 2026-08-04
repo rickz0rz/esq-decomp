@@ -63,8 +63,8 @@ long FLIB_AppendClockStampedLogEntry(char *text)
 
     tag = CLOCK_CacheAmPmFlag != 0 ? ESQPARS2_LogTagPm : ESQPARS2_LogTagAm;
     GROUP_AW_JMPTBL_WDISP_SPrintf(line, ESQPARS2_LogTimestampFmt,
-        CLOCK_CacheHour % 100, CLOCK_CacheMinuteOrSecond % 100,
-        Global_REF_CLOCKDATA_STRUCT % 100, tag);
+        (CLOCK_CacheHour - (CLOCK_CacheHour / 100) * 100), (CLOCK_CacheMinuteOrSecond - (CLOCK_CacheMinuteOrSecond / 100) * 100),
+        (Global_REF_CLOCKDATA_STRUCT - (Global_REF_CLOCKDATA_STRUCT / 100) * 100), tag);
 
     len += 14;
     GROUP_AR_JMPTBL_STRING_AppendAtNull(line, ESQPARS2_LogFieldTab);

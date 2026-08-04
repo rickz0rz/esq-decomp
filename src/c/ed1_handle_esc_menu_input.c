@@ -101,7 +101,7 @@ void ED1_HandleEscMenuInput(void)
     case 7:
     default:
         ED_EditCursorOffset += ((char)code == 9) ? 5 : 1;
-        ED_EditCursorOffset = ED_EditCursorOffset % 6;
+        ED_EditCursorOffset = (ED_EditCursorOffset - (ED_EditCursorOffset / 6) * 6);
         ED_DrawEscMainMenuText();
         break;
     }

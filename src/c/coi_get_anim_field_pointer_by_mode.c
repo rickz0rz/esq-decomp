@@ -33,10 +33,17 @@ struct AnimSub {
     struct AnimItem **table;    /* +38 */
 };
 
+/* The guard lets coi_select_anim_field_pointer.c declare this tag ahead of the
+ * definition when the two files merge into one unit. SAS/C 6.51 rejects a tag
+ * declaration that FOLLOWS the definition, so the guard has to be the struct's
+ * own -- see AGENTS.md. */
+#ifndef ANIMENTRY_DEFINED
+#define ANIMENTRY_DEFINED
 struct AnimEntry {
     char            pad0[48];
     struct AnimSub *sub;        /* +48 */
 };
+#endif
 
 char *COI_GetAnimFieldPointerByMode(struct AnimEntry *entry, short key,
                                     short mode)

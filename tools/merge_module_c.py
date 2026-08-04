@@ -113,6 +113,18 @@ def falls_through(mod):
 
     A block that ends in RTS, RTE, RTR, JMP or BRA hands control on by itself
     and is safe.
+
+    AN ALIAS IS NOT A FALL-THROUGH, and the difference is exact. Two labels with
+    NO INSTRUCTION BETWEEN THEM name the same address:
+
+        COI_SelectAnimFieldPointer:
+        _COI_GetAnimFieldPointerByMode:
+            LINK.W  A5,#-20
+
+    Nothing runs between them, so nothing can be lost by restoring them as two C
+    functions -- one forwards to the other and both names reach the same code.
+    The test is `last_op is None`, which means no instruction was seen since the
+    previous label. A genuine fall-through always has at least one.
     """
     body = open(os.path.join(ROOT, 'src', mod), errors='replace').read()
     lines = body.split('\n')
@@ -127,6 +139,7 @@ def falls_through(mod):
             name = m.group(1)
             if (prev_label is not None and not name.startswith('.')
                     and not name.endswith('_Return')
+                    and last_op is not None
                     and last_op not in TERMINAL):
                 return '%s falls through into %s' % (prev_label, name)
             if not name.startswith('.') and not name.endswith('_Return'):

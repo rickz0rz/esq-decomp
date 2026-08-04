@@ -42,13 +42,13 @@ void TLIBA3_DrawVerticalScaleTicks(struct RastPort *rp, long x)
     Draw(rp, x, (long)rp->BitMap->Rows - 1);
 
     for (i = 0; i < (long)rp->BitMap->Rows - 1; i++) {
-        if (i % 10 == 0 && i != 0) {
+        if ((i - (i / 10) * 10) == 0 && i != 0) {
             Move(rp, x, i);
             Draw(rp, x + 20, i);
             Move(rp, xLabel, i);
             WDISP_SPrintf(buf, TLIBA1_FMT_PCT_03LD_VerticalScaleTick, i);
             Text(rp, buf, (long)strlen(buf));
-        } else if (i % 5 == 0) {
+        } else if ((i - (i / 5) * 5) == 0) {
             Move(rp, x, i);
             Draw(rp, x + 10, i);
         }

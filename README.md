@@ -32,9 +32,39 @@ Run `python3 tools/coverage.py` to regenerate every number in this section.
 | restored to C | 702 (190,474 bytes, 98.0% by byte, 96% by count) |
 | byte-exact restorations | 29 application functions, plus 1 library function (30 files) |
 | source modules | 1,015, coalesced into 531 link units |
-| assembly remaining | 14,102 of 267,168 bytes (5.3%), in 246 modules |
 | DATA section in C | 55,820 of 55,820 bytes (100%) |
 | linked size | CODE 211,348 bytes, DATA 55,820 bytes |
+
+### The maximum-C build
+
+`coverage.py` measures the restoration lane and its universe is not the whole
+program, so it cannot answer "how much of the built binary is C". Read the link
+map for that. A contributor in `build/ESQ.map` whose name ends `.asm` is
+assembly and everything else is C.
+
+```
+maximum-C build, CODE hunk   94.6%   [######################################..]
+                                     216,216 of 228,528 bytes come from C
+```
+
+| measure | value |
+|---|---|
+| maximum-C manifest | 794 entries (`src/c/replacements-all.txt`) |
+| assembly remaining | 12,312 of 228,528 CODE bytes (5.4%) |
+| module includes still assembly | 236, of which 150 are EMPTY and 10 are pads |
+| modules holding real code | 76 (`python3 tools/lastmile.py`) |
+
+Two things once recorded as impossible are now done. The SAS/C arithmetic
+helpers are C (`src/c/lib_math_helpers.c`), so every divide and multiply in the
+program runs through compiled code. The vertical-blank interrupt server is C as
+well, and it needed no special keyword. Both are written up under "The last mile
+to 100% C" in `AGENTS.md`.
+
+Moving the divide helpers meant removing a hidden dependency first: they return
+the quotient in D0 **and the remainder in D1**, which is how SAS/C implements
+`%`. Every `%` in `src/c` was rewritten as `a - (a / b) * b`.
+`tools/d1_remainder_audit.py` proves no caller reads D1, and it must report zero
+before those helpers may be linked.
 
 A restoration is **exact** when the compiler emits the original bytes. It is
 **behavioural** when the code does the same work with different bytes. Most
@@ -167,10 +197,10 @@ Five manifests exist, each for a different question:
 
 | manifest | entries | what it is for |
 |---|---:|---|
-| `replacements.txt` | 22 | byte-exact only, so the build must stay content-identical |
+| `replacements.txt` | 23 | byte-exact only, so the build must stay content-identical |
 | `replacements-runnable.txt` | 278 | proven on all six ESC-menu items |
 | `replacements-tranche.txt` | 293 | the largest set proven without `ESQ_FARCALLS` |
-| `replacements-all.txt` | 614 | every restoration, judged by running it |
+| `replacements-all.txt` | 790 | every restoration, judged by running it |
 | `replacements-canary.txt` | 20 | a deliberate mismatch, to prove the gate can fail |
 
 `replacements-all.txt` needs `ESQ_FARCALLS=1`. That flag widens the assembly's

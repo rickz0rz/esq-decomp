@@ -208,7 +208,7 @@ void CLEANUP_ProcessAlerts(void)
         CLEANUP_DrawClockBanner();
 
     if (event == 2) {
-        if ((long)CLOCK_HalfHourSlotIndex % 2 == 1)
+        if (((long)CLOCK_HalfHourSlotIndex - ((long)CLOCK_HalfHourSlotIndex / 2) * 2) == 1)
             BRUSH_PendingAlertCode = 0;
         GROUP_AC_JMPTBL_ESQFUNC_FreeExtraTitleTextPointers(
             (long)WDISP_BannerCharRangeStart);

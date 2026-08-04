@@ -65,7 +65,7 @@ extern struct LadfuncEntry *LADFUNC_EntryPtrTable[];
 void TEXTDISP_DrawNextEntryPreview(void)
 {
     while (LADFUNC_EntryPtrTable[LADFUNC_EntryCount]->state != 1)
-        LADFUNC_EntryCount = (short)(((long)LADFUNC_EntryCount + 1) % 46);
+        LADFUNC_EntryCount = (short)((((long)LADFUNC_EntryCount + 1) - (((long)LADFUNC_EntryCount + 1) / 46) * 46));
 
     TEXTDISP2_JMPTBL_LADFUNC_DrawEntryPreview((long)LADFUNC_EntryCount);
     LADFUNC_EntryCount++;

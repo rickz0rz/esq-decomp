@@ -158,6 +158,11 @@ void ED_HandleEditorInput(void)
     unsigned long n;
     long row;
     long i;
+    /* Holds a nibble before it is wrapped. The wrap is written as
+     * `v - (v / 8) * 8` rather than `v % 8` so it never reads the remainder out
+     * of D1 -- see tools/d1_remainder_audit.py. That form names its operand
+     * TWICE, so the extractor call has to be hoisted or it would run twice. */
+    long nib;
 
     if (ED_TextModeReinitPendingFlag != 0) {
         Global_REF_BOOL_IS_TEXT_OR_CURSOR = 1;
@@ -181,8 +186,9 @@ void ED_HandleEditorInput(void)
 
     case 2:
         /* Step the HIGH nibble, wrapping at 8. */
+        nib = GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(ED_CurrentChar) + 1;
         ED_CurrentChar = (unsigned char)ED1_JMPTBL_LADFUNC_PackNibblesToByte(
-            (GROUP_AL_JMPTBL_LADFUNC_ExtractHighNibble(ED_CurrentChar) + 1) % 8,
+            nib - (nib / 8) * 8,
             ED_CurrentChar);
         if (Global_REF_BOOL_IS_TEXT_OR_CURSOR == 1)
             ED_EditBufferLive[ED_EditCursorOffset] = ED_CurrentChar;
@@ -190,9 +196,10 @@ void ED_HandleEditorInput(void)
 
     case 6:
         /* Step the LOW nibble, wrapping at 8. */
+        nib = GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble(ED_CurrentChar) + 1;
         ED_CurrentChar = (unsigned char)ED1_JMPTBL_LADFUNC_MergeHighLowNibbles(
             ED_CurrentChar,
-            (GROUP_AL_JMPTBL_LADFUNC_ExtractLowNibble(ED_CurrentChar) + 1) % 8);
+            nib - (nib / 8) * 8);
         if (Global_REF_BOOL_IS_TEXT_OR_CURSOR == 1)
             ED_EditBufferLive[ED_EditCursorOffset] = ED_CurrentChar;
         break;
@@ -291,7 +298,7 @@ void ED_HandleEditorInput(void)
             SetAPen(Global_REF_RASTPORT_1, 1L);
             SetBPen(Global_REF_RASTPORT_1, 6L);
             Global_REF_BOOL_IS_LINE_OR_PAGE =
-                (Global_REF_BOOL_IS_LINE_OR_PAGE + 1) % 2;
+                ((Global_REF_BOOL_IS_LINE_OR_PAGE + 1) - ((Global_REF_BOOL_IS_LINE_OR_PAGE + 1) / 2) * 2);
             if (Global_REF_BOOL_IS_LINE_OR_PAGE == 0)
                 label = ED2_STR_LINE;
             else

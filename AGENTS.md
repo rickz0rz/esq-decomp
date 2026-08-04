@@ -1264,13 +1264,15 @@ far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
 BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
 278-entry parent, also clean and additionally proven on all six ESC-menu items.
 
-`src/c/replacements-all.txt` is the one to grow. It stands at **770 entries**,
+`src/c/replacements-all.txt` is the one to grow. It stands at **794 entries**,
 every DATA module among them, with 28 restorations held out as unsafe to link.
 It went 440 -> 464 from new restorations and 464 -> 614 from SPLITTING modules,
-which is the cheaper lever of the two and was sitting unused.
+which is the cheaper lever of the two and was sitting unused. It went 770 -> 790
+on 2026-08-03 from CONVERTING JUMP TABLES and from the alias forwarders that
+unblocked them. Both are described under "The last mile to 100% C" below.
 
-**At 770 it is PROVEN END TO END** (2026-08-02), on the same sequence that
-proved 440: `check_pcrel_range` 0 truncated of 55 calls, `a6_audit` 0 of 769,
+**At 794 it is PROVEN END TO END** (2026-08-03), on the same sequence that
+proved 440: `check_pcrel_range` 0 truncated of 50 calls, `a6_audit` 0 of 793,
 `data_shape_audit` and `extern_width_audit` clean, `data_offset_audit` 50 data
 modules in agreement, `soak_esq.sh` PASS at 150 seconds twice and at 300 once
 (10 of 10 distinct frames, 10 of 10 holding Amiga content, 1 exception line,
@@ -1303,6 +1305,199 @@ The last two have their own sections below.
 **Growing the manifest past a proven point is safe for the byte gates, which do
 not read it. A manifest that has only been LINKED is not a manifest that has
 been RUN.** Soak before treating a new size as good.
+
+## The last mile to 100% C
+
+**MEASURE THIS IN BYTES, NOT IN MODULES.** A module count says 240 includes are
+still assembly and that is misleading: 150 of them are EMPTY files and 10 hold
+only an alignment pad. The honest number comes from the link map.
+
+**The maximum-C build is 94.6% C by CODE byte.** 216,216 bytes of 228,528 come
+from compiled C. 12,312 bytes are assembly.
+
+```sh
+python3 tools/lastmile.py                  # module buckets, plus the code worklist
+python3 tools/lastmile.py --list jumptable # the modules in one bucket
+```
+
+It reads `src/Prevue.asm` and the manifest, so it cannot go stale. For the byte
+split, read `build/ESQ.map`: a contributor whose name ends `.asm` is assembly and
+everything else is C.
+
+### The floor, re-measured after the divide-helper and interrupt work
+
+Two things this table used to call impossible are now DONE and linked. What is
+left is smaller and better understood.
+
+| bytes | share | why it is still assembly |
+|---:|---:|---|
+| ~5,500 | 2.4% | SAS/C runtime and protocol code in `submodules/` |
+| ~1,560 | 0.7% | headless continuation modules and small pads |
+| ~1,000 | 0.4% | jump tables blocked on VARIADIC or unrestored targets |
+| 660 | 0.3% | register-argument helpers, marked `DO-NOT-LINK` |
+| 564 | 0.2% | the `_ED1_EnterEscMenu` fall-through pair |
+| 464 | 0.2% | one body with several entry points |
+| 460 | 0.2% | the startup and shutdown entry |
+
+Regenerate it from `build/ESQ.map`; a contributor whose name ends `.asm` is
+assembly.
+
+### SOLVED: the divide helpers are C, and the remainder in D1 is gone
+
+`__CXD33`/`_MATH_DivS32`, `__CXD22`/`_MATH_DivU32` and `__CXM33`/`_MATH_Mulu32`
+are now `src/c/lib_math_helpers.c`. Every `/` and `*` in the program runs
+through compiled C.
+
+**The obstacle was real and it was not the register convention.** These helpers
+return TWO values -- the quotient in D0 and the SIGN-CORRECTED REMAINDER in D1 --
+and that is how SAS/C implements `%`:
+
+```
+long r(long a, long b) { return a % b; }
+   -> 2007 2206 61000000 2001      ... BSR.W __CXD33 / MOVE.L D1,D0
+long q(long a, long b) { return a / b; }
+   -> 2007 2206 61000000           ... BSR.W __CXD33   (D0 used as-is)
+```
+
+A C function returns ONE value, so no C definition can preserve D1. **Do not
+trust the `; RET: D0: result/status` header comments in `modules/submodules/` --
+they are auto-generated and they hide second return values.** The four `NEG.L D1`
+instructions in `_MATH_DivS32` are the proof: they sign-correct the remainder and
+would be dead code otherwise.
+
+**The fix was to remove the dependency, not to work around it.** Every `%` in
+`src/c` became `a - (a / b) * b`, which compiles to a divide and a multiply that
+both read only D0. 56 sites in 31 files.
+
+```sh
+/tmp/.capvenv/bin/python tools/d1_remainder_audit.py            # the linked image
+/tmp/.capvenv/bin/python tools/d1_remainder_audit.py --src f.c  # one source file
+```
+
+**It must report ZERO before `unknown22_p0.s` may be replaced.** It went 57 -> 0.
+Nothing else can see this fault: the caller's bytes are right, the helper's bytes
+are right, and only the pairing is wrong.
+
+Three traps the audit had to survive, each of which made it report a false clean:
+
+- Scanning `src/**.s` finds sites that are NOT IN THE BUILD, because a module
+  replaced by C never links. It scans the linked image instead.
+- A linear disassembly of the CODE hunk DESYNCS on the embedded jump tables and
+  found 0 of 106 calls. It scans for the call opcodes and disassembles only the
+  short window after each one.
+- On a `CODE=FAR` build the call is `JSR abs.L` with a FOUR-byte relocation, not
+  `BSR.W` with a two-byte one. Filtering on size 2 found nothing at all.
+
+Writing the helpers needs two more things. The arguments arrive in registers, so
+each is an `__asm` function with `register __d0` and `register __d1` parameters.
+And neither body may use `/`, `%` or `*` on a long, or it compiles into a call to
+itself -- the divide is a shift-and-subtract loop and the multiply is built from
+16-bit partial products, which emit `MULU.W` inline. The compiled object has an
+EMPTY xref table, which is how that was checked rather than assumed.
+
+The C divide is slower than the original, which uses `DIVU` on 16-bit halves.
+If it ever shows up in a profile, that is the optimisation to add.
+
+### SOLVED: the vertical-blank interrupt server is C
+
+`_ESQ_TickGlobalCounters` is the `is_Code` target that `_SETUP_INTERRUPT_INTB_VERTB`
+installs, and it is now compiled C. It needed NO keyword at all -- not
+`__interrupt`, not `__saveds` -- and that is the part worth remembering.
+
+- The original reads NO incoming register. Its first instruction is a global
+  load, so A1, A5 and A6 are ignored.
+- The original saves nothing and touches only D0/D1/A0/A1, which is exactly what
+  AmigaOS lets an interrupt server clobber. Compiled C opens
+  `MOVEM.L D5-D7,-(A7)`: it saves every callee-saved register it uses, so it
+  honours the same rule automatically.
+- The compiled object references A4 **zero** times. `__saveds` would therefore be
+  actively WRONG here -- it would load LinkerDB into A4 in interrupt context,
+  where the interrupted task's A4 must be left alone.
+
+SAS/C 6.51 does have both keywords, and they work:
+
+```
+void __interrupt f(void)   3039<G> 5440 33c0<G> 4a80 4e75    ... TST.L D0 / RTS
+void __saveds    f(void)   2f0c 49f9<LinkerDB> ... 285f 4e75  A4 save / set / restore
+```
+
+Reach for `__saveds` when the ORIGINAL opens `MOVE.L A4,-(A7)` / `LEA <data>,A4`
+-- that is a Task callback establishing ESQ's near-data base, and
+`_LOCAVAIL2_AutoRequestNoOp` is the worked example. An interrupt server that
+never touches A4 does not want it.
+
+### Aliases: five modules name one function twice
+
+A module can carry two labels on ONE address, with only a comment between them:
+
+```
+COI_SelectAnimFieldPointer:
+_COI_GetAnimFieldPointerByMode:
+    LINK.W  A5,#-20
+```
+
+The original spends no bytes on the alias. C cannot give one function two
+external names, so the second name becomes a forwarder. **The tell is that
+`refbytes.py` reports the alias as ZERO bytes**, because it extracts label to
+label.
+
+These were blocking real work. `COI_SelectAnimFieldPointer` and
+`_COI_ProcessEntrySelectionState` each held up a 36-thunk jump table, and
+`_ESQDISP_DrawStatusBanner` held up another.
+
+`merge_module_c.py` used to refuse an alias pair as a fall-through. It now
+separates them: an alias has NO INSTRUCTION between the two labels, so `last_op`
+is still `None`, while a genuine fall-through always has at least one. The
+`_ED1_EnterEscMenu` pair is still correctly refused.
+
+### Jump tables are the cheapest lever, and it was sitting unused
+
+A jump table is a run of `JMP target` thunks. `jmptbl_to_c.py` turns each thunk
+into a C function that forwards the arguments and returns the result. The tool
+reads the target's own restoration to copy the parameter list, so it cannot drop
+an argument.
+
+Eight tables converted on 2026-08-03 and the manifest went 770 -> 790, counting
+the restorations that unblocked them. That is 127 thunks. Both byte gates stayed
+green, because the default build does not read the manifest.
+
+**A thunk can be spelled `BRA.W target` instead of `JMP target`, and a comment
+can sit between the label and the instruction.** Both forms are the same tail
+transfer. The tool used to accept only `JMP` on the very next line, so it refused
+seven tables that were pure jump tables. It now accepts both spellings and skips
+comment lines. All 17 tables converted before the change regenerate
+byte-identically, so the change is safe.
+
+### The remaining tables are blocked by their TARGETS, not by themselves
+
+Eighteen tables still refuse, and every one refuses for the same reason: a thunk
+points at a function that has no C restoration. Two groups cause it, and only one
+of them is work.
+
+- **SAS/C runtime routines** -- `MATH_DivS32`, `MATH_Mulu32`, `MATH_DivU32`,
+  `WDISP_SPrintf`, `FORMAT_RawDoFmtWithScratchBuffer` and others. These live in
+  `modules/submodules/`. **Most of these are a HARD floor, not a backlog.** The
+  arithmetic helpers take register arguments and `MATH_DivS32` also returns the
+  remainder in D1, so a C thunk silently breaks `%`. `WDISP_SPrintf` is variadic
+  and `jmptbl_to_c.py` refuses a variadic target by design.
+- **Real ESQ functions nobody has written yet** -- `GRAPHICS_AllocRaster`,
+  `CLOCK_CheckDateOrSecondsFromEpoch`, `LOCAVAIL_SaveAvailabilityDataFile`,
+  `LADFUNC_SaveTextAdsToFile` and `TLIBA_FindFirstWildcardMatchIndex` among them.
+  These ARE reachable.
+
+So the order of work is fixed by a dependency. Write the code modules first. Each
+one that lands releases every jump table that points at it. Do not attack the
+tables directly -- that only re-reads the same refusals.
+
+**Check the target's ARITY against a real caller before writing a thunk for it.**
+`GRAPHICS_AllocRaster` reads its width and height from `16(A5)` and `20(A5)`, not
+from `8(A5)` and `12(A5)`, so it is not the two-argument function its name
+suggests. A thunk written from the name would pass the wrong slots and no byte
+check would see it.
+
+**Byte-exactness is not a goal on this lane.** A converted thunk costs two bytes
+and one extra frame, which the `tail-jump` divergence records. Chase the byte
+match only on `src/c/replacements.txt`, which is a separate manifest.
 
 **A green manifest does not mean a green BUILD.** The 440-entry manifest passed
 every check above while ESC failed to close the menu, because the defect was in

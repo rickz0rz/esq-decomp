@@ -103,7 +103,7 @@ long DATETIME_ParseString(struct EsqDateTime *dt, char *text, char delim)
         packed = GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(digits);
 
         dt->year      = packed / 1000;
-        dt->dayOfYear = packed % 1000;
+        dt->dayOfYear = (packed - (packed / 1000) * 1000);
 
         if (dt->year - CLOCK_CacheYear >= 0)
             diff = dt->year - CLOCK_CacheYear;

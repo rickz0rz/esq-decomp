@@ -49,12 +49,12 @@
 ; CLOBBERS:
 ;   As per target routine
 ; CALLS:
-;   COI_SelectAnimFieldPointer
+;   _COI_SelectAnimFieldPointer
 ; DESC:
-;   Jump table entry that forwards to COI_SelectAnimFieldPointer.
+;   Jump table entry that forwards to _COI_SelectAnimFieldPointer.
 ;------------------------------------------------------------------------------
 _NEWGRID2_JMPTBL_COI_SelectAnimFieldPointer:
-    JMP     COI_SelectAnimFieldPointer
+    JMP     _COI_SelectAnimFieldPointer
 
 ;------------------------------------------------------------------------------
 ; FUNC: _NEWGRID2_JMPTBL_DISPTEXT_SetCurrentLineIndex   (Jump stub)

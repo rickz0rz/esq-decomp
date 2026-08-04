@@ -30,14 +30,14 @@ void TLIBA3_DrawHorizontalScaleTicks(struct RastPort *rp, long y)
     Draw(rp, rp->BitMap->BytesPerRow * 8 - 1, y);
 
     for (x = 0; x < rp->BitMap->BytesPerRow * 8 - 1; x++) {
-        if (x % 25 == 0 && x != 0) {
+        if ((x - (x / 25) * 25) == 0 && x != 0) {
             Move(rp, x, y);
             Draw(rp, x, y + 20);
             WDISP_SPrintf(buf, TLIBA1_FMT_PCT_03LD_HorizontalScaleTick, x);
             half = TextLength(rp, buf, strlen(buf)) / 2;
-            Move(rp, x - half, labelY + 10 * (x % 2));
+            Move(rp, x - half, labelY + 10 * ((x - (x / 2) * 2)));
             Text(rp, buf, strlen(buf));
-        } else if (x % 5 == 0) {
+        } else if ((x - (x / 5) * 5) == 0) {
             Move(rp, x, y);
             Draw(rp, x, y + 10);
         }

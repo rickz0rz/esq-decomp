@@ -1,5 +1,5 @@
     XDEF    _MATH_DivS32
-    XDEF    MATH_DivU32
+    XDEF    _MATH_DivU32
     XDEF    _MATH_Mulu32
     XDEF    __CXD22
     XDEF    __CXD33
@@ -45,13 +45,25 @@ _MATH_Mulu32:
 ;   D0 = dividend
 ;   D1 = divisor
 ; RET:
-;   D0: result/status
+;   D0 = quotient
+;   D1 = REMAINDER, sign-corrected. THIS IS A RETURN VALUE, NOT SCRATCH.
 ; CLOBBERS:
-;   D0-D3
+;   D2-D3
 ; CALLS:
-;   MATH_DivU32 (unsigned division core)
+;   _MATH_DivU32 (unsigned division core)
 ; DESC:
 ;   Handles signed division by normalizing signs and dispatching to unsigned.
+; NOTES:
+;   The auto-generated header used to say "RET: D0: result/status", which reads
+;   as though D1 were scratch. It is not, and the four NEG.L D1 instructions
+;   below are the proof -- they correct the sign of the remainder and would be
+;   dead code otherwise.
+;
+;   SAS/C reads D1 for the `%` operator. Compile `long r(long a, long b)
+;   { return a % b; }` and 6.51 emits BSR.W __CXD33 followed by MOVE.L D1,D0.
+;   `/` reads D0 and ignores D1. So a C definition of this routine cannot serve
+;   `%` unless every `%` site is first rewritten as x - (x/y)*y, which reads
+;   only D0. See AGENTS.md, "The proven blockers were NOT blockers".
 ;------------------------------------------------------------------------------
 __CXD33:                 ; SAS/C calls the signed 32-bit divide helper by this name
 _MATH_DivS32:
@@ -63,13 +75,13 @@ _MATH_DivS32:
     BPL.W   .divisor_pos_after_neg
 
     NEG.L   D1
-    BSR.W   MATH_DivU32
+    BSR.W   _MATH_DivU32
 
     NEG.L   D1
     RTS
 
 .divisor_pos_after_neg:
-    BSR.W   MATH_DivU32
+    BSR.W   _MATH_DivU32
 
     NEG.L   D0
     NEG.L   D1
@@ -77,10 +89,10 @@ _MATH_DivS32:
 
 .dividend_pos:
     TST.L   D1
-    BPL.W   MATH_DivU32
+    BPL.W   _MATH_DivU32
 
     NEG.L   D1
-    BSR.W   MATH_DivU32
+    BSR.W   _MATH_DivU32
 
     NEG.L   D0
     RTS
@@ -88,7 +100,7 @@ _MATH_DivS32:
 ;!======
 
 ;------------------------------------------------------------------------------
-; FUNC: MATH_DivU32   (Unsigned 32-bit division core.)
+; FUNC: _MATH_DivU32   (Unsigned 32-bit division core.)
 ; ARGS:
 ;   D0 = dividend
 ;   D1 = divisor
@@ -105,7 +117,7 @@ _MATH_DivS32:
 ; routine's contract. The alias is a label, so it emits no bytes and both gates
 ; stay green.
 __CXD22:
-MATH_DivU32:
+_MATH_DivU32:
     MOVE.L  D2,-(A7)
 
     SWAP    D1

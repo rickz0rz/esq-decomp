@@ -10,7 +10,7 @@
 ; CLOBBERS:
 ;   D0-D1/A0-A1
 ; CALLS:
-;   MATH_DivU32 (div/mod helper; returns quotient in D0, remainder in D1)
+;   _MATH_DivU32 (div/mod helper; returns quotient in D0, remainder in D1)
 ; DESC:
 ;   Emits decimal digits into a temp stack buffer, then reverses into A0.
 ;------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ _FORMAT_U32ToDecimalString:
 
 .digit_loop:
     MOVEQ   #10,D1
-    JSR     MATH_DivU32(PC)
+    JSR     _MATH_DivU32(PC)
 
     ADDI.W  #$30,D1
     MOVE.B  D1,(A1)+

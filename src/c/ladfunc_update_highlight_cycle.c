@@ -59,7 +59,7 @@ void LADFUNC_UpdateHighlightCycle(void)
     if (WDISP_HighlightActive == 1 && LADFUNC_HighlightCycleCountdown > 0) {
 
         do {
-            LADFUNC_EntryCount = (short)(((long)LADFUNC_EntryCount + 1) % 46);
+            LADFUNC_EntryCount = (short)((((long)LADFUNC_EntryCount + 1) - (((long)LADFUNC_EntryCount + 1) / 46) * 46));
         } while (LADFUNC_EntryPtrTable[LADFUNC_EntryCount]->state != 1);
 
         LADFUNC_BuildHighlightLinesFromText(

@@ -155,7 +155,7 @@ long COI_WriteOiDataFile(unsigned char diskId)
         return 1;
     }
 
-    parity = (short)(diskId % 2);
+    parity = (short)((diskId - (diskId / 2) * 2));
     GROUP_AE_JMPTBL_WDISP_SPrintf(nameBuf, Global_STR_DF0_OI_PERCENT_2_LX_DAT_1,
                                   (long)parity);
     fh = DISKIO_OpenFileWithBuffer(nameBuf, MODE_NEWFILE);

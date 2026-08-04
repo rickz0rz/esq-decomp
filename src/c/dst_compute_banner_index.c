@@ -72,7 +72,7 @@ long DST_ComputeBannerIndex(struct DstBannerRecord *rec, short a,
 
     DST_BuildBannerTimeEntry((long)a, (long)b, &slot, rec);
 
-    v  = (long)rec->f8 % 12;
+    v  = ((long)rec->f8 - ((long)rec->f8 / 12) * 12);
     v += (rec->f18 != 0) ? 12 : 0;
     v += v;
     v += (rec->f10 > 29) ? 1 : 0;
@@ -80,5 +80,5 @@ long DST_ComputeBannerIndex(struct DstBannerRecord *rec, short a,
     n = (v != 0) ? 1 : 0;
     n += 0x26;
 
-    return (long)(short)(n % 48 + 1);
+    return (long)(short)((n - (n / 48) * 48) + 1);
 }

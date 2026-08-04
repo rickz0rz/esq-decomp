@@ -50,7 +50,13 @@ def c_definitions():
 
 def thunks(path):
     t = open(os.path.join(ROOT, 'src', path)).read()
-    pairs = re.findall(r'^([A-Za-z_][\w]*):\s*\n\s*JMP\s+([A-Za-z_][\w]*)', t, re.M)
+    # A thunk is a label whose first INSTRUCTION transfers control and does not
+    # return. Two spellings occur and they are the same shape: `JMP target` and
+    # `BRA.W target`. Comment and blank lines may sit between the two, so they
+    # are skipped rather than treated as a body.
+    pairs = re.findall(
+        r'^([A-Za-z_][\w]*):[ \t]*\n(?:[ \t]*(?:;.*)?\n)*'
+        r'[ \t]*(?:JMP|BRA(?:\.W)?)\s+([A-Za-z_][\w]*)', t, re.M)
     labs = re.findall(r'^([A-Za-z_][\w]*):', t, re.M)
     if not pairs:
         sys.exit('jmptbl_to_c: %s holds no JMP thunks' % path)

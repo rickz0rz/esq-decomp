@@ -109,6 +109,7 @@ modules/groups/a/g/diskio_diskio_closebufferedfileandflush_diskio_closebufferedf
 modules/groups/a/g/diskio_diskio_consumecstringfromworkbuffer.s        c/diskio_consume_cstring_from_work_buffer.c
 modules/groups/a/g/diskio_p3.s                                         c/diskio_consume_line_from_work_buffer.c
 modules/groups/a/g/diskio_diskio_drawtransfererrormessageifdiagnostics.s c/diskio_draw_transfer_error_message_if_diagnostics.c
+modules/groups/a/g/diskio_p5_p0.s                                      c/diskio_ensure_pc1_mounted_and_gfx_assigned.c
 modules/groups/a/g/diskio_diskio_forceuirefreshifidle.s                c/diskio_force_ui_refresh_if_idle.c
 modules/groups/a/g/diskio_diskio_getfilesizefromhandle.s               c/diskio_get_filesize_from_handle.c
 modules/groups/a/g/diskio_p5_p0_diskio_loadconfigfromdisk.s            c/diskio_load_config_from_disk.c
@@ -265,6 +266,8 @@ modules/groups/a/n/esqdisp_p1_p0.s                                     c/esqdisp
 modules/groups/a/n/esqdispb_esqdisp_computescheduleoffsetforrow.s      c/esqdisp_compute_schedule_offset_for_row.c
 modules/groups/a/n/esqdispb_p0_p1_esqdisp_getentryauxpointerbymode.s   c/esqdisp_get_entry_aux_pointer_by_mode.c
 modules/groups/a/n/esqdispb_p0_p1_esqdisp_getentrypointerbymode.s      c/esqdisp_get_entry_pointer_by_mode.c
+modules/groups/a/n/esqdisp_p0.s                                        c/esqdisp_init_highlight_message_pattern.c
+modules/groups/a/n/esqdispb_p0_p1_p0_p2.s                              c/esqdisp_mirror_primary_entries_to_secondary_if_empty.c
 modules/groups/a/n/esqdispb_p0_p1_p0_p1.s                              c/esqdisp_normalize_clock_and_redraw_banner.c
 modules/groups/a/n/esqdispb_p0_esqdisp_parseprograminfocommandrecord.s c/esqdisp_parse_program_info_command_record.c
 modules/groups/a/n/esqdispb_p0_p1_p0_esqdisp_pollinputmodeandrefreshselection.s c/esqdisp_poll_input_mode_and_refresh_selection.c
@@ -295,6 +298,7 @@ modules/groups/a/n/esqfunc_p3.s                                        c/esqfunc
 modules/groups/a/n/esqfunc_esqfunc_waitforclockchangeandserviceui.s    c/esqfunc_wait_for_clock_change_and_service_ui.c
 modules/groups/a/o/esqiff2.s                                           c/esqiff2_apply_incoming_status_packet.c
 modules/groups/a/o/esqiff2_esqiff2_clearlineheadtailbymode.s           c/esqiff2_clear_line_head_tail_by_mode.c
+modules/groups/a/o/esqiff2_p4.s                                        c/esqiff2_clear_primary_entry_flags34to39.c
 modules/groups/a/o/esqiff2_esqiff2_padentriestomaxtitlewidth_esqiff2_padentriestomaxtitlewidth.s c/esqiff2_pad_entries_to_max_title_width.c
 modules/groups/a/o/esqiff2_p1_esqiff2_parsegrouprecordandrefresh.s     c/esqiff2_parse_group_record_and_refresh.c
 modules/groups/a/o/esqiff2_p1.s                                        c/esqiff2_parse_line_head_tail_record.c
@@ -303,6 +307,7 @@ modules/groups/a/o/esqiff2_esqiff2_readserialsizedtextrecord_esqiff2_readserials
 modules/groups/a/o/esqiff2_esqiff2_showattentionoverlay_esqiff2_showattentionoverlay.s c/esqiff2_show_attention_overlay.c
 modules/groups/a/o/esqiff2_p3.s                                        c/esqiff2_show_version_mismatch_overlay.c
 modules/groups/a/o/esqiff2_esqiff2_validateasciinumericbyte.s          c/esqiff2_validate_ascii_numeric_byte.c
+modules/groups/a/o/esqiff2_p1_p1.s                                     c/esqiff2_validate_field_index_and_length.c
 modules/groups/a/n/esqiffbb_p0_esqiff_deallocateadsandlogolstdata.s    c/esqiff_deallocate_ads_and_logo_lst_data.c
 modules/groups/a/n/esqiff_esqiff_drawweatherstatusoverlayintobrush.s   c/esqiff_draw_weather_status_overlay_into_brush.c
 modules/groups/a/n/esqiffbb_p1_esqiff_handlebrushinireloadhotkey.s     c/esqiff_handle_brush_ini_reload_hotkey.c
@@ -387,6 +392,7 @@ modules/groups/a/u/gcommand4.s                                         c/gcomman
 modules/groups/a/u/gcommand3b_p4_p0_gcommand_seedbannerdefaults.s      c/gcommand_seed_banner_defaults.c
 modules/groups/a/u/gcommand3b_p4_p0_p1.s                               c/gcommand_seed_banner_from_prefs.c
 modules/groups/a/u/gcommand3b_p3_gcommand_servicehighlightmessages.s   c/gcommand_service_highlight_messages.c
+modules/groups/a/u/gcommand3b_p0_gcommand_setpresetentry.s             c/gcommand_set_preset_entry.c
 modules/groups/a/u/gcommand3b_p2_p1_gcommand_shiftbannercopperrowsdead.s c/gcommand_shift_banner_copper_rows_dead.c
 modules/groups/a/u/gcommand3b_p3_gcommand_tickhighlightstate.s         c/gcommand_tick_highlight_state.c
 modules/groups/a/u/gcommand3b_p2_gcommand_tickpresetworkentries.s      c/gcommand_tick_preset_work_entries.c
@@ -394,6 +400,7 @@ modules/groups/a/u/gcommand3b_p2_p0_gcommand_updatebannerbounds.s      c/gcomman
 modules/groups/a/u/gcommand3b_p4_p0.s                                  c/gcommand_update_banner_offset.c
 modules/groups/a/u/gcommand3b_p2_p1.s                                  c/gcommand_update_banner_row_pointers.c
 modules/groups/a/u/gcommand3b_p1.s                                     c/gcommand_update_preset_entry_cache.c
+modules/groups/a/u/gcommand3b_p0_gcommand_validatepresettable.s        c/gcommand_validate_preset_table.c
 modules/groups/b/a/script3.s                                           c/generate_grid_date_string.c
 modules/groups/a/v/kybd.s                                              c/kybd_initialize_input_devices.c
 modules/groups/a/x/ladfunc2_ladfunc2_emitescapedchartoscratch.s        c/ladfunc2_emit_escaped_char_to_scratch.c
@@ -684,7 +691,6 @@ modules/groups/b/a/wdisp_wdisp_drawweatherstatusoverlay.s              c/wdisp_d
 modules/groups/b/a/wdisp_p0.s                                          c/wdisp_draw_weather_status_summary.c
 modules/groups/b/a/wdisp_wdisp_handleweatherstatuscommand.s            c/wdisp_handle_weather_status_command.c
 modules/groups/b/a/wdisp_p1_wdisp_updateselectionpreviewpanel.s        c/wdisp_update_selection_preview_panel.c
-modules/groups/a/q/esqshared4_p4.s                                     c/esqshared4_blit_banner_rows.c
 modules/groups/a/q/esqshared4_p2.s                                     c/esqshared4_bind_and_clear_banner_work_raster.c
 modules/groups/a/a/app_p0.s                                            c/esq_capture_ctrl_bit3_stream.c
 modules/groups/a/a/app_get_bit_3_of_ciab_pra_into_d1.s                 c/get_bit3_of_ciab_pra.c
@@ -754,6 +760,19 @@ modules/groups/a/k/ed1b_p0.s                                           c/jmptbl_
 modules/groups/b/a/script_p1_p0.s                                      c/jmptbl_b_a_script_p1_p0.c
 modules/groups/a/t/xjump.s                                             c/jmptbl_a_t_xjump.c
 modules/groups/b/a/p_typebb_p0_p0.s                                    c/jmptbl_b_a_p_typebb_p0_p0.c
+modules/submodules/unknown22_p0.s                                      c/lib_math_helpers.c
+modules/groups/a/a/app2_p8_esq_tickglobalcounters.s                    c/esq_tick_global_counters.c
+modules/groups/a/c/xjump.s                                             c/jmptbl_a_c_xjump.c
+modules/groups/a/y/xjump.s                                             c/jmptbl_a_y_xjump.c
+modules/groups/b/a/newgrid_p4_p1_p0.s                                  c/jmptbl_b_a_newgrid_p4_p1_p0.c
+modules/groups/b/a/script3b_p1.s                                       c/jmptbl_b_a_script3b_p1.c
+modules/groups/a/h/xjump.s                                             c/jmptbl_a_h_xjump.c
+modules/groups/b/a/newgrid2_p2.s                                       c/jmptbl_b_a_newgrid2_p2.c
+modules/groups/a/k/xjump.s                                             c/jmptbl_a_k_xjump.c
+modules/groups/a/n/esqfunc_p4_p0.s                                     c/jmptbl_a_n_esqfunc_p4_p0.c
+modules/groups/b/a/textdisp_p3.s                                       c/jmptbl_b_a_textdisp_p3.c
+modules/groups/b/a/tliba1_p1_p1.s                                      c/jmptbl_b_a_tliba1_p1_p1.c
+modules/groups/b/a/wdisp_p1_p1.s                                       c/jmptbl_b_a_wdisp_p1_p1.c
 data/coi_p1.s                                                          c/data_coi_p1.c
 data/ctasks_p1.s                                                       c/data_ctasks_p1.c
 data/diskio_p1.s                                                       c/data_diskio_p1.c
@@ -774,9 +793,14 @@ modules/groups/a/q/esqshared4_p1.s                                     c/esqshar
 modules/groups/a/a/app2_p7.s                                           c/app2_p7_merged.c
 modules/groups/a/a/app2_esq_findsubstringcasefold.s                    c/app2_esq_findsubstringcasefold_merged.c
 modules/groups/a/c/cleanup2_p1_p0_p0.s                                 c/cleanup2_p1_p0_p0_merged.c
+modules/groups/a/e/coi_p3_coi_getanimfieldpointerbymode_coi_getanimfieldpointerbymode.s c/coi_p3_coi_getanimfieldpointerbymode_coi_getanimfieldpointerbymode_merged.c
+modules/groups/a/e/coi_p3_coi_formatentrydisplaytext_coi_renderclockformatentryvariant.s c/coi_p3_coi_formatentrydisplaytext_coi_renderclockformatentryvariant_merged.c
+modules/groups/a/e/coi_p4_coi_testentrywithintimewindow_coi_processentryselectionstate.s c/coi_p4_coi_testentrywithintimewindow_coi_processentryselectionstate_merged.c
 modules/groups/a/g/diskio1_p1.s                                        c/diskio1_p1_merged.c
 modules/groups/a/l/ed3bb_p0.s                                          c/ed3bb_p0_merged.c
 modules/groups/a/l/ed3bbbb_p1.s                                        c/ed3bbbb_p1_merged.c
+modules/groups/a/n/esqdispb_p0_esqdisp_testentrybits0and2_core_esqdisp_testentrybits0and2.s c/esqdispb_p0_esqdisp_testentrybits0and2_core_esqdisp_testentrybits0and2_merged.c
+modules/groups/a/n/esqdispb_p0_p1_p0_esqdisp_drawstatusbanner_impl_esqdisp_drawstatusbanner_impl.s c/esqdispb_p0_p1_p0_esqdisp_drawstatusbanner_impl_esqdisp_drawstatusbanner_impl_merged.c
 modules/groups/a/o/esqiff2_p2.s                                        c/esqiff2_p2_merged.c
 modules/groups/a/p/esqshared_esqshared_replacetvratingtoken_esqshared_replacetvratingtoken.s c/esqshared_esqshared_replacetvratingtoken_esqshared_replacetvratingtoken_merged.c
 modules/groups/a/w/ladfunc_p1_p0.s                                     c/ladfunc_p1_p0_merged.c

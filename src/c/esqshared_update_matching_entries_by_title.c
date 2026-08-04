@@ -337,7 +337,7 @@ long ESQSHARED_UpdateMatchingEntriesByTitle(char *pattern, char groupCode,
                 while (h > 12)
                     h -= 12;
 
-                p[2] = (char)((h % 10) + 48);
+                p[2] = (char)(((h - (h / 10) * 10)) + 48);
 
                 h = h / 10;
                 if (h > 0)
@@ -346,7 +346,7 @@ long ESQSHARED_UpdateMatchingEntriesByTitle(char *pattern, char groupCode,
                     p[1] = 32;
 
                 p[4] = (char)((m / 10) + 48);
-                p[5] = (char)((m % 10) + 48);
+                p[5] = (char)(((m - (m / 10) * 10)) + 48);
             }
         }
 

@@ -145,7 +145,7 @@ long TLIBA2_ResolveEntryWindowAndSlotCount(struct TextDispEntry *entry,
 
     if (flags & 1) {
         out[0] = count / 2;
-        out[1] = 30 * (count % 2);
+        out[1] = 30 * ((count - (count / 2) * 2));
     }
 
     return count;

@@ -24,7 +24,7 @@
 struct DateRec { char pad[8]; short month; char pad2[8]; short flag; };
 long DATETIME_AdjustMonthIndex(struct DateRec *d)
 {
-    long m = (long)d->month % 12;
+    long m = ((long)d->month - ((long)d->month / 12) * 12);
     long off;
 
     if (d->flag != 0)

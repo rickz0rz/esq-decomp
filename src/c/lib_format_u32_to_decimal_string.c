@@ -29,7 +29,7 @@ long FORMAT_U32ToDecimalString(char *buf, unsigned long value)
     long n = 0;
 
     do {
-        tmp[n++] = (char)('0' + (value % 10));
+        tmp[n++] = (char)('0' + ((value - (value / 10) * 10)));
         value /= 10;
     } while (value != 0);
 

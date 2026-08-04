@@ -76,15 +76,15 @@ void TEXTDISP_FormatEntryTime(char *out, short row)
     if (*title == '(' && title[3] == ':') {
         mins = (title[4] - '0') * 10 + title[5] - '0';
         offset = offset + CLOCK_FormatVariantCode / 30;
-        if (mins % 30 < CLOCK_FormatVariantCode % 30)
+        if ((mins - (mins / 30) * 30) < (CLOCK_FormatVariantCode - (CLOCK_FormatVariantCode / 30) * 30))
             offset++;
-        mins = mins % 30;
+        mins = (mins - (mins / 30) * 30);
         if (offset > 48)
             offset -= 48;
         strcpy(out, Global_REF_STR_CLOCK_FORMAT[offset]);
         mins = (out[3] - '0') * 10 + mins;
         out[3] = mins / 10 + '0';
-        out[4] = mins % 10 + '0';
+        out[4] = (mins - (mins / 10) * 10) + '0';
         return;
     }
 

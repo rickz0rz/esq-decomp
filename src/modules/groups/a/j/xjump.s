@@ -45,12 +45,12 @@ _GROUP_AJ_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer:
 ; CLOBBERS:
 ;   none observed
 ; CALLS:
-;   MATH_DivU32
+;   _MATH_DivU32
 ; DESC:
-;   Jump stub to MATH_DivU32.
+;   Jump stub to _MATH_DivU32.
 ;------------------------------------------------------------------------------
 GROUP_AJ_JMPTBL_MATH_DivU32:
-    JMP     MATH_DivU32
+    JMP     _MATH_DivU32
 
 ;------------------------------------------------------------------------------
 ; FUNC: _GROUP_AJ_JMPTBL_PARSEINI_WriteRtcFromGlobals   (Jump stub)

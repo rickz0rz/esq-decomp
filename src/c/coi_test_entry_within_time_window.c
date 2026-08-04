@@ -22,6 +22,8 @@ struct CoiSub {
     struct CoiItem **table38;   /* +38 */
 };
 
+#ifndef COIENTRY_DEFINED
+#define COIENTRY_DEFINED
 struct CoiEntry {
     unsigned char  kind;        /* +0 */
     char           pad1[26];
@@ -29,6 +31,7 @@ struct CoiEntry {
     char           pad28[20];
     struct CoiSub *sub48;       /* +48 */
 };
+#endif
 
 extern short CLOCK_HalfHourSlotIndex;
 

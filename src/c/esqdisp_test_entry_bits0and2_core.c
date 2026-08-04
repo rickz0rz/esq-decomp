@@ -9,10 +9,13 @@
  *   retest:  re-run tools/mismatches.py --recheck against a different
  *            SAS/C version; see docs/compiler-version.md.
  */
+#ifndef ESQDISPENTRY_DEFINED
+#define ESQDISPENTRY_DEFINED
 struct EsqDispEntry {
     char pad[40];
     unsigned char flags;
 };
+#endif
 long ESQDISP_TestEntryBits0And2_Core(struct EsqDispEntry *e)
 {
     long r = 0;

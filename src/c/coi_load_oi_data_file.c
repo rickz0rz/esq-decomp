@@ -190,7 +190,7 @@ long COI_LoadOiDataFile(unsigned char diskId)
 
     pos = recBase = 0;
 
-    parity = (short)(diskId % 2);
+    parity = (short)((diskId - (diskId / 2) * 2));
     GROUP_AE_JMPTBL_WDISP_SPrintf(nameBuf, Global_STR_DF0_OI_PERCENT_2_LX_DAT_2,
                                   (long)parity);
     if (DISKIO_LoadFileToWorkBuffer(nameBuf) == -1)

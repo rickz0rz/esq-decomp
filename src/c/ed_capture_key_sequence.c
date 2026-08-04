@@ -78,7 +78,7 @@ void ED_CaptureKeySequence(void)
         ED_CustomPaletteCaptureIndexOrSentinel = -1;
     }
 
-    ED_CustomPaletteCapturePhaseMod4 = (ED_CustomPaletteCapturePhaseMod4 + 1) % 4;
+    ED_CustomPaletteCapturePhaseMod4 = ((ED_CustomPaletteCapturePhaseMod4 + 1) - ((ED_CustomPaletteCapturePhaseMod4 + 1) / 4) * 4);
     if (ED_CustomPaletteCapturePhaseMod4 == 0) {
         if (ED_CustomPaletteCaptureIndexOrSentinel < 0) {
             ED_CustomPaletteCaptureIndexOrSentinel = 0;

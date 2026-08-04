@@ -105,13 +105,13 @@ void CLEANUP_FormatClockFormatEntry(long slot, char *out)
     while (slot > 48)
         slot -= 48;
 
-    mins = (long)CLOCK_FormatVariantCode % 30;
+    mins = ((long)CLOCK_FormatVariantCode - ((long)CLOCK_FormatVariantCode / 30) * 30);
 
     strcpy(out, Global_REF_STR_CLOCK_FORMAT[slot]);
 
     if (mins > 0) {
         mins += ((long)out[3] - '0') * 10;
         out[3] = (char)(mins / 10 + '0');
-        out[4] = (char)(mins % 10 + '0');
+        out[4] = (char)((mins - (mins / 10) * 10) + '0');
     }
 }

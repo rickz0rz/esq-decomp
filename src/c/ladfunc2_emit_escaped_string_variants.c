@@ -71,7 +71,7 @@ void LADFUNC2_EmitEscapedStringChunked(char *text, long chunk)
         return;
 
     while (*text != 0) {
-        if (emitted % chunk == 0) {
+        if ((emitted - (emitted / chunk) * chunk) == 0) {
             if (emitted > 0)
                 GROUP_AX_JMPTBL_FORMAT_RawDoFmtWithScratchBuffer(
                     LADFUNC_STR_QuoteAndNewline);
