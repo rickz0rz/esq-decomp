@@ -164,7 +164,7 @@ echo "==> linking"
 # supplied as a synthesised EXT_ABS object. src/modules/c-exports.s asserts these
 # values still match hardware-addresses.s. Appended last: it defines symbols only
 # and contributes no bytes, so it cannot affect layout.
-python3 tools/mkabsdefs.py "$OBJ/absdefs.o" _VPOSR=0xDFF004 _CIAB_PRA=0xBFD000 _SERDAT=0xDFF030 _INTENA=0xDFF09A _COP1LCH=0xDFF080 _SysBase=0x4
+python3 tools/mkabsdefs.py "$OBJ/absdefs.o" _VPOSR=0xDFF004 _CIAB_PRA=0xBFD000 _SERDAT=0xDFF030 _INTENA=0xDFF09A _COP1LCH=0xDFF080 _SysBase=0x4 _CIAA_PRB=0xBFE101 _CIAA_DDRB=0xBFE301
 echo "$OBJ/absdefs.o" >> "$BUILD/objlist"
 # Prevue.asm declares S_1 CHIP, and a C data object cannot. Every data module is
 # C now, so without this the DATA hunk links MEMF_ANY and the custom chips read

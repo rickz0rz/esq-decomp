@@ -1,6 +1,3 @@
-    XDEF    _DEBUG_STR_UserAbortRequested
-    XDEF    _DEBUG_STR_Continue
-    XDEF    _DEBUG_STR_Abort
     XDEF    _UNKNOWN36_ShowAbortRequester
 
 
@@ -79,7 +76,7 @@ _UNKNOWN36_ShowAbortRequester:
     ; Emit a "*** Break: " line and the buffered message.
     MOVEA.L Global_DosLibrary(A4),A6
     MOVE.L  D6,D1
-    LEA     UNKNOWN36_STR_BreakPrefix(PC),A0
+    LEA     _UNKNOWN36_STR_BreakPrefix(PC),A0
     MOVE.L  A0,D2
     MOVEQ   #11,D3
     JSR     _LVOWrite(A6)
@@ -101,7 +98,7 @@ _UNKNOWN36_ShowAbortRequester:
 .open_requester:
     ; Fall back to an Intuition requester if no CLI output is available.
     MOVEA.L AbsExecBase,A6
-    LEA     UNKNOWN36_STR_IntuitionLibrary(PC),A1
+    LEA     _UNKNOWN36_STR_IntuitionLibrary(PC),A1
     MOVEQ   #0,D0
     JSR     _LVOOpenLibrary(A6)
 
@@ -142,24 +139,3 @@ _UNKNOWN36_ShowAbortRequester:
     RTS
 
 ;!======
-
-_DEBUG_STR_UserAbortRequested:
-    DC.B    "** User Abort Requested **",0,0
-
-_DEBUG_STR_Continue:
-    DC.B    "CONTINUE",0,0
-
-_DEBUG_STR_Abort:
-    DC.B    "ABORT",0
-
-UNKNOWN36_STR_BreakPrefix:
-    DC.B    "*** Break: ",0
-
-UNKNOWN36_STR_IntuitionLibrary:
-    DC.B    "intuition.library",0
-
-;!======
-
-    ; Alignment
-    DS.W    3
-    DC.W    $7061

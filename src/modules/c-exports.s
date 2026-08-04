@@ -19,3 +19,5 @@
     assert  CIAB_PRA==$BFD000,"CIAB_PRA moved; update mkabsdefs args in build-split.sh"
     assert  SERDAT==$DFF030,"SERDAT moved; update mkabsdefs args in build-split.sh"
     assert  COP1LCH==$DFF080,"COP1LCH moved; update mkabsdefs args in build-split.sh"
+    assert  CIAA_PRB==$BFE101,"CIAA_PRB moved; update mkabsdefs args in build-split.sh"
+    assert  CIAA_DDRB==$BFE301,"CIAA_DDRB moved; update mkabsdefs args in build-split.sh"

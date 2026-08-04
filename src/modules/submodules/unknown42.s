@@ -1,3 +1,9 @@
+    XDEF    PARALLEL_JMPTBL_RawDoFmt
+    XDEF    _PARALLEL_WriteCharStackArg
+    XDEF    _PARALLEL_WriteStringStackArg
+    XDEF    _PARALLEL_RawDoFmtArgPtr
+    XDEF    _PARALLEL_RawDoFmtWithData
+    XDEF    _PARALLEL_WriteCharHwStackArg
     XDEF    _CLOCK_CheckDateOrSecondsFromEpoch
     XDEF    _CLOCK_SecondsFromEpoch
     XDEF    PARALLEL_CheckReady
@@ -94,6 +100,7 @@ _CLOCK_SecondsFromEpoch:
 ;   Low-level output uses CIAA/CIAB handshake; exact device target is inferred.
 ;   Completes the operation by falling through to PARALLEL_WriteCharD0.
 ;------------------------------------------------------------------------------
+_PARALLEL_WriteCharStackArg:
     MOVE.L  4(A7),D0
 
 ;!======
@@ -143,6 +150,7 @@ PARALLEL_WriteCharD0:
 ; NOTES:
 ;   Stops on NUL; uses the D0 output routine for each byte.
 ;------------------------------------------------------------------------------
+_PARALLEL_WriteStringStackArg:
     MOVEA.L 4(A7),A0
 
 ;------------------------------------------------------------------------------
@@ -242,7 +250,7 @@ PARALLEL_CheckReady:
 ; CLOBBERS:
 ;   A0-A2
 ; CALLS:
-;   .lab_JMPTBL_PARALLEL_RawDoFmt
+;   PARALLEL_JMPTBL_RawDoFmt
 ; READS:
 ;   (none)
 ; WRITES:
@@ -252,6 +260,7 @@ PARALLEL_CheckReady:
 ; NOTES:
 ;   Marked dead code; entry label not referenced externally.
 ;------------------------------------------------------------------------------
+_PARALLEL_RawDoFmtArgPtr:
     MOVEA.L 4(A7),A0
     MOVEA.L 8(A7),A1
     BRA.S   PARALLEL_RawDoFmtCommon
@@ -266,7 +275,7 @@ PARALLEL_CheckReady:
 ; CLOBBERS:
 ;   A0-A2
 ; CALLS:
-;   .lab_JMPTBL_PARALLEL_RawDoFmt
+;   PARALLEL_JMPTBL_RawDoFmt
 ; READS:
 ;   (none)
 ; WRITES:
@@ -302,12 +311,12 @@ _PARALLEL_RawDoFmtStackArgs:
 PARALLEL_RawDoFmtCommon:
     MOVEM.L A2,-(A7)
     LEA     PARALLEL_WriteCharD0(PC),A2
-    BSR.S   .lab_JMPTBL_PARALLEL_RawDoFmt
+    BSR.S   PARALLEL_JMPTBL_RawDoFmt
 
     MOVEM.L (A7)+,A2
     RTS
 
-.lab_JMPTBL_PARALLEL_RawDoFmt:
+PARALLEL_JMPTBL_RawDoFmt:
     BSR.S   PARALLEL_RawDoFmt
 
     RTS
@@ -323,7 +332,7 @@ PARALLEL_RawDoFmtCommon:
 ; CLOBBERS:
 ;   A0-A3
 ; CALLS:
-;   .lab_JMPTBL_PARALLEL_RawDoFmt
+;   PARALLEL_JMPTBL_RawDoFmt
 ; READS:
 ;   (none)
 ; WRITES:
@@ -333,9 +342,10 @@ PARALLEL_RawDoFmtCommon:
 ; NOTES:
 ;   Marked dead code; entry label not referenced externally.
 ;------------------------------------------------------------------------------
+_PARALLEL_RawDoFmtWithData:
     MOVEM.L A2-A3,-(A7)
     MOVEM.L 12(A7),A0-A3
-    BSR.S   .lab_JMPTBL_PARALLEL_RawDoFmt
+    BSR.S   PARALLEL_JMPTBL_RawDoFmt
 
     MOVEM.L (A7)+,A2-A3
     RTS
@@ -364,6 +374,7 @@ PARALLEL_RawDoFmtCommon:
 ; NOTES:
 ;   Entry is preceded by a padding word; keep layout intact.
 ;------------------------------------------------------------------------------
+_PARALLEL_WriteCharHwStackArg:
     MOVE.L  4(A7),D0
 
 ;------------------------------------------------------------------------------

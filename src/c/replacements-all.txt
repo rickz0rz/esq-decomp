@@ -460,6 +460,7 @@ modules/submodules/unknown18.s                                         c/lib_dos
 modules/submodules/unknown40_dos_systemtaglist.s                       c/lib_dos_system_taglist.c
 modules/submodules/unknown26.s                                         c/lib_dos_write_by_index.c
 modules/submodules/unknown17.s                                         c/lib_dos_write_with_error_state.c
+modules/submodules/unknown30.s                                         c/lib_exec_call_vector_348.c
 modules/submodules/unknown40_p0.s                                      c/lib_exec_call_vector_48.c
 modules/submodules/unknown27_format_buffer2writechar.s                 c/lib_format_buffer2_write_char.c
 modules/submodules/unknown27_p0.s                                      c/lib_format_parse_format_spec.c
@@ -486,6 +487,7 @@ modules/submodules/unknown6.s                                          c/lib_str
 modules/submodules/unknown3.s                                          c/lib_string_to_upper_char.c
 modules/submodules/unknown4.s                                          c/lib_string_to_upper_in_place.c
 modules/submodules/unknown36_unknown36_finalizerequest.s               c/lib_unknown36_finalize_request.c
+modules/submodules/unknown36_p0.s                                      c/lib_unknown36_show_abort_requester.c
 modules/submodules/unknown28.s                                         c/lib_wdisp_format_with_callback.c
 modules/groups/a/y/locavail_p1.s                                       c/locavail_alloc_node_arrays_for_state.c
 modules/groups/a/y/locavail_p3_locavail_computefilteroffsetforentry.s  c/locavail_compute_filter_offset_for_entry.c
@@ -872,3 +874,4 @@ modules/groups/b/a/tliba3_p4_p0.s                                      c/tliba3_
 modules/groups/b/a/wdisp_p1.s                                          c/wdisp_p1_merged.c
 modules/submodules/unknown.s                                           c/unknown_merged.c
 modules/submodules/unknown29.s                                         c/unknown29_merged.c
+modules/submodules/unknown42.s                                         c/unknown42_merged.c
