@@ -194,6 +194,11 @@ modules/submodules/unknown2a.s                                         c/lib_for
 # so the whole module converts and links.
 modules/submodules/unknown40_p0.s                                      c/lib_exec_call_vector_48.c
 
+# Split out of unknown36.s so the five string constants beside it STAY IN
+# ASSEMBLY and therefore stay in the CODE section. Converting them to C would
+# move them into the DATA hunk and shift every symbol after it.
+modules/submodules/unknown36_unknown36_finalizerequest.s               c/lib_unknown36_finalize_request.c
+
 # THE VERTICAL-BLANK INTERRUPT SERVER, IN C. gen_all_manifest.py screens this as
 # "entered by the OS with a register convention", and for this function that is
 # wrong. It was checked three ways rather than assumed:
@@ -228,6 +233,7 @@ modules/groups/b/a/newgrid_p4_p1_p0.s                                  c/jmptbl_
 modules/groups/b/a/script3b_p1.s                                       c/jmptbl_b_a_script3b_p1.c
 modules/groups/a/h/xjump.s                                             c/jmptbl_a_h_xjump.c
 modules/groups/b/a/newgrid2_p2.s                                       c/jmptbl_b_a_newgrid2_p2.c
+modules/groups/b/a/parseini_p2_p1_p0.s                                 c/jmptbl_b_a_parseini_p2_p1_p0.c
 modules/groups/a/k/xjump.s                                             c/jmptbl_a_k_xjump.c
 modules/groups/a/n/esqfunc_p4_p0.s                                     c/jmptbl_a_n_esqfunc_p4_p0.c
 modules/groups/b/a/textdisp_p3.s                                       c/jmptbl_b_a_textdisp_p3.c

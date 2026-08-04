@@ -458,6 +458,7 @@ modules/submodules/unknown15.s                                         c/lib_str
 modules/submodules/unknown6.s                                          c/lib_string_append_at_null.c
 modules/submodules/unknown3.s                                          c/lib_string_to_upper_char.c
 modules/submodules/unknown4.s                                          c/lib_string_to_upper_in_place.c
+modules/submodules/unknown36_unknown36_finalizerequest.s               c/lib_unknown36_finalize_request.c
 modules/submodules/unknown28.s                                         c/lib_wdisp_format_with_callback.c
 modules/groups/a/y/locavail_p1.s                                       c/locavail_alloc_node_arrays_for_state.c
 modules/groups/a/y/locavail_p3_locavail_computefilteroffsetforentry.s  c/locavail_compute_filter_offset_for_entry.c
@@ -783,6 +784,7 @@ modules/groups/b/a/newgrid_p4_p1_p0.s                                  c/jmptbl_
 modules/groups/b/a/script3b_p1.s                                       c/jmptbl_b_a_script3b_p1.c
 modules/groups/a/h/xjump.s                                             c/jmptbl_a_h_xjump.c
 modules/groups/b/a/newgrid2_p2.s                                       c/jmptbl_b_a_newgrid2_p2.c
+modules/groups/b/a/parseini_p2_p1_p0.s                                 c/jmptbl_b_a_parseini_p2_p1_p0.c
 modules/groups/a/k/xjump.s                                             c/jmptbl_a_k_xjump.c
 modules/groups/a/n/esqfunc_p4_p0.s                                     c/jmptbl_a_n_esqfunc_p4_p0.c
 modules/groups/b/a/textdisp_p3.s                                       c/jmptbl_b_a_textdisp_p3.c
