@@ -130,8 +130,8 @@ Both were discovered the hard way; both are enforced by `build-split.sh`.
 **1. Objects are longword-sized.** Hunk objects store section sizes in
 longwords, so an object whose content is 2 (mod 4) bytes gets padded, shifting
 everything after it. `gen_units.py` therefore coalesces consecutive modules
-until each unit lands on a 4-byte boundary — which is why 1,015 source modules
-become 531 link units. Source files stay fine-grained. Only the assembly grouping
+until each unit lands on a 4-byte boundary — which is why 1,031 source modules
+become 539 link units. Source files stay fine-grained. Only the assembly grouping
 is coarser. **You can still edit any module in isolation.**
 
 **2. vasm rewrites branches based on what is visible.** A bare
@@ -1417,7 +1417,7 @@ far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
 BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
 278-entry parent, also clean and additionally proven on all six ESC-menu items.
 
-`src/c/replacements-all.txt` is the one to grow. It stands at **822 entries**,
+`src/c/replacements-all.txt` is the one to grow. It stands at **824 entries**,
 every DATA module among them, with 28 restorations held out as unsafe to link.
 It went 440 -> 464 from new restorations and 464 -> 614 from SPLITTING modules,
 which is the cheaper lever of the two and was sitting unused. It went 770 -> 790
@@ -1465,8 +1465,8 @@ been RUN.** Soak before treating a new size as good.
 still assembly and that is misleading: 150 of them are EMPTY files and 10 hold
 only an alignment pad. The honest number comes from the link map.
 
-**The maximum-C build is 96.6% C by CODE byte.** 226,404 bytes of 234,256 come
-from compiled C. 7,852 bytes are assembly.
+**The maximum-C build is 97.2% C by CODE byte.** 227,504 bytes of 234,168 come
+from compiled C. 6,664 bytes are assembly, of which 2,572 are in `submodules/`.
 
 ```sh
 python3 tools/lastmile.py                  # module buckets, plus the code worklist
@@ -1484,7 +1484,7 @@ left is smaller and better understood.
 
 | bytes | share | why it is still assembly |
 |---:|---:|---|
-| ~5,500 | 2.4% | SAS/C runtime and protocol code in `submodules/` |
+| 2,572 | 1.1% | SAS/C runtime and protocol code in `submodules/` |
 | ~1,560 | 0.7% | headless continuation modules and small pads |
 | ~1,000 | 0.4% | jump tables blocked on VARIADIC or unrestored targets |
 | 660 | 0.3% | register-argument helpers, marked `DO-NOT-LINK` |
@@ -1494,6 +1494,53 @@ left is smaller and better understood.
 
 Regenerate it from `build/ESQ.map`; a contributor whose name ends `.asm` is
 assembly.
+
+### SOLVED: the SAS/C stdio read and write layer is C (2026-08-04)
+
+`_STREAM_BufferedPutcOrFlush` (662 bytes) and `_STREAM_BufferedGetc` (390) are
+now `src/c/lib_stream_buffered_putc_or_flush.c` and
+`src/c/lib_stream_buffered_getc.c`. Every buffered read and write in the program
+runs through compiled C. Both are `behavioural` and both deltas are fully
+itemised by `casm.py`: +50 on the writer, mostly the missing `LINK`/`UNLK` frame
+and an alignment `NOP`, and -22 on the reader, mostly the booleanize idiom.
+
+**THE FLAG WORD IS ONE LONG WITH TWO BYTE ALIASES, and getting this wrong is
+silent.** `openFlags` is a long at +24. The assembly reaches +27 as `StateFlags`
+and +26 as `ModeFlags`, which on a big-endian 68000 are the low byte and the one
+above it. So a StateFlags bit N is long bit N, and a ModeFlags bit N is long bit
+**N+8**. `HN_MODE_TEXT_TRANSLATE` is therefore `0x8000`, not `0x80`. This is the
+same family as the byte-wide extern on a word-wide global: a wrong width reads
+the wrong half and every byte check still passes.
+
+**A NEGATIVE COUNTER IS THE TEXT-MODE STATE, NOT AN ERROR.** Both functions seed
+`writeRemaining`/`readRemaining` to MINUS the capacity in text mode, so the
+count stays negative for the whole buffer. Every counter test is
+decrement-then-branch (`SUBQ.L #1,n` then `BLT`), which writes the decremented
+value back and takes the slow path only when it goes negative. Written as a
+pre-test any one of them is off by one and overruns the buffer by a byte.
+
+**THE WRITER RETURNS ITS SAVED ARGUMENT, NOT ITS WORK.** `D4` holds `ch` from
+entry and is never touched. The tail returns 0 for the flush sentinel and `ch`
+otherwise, discarding the byte value the store paths computed. Returning the
+recursive call's result instead would be wrong on a full buffer.
+
+**`DOS_STR_CRLF` STAYS IN ASSEMBLY.** It is two bytes in the CODE section,
+reached by address. A C string literal would emit a DATA hunk, and four bytes of
+DATA growth shifts every symbol after it. `split_module.py` cut it onto its own
+module, byte-neutral, with both gates green.
+
+**Verified by RUNNING it, which is the only oracle that applies here.** Neither
+byte gate can judge a C build, and until `tools/serial_esq.sh` existed nothing
+reached the write path at all. Driven over the serial line, the maximum-C build
+writes the same 18 files at the same sizes as the byte-exact assembly build, and
+`tools/fileiodiff.py` reports them IDENTICAL after masking clock stamps --
+`local.ads`, `qtable.ini`, `oinfo.dat`, `dbg.log` and the fonts among them.
+
+```sh
+tools/serial_esq.sh ~/Downloads/Prevue/ESQ.known-good-36cf56ed pure 190
+tools/serial_esq.sh build/ESQ cand 190
+python3 tools/fileiodiff.py pure cand
+```
 
 ### SOLVED: the divide helpers are C, and the remainder in D1 is gone
 

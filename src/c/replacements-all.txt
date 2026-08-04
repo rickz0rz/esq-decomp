@@ -462,6 +462,8 @@ modules/submodules/unknown2b_esq_mainentrynoophook.s                   c/lib_mai
 modules/submodules/unknown2b_esq_mainexitnoophook.s                    c/lib_main_exit_hook.c
 modules/submodules/unknown22_signal_createmsgportwithsignal.s          c/lib_signal_create_msgport_with_signal.c
 modules/submodules/unknown38.s                                         c/lib_signal_poll_and_dispatch.c
+modules/submodules/unknown2b_p1_stream_bufferedgetc.s                  c/lib_stream_buffered_getc.c
+modules/submodules/unknown2b_p1_stream_bufferedputcorflush.s           c/lib_stream_buffered_putc_or_flush.c
 modules/submodules/unknown2b_stream_bufferedwritestring.s              c/lib_stream_buffered_write_string.c
 modules/submodules/unknown15.s                                         c/lib_stream_read_line_with_limit.c
 modules/submodules/unknown6.s                                          c/lib_string_append_at_null.c
