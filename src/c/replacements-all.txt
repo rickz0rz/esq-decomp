@@ -767,6 +767,7 @@ modules/groups/a/a/xjump.s                                             c/jmptbl_
 modules/groups/a/c/xjump.s                                             c/jmptbl_a_c_xjump.c
 modules/groups/a/g/xjump.s                                             c/jmptbl_a_g_xjump.c
 modules/groups/a/n/esqiffbb_p1_p0.s                                    c/jmptbl_a_n_esqiffbb_p1_p0.c
+modules/groups/a/o/esqpars_p1.s                                        c/jmptbl_a_o_esqpars_p1.c
 modules/groups/a/y/xjump.s                                             c/jmptbl_a_y_xjump.c
 modules/groups/b/a/newgrid_p4_p1_p0.s                                  c/jmptbl_b_a_newgrid_p4_p1_p0.c
 modules/groups/b/a/script3b_p1.s                                       c/jmptbl_b_a_script3b_p1.c
