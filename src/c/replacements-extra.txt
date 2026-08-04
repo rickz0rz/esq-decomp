@@ -189,6 +189,11 @@ modules/submodules/unknown22_p0.s                                      c/lib_mat
 # real symbol, which is what lets the variadic thunks in front of it be C.
 modules/submodules/unknown2a.s                                         c/lib_format_rawdofmt_scratch.c
 
+# unknown40_p0.s is a single label: EXEC_CallVector_48, which is really
+# console.device RawKeyConvert reached through ESQ's own cached base. One label,
+# so the whole module converts and links.
+modules/submodules/unknown40_p0.s                                      c/lib_exec_call_vector_48.c
+
 # THE VERTICAL-BLANK INTERRUPT SERVER, IN C. gen_all_manifest.py screens this as
 # "entered by the OS with a register convention", and for this function that is
 # wrong. It was checked three ways rather than assumed:
@@ -210,6 +215,7 @@ modules/groups/_main/a/xjump.s                                         c/jmptbl_
 modules/groups/a/b/xjump.s                                             c/jmptbl_a_b_xjump.c
 modules/groups/a/c/xjump.s                                             c/jmptbl_a_c_xjump.c
 modules/groups/a/j/xjump.s                                             c/jmptbl_a_j_xjump.c
+modules/groups/a/v/xjump.s                                             c/jmptbl_a_v_xjump.c
 modules/groups/a/x/xjump.s                                             c/jmptbl_a_x_xjump.c
 modules/groups/a/e/xjump.s                                             c/jmptbl_a_e_xjump.c
 modules/groups/a/g/xjump.s                                             c/jmptbl_a_g_xjump.c
