@@ -76,6 +76,11 @@ Alignment filler is not assembly waiting to become C; it is content the
 original image contains, and removing it would make the rebuild less faithful,
 not more.
 
+**`docs/remaining-assembly.md` is the byte-by-byte record**: every one of the
+100 bytes with its address and module, why each of the two blocks cannot be
+converted, what would unblock them, and the pattern that retired four other
+strings to get here.
+
 Three things once recorded as impossible are now done. The SAS/C arithmetic
 helpers are C (`src/c/lib_math_helpers.c`), so every divide and multiply in the
 program runs through compiled code. The vertical-blank interrupt server is C as

@@ -1495,6 +1495,10 @@ everything else is C.
 
 ### The floor, and why it is a real one
 
+**`docs/remaining-assembly.md` holds the full byte-by-byte inventory** -- every
+module with its address, both blocks with what would unblock them, and the
+string-retirement pattern. Read it before assuming there is work left here.
+
 Measured 2026-08-04 from `build/ESQ.map` on the 861-entry manifest. 16
 contributors, 160 bytes, not one of them a function.
 
