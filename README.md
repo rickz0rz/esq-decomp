@@ -49,28 +49,32 @@ map for that. A contributor in `build/ESQ.map` whose name ends `.asm` is
 assembly and everything else is C.
 
 ```
-maximum-C build, CODE hunk   99.9%   [########################################]
-                                     235,168 of 235,328 bytes come from C
+maximum-C build, CODE hunk   99.96%  [########################################]
+                                     235,384 of 235,484 bytes come from C
 ```
 
 | measure | value |
 |---|---|
 | maximum-C manifest | 861 entries (`src/c/replacements-all.txt`) |
-| assembly remaining | 160 of 235,328 CODE bytes (0.07%) |
+| assembly remaining | 100 of 235,484 CODE bytes (0.04%) |
 | module includes still assembly | 173, of which 150 are EMPTY and 10 are pads |
 | modules holding real code | ZERO (`python3 tools/lastmile.py`) |
 
 **No executable assembly is left.** Every function in the program is compiled
-C. The 160 bytes that remain are 104 bytes of string constants and 56 bytes of
-alignment padding, spread over 16 modules.
+C. The 100 bytes that remain are 44 bytes of string constants and 56 bytes of
+alignment padding, spread over 14 modules.
 
-The strings are the floor, and it is a real one rather than an unfinished
-job. Each lives in the CODE section in the original, reached PC-relative, and
-SAS/C 6.51 puts every string literal and every initialised static in `data`
-instead. AGENTS.md records that growing the DATA hunk by even four bytes
-shifts every symbol after it and froze the display, reproducibly. So the
-strings stay where the original put them and the FUNCTIONS around them moved
-to C.
+Four other CODE-section strings were retired by building them a character at a
+time into stack locals, which keeps the text in CODE where the original has it.
+The three that remain cannot move: `data_wdisp_p1.c` builds a requester tag
+chain holding their ADDRESSES, so they need real linkable symbols, and a C
+definition would be an initialised static in `data` -- and a DATA hunk that
+grows shifts every symbol after it and freezes the display.
+
+The 56 bytes of padding could be deleted to reach 44, and deliberately are not.
+Alignment filler is not assembly waiting to become C; it is content the
+original image contains, and removing it would make the rebuild less faithful,
+not more.
 
 Three things once recorded as impossible are now done. The SAS/C arithmetic
 helpers are C (`src/c/lib_math_helpers.c`), so every divide and multiply in the

@@ -2,8 +2,23 @@
  * MODULE:   modules/groups/_main/a/a.s   (1 of its 4 labels)
  * STATUS:   behavioural
  *
- * The program's entry point: the first byte of the CODE section, entered by the
- * OS with the command line in A0 and its length in D0. `register __a0` and
+ * The program's entry point: THE FIRST BYTE OF THE CODE SECTION, entered by the
+ * OS with the command line in A0 and its length in D0.
+ *
+ * NOTHING MAY BE EMITTED BEFORE IT, AND A STATIC HELPER ABOVE IT IS EMITTED
+ * BEFORE IT. SAS/C lays functions out in source order, so a `static` defined
+ * earlier in this file lands at offset 0 and the OS enters THAT. It cost a
+ * build to find: `dos_library_name()` was written above the entry point, the
+ * map showed `_ESQ_StartupEntry` at 0x36 rather than 0x0, and ESQ exited
+ * instantly with `esq failed returncode 114` -- the OS had run the string
+ * builder with the command line in A0 and returned. Every helper this file
+ * needs is therefore DEFINED BELOW the entry point and only PROTOTYPED above
+ * it, because a prototype emits nothing.
+ *
+ * No byte gate can see this. The default build does not read the manifest, the
+ * C build links clean, check_pcrel_range and a6_audit pass, and the function's
+ * own bytes are correct -- only its ADDRESS is wrong. The link map is what
+ * shows it: `_ESQ_StartupEntry` must be at 0x00000000. `register __a0` and
  * `register __d0` state that convention exactly, which is the whole of what
  * AGENTS.md means by "the startup entry is an __asm function".
  *
@@ -84,16 +99,20 @@
 #include "esq-exec.h"
 #include "esq-neardata.h"
 
-extern char ESQ_STR_DosLibrary[];
 extern unsigned char BUFFER_5929_LONGWORDS[];
 
 extern void ESQ_MainEntryNoOpHook(void);
 extern void ESQ_ParseCommandLineAndRun(char *cmd);
 extern void __asm ESQ_ShutdownAndReturn(register __d0 long code);
 
+/* THE DEFINITION MUST SIT BELOW ESQ_StartupEntry -- see the note there.
+ * A prototype emits no code, so it is safe here. */
+static void dos_library_name(char *p);
+
 long __asm ESQ_StartupEntry(register __a0 char *cmd, register __d0 long len)
 {
     char   line[1024];          /* the alloca the original does -- see header */
+    char   dosName[12];         /* "dos.library" -- see dos_library_name() */
     struct ExecBase *sys;
     struct Process  *proc;
     struct WBStartup *msg;
@@ -114,7 +133,8 @@ long __asm ESQ_StartupEntry(register __a0 char *cmd, register __d0 long len)
 
     SetSignal(0L, 0x3000L);
 
-    Global_DosLibrary_A4 = (long)OpenLibrary(ESQ_STR_DosLibrary, 0L);
+    dos_library_name(dosName);
+    Global_DosLibrary_A4 = (long)OpenLibrary(dosName, 0L);
     if (Global_DosLibrary_A4 == 0)
         ESQ_ShutdownAndReturn(100);
 
@@ -175,4 +195,22 @@ long __asm ESQ_StartupEntry(register __a0 char *cmd, register __d0 long len)
     ESQ_ParseCommandLineAndRun((char *)&Global_WBStartupCmdBuffer_A4);
     ESQ_ShutdownAndReturn(0);   /* never returns */
     return 0;
+}
+
+/* "dos.library", built a character at a time into a local rather than named as
+ * a symbol. The original keeps it in the CODE section and reaches it with
+ * `LEA ESQ_STR_DosLibrary(PC),A1`; a C string literal would land in `data`,
+ * and AGENTS.md records that growing the DATA hunk by even four bytes shifts
+ * every symbol after it and freezes the display. Same treatment as
+ * console_name() in lib_parse_command_line_and_run.c. It is what empties
+ * modules/groups/_main/a/a_strings.s of everything the maximum-C build needs.
+ *
+ * The assembly module STAYS, because it is what the byte-exact build assembles
+ * -- only the maximum-C build replaces it. */
+static void dos_library_name(char *p)
+{
+    *p++ = 'd'; *p++ = 'o'; *p++ = 's'; *p++ = '.';
+    *p++ = 'l'; *p++ = 'i'; *p++ = 'b'; *p++ = 'r';
+    *p++ = 'a'; *p++ = 'r'; *p++ = 'y';
+    *p   = 0;
 }

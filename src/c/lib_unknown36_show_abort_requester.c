@@ -60,8 +60,35 @@
 #include "esq-neardata.h"
 
 extern char DEBUG_STR_UserAbortRequested[];
-extern char UNKNOWN36_STR_BreakPrefix[];
-extern char UNKNOWN36_STR_IntuitionLibrary[];
+
+/* "*** Break: " and "intuition.library", built a character at a time into
+ * locals rather than named as symbols. The original keeps both in the CODE
+ * section and reaches them with `LEA <sym>(PC),An`; a C string literal would
+ * land in `data`, and AGENTS.md records that growing the DATA hunk shifts every
+ * symbol after it and freezes the display. Same treatment as console_name() in
+ * lib_parse_command_line_and_run.c.
+ *
+ * It is what empties modules/submodules/unknown36_p0_strings_local.s of
+ * everything the maximum-C build needs. Their three former neighbours --
+ * DEBUG_STR_UserAbortRequested and the two beside it -- CANNOT move this way,
+ * because data_wdisp_p1.c builds a tag chain holding their ADDRESSES. That is
+ * why the module was split in two. */
+static void break_prefix(char *p)
+{
+    *p++ = '*'; *p++ = '*'; *p++ = '*'; *p++ = ' ';
+    *p++ = 'B'; *p++ = 'r'; *p++ = 'e'; *p++ = 'a'; *p++ = 'k'; *p++ = ':';
+    *p++ = ' ';
+    *p   = 0;
+}
+
+static void intuition_name(char *p)
+{
+    *p++ = 'i'; *p++ = 'n'; *p++ = 't'; *p++ = 'u'; *p++ = 'i';
+    *p++ = 't'; *p++ = 'i'; *p++ = 'o'; *p++ = 'n'; *p++ = '.';
+    *p++ = 'l'; *p++ = 'i'; *p++ = 'b'; *p++ = 'r'; *p++ = 'a';
+    *p++ = 'r'; *p++ = 'y';
+    *p   = 0;
+}
 
 extern long EXEC_CallVector_348(void *window, void *bodyText,
                                 void *positiveText, void *negativeText,
@@ -78,6 +105,8 @@ long UNKNOWN36_ShowAbortRequester(void)
     long  i;
     char *src;
     void *intuition;
+    char  prefix[12];           /* "*** Break: "      -- see break_prefix()   */
+    char  libName[18];          /* "intuition.library" -- see intuition_name() */
 
     src = (char *)Global_UNKNOWN36_MessagePtr_A4;
     len = (unsigned char)src[-1];
@@ -102,13 +131,15 @@ long UNKNOWN36_ShowAbortRequester(void)
     }
 
     if (out != 0) {
-        Write(out, UNKNOWN36_STR_BreakPrefix, 11L);
+        break_prefix(prefix);
+        Write(out, prefix, 11L);
         text[len] = '\n';
         Write(out, text, len + 1);
         return -1;
     }
 
-    intuition = (void *)OpenLibrary(UNKNOWN36_STR_IntuitionLibrary, 0L);
+    intuition_name(libName);
+    intuition = (void *)OpenLibrary(libName, 0L);
     if (intuition == 0)
         return -1;
 

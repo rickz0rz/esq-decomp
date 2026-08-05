@@ -37,10 +37,15 @@
  * paths computed. Only the early `.return_byte` path returns `D1`. Returning
  * the recursive call's result instead would be wrong on a full buffer.
  *
- * DOS_STR_CRLF IS REACHED BY ADDRESS AND IS TWO BYTES. It stays in assembly,
- * in the CODE section, because a C string literal would emit a DATA hunk -- and
- * AGENTS.md records that four bytes of DATA growth shifts every symbol after it
- * and freezes the display. `tools/split_module.py` cut it onto its own module.
+ * DOS_STR_CRLF IS TWO BYTES BUILT INTO A LOCAL. It used to be an assembly
+ * symbol in the CODE section, reached by address, because a C string literal
+ * would emit a DATA hunk -- and AGENTS.md records that four bytes of DATA
+ * growth shifts every symbol after it and freezes the display. Writing the two
+ * bytes into a stack local keeps them in CODE and needs no symbol at all, which
+ * is what lets modules/submodules/unknown2b_p1_p0.s contribute nothing to the
+ * maximum-C build. Same treatment as console_name() in
+ * lib_parse_command_line_and_run.c. The assembly module STAYS, because it is
+ * what the byte-exact build assembles.
  *
  * SASC-MISMATCH: near-data-addressing
  *   ref:     TST.L Global_DosIoErr(A4)
@@ -95,11 +100,11 @@ extern long  BUFFER_EnsureAllocated(struct PreallocHandleNode *node);
 extern long  DOS_WriteByIndex(long index, char *buf, long len);
 extern long  DOS_ReadByIndex(long index, char *buf, long len);
 extern long  DOS_SeekByIndex(long index, long pos, long mode);
-extern char  DOS_STR_CRLF[];
 
 long STREAM_BufferedPutcOrFlush(long ch, struct PreallocHandleNode *node)
 {
     char  outByte;              /* -1(A5)  */
+    char  crlf[2];              /* DOS_STR_CRLF, built here -- see header */
     char  scanByte;             /* -3(A5)  */
     long  pending;              /* -16(A5) */
     long  scanPos;              /* -20(A5) */
@@ -152,7 +157,9 @@ long STREAM_BufferedPutcOrFlush(long ch, struct PreallocHandleNode *node)
         outByte = (char)cur;
         if (textMode && cur == 10) {
             pending = 2;
-            written = DOS_WriteByIndex(node->handleIndex, DOS_STR_CRLF, 2L);
+            crlf[0] = 13;
+            crlf[1] = 10;
+            written = DOS_WriteByIndex(node->handleIndex, crlf, 2L);
         } else {
             pending = 1;
             written = DOS_WriteByIndex(node->handleIndex, &outByte, 1L);

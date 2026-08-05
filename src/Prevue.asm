@@ -1146,6 +1146,7 @@ A4_Base = _Global_REF_LONG_FILE_SCRATCH   ; 32768
     include "modules/submodules/unknown36_unknown36_finalizerequest.s"
     include "modules/submodules/unknown36_p0.s"
     include "modules/submodules/unknown36_p0_strings.s"
+    include "modules/submodules/unknown36_p0_strings_local.s"
     include "modules/submodules/unknown37.s"
     include "modules/submodules/unknown38.s"
     include "modules/submodules/unknown39.s"

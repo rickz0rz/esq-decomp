@@ -1500,11 +1500,33 @@ contributors, 160 bytes, not one of them a function.
 
 | bytes | what | why it cannot be C |
 |---:|---|---|
-| 84 | five strings in `submodules/unknown36_p0_strings.s` | CODE-section data |
-| 12 | `"dos.library"` in `groups/_main/a/a_strings.s` | CODE-section data |
-| 8 | `_DOS_STR_CRLF` in `submodules/unknown2b_p1_p0.s` | CODE-section data |
+| 44 | three strings in `submodules/unknown36_p0_strings.s` | a DATA TABLE HOLDS THEIR ADDRESSES |
 | 8 | `submodules/unknown10_p1.s` | padding the disassembler read as code |
 | 48 | twelve four-byte `ALIGN_WORD` pads | padding |
+
+**FOUR MORE STRINGS WERE RETIRED ON 2026-08-04 AND THE PATTERN GENERALISES.**
+`"dos.library"`, `"*** Break: "`, `"intuition.library"` and `DOS_STR_CRLF` had
+only C readers, so each is now built A CHARACTER AT A TIME INTO A STACK LOCAL --
+the treatment `console_name()` in `lib_parse_command_line_and_run.c` already
+used. That keeps the text in CODE, where the original has it, and needs no
+symbol at all. Their modules then contribute nothing, so each is replaced by a
+DELIBERATELY EMPTY translation unit (`src/c/strings_now_local_*.c`); the
+assembly module stays, because `src/Prevue.asm` is what the byte-exact build
+assembles. 160 bytes -> 100.
+
+**THE PATTERN STOPS WHERE SOMETHING HOLDS THE STRING'S ADDRESS.** The three
+that remain cannot move: `data_wdisp_p1.c` builds
+`DEBUG_AbortRequesterTagChain` holding `(char *)DEBUG_STR_UserAbortRequested`,
+`(char *)DEBUG_STR_Continue` and `(char *)DEBUG_STR_Abort`. A stack local has
+no address a linker can write into a table, and a C definition would be an
+initialised static in `data`. Splitting the module in two is what let the other
+two go -- see `unknown36_p0_strings_local.s`.
+
+**THE 56 BYTES OF PADDING COULD BE DELETED AND SHOULD NOT BE.** Replacing the
+pad modules with empty units would take the figure to 44 bytes, but that is
+REMOVING CONTENT the original has rather than converting it, and this project's
+product is a faithful reconstruction. Alignment filler is not assembly that
+wants to be C; it is bytes the image contains.
 
 **THE STRING FLOOR IS STRUCTURAL, NOT UNFINISHED WORK.** Each of these blocks
 lives in the CODE section in the original and is reached PC-relative -- which is
@@ -1592,6 +1614,35 @@ WBStartup+32, which is `sm_ToolWindow`; D2 is 1005, which is `MODE_OLDFILE`;
 and the result's +8 field, `fh_Type`, goes to Process+164, which is
 `pr_ConsoleTask`. That is the standard Workbench startup opening its tool
 window.
+
+### A STATIC HELPER ABOVE THE ENTRY POINT MOVES THE ENTRY POINT
+
+`ESQ_StartupEntry` is the first byte of the CODE section: the OS enters the
+program at offset 0. SAS/C lays functions out in SOURCE ORDER, so a `static`
+defined earlier in that file lands at offset 0 and the OS enters THAT instead.
+
+It cost a build to find. A string-building helper was written above the entry
+point, the link map showed `_ESQ_StartupEntry` at **0x36** rather than 0x0, and
+ESQ exited instantly with `esq failed returncode 114` -- the OS had run the
+string builder with the command line in A0 and returned through its RTS.
+
+**NO BYTE GATE CAN SEE THIS.** The default build does not read the manifest.
+The C build links clean. `check_pcrel_range`, `a6_audit`, `data_shape_audit`
+and `extern_width_audit` all pass. The function's own bytes are correct -- only
+its ADDRESS is wrong, and no tool here compares addresses. The soak catches it,
+but only if you LOOK at a frame: the statistics block reads
+`illegal/exception lines: 1` and `log lines: 1032`, which is the HEALTHY
+signature, because the machine is perfectly fine and simply back at the CLI.
+
+So the rule for `src/c/lib_esq_startup_entry.c`, and for any file that ever
+replaces the first module: **define helpers BELOW the entry point and only
+prototype them above it.** A prototype emits nothing.
+
+The check is one line, and it is worth running after any change to that file:
+
+```sh
+grep -n "_ESQ_StartupEntry" build/ESQ.map     # must be 0x00000000
+```
 
 ### YOU CAN DECLARE YOUR OWN `#pragma libcall`
 

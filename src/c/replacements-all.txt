@@ -843,6 +843,9 @@ modules/groups/a/q/esqshared4_p1.s                                     c/esqshar
 modules/groups/a/a/app_esq_pollctrlinput.s                             c/esq_poll_ctrl_input.c
 modules/groups/a/z/locavail2_locavail2_autorequestnoop.s               c/locavail2_auto_request_noop.c
 modules/groups/a/z/locavail2_locavail2_displayalertdelayandreboot.s    c/locavail2_display_alert_delay_and_reboot.c
+modules/groups/_main/a/a_strings.s                                     c/strings_now_local_main_a.c
+modules/submodules/unknown2b_p1_p0.s                                   c/strings_now_local_dos_crlf.c
+modules/submodules/unknown36_p0_strings_local.s                        c/strings_now_local_unknown36.c
 modules/groups/_main/a/a.s                                             c/a_merged.c
 modules/groups/a/a/app2_p7.s                                           c/app2_p7_merged.c
 modules/groups/a/a/app2_esq_findsubstringcasefold.s                    c/app2_esq_findsubstringcasefold_merged.c
