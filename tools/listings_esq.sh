@@ -111,13 +111,26 @@ fs-uae "$CONFIG" >/dev/null 2>&1 &
 echo "  booting for ${DELAY}s before sending..."
 sleep "$DELAY"
 
-echo "  running PrevueCommander..."
-( "$COMMANDER" "$PLAYBOOK" ) > "$OUT/commander.log" 2>&1 &
-CMDR_PID=$!
-wait "$CMDR_PID" 2>/dev/null
-CMDR_RC=$?
-CMDR_PID=
-echo "  PrevueCommander exited rc=$CMDR_RC"
+# REPLAY=<commander.log> replays a CAPTURED byte stream instead of running the
+# commander live. Use it for any A/B comparison: PrevueCommander pulls its data
+# from a Channels DVR server at run time and the answer is not the same twice,
+# so a control run and a candidate run see different channels and different
+# numbers of programme records. See tools/rbf_replay.py.
+if [ -n "${REPLAY:-}" ]; then
+    echo "  replaying $REPLAY (deterministic input)..."
+    python3 -u "$REPO/tools/rbf_replay.py" "$REPLAY" --delay 0 \
+        > "$OUT/commander.log" 2>&1
+    CMDR_RC=$?
+    echo "  replay exited rc=$CMDR_RC"
+else
+    echo "  running PrevueCommander..."
+    ( "$COMMANDER" "$PLAYBOOK" ) > "$OUT/commander.log" 2>&1 &
+    CMDR_PID=$!
+    wait "$CMDR_PID" 2>/dev/null
+    CMDR_RC=$?
+    CMDR_PID=
+    echo "  PrevueCommander exited rc=$CMDR_RC"
+fi
 
 sleep "$HOLD"
 
