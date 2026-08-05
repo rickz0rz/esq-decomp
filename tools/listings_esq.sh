@@ -122,13 +122,19 @@ echo "  PrevueCommander exited rc=$CMDR_RC"
 sleep "$HOLD"
 
 # Grab the screen before shutting down, so a visual check is possible too.
-WID=$(/tmp/.capvenv/bin/python - <<'PY' 2>/dev/null
+# The owner name is lowercase `fs-uae`, and it must be looked up with
+# kCGWindowListOptionAll. Matching 'FS-UAE' on the on-screen-only list
+# finds nothing and the capture silently does not happen -- two runs
+# produced no screenshot before this was noticed. soak_esq.sh already had
+# it right; this copy of it did not.
+WID=$(/tmp/.capvenv/bin/python - <<'QZ' 2>/dev/null
 import Quartz
-for w in Quartz.CGWindowListCopyWindowInfo(
-        Quartz.kCGWindowListOptionOnScreenOnly, Quartz.kCGNullWindowID):
-    if 'FS-UAE' in (w.get('kCGWindowOwnerName') or ''):
-        print(w['kCGWindowNumber']); break
-PY
+opts = Quartz.kCGWindowListOptionAll | Quartz.kCGWindowListExcludeDesktopElements
+for w in Quartz.CGWindowListCopyWindowInfo(opts, Quartz.kCGNullWindowID):
+    if (w.get('kCGWindowOwnerName') or '') == 'fs-uae':
+        if (w.get('kCGWindowBounds') or {}).get('Width', 0) > 100:
+            print(w.get('kCGWindowNumber')); break
+QZ
 )
 [ -n "$WID" ] && screencapture -x -o -l "$WID" "$OUT/screen.png" 2>/dev/null
 
@@ -139,7 +145,7 @@ sleep 4
 cp "$UAELOG" "$OUT/fs-uae.log" 2>/dev/null
 
 AFTER=$(stat -f%z "$PREVUE/curday.dat" 2>/dev/null || echo 0)
-for f in curday.dat nxtday.dat oinfo.dat local.ads config.dat; do
+for f in curday.dat nxtday.dat oinfo.dat local.ads config.dat dbg.log err.log hb.log; do
     cp -p "$PREVUE/$f" "$OUT/files/$f" 2>/dev/null
 done
 
