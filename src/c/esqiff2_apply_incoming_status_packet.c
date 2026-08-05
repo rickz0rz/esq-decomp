@@ -29,6 +29,10 @@ extern void ESQDISP_DrawStatusBanner(long highlight);
 extern void ESQ_SeedMinuteEventThresholds(long minute, long offset);
 extern void ED_DrawDiagnosticModeText(void);
 
+/* Set by this function's EPILOGUE in the original, and every 'C' group record
+ * is discarded until it is 1. See the note at the end of the body. */
+extern short ESQIFF_StatusPacketReadyFlag;
+
 void ESQIFF2_ApplyIncomingStatusPacket(char *packet)
 {
     unsigned char was;
@@ -65,12 +69,29 @@ void ESQIFF2_ApplyIncomingStatusPacket(char *packet)
     if (ED_DiagnosticsScreenActive != 0)
         ED_DrawDiagnosticModeText();
 
-    if (ED_SavedScrollSpeedIndex != 0)
-        return;
+    if (ED_SavedScrollSpeedIndex == 0) {
+        speed = ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED - 48;
+        if (speed >= 1 && speed <= 8)
+            ESQPARS2_StateIndex = speed;
+        else
+            ESQPARS2_StateIndex = 4;
+    }
 
-    speed = ESQ_STR_SATELLITE_DELIVERED_SCROLL_SPEED - 48;
-    if (speed >= 1 && speed <= 8)
-        ESQPARS2_StateIndex = speed;
-    else
-        ESQPARS2_StateIndex = 4;
+    /* THE ORIGINAL'S SHARED EPILOGUE, AND IT IS NOT DECORATION. Every exit
+     * from this function goes through ESQIFF2_ApplyIncomingStatusPacket_Return,
+     * which is `MOVE.W #1,_ESQIFF_StatusPacketReadyFlag` followed by the MOVEM
+     * and RTS -- two BRA/BNE sites plus the fall-through. The early return above
+     * became an `if` so that both paths reach this line, exactly as both branch
+     * targets reach the epilogue.
+     *
+     * WITHOUT THIS THE PROGRAM RECEIVES NO LISTINGS AT ALL. The dispatcher's
+     * 'C' arm reads each group record and then drops it unless this flag is 1:
+     *
+     *     else if (ESQIFF_StatusPacketReadyFlag == 1)
+     *         ESQIFF2_ParseGroupRecordAndRefresh(...);
+     *
+     * so the channel line-up is silently discarded, the 'P' program records
+     * have no group to land in, and curday.dat is written with its 42-byte
+     * header and nothing else. */
+    ESQIFF_StatusPacketReadyFlag = 1;
 }
