@@ -44,8 +44,9 @@
  * are now settled:
  *
  *   1. `unknown29.s` also holds `UNKNOWN29_JMPTBL_ESQ_MainInitAndRun`, and a C
- *      file replaces a whole module. jmptbl_submodules_unknown29.c restores it
- *      and merge_module_c.py joins the two into one unit.
+ *      file replaces a whole module. That thunk was deleted on 2026-08-06 with
+ *      every other one, and labels_of() in merge_module_c.py no longer counts
+ *      a thunk as a function, so this file now replaces the module alone.
  *   2. THE CONSOLE NAME WOULD HAVE GROWN THE DATA HUNK. The original keeps
  *      "con.10/10/320/80/" as a PC-relative template in the CODE section and
  *      copies it with four MOVE.L and a MOVE.W. SAS/C 6.51 puts a string

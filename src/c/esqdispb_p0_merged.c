@@ -8,5 +8,4 @@
  *
  * RESTORES: ESQDISP_JMPTBL_NEWGRID_ProcessGridMessages, ESQDISP_JMPTBL_GRAPHICS_AllocRaster, ESQDISP_FillProgramInfoHeaderFields
  */
-#include "jmptbl_a_n_esqdispb_p0.c"
 #include "esqdisp_fill_program_info_header_fields.c"

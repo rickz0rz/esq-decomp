@@ -188,11 +188,21 @@ def far_rewrite(incs):
     return files, sites, shorts
 
 
+DROP = '-'
+
+
 def replacements():
     """Optional map of {module path: C file} from $C_REPLACEMENTS.
 
     Left unset for the default build, which stays pure assembly so the
     byte-exact gates remain meaningful.
+
+    A C FILE OF "-" MEANS DROP THE MODULE ENTIRELY. It contributes neither
+    assembly nor an object. This is what retires a module whose whole content
+    became unnecessary rather than being rewritten -- the 46 jump tables, whose
+    thunks every caller now bypasses. Removing the ROW instead would link the
+    assembly module and put the jump table back, and deleting the module from
+    src/Prevue.asm would break both byte gates, which assemble it.
     """
     manifest = os.environ.get('C_REPLACEMENTS')
     if not manifest:
@@ -223,7 +233,11 @@ def coalesce(pairs, repl):
         if path in repl:
             if cur:
                 units.append(cur); cur, acc = [], 0
-            units.append(('C',) + repl[path])
+            # "-" drops the module. The group is still closed here, so the
+            # assembly either side coalesces exactly as it did when this
+            # position held an object, and the image does not move.
+            if repl[path][0] != DROP:
+                units.append(('C',) + repl[path])
             continue
         cur.append(path); acc += size
         if acc % 4 == 0:
@@ -266,7 +280,10 @@ def main():
               f'absolute in {far_files} modules, '
               f'{far_shorts} short local branches promoted to .W')
     for m, (c, o) in repl.items():
-        print(f'    C: {c}  replaces  {m}' + (f'   [+{o}]' if o else ''))
+        if c == DROP:
+            print(f'    -: {m}  dropped (contributes nothing)')
+        else:
+            print(f'    C: {c}  replaces  {m}' + (f'   [+{o}]' if o else ''))
 
 
 if __name__ == '__main__':

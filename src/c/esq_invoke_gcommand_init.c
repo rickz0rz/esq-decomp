@@ -19,8 +19,9 @@
  * `LEA _GROUP_AV_JMPTBL_ESQ_InvokeGcommandInit(PC),A0` in kybd.s -- and the
  * thunk is a bare JMP, so the registers pass through untouched. The C build
  * installs this routine directly, which removes one JMP from every keystroke.
- * jmptbl_a_v_xjump.c keeps the thunk with the same `__asm` shape, so either
- * address works as a handler.
+ * jmptbl_a_v_xjump.c USED TO keep the thunk with the same `__asm` shape, so
+ * either address worked as a handler. That file is gone -- every jump-table
+ * thunk was deleted on 2026-08-06 -- so this routine is now the only address.
  *
  * SASC-MISMATCH: unread-second-argument
  *   ref:     48e700c04eb90001d320508f4e75   (14)

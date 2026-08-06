@@ -9,4 +9,3 @@
  * RESTORES: PARSEINI_NormalizeClockData, PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData, PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay, PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch, PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock, PARSEINI2_JMPTBL_DATETIME_IsLeapYear, PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock, PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch
  */
 #include "parseini_normalize_clock_data.c"
-#include "jmptbl_b_a_parseini2_p1.c"

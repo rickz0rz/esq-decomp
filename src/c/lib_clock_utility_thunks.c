@@ -13,8 +13,9 @@
  * before either could be linked.
  *
  * THE RECORD IS ParseIniRtcRecord, NOT struct ClockData. Both callers in
- * src/c -- parseini_write_rtc_from_globals.c and jmptbl_b_a_parseini2_p1.c --
- * already declare it that way, and the field offsets match the ROM's
+ * src/c -- parseini_write_rtc_from_globals.c and, until the jump-table thunks
+ * were deleted on 2026-08-06, jmptbl_b_a_parseini2_p1.c -- declare it that way,
+ * and the field offsets match the ROM's
  * ClockData layout, which is what CheckDate and Date2Amiga expect.
  *
  * SASC-MISMATCH: reload-vs-cache

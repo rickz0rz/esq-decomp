@@ -112,9 +112,32 @@ def manifest_modules():
 
 
 def labels_of(mod):
+    """The labels a C replacement of `mod` must cover.
+
+    A `<name>_Return` label is an epilogue, not a function, and a C restoration
+    carries its own.
+
+    A JUMP-TABLE THUNK IS ALSO NOT A FUNCTION ANY MORE. Every thunk was one
+    `JMP target`, and since 2026-08-06 every caller calls the target directly
+    (tools/detunk_c.py, then tools/remove_jmptbl.py). Requiring a restoration
+    for one leaves a MIXED module -- real functions plus a jump table -- with no
+    C replacement at all, which relinks its assembly and puts the table back.
+    Four modules regressed exactly that way: esqdispb_p0.s, parseini2_p1.s,
+    unknown.s and unknown29.s.
+
+    `Global_JMPTBL_*` is a DATA table of pointers and never a thunk, so it is
+    not excluded here -- it cannot appear in a code module in any case.
+    """
     body = open(os.path.join(ROOT, 'src', mod), errors='replace').read()
-    return [l.lstrip('_') for l in LABEL.findall(body)
-            if not l.endswith('_Return')]
+    out = []
+    for l in LABEL.findall(body):
+        n = l.lstrip('_')
+        if n.endswith('_Return'):
+            continue
+        if '_JMPTBL_' in n and not n.startswith('Global_JMPTBL_'):
+            continue
+        out.append(n)
+    return out
 
 
 TERMINAL = ('RTS', 'RTE', 'RTR', 'JMP', 'BRA')

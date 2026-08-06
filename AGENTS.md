@@ -1978,10 +1978,27 @@ python3 tools/remove_jmptbl.py --write    # apply
 ```
 
 CODE went 235,392 -> **224,424**, a saving of 10,968 bytes, and the program
-loses one call and one frame per former thunk call. Forty-six files became
-deliberately empty translation units; each keeps its manifest row, because
-`gen_units.py` links the assembly module wherever a row is absent and deleting
-one would put the jump table back.
+loses one call and one frame per former thunk call. All 47 files were then DELETED, and their
+manifest rows now read `-`.
+
+**`-` IS THE DROP SENTINEL: the module contributes neither assembly nor an
+object.** It exists because the two obvious moves are both wrong. Removing the
+ROW links the assembly module and puts the jump table back. Removing the module
+from `src/Prevue.asm` breaks both byte gates, which assemble it. `coalesce()`
+still closes the surrounding group at that position, so the assembly either
+side groups exactly as it did when an object sat there and the image does not
+move -- **the linked binary is byte-identical across the deletion**, which is
+what proves the 47 objects contributed nothing.
+
+> **A THUNK LABEL IS NOT A FUNCTION, AND THREE TOOLS HAD TO BE TOLD.** A module
+> holding one real function and seven thunks looked like eight functions, so
+> `gen_all_manifest.py` refused the restoration and `merge_module_c.py` refused
+> the merge -- and a refused module RELINKS ITS ASSEMBLY, putting the table
+> back. Four modules regressed exactly that way and the manifest count fell
+> 878 -> 874 with no error: `esqdispb_p0.s`, `parseini2_p1.s`, `unknown.s` and
+> `unknown29.s`. The carve-out sits beside the `_Return` one in
+> `labels_of()` and at both label sites in `gen_all_manifest.py`. **Watch the
+> manifest count across a change like this; a lost row is silent.**
 
 Three things the tool must get right, and each was found by it refusing to run:
 
@@ -2137,10 +2154,10 @@ being worked on.
 `GRAPHICS_AllocRaster` reads its width and height from `16(A5)` and `20(A5)`, not
 from `8(A5)` and `12(A5)`, so it is not the two-argument function its name
 suggests. A thunk written from the name would pass the wrong slots and no byte
-check would see it. `jmptbl_to_c.py` copies the parameter list from the target's
-own restoration for exactly this reason, and the two hand-written thunk files --
-`jmptbl_b_a_parseini2_p1.c` and `jmptbl_a_n_esqdispb_p0.c`, needed because their
-modules are not PURE jump tables -- do the same by hand.
+check would see it. `jmptbl_to_c.py` copied the parameter list from the target's
+own restoration for exactly this reason, and the two hand-written thunk files did
+the same by hand. All of them were deleted on 2026-08-06; the arity rule is kept
+because it applies to any future forwarder.
 
 **Byte-exactness is not a goal on this lane.** A converted thunk costs two bytes
 and one extra frame, which the `tail-jump` divergence records. Chase the byte

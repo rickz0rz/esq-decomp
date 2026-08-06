@@ -160,6 +160,12 @@ def other_real_functions(path, keep, idx):
         # to or merely fallen into.
         if l.endswith('_Return') and l[:-7].lstrip('_') in bare_labs:
             continue
+        # NEITHER IS A JUMP-TABLE THUNK, since 2026-08-06. Each was one
+        # `JMP target` and every caller now calls the target directly, so the
+        # thunk has no restoration and needs none. See labels_of() in
+        # merge_module_c.py for the same carve-out and what it cost.
+        if '_JMPTBL_' in l.lstrip('_') and not l.lstrip('_').startswith('Global_JMPTBL_'):
+            continue
         others.append(l)
     if not others:
         return set()
@@ -277,9 +283,16 @@ def main():
             # the `n != 1` test below then refused to link the restoration --
             # silently, since the file compiles and compares fine. SIXTEEN
             # restorations were dropped that way on the day this was found.
+            # A JUMP-TABLE THUNK is not a function either. Leaving it in the
+            # count made a module holding one real function and seven thunks
+            # look like eight functions, so `n != 1` refused the restoration and
+            # the module's ASSEMBLY relinked -- putting the jump table back.
+            # esqdispb_p0.s, parseini2_p1.s and unknown29.s all did that.
             fnlabs = [l for l in labs
                       if not (l.endswith('_Return') and l[:-7].lstrip('_') in
-                              [x.lstrip('_') for x in labs])]
+                              [x.lstrip('_') for x in labs])
+                      and not ('_JMPTBL_' in l.lstrip('_')
+                               and not l.lstrip('_').startswith('Global_JMPTBL_'))]
             for l in labs:
                 home[l] = (os.path.relpath(p, os.path.join(ROOT, 'src')),
                            len(fnlabs), p)
@@ -407,7 +420,10 @@ def main():
             if not line.strip() or line.startswith('#'):
                 continue
             parts = line.split()
-            if len(parts) >= 2 and parts[1] not in have:
+            # "-" is the DROP sentinel, not a C file. Many rows carry it and
+            # de-duplicating by C file would keep only the first, silently
+            # relinking every other dropped module's assembly.
+            if len(parts) >= 2 and (parts[1] == '-' or parts[1] not in have):
                 rows.append((parts[0], parts[1], ' '.join(parts[2:])))
                 have.add(parts[1])
                 n_extra += 1
