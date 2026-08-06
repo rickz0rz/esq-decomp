@@ -11,10 +11,7 @@
  * rule that a data module must be a multiple of 4 bytes.
  */
 
-unsigned char KYBD_PATH_DF0_LOCAL_ADS[13] = {
-    0x64, 0x66, 0x30, 0x3a, 0x6c, 0x6f, 0x63, 0x61, 0x6c, 0x2e, 0x61, 0x64,
-    0x73
-};
+unsigned char KYBD_PATH_DF0_LOCAL_ADS[13] = "df0:local.ads";
 unsigned char KYBD_CustomPaletteCaptureScratchBase = 0;
 unsigned char KYBD_CustomPaletteTriplesRBase = 0;
 unsigned char KYBD_CustomPaletteTriplesGBase = 0;

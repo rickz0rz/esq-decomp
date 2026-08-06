@@ -19,10 +19,7 @@ extern unsigned char TEXTDISP_FormatEntryFallbackWord1[];
 char Global_STR_TEXTDISP_C_2[12] = "TEXTDISP.c";
 char Global_STR_DF0_SOURCECFG_INI_2[18] = "df0:SourceCfg.ini";
 char Global_STR_TEXTDISP_C_3[12] = "TEXTDISP.c";
-unsigned char Global_STR_TEXTDISP_C_4[14] = {
-    0x54, 0x45, 0x58, 0x54, 0x44, 0x49, 0x53, 0x50, 0x2e, 0x63, 0x00, 0x00,
-    0x00, 0x00
-};
+unsigned char Global_STR_TEXTDISP_C_4[14] = "TEXTDISP.c";
 short TEXTDISP_ActiveGroupId = 1;
 unsigned char TEXTDISP_FormatEntryFallbackWord0[6] = {
     0x19, 0x20, 0x20, 0x20, 0x00, 0x00

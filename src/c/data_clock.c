@@ -16,10 +16,7 @@ char Global_STR_GRID_TIME_FORMAT[14] = "%2d:%02d:%02d";
 char Global_STR_GRID_TIME_FORMAT_DUPLICATE[16] = "%2d:%02d:%02d ";
 char Global_STR_12_44_44_SINGLE_SPACE[10] = "12:44:44 ";
 char Global_STR_12_44_44_PM[12] = "12:44:44 PM";
-unsigned char Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED[14] = {
-    0x25, 0x73, 0x25, 0x73, 0x25, 0x6c, 0x64, 0x20, 0x20, 0x00, 0x00, 0x00,
-    0x00, 0x00
-};
+unsigned char Global_STR_SHORT_MONTH_SHORT_DAY_OF_WEEK_FORMATTED[14] = "%s%s%ld  ";
 char CLOCK_STR_TEMPLATE_CODE_SET_FGN[4] = "FGN";
 unsigned char CLOCK_AlignedInsetRenderGateFlag[3] = {
     0x00, 0x04, 0x0c

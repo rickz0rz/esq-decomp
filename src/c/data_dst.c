@@ -51,6 +51,4 @@ char DST_TAG_AM[4] = "AM";
 char DST_TAG_DST[4] = "DST";
 char DST_TAG_STD[4] = "STD";
 char DST_STR_LEAP_YEAR[10] = "Leap Year";
-unsigned char DST_STR_NORM_YEAR[12] = {
-    0x4e, 0x6f, 0x72, 0x6d, 0x20, 0x59, 0x65, 0x61, 0x72, 0x00, 0x00, 0x00
-};
+unsigned char DST_STR_NORM_YEAR[12] = "Norm Year";

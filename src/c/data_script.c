@@ -245,15 +245,9 @@ unsigned char Global_STR_ALIGNED_TOMORROW_AT[14] = {
 };
 char Global_STR_SHOWTIMES_AND_SINGLE_SPACE[11] = "Showtimes ";
 char Global_STR_SHOWING_AT_AND_SINGLE_SPACE[12] = "Showing at ";
-unsigned char SCRIPT_StrHoursPluralSuffix[5] = {
-    0x68, 0x72, 0x73, 0x20, 0x00
-};
-unsigned char SCRIPT_StrHourSingularSuffix[4] = {
-    0x68, 0x72, 0x20, 0x00
-};
-unsigned char SCRIPT_StrMinutesSuffix[5] = {
-    0x6d, 0x69, 0x6e, 0x29, 0x00
-};
+unsigned char SCRIPT_StrHoursPluralSuffix[5] = "hrs ";
+unsigned char SCRIPT_StrHourSingularSuffix[4] = "hr ";
+unsigned char SCRIPT_StrMinutesSuffix[5] = "min)";
 unsigned char Global_STR_ALIGNED_TONIGHT_AT[13] = {
     0x18, 0x54, 0x6f, 0x6e, 0x69, 0x67, 0x68, 0x74, 0x20, 0x61, 0x74, 0x20,
     0x00
@@ -352,9 +346,7 @@ char SCRIPT_BrushTag_Default00_Primary[4] = "00";
 char SCRIPT_BrushTag_Default00_Secondary[4] = "00";
 char SCRIPT_BrushTag_Clear11_Primary[4] = "11";
 char SCRIPT_BrushTag_Clear11_Secondary[4] = "11";
-unsigned char SCRIPT_Tag_YL[6] = {
-    0x79, 0x6c, 0x00, 0x00, 0x00, 0x00
-};
+unsigned char SCRIPT_Tag_YL[6] = "yl";
 unsigned char TEXTDISP_SourceConfigFlagMask[2] = {
     0x00, 0x00
 };

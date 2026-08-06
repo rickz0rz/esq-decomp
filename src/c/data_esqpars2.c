@@ -67,10 +67,7 @@ char ESQPARS2_DurationFmt_DecimalWithSpace[4] = "%d ";
 char ESQPARS2_DurationFmt_OpenParenHours[6] = "(%d ";
 char ESQPARS2_DurationFmt_OpenParenMinutes[6] = "(%d ";
 char ESQPARS2_DurationFmt_CloseParen[2] = ")";
-unsigned char Global_STR_ESQPARS2_C_2[14] = {
-    0x45, 0x53, 0x51, 0x50, 0x41, 0x52, 0x53, 0x32, 0x2e, 0x63, 0x00, 0x00,
-    0x00, 0x00
-};
+unsigned char Global_STR_ESQPARS2_C_2[14] = "ESQPARS2.c";
 long Global_LONG_PATCH_VERSION_NUMBER = 4;
 unsigned char ESQPARS2_BannerSnapshotPlane0DstPtr[2] = {
     0x00, 0x00

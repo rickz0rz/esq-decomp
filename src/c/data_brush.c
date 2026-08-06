@@ -34,6 +34,4 @@ char Global_STR_BRUSH_C_19[8] = "BRUSH.c";
 char BRUSH_STR_ALIAS_CODE_00[4] = "00";
 char BRUSH_STR_ALIAS_CODE_11[4] = "11";
 char BRUSH_STR_ALIAS_CODE_DT[4] = "DT";
-unsigned char BRUSH_STR_FALLBACK_DITHER[10] = {
-    0x44, 0x49, 0x54, 0x48, 0x45, 0x52, 0x00, 0x00, 0x00, 0x00
-};
+unsigned char BRUSH_STR_FALLBACK_DITHER[10] = "DITHER";

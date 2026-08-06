@@ -2848,7 +2848,22 @@ Four rules, and the last two are the ones that will bite:
 1. **Declare it in `src/c/replacements-extra.txt`.** `gen_all_manifest.py` only
    walks `src/modules`, so no data module can ever appear in its generated rows.
 
-2. **Give every array an EXPLICIT SIZE: the string, plus the NUL, rounded up to
+2. **A TEXT ARRAY IS EMITTED AS A STRING LITERAL, and the size still governs.**
+   `data_to_c.py` writes `unsigned char X[15] = "df0:curday.dat";` where the
+   bytes are printable ASCII followed by NOTHING BUT NUL. C fills the remainder
+   of a short initialiser with zeros, so the emitted bytes are identical --
+   verified by compiling both forms and comparing the object. 23 of 844 byte
+   arrays qualify; the rest are palettes, copper lists and tables, where hex is
+   the honest spelling.
+
+   Two cases are deliberately left as hex. A run with **no trailing NUL** is not
+   a string: `ESQ_TAG_36[2]` is the two characters `36` and a literal would
+   imply a terminator it does not have. And the SHORT form is used rather than
+   spelling the padding as `\0` escapes, because 6.51 warns
+   `initializer data truncated` when the literal including its terminator is
+   longer than the array -- correct, but noise.
+
+   **Give every array an EXPLICIT SIZE: the string, plus the NUL, rounded up to
    even.** `NStr` ends in `CNOP 0,2`, and **SAS/C 6.51 does NOT word-align
    consecutive char arrays**, so `char X[] = "..."` on an odd-length string
    silently drops the pad byte and shifts every symbol after it. `data/flib.s`

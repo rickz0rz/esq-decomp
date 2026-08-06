@@ -40,9 +40,7 @@ unsigned char ESQDISP_SecondaryPersistRequestFlag[4] = {
 unsigned char ESQDISP_StatusRefreshPendingFlag[2] = {
     0x00, 0x00
 };
-unsigned char ESQDISP_ProgramInfoZeroTag[3] = {
-    0x30, 0x30, 0x00
-};
+unsigned char ESQDISP_ProgramInfoZeroTag[3] = "00";
 unsigned char ESQDISP_LatchedInputModeBit = 255;
 unsigned char ESQDISP_InputModeDebounceCount[4] = {
     0x00, 0x00, 0x00, 0x00

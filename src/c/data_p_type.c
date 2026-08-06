@@ -33,9 +33,7 @@ unsigned char P_TYPE_STR_TYPES_COLON[16] = {
     0x53, 0x3a, 0x20, 0x00
 };
 char P_TYPE_STR_NXTDAY_COLON_LoadSection[8] = "NXTDAY:";
-unsigned char Global_STR_P_TYPE_C_6[12] = {
-    0x50, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x2e, 0x63, 0x00, 0x00, 0x00, 0x00
-};
+unsigned char Global_STR_P_TYPE_C_6[12] = "P_TYPE.c";
 unsigned char P_TYPE_WeatherBrushRefreshPendingFlag[4] = {
     0x00, 0x00, 0x00, 0x00
 };

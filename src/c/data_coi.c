@@ -38,8 +38,6 @@ char Global_STR_COI_C_2[6] = "COI.c";
 char COI_STR_DEFAULT_TOKEN_TEMPLATE_B[12] = "NNNNNNXX00";
 char COI_FMT_WRAP_CHAR_STRING_CHAR[8] = "%c%s%c";
 char COI_STR_SINGLE_SPACE[2] = " ";
-unsigned char COI_FMT_WIDE_STR_WITH_TRAILING_SPACE[8] = {
-    0x25, 0x6c, 0x73, 0x20, 0x00, 0x00, 0x00, 0x00
-};
+unsigned char COI_FMT_WIDE_STR_WITH_TRAILING_SPACE[8] = "%ls ";
 short CTASKS_IffTaskDoneFlag = 1;
 short CTASKS_IffTaskState = 4;

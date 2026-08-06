@@ -498,13 +498,53 @@ def to_c(path, spans, total):
             elif k == 'l':
                 by += bytes([(v >> 24) & 0xff, (v >> 16) & 0xff,
                              (v >> 8) & 0xff, v & 0xff])
-        out.append('unsigned char %s[%d] = {' % (cname, n))
-        for i in range(0, len(by), 12):
-            out.append('    ' + ', '.join('0x%02x' % b for b in by[i:i + 12]) + ',')
-        out[-1] = out[-1].rstrip(',')
-        out.append('};')
+        lit = as_string_literal(by)
+        if lit is not None:
+            out.append('unsigned char %s[%d] = %s;' % (cname, n, lit))
+        else:
+            out.append('unsigned char %s[%d] = {' % (cname, n))
+            for i in range(0, len(by), 12):
+                out.append('    ' + ', '.join('0x%02x' % b for b in by[i:i + 12]) + ',')
+            out[-1] = out[-1].rstrip(',')
+            out.append('};')
     out.append('')
     return '\n'.join(out)
+
+
+def as_string_literal(by):
+    """A C string literal for `by`, or None if hex is the honest spelling.
+
+    Only a run of printable ASCII followed by NOTHING BUT NUL qualifies. That
+    is a string with its terminator and its alignment padding, and C fills the
+    remainder of a short initialiser with zeros -- so
+
+        unsigned char X[15] = "df0:curday.dat";
+
+    emits exactly the bytes the hex form does, VERIFIED by compiling both and
+    comparing the object. Most byte arrays here are palettes, copper lists and
+    tables; 24 of 844 are text, and hex stays right for the rest.
+
+    THE EXPLICIT SIZE IS STILL REQUIRED and the caller still writes it. Dropping
+    it gives the literal's own length, which is one MORE than the module's span
+    whenever the text has no padding, and every symbol after it moves. That is
+    the fault data_offset_audit.py exists to catch.
+
+    The short form is used rather than spelling the padding as \\0 escapes,
+    because SAS/C 6.51 warns `initializer data truncated` when the literal
+    including its terminator is longer than the array -- correct, but noise.
+    """
+    if len(by) < 3:
+        return None
+    i = 0
+    while i < len(by) and 0x20 <= by[i] < 0x7f:
+        i += 1
+    if i < 2 or any(c != 0 for c in by[i:]):
+        return None
+    text = bytes(by[:i]).decode('ascii')
+    if '??' in text:                    # a trigraph would change meaning
+        return None
+    esc = text.replace('\\', '\\\\').replace('"', '\\"')
+    return '"%s"' % esc
 
 
 def layout_check(path):

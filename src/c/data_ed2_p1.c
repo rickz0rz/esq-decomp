@@ -92,9 +92,7 @@ char ED2_STR_GRID[6] = "Grid ";
 char ED2_STR_MR[4] = "MR ";
 char ED2_STR_DNICHE[8] = "DNICHE ";
 char ED2_STR_DMPLEX[8] = "DMPLEX ";
-unsigned char ED2_STR_CF2_DPPV[12] = {
-    0x43, 0x46, 0x32, 0x5f, 0x44, 0x50, 0x50, 0x56, 0x20, 0x00, 0x00, 0x00
-};
+unsigned char ED2_STR_CF2_DPPV[12] = "CF2_DPPV ";
 char ED2_STR_CTIME[6] = "CTime";
 char ED2_STR_BTIME[6] = "BTime";
 char Global_STR_DF0_CLOCK_CMD[14] = "df0:clock.cmd";
@@ -173,9 +171,7 @@ char ED2_STR_VIDEO_SWITCH[14] = "Video Switch ";
 char ED2_STR_OPEN[8] = "Open  ";
 char ED2_STR_CLOSED[8] = "Closed";
 char ED2_STR_START_TAPE_VIDEO[20] = "Start TAPE Video   ";
-unsigned char ED2_STR_STOP[10] = {
-    0x53, 0x74, 0x6f, 0x70, 0x20, 0x20, 0x00, 0x00, 0x00, 0x00
-};
+unsigned char ED2_STR_STOP[10] = "Stop  ";
 long Global_REF_BOOL_IS_TEXT_OR_CURSOR = 1;
 char Global_STR_EDIT_ADS[10] = "Edit Ads";
 char Global_STR_EDIT_ATTRIBUTES[16] = "Edit Attributes";

@@ -90,9 +90,7 @@ unsigned char ESQ_SecondarySlotModeFlagChar = 78;
 unsigned char ESQ_STR_Y = 89;
 unsigned char ESQ_ReservedFlagChar0 = 78;
 unsigned char ESQ_AlertType4ModeFlagChar = 78;
-unsigned char ESQ_AlertType235ModeFlagChar[3] = {
-    0x4e, 0x59, 0x41
-};
+unsigned char ESQ_AlertType235ModeFlagChar[3] = "NYA";
 unsigned char ED_DiagGraphModeChar = 78;
 unsigned char ED_DiagVinModeChar = 78;
 unsigned char CLOCK_FormatVariantCode = 0;

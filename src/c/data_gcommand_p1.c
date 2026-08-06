@@ -13,6 +13,4 @@
 
 char Global_STR_INPUT_DEVICE[14] = "input.device";
 char Global_STR_CONSOLE_DEVICE[16] = "console.device";
-unsigned char Global_STR_KYBD_C[10] = {
-    0x4b, 0x59, 0x42, 0x44, 0x2e, 0x63, 0x00, 0x00, 0x00, 0x00
-};
+unsigned char Global_STR_KYBD_C[10] = "KYBD.c";

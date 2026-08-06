@@ -13,9 +13,7 @@
 
 char Global_STR_TLIBA1_C_2[10] = "TLIBA1.c";
 char Global_STR_TLIBA1_C_3[10] = "TLIBA1.c";
-unsigned char TLIBA1_STR_TLIBA1_DOT_C[9] = {
-    0x54, 0x4c, 0x49, 0x42, 0x41, 0x31, 0x2e, 0x63, 0x00
-};
+unsigned char TLIBA1_STR_TLIBA1_DOT_C[9] = "TLIBA1.c";
 unsigned char TLIBA1_FormatFallbackBuffer[3] = {
     0x00, 0x00, 0x00
 };
