@@ -25,7 +25,7 @@ extern unsigned short NEWGRID_RowHeightPx;
 extern long DISPTEXT_ControlMarkerXOffsetPx;
 
 extern long NEWGRID_SetRowColor(struct GridPanel *panel, long col, long pen);
-extern long NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
+extern long DISPTEXT_IsCurrentLineLast(void);
 extern long DISPTEXT_HasMultipleLines(void);
 extern long DISPTEXT_IsLastLineSelected(void);
 extern void BEVEL_DrawVerticalBevel(struct RastPort *rp, long x0,
@@ -51,7 +51,7 @@ long NEWGRID_DrawGridFrameVariant4(struct GridPanel *panel)
     row = 0;
     top = row;
 
-    while (row < 2 && NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0) {
+    while (row < 2 && DISPTEXT_IsCurrentLineLast() == 0) {
         baseY = top;
 
         if (DISPTEXT_HasMultipleLines() != 0) {
@@ -75,9 +75,9 @@ long NEWGRID_DrawGridFrameVariant4(struct GridPanel *panel)
         top += (long)NEWGRID_RowHeightPx / 2 + DISPTEXT_ControlMarkerXOffsetPx;
     }
 
-    if (NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0)
+    if (DISPTEXT_IsCurrentLineLast() == 0)
         BEVEL_DrawHorizontalBevel(rp, 0, 0, 695, top - 1);
 
     panel->halfHeight = top / 2;
-    return NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast();
+    return DISPTEXT_IsCurrentLineLast();
 }

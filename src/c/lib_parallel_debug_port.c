@@ -98,7 +98,7 @@ void __asm PARALLEL_RawDoFmtCommon(register __a0 char *fmt,
                                    register __a1 void *args);
 void __asm PARALLEL_RawDoFmt(register __a0 char *fmt, register __a1 void *args,
                              register __a3 void *data);
-void __asm PARALLEL_JMPTBL_RawDoFmt(register __a0 char *fmt,
+void __asm PARALLEL_RawDoFmt(register __a0 char *fmt,
                                     register __a1 void *args,
                                     register __a3 void *data);
 long PARALLEL_CheckReadyStub(void);
@@ -177,19 +177,12 @@ void __asm PARALLEL_RawDoFmt(register __a0 char *fmt, register __a1 void *args,
     RawDoFmt((UBYTE *)fmt, args, (void (*)())PARALLEL_WriteCharHw, data);
 }
 
-void __asm PARALLEL_JMPTBL_RawDoFmt(register __a0 char *fmt,
-                                    register __a1 void *args,
-                                    register __a3 void *data)
-{
-    PARALLEL_RawDoFmt(fmt, args, data);
-}
-
 void __asm PARALLEL_RawDoFmtCommon(register __a0 char *fmt,
                                    register __a1 void *args)
 {
     /* The original loads PARALLEL_WriteCharD0 into A2 here and the callee
      * overwrites it. See the header. */
-    PARALLEL_JMPTBL_RawDoFmt(fmt, args, 0);
+    PARALLEL_RawDoFmt(fmt, args, 0);
 }
 
 void PARALLEL_RawDoFmtArgPtr(char *fmt, void *args)
@@ -205,5 +198,5 @@ void PARALLEL_RawDoFmtStackArgs(char *fmt, ...)
 void PARALLEL_RawDoFmtWithData(char *fmt, void *args, void *putChProc,
                                void *data)
 {
-    PARALLEL_JMPTBL_RawDoFmt(fmt, args, data);
+    PARALLEL_RawDoFmt(fmt, args, data);
 }

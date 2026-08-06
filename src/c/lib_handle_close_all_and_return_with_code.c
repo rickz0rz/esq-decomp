@@ -52,11 +52,6 @@ struct HandleEntry {
 extern void DOS_CloseWithSignalCheck(long fh);
 extern void ESQ_ReturnWithStackCode(long code);
 
-void UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode(long code)
-{
-    ESQ_ReturnWithStackCode(code);
-}
-
 void HANDLE_CloseAllAndReturnWithCode(long code)
 {
     struct HandleEntry *table = (struct HandleEntry *)Global_HandleTableBase_A4_ADDR;
@@ -73,5 +68,5 @@ void HANDLE_CloseAllAndReturnWithCode(long code)
         DOS_CloseWithSignalCheck(table[i].fh);
     }
 
-    UNKNOWN32_JMPTBL_ESQ_ReturnWithStackCode(code);
+    ESQ_ReturnWithStackCode(code);
 }

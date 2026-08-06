@@ -10,12 +10,12 @@
  *            SAS/C version; see docs/compiler-version.md.
  */
 extern char *DISKIO_ConsumeCStringFromWorkBuffer(void);
-extern long  GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(char *s);
+extern long  PARSE_ReadSignedLongSkipClass3_Alt(char *s);
 long DISKIO_ParseLongFromWorkBuffer(void)
 {
     char *s = DISKIO_ConsumeCStringFromWorkBuffer();
 
     if (s == (char *)-1)
         return -1;
-    return GROUP_AG_JMPTBL_PARSE_ReadSignedLongSkipClass3_Alt(s);
+    return PARSE_ReadSignedLongSkipClass3_Alt(s);
 }

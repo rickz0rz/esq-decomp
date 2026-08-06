@@ -1917,7 +1917,7 @@ Reach for `__saveds` when the ORIGINAL opens `MOVE.L A4,-(A7)` / `LEA <data>,A4`
 `_LOCAVAIL2_AutoRequestNoOp` is the worked example. An interrupt server that
 never touches A4 does not want it.
 
-### EVERY JUMP TABLE IS NOW C. The lever is exhausted
+### EVERY JUMP TABLE WAS CONVERTED TO C, AND THEN DELETED
 
 All 26 are converted, 2026-08-04. `tools/lastmile.py` reports no `jumptable`
 bucket at all. Three things made the last eleven possible, and each is written up
@@ -1968,8 +1968,54 @@ loses one `JMP` per call at run time.
 `CODE=FAR`, but no file in `src/c/replacements.txt` calls a thunk at all, so that
 lane never changed. `check_pcrel_range` still guards both.
 
-The thunks themselves STAY in assembly. Assembly modules still call them, and
-`jmptbl_to_c.py` still converts whole tables where every target is restored.
+**AND THE THUNKS ARE NOW GONE ENTIRELY (2026-08-06).** They stayed while any
+assembly module could call one. No assembly is left, so nothing outside `src/c`
+can name a thunk, and `tools/remove_jmptbl.py` deleted all 464.
+
+```sh
+python3 tools/remove_jmptbl.py            # report
+python3 tools/remove_jmptbl.py --write    # apply
+```
+
+CODE went 235,392 -> **224,424**, a saving of 10,968 bytes, and the program
+loses one call and one frame per former thunk call. Forty-six files became
+deliberately empty translation units; each keeps its manifest row, because
+`gen_units.py` links the assembly module wherever a row is absent and deleting
+one would put the jump table back.
+
+Three things the tool must get right, and each was found by it refusing to run:
+
+1. **THE THUNK NAME IS NOT THE TARGET. Twenty-two disagree.**
+   `ED1_JMPTBL_LADFUNC_MergeHighLowNibbles` calls `LADFUNC_SetPackedPenLowNibble`,
+   and `PARSEINI_JMPTBL_ESQFUNC_RebuildPwBrushListFromTagTableFromTagTable` calls
+   `..._FromTagTable`. The target was renamed and the thunk kept the old name.
+   The map therefore comes from the ASSEMBLY's own `JMP target`, never from the
+   name -- the same rule as "AN LVO NAME IN THE DISASSEMBLY CAN NAME THE WRONG
+   LIBRARY".
+2. **A forwarder can be spelled `BSR` + `RTS`.** `detunk_c.py` reads only the
+   tail-jump forms, `JMP` and `BRA.W`. `PARALLEL_JMPTBL_RawDoFmt` is a call and
+   a return, which forwards identically, and reading only the tail jump left it
+   with no target.
+3. **`Global_JMPTBL_*` IS NOT A THUNK**, and the address-of guard proved why it
+   matters. Those six are DATA TABLES OF POINTERS, so every reader takes their
+   address, and every read looked like a table holding a thunk.
+
+The guard itself is worth keeping: a thunk whose ADDRESS is taken cannot be
+deleted, for the same reason the Ctrl-C requester strings could not move. There
+are none today.
+
+**Verified by running it**, since no byte gate can judge a C build: two soaks
+PASS, the menu sweep clean on all six items, `keyprobe` alternating across
+three distinct hashes, `framecolor` overlapping the pure far build in every
+bin, and a replayed listings feed writing a `curday.dat` byte-identical to the
+assembly control on four runs of five.
+
+> **The fifth run FAILED and it was the harness, not the build.** Its
+> screenshot shows an UNPOPULATED grid -- ESQ still initialising when the
+> replay fired -- against a full banner on every passing run. That is the
+> documented boot-timing trap. **Look at the frame before bisecting a
+> listings FAIL**, and note the binary got SMALLER here, so it boots sooner
+> rather than later.
 
 ### A VARIADIC TARGET NEEDS A V-FORM, and that is all it needs
 

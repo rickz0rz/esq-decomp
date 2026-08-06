@@ -51,39 +51,3 @@ extern long DATETIME_IsLeapYear(long year);
 extern void BATTCLOCK_WriteSecondsToBatteryBackedClock(long seconds);
 extern long CLOCK_SecondsFromEpoch(struct ParseIniRtcRecord *r);
 
-void PARSEINI2_JMPTBL_CLOCK_ConvertAmigaSecondsToClockData(
-        long seconds, struct AmigaClockData *out)
-{
-    CLOCK_ConvertAmigaSecondsToClockData(seconds, out);
-}
-
-void PARSEINI2_JMPTBL_ESQ_CalcDayOfYearFromMonthDay(struct ParseIniClockData *c)
-{
-    ESQ_CalcDayOfYearFromMonthDay(c);
-}
-
-long PARSEINI2_JMPTBL_CLOCK_CheckDateOrSecondsFromEpoch(
-        struct ParseIniRtcRecord *r)
-{
-    return CLOCK_CheckDateOrSecondsFromEpoch(r);
-}
-
-long PARSEINI2_JMPTBL_BATTCLOCK_GetSecondsFromBatteryBackedClock(void)
-{
-    return BATTCLOCK_GetSecondsFromBatteryBackedClock();
-}
-
-long PARSEINI2_JMPTBL_DATETIME_IsLeapYear(long year)
-{
-    return DATETIME_IsLeapYear(year);
-}
-
-void PARSEINI2_JMPTBL_BATTCLOCK_WriteSecondsToBatteryBackedClock(long seconds)
-{
-    BATTCLOCK_WriteSecondsToBatteryBackedClock(seconds);
-}
-
-long PARSEINI2_JMPTBL_CLOCK_SecondsFromEpoch(struct ParseIniRtcRecord *r)
-{
-    return CLOCK_SecondsFromEpoch(r);
-}

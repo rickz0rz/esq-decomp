@@ -43,7 +43,7 @@ struct GridCtx {
 };
 
 extern long NEWGRID_SetRowColor(struct GridCtx *ctx, long a, long pen);
-extern long NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast(void);
+extern long DISPTEXT_IsCurrentLineLast(void);
 extern long DISPTEXT_HasMultipleLines(void);
 extern long DISPTEXT_IsLastLineSelected(void);
 extern void DISPTEXT_RenderCurrentLine(struct RastPort *rp,
@@ -69,7 +69,7 @@ long NEWGRID_DrawGridFrameVariant2(struct GridCtx *ctx)
     x = 42;
     row = 0;
     top = 0;
-    while (row < 2 && NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() == 0) {
+    while (row < 2 && DISPTEXT_IsCurrentLineLast() == 0) {
         y = top;
         if (DISPTEXT_HasMultipleLines() != 0) {
             BEVEL_DrawVerticalBevel(rp, 0L, 0L, 695L,
@@ -92,9 +92,9 @@ long NEWGRID_DrawGridFrameVariant2(struct GridCtx *ctx)
         top += (long)NEWGRID_RowHeightPx / 2 + DISPTEXT_ControlMarkerXOffsetPx;
     }
 
-    if (NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast() != 0)
+    if (DISPTEXT_IsCurrentLineLast() != 0)
         BEVEL_DrawHorizontalBevel(rp, 0L, 0L, 695L, top - 1);
 
     ctx->headerHalf = (short)(top / 2);
-    return NEWGRID2_JMPTBL_DISPTEXT_IsCurrentLineLast();
+    return DISPTEXT_IsCurrentLineLast();
 }

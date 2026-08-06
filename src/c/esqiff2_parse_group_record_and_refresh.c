@@ -98,7 +98,7 @@ extern void ESQSHARED_CreateGroupEntryAndTitle(long groupCode, long entryFlag,
                                                char *f3);
 extern void ESQIFF2_PadEntriesToMaxTitleWidth(long groupCode);
 extern void TEXTDISP_ApplySourceConfigAllEntries(void);
-extern long ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache(void);
+extern long NEWGRID_RebuildIndexCache(void);
 
 extern char  ESQIFF_ParseField0Buffer[];
 extern char  ESQIFF_ParseField1Buffer[];
@@ -299,5 +299,5 @@ initParseState:
     ESQIFF2_PadEntriesToMaxTitleWidth(groupCode);
     TEXTDISP_ApplySourceConfigAllEntries();
 
-    return ESQPARS_JMPTBL_NEWGRID_RebuildIndexCache();
+    return NEWGRID_RebuildIndexCache();
 }

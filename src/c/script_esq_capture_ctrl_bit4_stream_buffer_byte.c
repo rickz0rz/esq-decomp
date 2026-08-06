@@ -25,9 +25,9 @@
  * what rules out a displacement-dependent explanation on a single compile.
  */
 
-extern long SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte(void);
+extern long ESQ_CaptureCtrlBit4StreamBufferByte(void);
 
 long SCRIPT_ESQ_CaptureCtrlBit4StreamBufferByte(void)
 {
-    return SCRIPT2_JMPTBL_ESQ_CaptureCtrlBit4StreamBufferByte();
+    return ESQ_CaptureCtrlBit4StreamBufferByte();
 }
