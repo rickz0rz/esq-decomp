@@ -654,8 +654,41 @@ were built from SAS's own library sources. Treat a stubborn mismatch in a
 An earlier version of this section said the faithful route is to link `sc.lib`.
 Three measurements say otherwise, and all three point the same way.
 
-**sc.lib CANNOT be added to the link. It collides on exactly 9 symbols**, which
-are the 9 vlink reports. ESQ defines all of them itself: the six AmigaOS library
+**RE-MEASURED 2026-08-06 on the 878-entry, zero-assembly build, and the answer
+is unchanged. Do not re-open this without running it again.**
+
+| | 2026-08-03 | 2026-08-06 |
+|---|---:|---:|
+| symbol collisions | 9 | **8** |
+| symbols undefined WITHOUT sc.lib | 1 (`_LinkerDB`, vlink supplies it) | **0** |
+| symbols undefined WITH sc.lib | -- | **2** |
+
+Two things changed and neither helps. `_SysBase` stopped colliding. And linking
+sc.lib now INTRODUCES undefined symbols the normal build does not have --
+`@_XCEXIT` and `__WBenchMsg`, which its members expect from a SAS/C startup
+module ESQ does not use. **The library is not self-contained for this program.**
+
+**ONLY 3 OF THE 8 COLLISIONS ARE DUPLICATED CODE.** The other five --
+`_DOSBase`, `_DiskfontBase`, `_GfxBase`, `_IntuitionBase`, `_UtilityBase` -- are
+ESQ's own DATA VARIABLES, and taking them from sc.lib instead would remove 20
+bytes from the middle of ESQ's data hunk. That is the fatal kind of change: it
+alters the DISTANCE between pre-existing data symbols, which the 59 `Global_*`
+A4 equates and the 102 offsets in `esq-neardata.h` hardcode. See "SOLVED: an
+all-C DATA section" above.
+
+**And the prize is small.** Every routine in the program with an sc.lib
+equivalent totals **2,026 bytes of 224,424 CODE, or 0.9%** -- the three
+arithmetic helpers (274), `strcat`/`stricmp`/`strncpy` (176), the octal
+formatter (72), sprintf and its v-form (106), the Ctrl-C requester (286), and
+the buffered stdio pair (1,112).
+
+**Removing them would also work against the port.** A cross-platform build wants
+the HOST libc, not SAS/C's Amiga library. The self-contained C we have is
+already the portable form; sc.lib is the thing that would have to be replaced
+again.
+
+**sc.lib CANNOT be added to the link. It collides on 8 symbols**, which
+are the vlink reports. ESQ defines all of them itself: the six AmigaOS library
 bases (`_DOSBase`, `_DiskfontBase`, `_GfxBase`, `_IntuitionBase`, `_SysBase`,
 `_UtilityBase`) and the three SAS/C arithmetic helpers (`__CXD22`, `__CXD33`,
 `__CXM33`). The bases became C definitions when the DATA section converted, so
