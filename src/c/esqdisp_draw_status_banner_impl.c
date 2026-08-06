@@ -83,9 +83,9 @@ void ESQDISP_DrawStatusBanner_Impl(short highlight)
         TEXTDISP_SecondaryGroupCode = (long)WDISP_BannerSlotCursor & 0xff;
         if (WDISP_BannerSlotCursor == 1) {
             if ((((long)CLOCK_CacheYear - 1) & 3) == 0)
-                TEXTDISP_PrimaryGroupCode = 0x6e;
+                TEXTDISP_PrimaryGroupCode = 'n';
             else
-                TEXTDISP_PrimaryGroupCode = 0x6d;
+                TEXTDISP_PrimaryGroupCode = 'm';
         } else {
             TEXTDISP_PrimaryGroupCode = ((long)WDISP_BannerSlotCursor - 1) & 0xff;
         }

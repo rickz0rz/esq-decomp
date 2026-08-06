@@ -276,7 +276,7 @@ void ED2_HandleMenuActions(void)
         WDISP_WeatherStatusCountdown = 0x3c;
         WDISP_WeatherStatusColorCode = 1;
         WDISP_WeatherStatusBrushIndex = 2;
-        WDISP_WeatherStatusDigitChar = 0x32;
+        WDISP_WeatherStatusDigitChar = '2';
         WDISP_WeatherCycleOffsetCount = 0;
         break;
 

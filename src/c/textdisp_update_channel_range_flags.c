@@ -79,6 +79,6 @@ void TEXTDISP_UpdateChannelRangeFlags(void)
         }
     }
 
-    TEXTDISP_BannerCharSelected = 0x64;
-    TEXTDISP_BannerCharFallback = 0x31;
+    TEXTDISP_BannerCharSelected = 'd';
+    TEXTDISP_BannerCharFallback = '1';
 }

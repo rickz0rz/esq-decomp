@@ -50,7 +50,7 @@ void ESQIFF2_ApplyIncomingStatusPacket(char *packet)
 
     c = ESQ_STR_6;
     if (c >= 49 && c > 72)
-        ESQ_STR_6 = 0x36;
+        ESQ_STR_6 = '6';
 
     if (DST_UpdateBannerQueue(&DST_BannerWindowPrimary) == 0)
         DST_RefreshBannerBuffer();

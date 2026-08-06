@@ -134,7 +134,7 @@ void PARSEINI_HandleFontCommand(char *cmd)
     char cmdBuf[80];
     long i;
 
-    if ((long)(unsigned char)*cmd++ != 0x33)
+    if ((long)(unsigned char)*cmd++ != '3')
         return;
 
     switch ((short)(unsigned char)*cmd++) {

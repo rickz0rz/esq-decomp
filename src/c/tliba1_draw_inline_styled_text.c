@@ -131,7 +131,7 @@ void TLIBA1_DrawInlineStyledText(struct RastPort *rp, long x, long y,
             segLen = 1;
             cur    = seg + 1;
 
-            while ((unsigned char)*cur > 0x20) {
+            while ((unsigned char)*cur > ' ') {
                 cur++;
                 segLen++;
             }
@@ -152,7 +152,7 @@ void TLIBA1_DrawInlineStyledText(struct RastPort *rp, long x, long y,
                 && ((unsigned char)styleB == 255
                     || ((unsigned char)styleB >= 1
                         && (unsigned char)styleB <= 7))
-                && (unsigned char)seg[3] > 0x20) {
+                && (unsigned char)seg[3] > ' ') {
 
                 seg[0] = 0x13;
 

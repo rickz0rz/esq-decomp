@@ -478,8 +478,8 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
                 TEXTDISP_ChannelLabelBuffer, CLEANUP_AlignedStatusSuffixBuffer);
     }
 
-    TEXTDISP_BannerCharSelected = 0x64;
-    TEXTDISP_BannerCharFallback = 0x31;
+    TEXTDISP_BannerCharSelected = 'd';
+    TEXTDISP_BannerCharFallback = '1';
     TEXTDISP_LinePenOverrideStateWord = 0;
 
     SetDrMd(Global_REF_RASTPORT_2, 0L);

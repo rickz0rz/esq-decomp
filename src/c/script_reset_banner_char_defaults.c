@@ -10,7 +10,7 @@ extern short TEXTDISP_CurrentMatchIndex;
 
 void SCRIPT_ResetBannerCharDefaults(void)
 {
-    TEXTDISP_BannerCharSelected = 0x64;
-    TEXTDISP_BannerCharFallback = 0x31;
+    TEXTDISP_BannerCharSelected = 'd';
+    TEXTDISP_BannerCharFallback = '1';
     TEXTDISP_CurrentMatchIndex  = -1;
 }
