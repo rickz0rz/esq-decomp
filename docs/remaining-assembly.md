@@ -72,28 +72,66 @@ section, or a linker script that moves SAS/C's `data` output for these three
 objects only without disturbing the rest. Neither is available in this
 toolchain.
 
-### ...but the PORTABLE build has no such constraint
+### ...and the PORTABLE build RUNS. The growth rule was a conflation
 
 ```sh
 tools/portable_build.sh
 ```
 
-Off-Amiga there is no hunk layout to preserve, so the three become ordinary
-string literals in `src/c/data_debug_abort_strings.c` and the assembly
-contribution goes to **ZERO**. That is the source set the port needs.
+The three become ordinary string literals in `src/c/data_debug_abort_strings.c`
+and the assembly contribution goes to **ZERO**. The DATA hunk grows 55,820 ->
+55,864, which this document and AGENTS.md both said would freeze the display.
 
-**The binary it produces is NOT a working Amiga build, by construction.** The
-44 bytes land in hunk1, which goes 55,820 -> 55,864 and shifts 20,471 DATA
-bytes -- exactly the growth that froze the display on `data/flib.s`. Its value
-is that the C compiles and links with no assembly whatever, not that it runs.
+**It does not. Measured 2026-08-06, three independent boots:**
 
-The two builds differ by ONE manifest row and one define. The Amiga manifest
-is untouched, so both byte gates stay green either way:
+| check | result |
+|---|---|
+| `soak_esq.sh` x2 | PASS -- 10/10 distinct frames, 10/10 Amiga content, 1 exception line |
+| `listings_esq.sh` on a replayed feed | PASS -- `curday.dat` 42 -> 1017 bytes |
+| `curday.dat` against the assembly control | **byte-identical** |
+| `data_offset_audit` / `check_pcrel_range` | clean |
+
+**Why it survives, and what the real invariant is.** Nothing in ESQ depends on
+the ABSOLUTE offset of a data symbol, because the linker relocates every
+absolute reference. ESQ depends on the DISTANCE BETWEEN two data symbols, and
+it does so in three places no relocation can correct:
+
+1. The 59 `Global_*` equates in `src/Prevue.asm`. Each is a fixed displacement
+   from `_Global_REF_LONG_FILE_SCRATCH`, the A4 near-data base at DATA offset
+   `0x8000`. Eleven point into unlabelled space inside a reserved block.
+2. `src/c/esq-neardata.h`, which writes the same displacements as
+   `<symbol> + <number>` -- 102 of them.
+3. The eight adjacencies where code reads ACROSS a symbol boundary, listed in
+   AGENTS.md.
+
+The 44 bytes land at DATA offset **0**, in front of every pre-existing symbol,
+so the whole image shifts as one piece. The A4 base moves `0x8000` -> `0x802c`,
+exactly 44, and every distance above is preserved. Read the map to confirm:
+
+```sh
+grep -E '_Global_REF_LONG_FILE_SCRATCH|_DEBUG_STR_' build/ESQ.map
+```
+
+**`data/flib.s` was the other kind of change, and it was never about size.**
+Its conversion hit the `char X[] = "..."` padding bug, which drops a pad byte
+and moves symbols RELATIVE TO EACH OTHER inside the module. That is a broken
+distance, not a shifted image. `tools/data_offset_audit.py` was written after
+that finding and detects exactly it; the portable build passes it clean.
+
+So the rule "a DATA hunk that grows by four bytes freezes the display" merges
+two different things. State it as:
+
+> **Growth at the FRONT of the DATA hunk is free. Growth in the MIDDLE is
+> fatal.** What must be preserved is the distance between pre-existing symbols,
+> not the size of the hunk.
+
+The two builds still differ by one manifest row and one define, and the
+byte-exact gates are untouched either way:
 
 | build | assembly | runs on the box |
 |---|---:|---|
 | `C_REPLACEMENTS=src/c/replacements-all.txt` | 44 bytes | yes |
-| `tools/portable_build.sh` | **0 bytes** | no -- DATA hunk grows |
+| `tools/portable_build.sh` | **0 bytes** | **yes** |
 
 ## Retired: 56 bytes of alignment padding (2026-08-06)
 

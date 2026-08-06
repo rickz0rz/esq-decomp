@@ -2792,6 +2792,30 @@ Four rules, and the last two are the ones that will bite:
    never executed. On the data side there is nothing inert about it -- it is
    inserted INTO the address space the program reads.
 
+   **BUT THE RULE IS ABOUT POSITION, NOT SIZE, AND THIS WAS RE-MEASURED
+   (2026-08-06).** ESQ does not depend on the absolute offset of a data symbol,
+   because the linker relocates every absolute reference. It depends on the
+   DISTANCE between two symbols, which is hardcoded in three places no
+   relocation can correct: the 59 `Global_*` A4 equates in `src/Prevue.asm`, the
+   102 `<symbol> + <number>` offsets in `src/c/esq-neardata.h`, and the eight
+   adjacencies above.
+
+   `tools/portable_build.sh` grows the DATA hunk 55,820 -> 55,864 and **RUNS** --
+   two soaks PASS and a replayed listings feed writes a `curday.dat`
+   byte-identical to the assembly control. Its 44 bytes land at DATA offset 0,
+   in front of everything, so the image shifts as one piece and the A4 base
+   moves `0x8000` -> `0x802c` with every distance intact.
+
+   `data/flib.s` was a different fault wearing the same symptom. Its conversion
+   hit the `char X[] = "..."` padding bug, which moves symbols RELATIVE TO EACH
+   OTHER inside the module -- a broken distance, not a shifted image.
+   `data_offset_audit.py` was written afterwards and catches exactly that.
+
+   > **Growth at the FRONT of the DATA hunk is free. Growth in the MIDDLE is
+   > fatal.** The rule above stays the safe default for converting a module in
+   > place, because `coalesce()` inserts ITS padding mid-section. Do not read it
+   > as a ban on the hunk changing size.
+
    The evidence does not say which symbol minds the shift.
    `data_adjacency_audit.py` cannot answer it either, because it skips any symbol
    the code only ever takes the ADDRESS of. To convert an odd-sized module,

@@ -80,12 +80,16 @@ the ORIGINAL's layout, and the maximum-C image does not have that layout.
 tools/portable_build.sh
 ```
 
-Those last 44 bytes are blocked only by the Amiga hunk layout. Off-Amiga they
-are ordinary string literals, so this variant links with **zero** assembly --
-the source set the port needs. The binary it produces does not run on the box,
-because the strings grow the DATA hunk and shift every symbol after it; that is
-the point of keeping it a separate manifest. The Amiga build is untouched and
-both byte gates stay green.
+Those last 44 bytes are three strings SAS/C can only place in the DATA hunk.
+Written as C they link with **zero** assembly -- the source set the port needs.
+
+**And the binary RUNS**, which was not the expectation: two soaks pass and a
+replayed listings feed writes a `curday.dat` byte-identical to the assembly
+control. The strings land at DATA offset 0, so the image shifts as one piece
+and every hardcoded distance between data symbols survives. Growth at the FRONT
+of the DATA hunk is free; growth in the MIDDLE is what froze `data/flib.s`. See
+`docs/remaining-assembly.md`. The Amiga build is untouched and both byte gates
+stay green.
 
 **`docs/remaining-assembly.md` is the byte-by-byte record**: every one of the
 100 bytes with its address and module, why each of the two blocks cannot be
