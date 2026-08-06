@@ -2860,8 +2860,12 @@ Four rules, and the last two are the ones that will bite:
 
    `data/flib.s` is 154 bytes. Converting it grew hunk1 from 55,820 to 55,824 and
    the display froze within seconds -- measured twice, 3 of 10 distinct frames
-   and 2 illegal/exception lines against 1 for a healthy build. Its C is
-   byte-correct and is kept, marked `DO-NOT-LINK`, in `src/c/data_flib.c`.
+   and 2 illegal/exception lines against 1 for a healthy build. **It was
+   retired later by SPLITTING it**: `data/flib_p1.s` is converted by
+   `src/c/data_flib_p1.c` and is linked today, so no `data_flib.c` exists.
+   Four data modules are still held out this way -- `data_ctasks.c`,
+   `data_kybd.c`, `data_locavail.c` and `data_tliba1.c` -- and the same
+   split-or-merge treatment is what would retire them.
    `displib` (24) and `esqpars` (92) change the DATA hunk size by nothing and
    run.
 
@@ -3024,6 +3028,43 @@ already emits is ignored, so a stale one is harmless.
 names the marker: `esq_capture_ctrl_bit3_stream.c` explains why a *different*
 file carries one and was dropped for saying so. The pattern now requires the
 marker to OPEN a header line.
+
+## A stale file in src/c is not inert
+
+```sh
+python3 tools/orphan_audit.py       # report; exits nonzero on anything to review
+```
+
+A file is REACHED if any `replacements*.txt` names it, or a reached file
+`#include`s it. The include step is not optional: `merge_module_c.py` writes
+units that `#include` the per-function restorations, so a file can be linked
+without ever appearing in a manifest.
+
+**An orphan still speaks.** `mismatches.py` reads every header in `src/c`, so a
+restoration nothing links still reports a status and still claims a label.
+
+Four were found on 2026-08-06 and all four were genuinely dead:
+
+- Three merged units -- `esqdispb_p0_merged.c`, `parseini2_p1_merged.c` and
+  `unknown29_merged.c` -- orphaned the moment their modules stopped needing a
+  merge. `gen_all_manifest.py` simply stopped emitting the row. **No error, and
+  the file stayed on disk.**
+- `esqiff_run_copper_open_transition.c` restored
+  `ESQIFF_RunCopperOpenTransition`, which **does not exist anywhere in the
+  program**: no assembly module defines it and it is absent from
+  `build/ESQ.map`. The real functions are `ESQIFF_RunCopperRiseTransition` and
+  `ESQIFF_RunCopperDropTransition`.
+
+**NOT EVERY ORPHAN IS DEAD, so the tool lists two classes separately rather
+than reporting them.** A `DO-NOT-LINK:` header means the restoration was proven
+to break the build and is kept for its analysis -- the four unaligned data
+modules are these. And prose in another file can point at one: all thirteen
+`pad_*.c` files name `padding_removed.c` for the shared reasoning, so deleting
+it would strand thirteen references.
+
+**Deleting an orphan must not move the image.** Rebuild and compare: the binary
+was byte-identical across this deletion, which is what proves the files
+contributed nothing.
 
 ## A `_merged.c` is not a source of truth
 

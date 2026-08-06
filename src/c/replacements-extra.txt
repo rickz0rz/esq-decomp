@@ -57,7 +57,9 @@ modules/groups/a/a/app_get_bit_4_of_ciab_pra_into_d1.s                 c/get_bit
 # is longword-sized, so a data module of any other length gains padding, the DATA
 # hunk grows, and everything after it MOVES. displib (24) and esqpars (92) leave
 # the hunk byte-identical and run. flib (154) grew it by 4 and the display froze
-# within seconds, twice, reproducibly -- src/c/data_flib.c is written, verified
+# within seconds, twice, reproducibly. It was retired later by SPLITTING the
+# module: data/flib_p1.s is converted by c/data_flib_p1.c and is linked below.
+# The old whole-module C was written, verified
 # byte-correct in isolation, and deliberately NOT listed.
 data/displib.s                                                         c/data_displib.c
 data/esqpars.s                                                         c/data_esqpars.c
