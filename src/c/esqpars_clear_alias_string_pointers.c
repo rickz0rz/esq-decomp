@@ -57,7 +57,6 @@ extern void  MEMORY_DeallocateMemory(char *who, long line,
 
 extern short TEXTDISP_AliasCount;
 extern struct EsqParsAlias *TEXTDISP_AliasPtrTable[];
-extern char  Global_STR_ESQPARS_C_1[];
 
 void ESQPARS_ClearAliasStringPointers(void)
 {
@@ -70,7 +69,7 @@ void ESQPARS_ClearAliasStringPointers(void)
             a->first  = ESQPARS_ReplaceOwnedString(0, a->first);
             a->second = ESQPARS_ReplaceOwnedString(0, a->second);
 
-            MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_1, 945L,
+            MEMORY_DeallocateMemory("ESQPARS.c", 945L,
                                                   a, 8L);
             TEXTDISP_AliasPtrTable[i] = 0;
         }

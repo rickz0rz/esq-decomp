@@ -70,10 +70,6 @@ extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
 
 extern long ED_TextLimit;
-extern char Global_STR_LADFUNC_C_20[];
-extern char Global_STR_LADFUNC_C_21[];
-extern char Global_STR_LADFUNC_C_22[];
-extern char Global_STR_LADFUNC_C_23[];
 
 void LADFUNC_ReflowEntryBuffers(char *text, char *attr)
 {
@@ -96,11 +92,11 @@ void LADFUNC_ReflowEntryBuffers(char *text, char *attr)
 
     srcLen = strlen(text);
 
-    textCopy = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_20,
+    textCopy = MEMORY_AllocateMemory("LADFUNC.c",
                                                     1025L, srcLen + 1,
                                                     MEMF_PUBLIC | MEMF_CLEAR);
 
-    attrCopy = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_21,
+    attrCopy = MEMORY_AllocateMemory("LADFUNC.c",
                                                     1026L, srcLen,
                                                     MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -207,10 +203,10 @@ void LADFUNC_ReflowEntryBuffers(char *text, char *attr)
     }
 
     if (textCopy != 0)
-        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_22, 1146L,
+        MEMORY_DeallocateMemory("LADFUNC.c", 1146L,
                                                textCopy, srcLen + 1);
 
     if (attrCopy != 0)
-        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_23, 1148L,
+        MEMORY_DeallocateMemory("LADFUNC.c", 1148L,
                                                attrCopy, srcLen);
 }

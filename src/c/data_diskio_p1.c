@@ -14,4 +14,3 @@
 unsigned char DISKIO_CurrentDriveRevisionIndex[2] = {
     0x00, 0x00
 };
-char Global_STR_DISKIO2_C_1[10] = "DISKIO2.c";

@@ -45,9 +45,6 @@ struct DstBanner {
 
 extern void MEMORY_DeallocateMemory(char *who, long line,
                                                     void *p, long size);
-extern char Global_STR_DST_C_1[];
-extern char Global_STR_DST_C_2[];
-extern char Global_STR_DST_C_3[];
 
 void DST_FreeBannerStruct(struct DstBanner *b)
 {
@@ -55,11 +52,11 @@ void DST_FreeBannerStruct(struct DstBanner *b)
         return;
 
     if (b->first)
-        MEMORY_DeallocateMemory(Global_STR_DST_C_1, 773L,
+        MEMORY_DeallocateMemory("DST.c", 773L,
                                                 b->first, 22L);
     if (b->second)
-        MEMORY_DeallocateMemory(Global_STR_DST_C_2, 777L,
+        MEMORY_DeallocateMemory("DST.c", 777L,
                                                 b->second, 22L);
 
-    MEMORY_DeallocateMemory(Global_STR_DST_C_3, 779L, b, 18L);
+    MEMORY_DeallocateMemory("DST.c", 779L, b, 18L);
 }

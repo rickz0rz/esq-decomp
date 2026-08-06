@@ -54,7 +54,6 @@ extern void *MEMORY_AllocateMemory(char *who, long line, long size,
 extern void ESQ_PollCtrlInput();
 
 extern struct Interrupt *Global_REF_INTERRUPT_STRUCT_INTB_AUD1;
-extern char Global_STR_ESQFUNC_C_2[];
 extern char Global_STR_JOYSTICK_INT[];
 extern char CTRL_SampleEntryScratch[];
 extern struct Interrupt *Global_REF_INTB_AUD1_INTERRUPT;
@@ -62,7 +61,7 @@ extern struct Interrupt *Global_REF_INTB_AUD1_INTERRUPT;
 void SETUP_INTERRUPT_INTB_AUD1(void)
 {
     Global_REF_INTERRUPT_STRUCT_INTB_AUD1 = (struct Interrupt *)
-        MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_2, 1172L,
+        MEMORY_AllocateMemory("ESQFUNC.c", 1172L,
                                             (long)sizeof(struct Interrupt),
                                             MEMF_CHIP);
 

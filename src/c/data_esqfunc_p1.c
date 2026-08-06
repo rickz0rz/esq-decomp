@@ -27,13 +27,11 @@ extern char ESQFUNC_STR_PWI4[];
 extern char ESQFUNC_STR_PW[];
 
 char Global_STR_VERTICAL_BLANK_INT[20] = "Vertical Blank Int";
-char Global_STR_ESQFUNC_C_2[10] = "ESQFUNC.c";
+
 char Global_STR_JOYSTICK_INT[14] = "JoyStick Int";
-char Global_STR_ESQFUNC_C_3[10] = "ESQFUNC.c";
-char Global_STR_ESQFUNC_C_4[10] = "ESQFUNC.c";
+
 char Global_STR_RS232_RECEIVE_HANDLER[22] = "RS232 Receive Handler";
-char Global_STR_ESQFUNC_C_5[10] = "ESQFUNC.c";
-char Global_STR_ESQFUNC_C_6[10] = "ESQFUNC.c";
+
 char Global_STR_DISK_0_IS_WRITE_PROTECTED[26] = "Disk 0 is write protected";
 char Global_STR_YOU_MUST_REINSERT_SYSTEM_DISK_INTO_DRIVE_0[46] = "You MUST re-insert SYSTEM disk into drive 0!";
 char Global_STR_BUILD_NUMBER_FORMATTED[22] = "Build Number: '%ld%s'";

@@ -91,10 +91,6 @@ extern void  STRING_CopyPadNul(char *dst, char *src, long n);
 extern void  MEM_Move(char *src, char *dst, long n);
 
 extern long ED_TextLimit;
-extern char Global_STR_LADFUNC_C_24[];
-extern char Global_STR_LADFUNC_C_25[];
-extern char Global_STR_LADFUNC_C_26[];
-extern char Global_STR_LADFUNC_C_27[];
 
 void LADFUNC_RepackEntryTextAndAttrBuffers(char *text, char *attr)
 {
@@ -113,11 +109,11 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(char *text, char *attr)
 
     srcLen = strlen(text);
 
-    textCopy = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_24,
+    textCopy = MEMORY_AllocateMemory("LADFUNC.c",
                                                     1214L, srcLen + 1,
                                                     MEMF_PUBLIC | MEMF_CLEAR);
 
-    attrCopy = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_25,
+    attrCopy = MEMORY_AllocateMemory("LADFUNC.c",
                                                     1215L, srcLen,
                                                     MEMF_PUBLIC | MEMF_CLEAR);
 
@@ -210,10 +206,10 @@ void LADFUNC_RepackEntryTextAndAttrBuffers(char *text, char *attr)
     }
 
     if (textCopy != 0)
-        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_26, 1322L,
+        MEMORY_DeallocateMemory("LADFUNC.c", 1322L,
                                                textCopy, srcLen + 1);
 
     if (attrCopy != 0)
-        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_27, 1324L,
+        MEMORY_DeallocateMemory("LADFUNC.c", 1324L,
                                                attrCopy, srcLen);
 }

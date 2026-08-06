@@ -10,7 +10,6 @@
  *            SAS/C version; see docs/compiler-version.md.
  */
 extern char *LADFUNC_EntryPtrTable[];
-extern char  Global_STR_LADFUNC_C_1[];
 extern char *MEMORY_AllocateMemory(char *who, long line, long size, long flags);
 #define MEMF_PUBLIC 1
 #define MEMF_CLEAR  65536
@@ -20,6 +19,6 @@ void LADFUNC_AllocBannerRectEntries(void)
 
     for (i = 0; i < 46; i++)
         LADFUNC_EntryPtrTable[i] =
-            MEMORY_AllocateMemory(Global_STR_LADFUNC_C_1, 116, 14,
+            MEMORY_AllocateMemory("LADFUNC.c", 116, 14,
                                                  MEMF_PUBLIC + MEMF_CLEAR);
 }

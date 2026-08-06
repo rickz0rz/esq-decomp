@@ -11,8 +11,6 @@
  * rule that a data module must be a multiple of 4 bytes.
  */
 
-char Global_STR_COI_C_3[6] = "COI.c";
-char Global_STR_COI_C_4[6] = "COI.c";
 char Global_STR_DF0_OI_PERCENT_2_LX_DAT_1[18] = "df0:OI_%02lx.dat";
 char COI_FMT_LONG_DEC_A[4] = "%ld";
 char COI_FMT_DEC_A[4] = "%d";
@@ -22,9 +20,9 @@ char COI_FMT_LONG_DEC_C[4] = "%ld";
 char COI_FMT_LONG_DEC_PAD2[6] = "%02ld";
 char COI_STR_COLON_B[2] = ":";
 char COI_FMT_DEC_B[4] = "%d";
-char Global_STR_COI_C_5[6] = "COI.c";
+
 char Global_STR_DF0_OI_PERCENT_2_LX_DAT_2[18] = "df0:OI_%02lx.dat";
-char Global_STR_COI_C_6[6] = "COI.c";
+
 unsigned char COI_STR_LINEFEED_CR_1[4] = {
     0x0a, 0x0d, 0x00, 0x00
 };
@@ -33,8 +31,7 @@ unsigned char COI_STR_LINEFEED_CR_2[4] = {
 };
 char COI_STR_DEFAULT_TOKEN_TEMPLATE_A[12] = "NNNNNNXX00";
 char Global_STR_PERCENT_S_1[4] = "%s";
-char Global_STR_COI_C_1[6] = "COI.c";
-char Global_STR_COI_C_2[6] = "COI.c";
+
 char COI_STR_DEFAULT_TOKEN_TEMPLATE_B[12] = "NNNNNNXX00";
 char COI_FMT_WRAP_CHAR_STRING_CHAR[8] = "%c%s%c";
 char COI_STR_SINGLE_SPACE[2] = " ";

@@ -46,32 +46,28 @@ extern struct Library *Global_REF_UTILITY_LIBRARY;
 extern struct Library *Global_REF_DISKFONT_LIBRARY;
 extern struct Library *Global_REF_DOS_LIBRARY;
 extern struct Library *Global_REF_INTUITION_LIBRARY;
-extern char Global_STR_CLEANUP_C_6[],  Global_STR_CLEANUP_C_7[];
-extern char Global_STR_CLEANUP_C_8[],  Global_STR_CLEANUP_C_9[];
-extern char Global_STR_CLEANUP_C_10[], Global_STR_CLEANUP_C_11[];
-extern char Global_STR_CLEANUP_C_12[];
 
 void CLEANUP_ReleaseDisplayResources(void)
 {
     register long i;
 
-    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_6, 148,
+    MEMORY_DeallocateMemory("CLEANUP.c", 148,
                                             Global_REF_96_BYTES_ALLOCATED, 96);
-    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_7, 152,
+    MEMORY_DeallocateMemory("CLEANUP.c", 152,
                                             Global_REF_RASTPORT_1, 100);
     for (i = 0; i < 3; i++)
-        GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_8, 160,
+        GRAPHICS_FreeRaster("CLEANUP.c", 160,
                                             WDISP_LivePlaneRasterTable0[i], 696, 2);
     for (i = 0; i < 4; i++)
-        GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_9, 169,
+        GRAPHICS_FreeRaster("CLEANUP.c", 169,
                                             WDISP_352x240RasterPtrTable[i], 352, 240);
     for (i = 0; i < 3; i++)
-        GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_10, 178,
+        GRAPHICS_FreeRaster("CLEANUP.c", 178,
                                             WDISP_BannerRowScratchRasterTable0[i], 696, 509);
     for (i = 3; i < 5; i++)
-        GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_11, 187,
+        GRAPHICS_FreeRaster("CLEANUP.c", 187,
                                             WDISP_DisplayContextPlanePointer0[i], 696, 241);
-    GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_12, 200,
+    GRAPHICS_FreeRaster("CLEANUP.c", 200,
                                         WDISP_BannerWorkRasterPtr, 696, 15);
 
     if (Global_HANDLE_PREVUE_FONT)  CloseFont(Global_HANDLE_PREVUE_FONT);

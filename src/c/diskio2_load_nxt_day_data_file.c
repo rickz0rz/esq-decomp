@@ -68,12 +68,6 @@ struct DkTitle {
 };
 
 extern char  Global_STR_DF0_NXTDAY_DAT[];
-extern char  Global_STR_DISKIO2_C_17[];
-extern char  Global_STR_DISKIO2_C_18[];
-extern char  Global_STR_DISKIO2_C_19[];
-extern char  Global_STR_DISKIO2_C_20[];
-extern char  Global_STR_DISKIO2_C_21[];
-extern char  Global_STR_DISKIO2_C_22[];
 
 extern char *Global_PTR_WORK_BUFFER;
 extern long  Global_REF_LONG_FILE_SCRATCH;
@@ -144,16 +138,16 @@ long DISKIO2_LoadNxtDayDataFile(void)
 
     for (n = 0; n < entryCount; n++) {
         entry = (struct DkEntry *)MEMORY_AllocateMemory(
-            Global_STR_DISKIO2_C_17, 948, 52, MEMF_PUBLIC | MEMF_CLEAR);
+            "DISKIO2.c", 948, 52, MEMF_PUBLIC | MEMF_CLEAR);
         if (entry == 0) {
             status = -1;
             goto finish;
         }
         title = (struct DkTitle *)MEMORY_AllocateMemory(
-            Global_STR_DISKIO2_C_18, 954, 500, MEMF_PUBLIC | MEMF_CLEAR);
+            "DISKIO2.c", 954, 500, MEMF_PUBLIC | MEMF_CLEAR);
         if (title == 0) {
             status = -1;
-            MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_19, 958,
+            MEMORY_DeallocateMemory("DISKIO2.c", 958,
                                                     entry, 52);
             goto finish;
         }
@@ -214,9 +208,9 @@ long DISKIO2_LoadNxtDayDataFile(void)
             sparseLimit = (short)DISKIO_ParseLongFromWorkBuffer();
 
         if (status == -1) {
-            MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_20,
+            MEMORY_DeallocateMemory("DISKIO2.c",
                                                     1027, entry, 52);
-            MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_21,
+            MEMORY_DeallocateMemory("DISKIO2.c",
                                                     1028, title, 500);
             goto finish;
         }
@@ -228,7 +222,7 @@ long DISKIO2_LoadNxtDayDataFile(void)
 finish:
     TEXTDISP_SecondaryGroupHeaderCode = groupCode;
     TEXTDISP_SecondaryGroupEntryCount = n;
-    MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_22, 1041, work,
+    MEMORY_DeallocateMemory("DISKIO2.c", 1041, work,
                                             fileLen + 1);
 
     if (COI_LoadOiDataFile(groupCode) != -1) {

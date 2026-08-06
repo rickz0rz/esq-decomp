@@ -54,21 +54,19 @@ extern void *MEMORY_AllocateMemory(char *who, long line, long size,
 extern void ESQ_HandleSerialRbfInterrupt();
 
 extern struct Interrupt *Global_REF_INTERRUPT_STRUCT_INTB_RBF;
-extern char Global_STR_ESQFUNC_C_3[];
 extern char Global_STR_RS232_RECEIVE_HANDLER[];
 extern char *Global_REF_INTB_RBF_64K_BUFFER;
 extern struct Interrupt *Global_REF_INTB_RBF_INTERRUPT;
-extern char Global_STR_ESQFUNC_C_4[];
 
 void SETUP_INTERRUPT_INTB_RBF(void)
 {
     Global_REF_INTERRUPT_STRUCT_INTB_RBF = (struct Interrupt *)
-        MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_3, 1195L,
+        MEMORY_AllocateMemory("ESQFUNC.c", 1195L,
                                             (long)sizeof(struct Interrupt),
                                             MEMF_PUBLIC);
 
     Global_REF_INTB_RBF_64K_BUFFER = (char *)
-        MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_4, 1197L, 64000L,
+        MEMORY_AllocateMemory("ESQFUNC.c", 1197L, 64000L,
                                             MEMF_PUBLIC | MEMF_CLEAR);
 
     Global_REF_INTERRUPT_STRUCT_INTB_RBF->is_Node.ln_Type = 2;

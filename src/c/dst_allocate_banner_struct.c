@@ -39,9 +39,6 @@ struct DstBanner {
 extern void  DST_FreeBannerStruct(struct DstBanner *b);
 extern void *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
-extern char Global_STR_DST_C_4[];
-extern char Global_STR_DST_C_5[];
-extern char Global_STR_DST_C_6[];
 
 void *DST_AllocateBannerStruct(struct DstBanner *b)
 {
@@ -50,15 +47,15 @@ void *DST_AllocateBannerStruct(struct DstBanner *b)
     DST_FreeBannerStruct(b);
 
     b = (struct DstBanner *)MEMORY_AllocateMemory(
-        Global_STR_DST_C_4, 798L, 18L, MEMF_PUBLIC | MEMF_CLEAR);
+        "DST.c", 798L, 18L, MEMF_PUBLIC | MEMF_CLEAR);
 
     if (b != 0) {
         b->first = (char *)MEMORY_AllocateMemory(
-            Global_STR_DST_C_5, 803L, 22L, MEMF_PUBLIC | MEMF_CLEAR);
+            "DST.c", 803L, 22L, MEMF_PUBLIC | MEMF_CLEAR);
 
         if (b->first != 0) {
             b->second = (char *)MEMORY_AllocateMemory(
-                Global_STR_DST_C_6, 807L, 22L, MEMF_PUBLIC | MEMF_CLEAR);
+                "DST.c", 807L, 22L, MEMF_PUBLIC | MEMF_CLEAR);
 
             if (b->second != 0) {
                 ok = 1;

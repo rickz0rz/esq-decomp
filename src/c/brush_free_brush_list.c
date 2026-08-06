@@ -30,9 +30,6 @@ extern void GRAPHICS_FreeRaster(char *who, long line, void *p,
                                                 long w, long h);
 extern void MEMORY_DeallocateMemory(char *who, long line, void *p,
                                                     long size);
-extern char Global_STR_BRUSH_C_5[];
-extern char Global_STR_BRUSH_C_6[];
-extern char Global_STR_BRUSH_C_7[];
 
 void BRUSH_FreeBrushList(unsigned char **head, long mode)
 {
@@ -53,7 +50,7 @@ void BRUSH_FreeBrushList(unsigned char **head, long mode)
         nextBrush = *(unsigned char **)(brush + 368);
 
         for (i = 0; i < brush[184]; i++)
-            GRAPHICS_FreeRaster(Global_STR_BRUSH_C_5, 549,
+            GRAPHICS_FreeRaster("BRUSH.c", 549,
                                                 ((void **)(brush + 144))[i],
                                                 (long)*(short *)(brush + 176),
                                                 (long)*(short *)(brush + 178));
@@ -61,11 +58,11 @@ void BRUSH_FreeBrushList(unsigned char **head, long mode)
         node = *(unsigned char **)(brush + 364);
         while (node) {
             next = *(unsigned char **)(node + 8);
-            MEMORY_DeallocateMemory(Global_STR_BRUSH_C_6, 561, node, 12);
+            MEMORY_DeallocateMemory("BRUSH.c", 561, node, 12);
             node = next;
         }
 
-        MEMORY_DeallocateMemory(Global_STR_BRUSH_C_7, 567, brush, 372);
+        MEMORY_DeallocateMemory("BRUSH.c", 567, brush, 372);
         brush = nextBrush;
 
         if (mode == 1)

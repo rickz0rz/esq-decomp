@@ -22,9 +22,6 @@ struct LadEntry {
 };                              /* 14 bytes */
 
 extern struct LadEntry *LADFUNC_EntryPtrTable[];
-extern char Global_STR_LADFUNC_C_28[];
-extern char Global_STR_LADFUNC_C_29[];
-extern char Global_STR_LADFUNC_C_30[];
 
 extern void  LADFUNC_RepackEntryTextAndAttrBuffers(char *text, char *attr);
 extern char *MEMORY_AllocateMemory(char *who, long line,
@@ -42,7 +39,7 @@ void LADFUNC_UpdateEntryFromTextAndAttrBuffers(long index, char *text,
 
     if (LADFUNC_EntryPtrTable[index] == 0) {
         LADFUNC_EntryPtrTable[index] = (struct LadEntry *)
-            MEMORY_AllocateMemory(Global_STR_LADFUNC_C_28, 1362,
+            MEMORY_AllocateMemory("LADFUNC.c", 1362,
                 14, MEMF_PUBLIC + MEMF_CLEAR);
         if (LADFUNC_EntryPtrTable[index] != 0) {
             LADFUNC_EntryPtrTable[index]->flags0 = 0;
@@ -62,12 +59,12 @@ void LADFUNC_UpdateEntryFromTextAndAttrBuffers(long index, char *text,
         LADFUNC_EntryPtrTable[index]->text);
 
     if (len != 0 && LADFUNC_EntryPtrTable[index]->attr != 0)
-        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_29, 1386,
+        MEMORY_DeallocateMemory("LADFUNC.c", 1386,
             LADFUNC_EntryPtrTable[index]->attr, len);
 
     len = strlen(LADFUNC_EntryPtrTable[index]->text);
     LADFUNC_EntryPtrTable[index]->attr =
-        MEMORY_AllocateMemory(Global_STR_LADFUNC_C_30, 1389, len,
+        MEMORY_AllocateMemory("LADFUNC.c", 1389, len,
             MEMF_PUBLIC + MEMF_CLEAR);
 
     if (LADFUNC_EntryPtrTable[index]->attr == 0)

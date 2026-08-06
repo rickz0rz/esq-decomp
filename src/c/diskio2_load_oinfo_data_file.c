@@ -42,7 +42,6 @@ extern char  TEXTDISP_PrimaryGroupCode;
 extern char *ESQIFF_PrimaryLineHeadPtr;
 extern char *ESQIFF_PrimaryLineTailPtr;
 extern char  CTASKS_PATH_OINFO_DAT[];
-extern char  Global_STR_DISKIO2_C_23[];
 
 long DISKIO2_LoadOinfoDataFile(void)
 {
@@ -74,6 +73,6 @@ long DISKIO2_LoadOinfoDataFile(void)
         }
     }
 
-    MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_23, 1191, base, len + 1);
+    MEMORY_DeallocateMemory("DISKIO2.c", 1191, base, len + 1);
     return 0;
 }

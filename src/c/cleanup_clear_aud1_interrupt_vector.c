@@ -27,7 +27,6 @@
 extern volatile unsigned short INTENA;
 extern struct Interrupt *Global_REF_INTB_AUD1_INTERRUPT;
 extern void *Global_REF_INTERRUPT_STRUCT_INTB_AUD1;
-extern char  Global_STR_CLEANUP_C_2[];
 extern void  MEMORY_DeallocateMemory(char *who, long line,
                                                      void *p, long size);
 
@@ -35,6 +34,6 @@ void CLEANUP_ClearAud1InterruptVector(void)
 {
     INTENA = 0x100;
     SetIntVector((unsigned long)INTB_AUD1, Global_REF_INTB_AUD1_INTERRUPT);
-    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_2, 74,
+    MEMORY_DeallocateMemory("CLEANUP.c", 74,
                                             Global_REF_INTERRUPT_STRUCT_INTB_AUD1, 22);
 }

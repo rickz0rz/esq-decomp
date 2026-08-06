@@ -11,22 +11,6 @@
  * rule that a data module must be a multiple of 4 bytes.
  */
 
-char Global_STR_CLEANUP_C_1[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_2[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_3[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_4[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_5[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_6[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_7[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_8[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_9[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_10[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_11[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_12[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_13[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_14[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_15[10] = "CLEANUP.c";
-char Global_STR_CLEANUP_C_16[10] = "CLEANUP.c";
 unsigned char CLEANUP_AlertCooldownTicks[4] = {
     0x00, 0x00, 0x00, 0x00
 };

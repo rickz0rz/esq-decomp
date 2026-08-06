@@ -112,9 +112,8 @@ extern char DISKIO2_STR_3_COLON_30[];
 extern char DISKIO2_STR_4_COLON_00[];
 extern char DISKIO2_STR_4_COLON_30[];
 
-char Global_STR_DISKIO2_C_2[10] = "DISKIO2.c";
 char Global_STR_DREV_5_1[8] = "DREV 5";
-char Global_STR_DISKIO2_C_3[10] = "DISKIO2.c";
+
 char Global_STR_38_SPACES[40] = "                                      ";
 char DISKIO2_STR_SAVING_PROGRAMMING_DATA_DOT[36] = "Saving programming data.           ";
 char DISKIO2_STR_SAVING_TEXT_ADS_DOT[36] = "Saving Text Ads.                   ";
@@ -125,30 +124,13 @@ char DISKIO2_STR_SAVING_ERROR_LOG_DOT[36] = "Saving Error Log.                  
 char DISKIO2_STR_SAVING_DST_DATA_DOT[36] = "Saving DST data.                   ";
 char DISKIO2_STR_SAVING_PROMO_TYPES[36] = "Saving Promo Types                 ";
 char DISKIO2_STR_SAVING_DATA_VIEW_CONFIG[36] = "Saving Data View config            ";
-char Global_STR_DISKIO2_C_4[10] = "DISKIO2.c";
+
 char DISKIO2_STR_DREV_1[8] = "DREV 1";
 char DISKIO2_STR_DREV_2[8] = "DREV 2";
 char DISKIO2_STR_DREV_3[8] = "DREV 3";
 char DISKIO2_STR_DREV_4[8] = "DREV 4";
 char DISKIO2_STR_DREV_5[8] = "DREV 5";
-char Global_STR_DISKIO2_C_5[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_6[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_7[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_8[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_9[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_10[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_11[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_12[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_13[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_14[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_15[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_16[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_17[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_18[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_19[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_20[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_21[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_22[10] = "DISKIO2.c";
+
 char DISKIO2_STR_QTABLE[10] = "[Qtable]";
 unsigned char DISKIO2_STR_QTableLineBreakAfterHeader[4] = {
     0x0d, 0x0a, 0x00, 0x00
@@ -159,14 +141,11 @@ char DISKIO2_STR_QTableValueQuoteClose[2] = "\"";
 unsigned char DISKIO2_STR_QTableLineBreakAfterEntry[4] = {
     0x0d, 0x0a, 0x00, 0x00
 };
-char Global_STR_DISKIO2_C_23[10] = "DISKIO2.c";
+
 char Global_STR_SPECIAL_NGAD[14] = "Special NGAD";
 char Global_STR_RAM[6] = "RAM:";
 char Global_STR_FILENAME[38] = "Filename:                            ";
-char Global_STR_DISKIO2_C_24[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_25[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_26[10] = "DISKIO2.c";
-char Global_STR_DISKIO2_C_27[10] = "DISKIO2.c";
+
 char DISKIO2_STR_DiagTransferStatusClearLine210[40] = "                                      ";
 char DISKIO2_STR_DiagTransferStatusClearLine240[40] = "                                      ";
 char Global_STR_COPY_NIL[12] = "Copy >nil: ";

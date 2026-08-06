@@ -11,26 +11,8 @@
  * rule that a data module must be a multiple of 4 bytes.
  */
 
-char Global_STR_BRUSH_C_1[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_2[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_3[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_4[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_5[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_6[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_7[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_8[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_9[8] = "BRUSH.c";
 char BRUSH_STR_IFF_FORM[6] = "FORM";
-char Global_STR_BRUSH_C_10[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_11[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_12[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_13[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_14[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_15[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_16[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_17[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_18[8] = "BRUSH.c";
-char Global_STR_BRUSH_C_19[8] = "BRUSH.c";
+
 char BRUSH_STR_ALIAS_CODE_00[4] = "00";
 char BRUSH_STR_ALIAS_CODE_11[4] = "11";
 char BRUSH_STR_ALIAS_CODE_DT[4] = "DT";

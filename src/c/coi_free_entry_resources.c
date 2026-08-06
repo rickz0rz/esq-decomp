@@ -40,7 +40,6 @@ struct CoiEntry {
     void *anim;    /* 48 */
 };
 
-extern char Global_STR_COI_C_3[];
 
 extern void COI_FreeSubEntryTableEntries(struct CoiEntry *entry);
 extern void COI_ClearAnimObjectStrings(struct CoiEntry *entry);
@@ -58,7 +57,7 @@ void COI_FreeEntryResources(struct CoiEntry *entry)
     COI_FreeSubEntryTableEntries(entry);
     COI_ClearAnimObjectStrings(entry);
     if (anim)
-        MEMORY_DeallocateMemory(Global_STR_COI_C_3, 815L,
+        MEMORY_DeallocateMemory("COI.c", 815L,
                                                 anim, 42L);
     entry->anim = 0;
 }

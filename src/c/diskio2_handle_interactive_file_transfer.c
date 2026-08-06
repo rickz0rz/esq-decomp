@@ -82,10 +82,6 @@ extern char  Global_STR_STORED[];
 extern char  Global_STR_RAM[];
 extern char  Global_STR_COPY_NIL[];
 extern char  Global_STR_DISK_0_IS_FULL_WITH_ERRORS_FORMATTED[];
-extern char  Global_STR_DISKIO2_C_24[];
-extern char  Global_STR_DISKIO2_C_25[];
-extern char  Global_STR_DISKIO2_C_26[];
-extern char  Global_STR_DISKIO2_C_27[];
 extern char  DISKIO2_STR_DiagTransferStatusClearLine210[];
 extern char  DISKIO2_STR_DiagTransferStatusClearLine240[];
 extern char  DISKIO2_STR_ShellCommandArgSeparator[];
@@ -213,14 +209,14 @@ long DISKIO2_HandleInteractiveFileTransfer(char mode)
         lock = Lock(volName, -2L);
         if (lock != 0) {
             info = (struct InfoData *)MEMORY_AllocateMemory(
-                Global_STR_DISKIO2_C_24, 1312, (long)sizeof(struct InfoData),
+                "DISKIO2.c", 1312, (long)sizeof(struct InfoData),
                 MEMF_CLEAR);
             if (info != 0) {
                 if (Info(lock, info) != 0)
                     freeSpace = ((0x6deL - info->id_NumBlocksUsed) << 8) * 2 -
                                 0x1000;
                 MEMORY_DeallocateMemory(
-                    Global_STR_DISKIO2_C_25, 1318, info,
+                    "DISKIO2.c", 1318, info,
                     (long)sizeof(struct InfoData));
             }
             UnLock(lock);
@@ -257,7 +253,7 @@ long DISKIO2_HandleInteractiveFileTransfer(char mode)
     DISKIO2_TransferCrcErrorCount = 0;
     DISKIO2_TransferBlockSequence = 0;
     DISKIO2_TransferBlockBufferPtr = MEMORY_AllocateMemory(
-        Global_STR_DISKIO2_C_26, 1389, 4352, MEMF_PUBLIC | MEMF_CLEAR);
+        "DISKIO2.c", 1389, 4352, MEMF_PUBLIC | MEMF_CLEAR);
     ESQPARS2_ReadModeFlags = DISKIO_SavedReadModeFlags;
     DISKIO2_TransferBufferedByteCount = 0;
 
@@ -307,7 +303,7 @@ long DISKIO2_HandleInteractiveFileTransfer(char mode)
     DISKIO_SavedReadModeFlags = ESQPARS2_ReadModeFlags;
     ESQPARS2_ReadModeFlags = 0x100;
     Close(DISKIO_WriteFileHandle);
-    MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_27, 1499,
+    MEMORY_DeallocateMemory("DISKIO2.c", 1499,
                                             DISKIO2_TransferBlockBufferPtr,
                                             4352);
 

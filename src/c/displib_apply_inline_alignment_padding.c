@@ -19,8 +19,6 @@
 extern struct RastPort *Global_REF_RASTPORT_1;
 extern char DISPLIB_STR_InlineAlignPadCharCenter[];
 extern char DISPLIB_STR_InlineAlignPadCharRight[];
-extern char Global_STR_DISPLIB_C_1[];
-extern char Global_STR_DISPLIB_C_2[];
 
 extern long __asm MATH_DivS32(register __d0 long a,
                         register __d1 long b);
@@ -56,7 +54,7 @@ void DISPLIB_ApplyInlineAlignmentPadding(char *buf, char mode)
     if (pad == 0)
         return;
 
-    copy = MEMORY_AllocateMemory(Global_STR_DISPLIB_C_1, 194,
+    copy = MEMORY_AllocateMemory("DISPLIB.c", 194,
                                                  len + 1, MEMF_PUBLIC);
     if (copy == 0)
         return;
@@ -68,6 +66,6 @@ void DISPLIB_ApplyInlineAlignmentPadding(char *buf, char mode)
     *p = 0;
 
     STRING_AppendAtNull(buf, copy);
-    MEMORY_DeallocateMemory(Global_STR_DISPLIB_C_2, 204,
+    MEMORY_DeallocateMemory("DISPLIB.c", 204,
                                             len + 1, copy);
 }

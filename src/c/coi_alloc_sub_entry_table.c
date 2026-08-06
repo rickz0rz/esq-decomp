@@ -28,7 +28,6 @@ extern void *MEMORY_AllocateMemory(char *who, long line, long size,
 extern void SCRIPT_AllocateBufferArray(void *table, long size,
                                                        long count);
 
-extern char Global_STR_COI_C_5[];
 
 struct CoiAnimOb {
     char   pad[36];
@@ -56,7 +55,7 @@ void COI_AllocSubEntryTable(struct CoiEntry *entry)
         return;
 
     anim->subEntryTable =
-        MEMORY_AllocateMemory(Global_STR_COI_C_5, 1123L,
+        MEMORY_AllocateMemory("COI.c", 1123L,
                                               (long)anim->subEntryCount * 4,
                                               0x00010001L);
     SCRIPT_AllocateBufferArray(anim->subEntryTable, 30L,

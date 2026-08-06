@@ -77,9 +77,6 @@ struct DkTitle {
 extern char  ESQ_STR_B[];
 extern char  CTASKS_PATH_CURDAY_DAT[];
 extern char  Global_STR_DREV_5_1[];
-extern char  Global_STR_DISKIO2_C_1[];
-extern char  Global_STR_DISKIO2_C_2[];
-extern char  Global_STR_DISKIO2_C_3[];
 
 extern long  DISKIO_SaveOperationReadyFlag;
 extern long  DISKIO2_OutputFileHandle;
@@ -124,7 +121,7 @@ long DISKIO2_WriteCurDayDataFile(void)
     emptyText = 0;
 
     scratch = (char *)MEMORY_AllocateMemory(
-        Global_STR_DISKIO2_C_1, 152, 1000, MEMF_PUBLIC | MEMF_CLEAR);
+        "DISKIO2.c", 152, 1000, MEMF_PUBLIC | MEMF_CLEAR);
     if (scratch == 0) {
         DISKIO_SaveOperationReadyFlag = 1;
         return -1;
@@ -133,7 +130,7 @@ long DISKIO2_WriteCurDayDataFile(void)
     DISKIO2_OutputFileHandle = DISKIO_OpenFileWithBuffer(CTASKS_PATH_CURDAY_DAT,
                                                         MODE_NEWFILE);
     if (DISKIO2_OutputFileHandle == 0) {
-        MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_2, 176,
+        MEMORY_DeallocateMemory("DISKIO2.c", 176,
                                                 scratch, 1000);
         DISKIO_SaveOperationReadyFlag = 1;
         return -1;
@@ -201,7 +198,7 @@ long DISKIO2_WriteCurDayDataFile(void)
 
     DISKIO_CloseBufferedFileAndFlush(DISKIO2_OutputFileHandle);
     DISKIO_SaveOperationReadyFlag = 1;
-    MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_3, 275, scratch,
+    MEMORY_DeallocateMemory("DISKIO2.c", 275, scratch,
                                             1000);
     return 0;
 }

@@ -11,8 +11,6 @@
  * rule that a data module must be a multiple of 4 bytes.
  */
 
-char Global_STR_DISPLIB_C_1[10] = "DISPLIB.c";
-char Global_STR_DISPLIB_C_2[10] = "DISPLIB.c";
 unsigned char DISPTEXT_ControlMarkerXOffsetPx[4] = {
     0x00, 0x00, 0x00, 0x00
 };

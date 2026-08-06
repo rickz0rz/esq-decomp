@@ -31,5 +31,5 @@ unsigned char WDISP_StatusDayEntry3[16] = {
     0x00, 0x00, 0x00, 0x00
 };
 long TLIBA1_StatusBannerPropagateGuard = 1;
-char Global_STR_WDISP_C[8] = "WDISP.c";
+
 char WDISP_STR_UNKNOWN_NUM_WITH_SLASH[6] = "???/";

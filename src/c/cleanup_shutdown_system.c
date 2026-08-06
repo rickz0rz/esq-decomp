@@ -32,10 +32,6 @@ extern char *Global_REF_BACKED_UP_INTUITION_AUTOREQUEST;
 extern char *Global_REF_BACKED_UP_INTUITION_DISPLAYALERT;
 extern long  ESQ_ProcessWindowPtrBackup;
 extern char *WDISP_ExecBaseHookPtr;
-extern char  Global_STR_CLEANUP_C_13[];
-extern char  Global_STR_CLEANUP_C_14[];
-extern char  Global_STR_CLEANUP_C_15[];
-extern char  Global_STR_CLEANUP_C_16[];
 
 extern void LOCAVAIL_FreeResourceChain(char *state);
 extern void BRUSH_FreeBrushList(char **head, long flags);
@@ -82,7 +78,7 @@ void CLEANUP_ShutdownSystem(void)
     CLEANUP_ClearAud1InterruptVector();
     CLEANUP_ClearRbfInterruptAndSerial();
 
-    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_13, 260,
+    MEMORY_DeallocateMemory("CLEANUP.c", 260,
                                             ESQIFF_RecordBufferPtr, 9000);
 
     CLEANUP_ShutdownInputDevices();
@@ -100,16 +96,16 @@ void CLEANUP_ShutdownSystem(void)
 
     NEWGRID_ShutdownGridResources();
 
-    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_14, 318,
+    MEMORY_DeallocateMemory("CLEANUP.c", 318,
                                             ESQ_HighlightMsgPort, 34);
-    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_15, 319,
+    MEMORY_DeallocateMemory("CLEANUP.c", 319,
                                             ESQ_HighlightReplyPort, 34);
 
     row = 0;
     while (row < 4) {
         col = 0;
         while (col < 3) {
-            GRAPHICS_FreeRaster(Global_STR_CLEANUP_C_16, 329,
+            GRAPHICS_FreeRaster("CLEANUP.c", 329,
                 *(long *)(ESQDISP_HighlightBitmapTable + row * stride
                           + (col << 2) + 8),
                 696, (long)WDISP_HighlightRasterHeightPx);

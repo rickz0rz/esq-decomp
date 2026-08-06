@@ -27,10 +27,6 @@ extern short ESQIFF_StatusPacketReadyFlag;
 extern char  ED_DiagTextModeChar;
 extern char  LADFUNC_TAG_RS_ResetTriggerSet[];
 extern char  LADFUNC_TAG_RS_ParseAllowedSet[];
-extern char  Global_STR_LADFUNC_C_5[];
-extern char  Global_STR_LADFUNC_C_6[];
-extern char  Global_STR_LADFUNC_C_7[];
-extern char  Global_STR_LADFUNC_C_8[];
 
 extern long  LADFUNC_ComposePackedPenByte(long hi, long lo);
 extern char *STR_FindCharPtr(char *s, long c);
@@ -90,7 +86,7 @@ long LADFUNC_ParseBannerEntryData(char kind, char *data)
     entry->flags2 = 0x30;
     pos = 0;
 
-    attrs = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_5, 367,
+    attrs = MEMORY_AllocateMemory("LADFUNC.c", 367,
                 304, MEMF_PUBLIC + MEMF_CLEAR);
     if (attrs == 0)
         return 0;
@@ -127,15 +123,15 @@ long LADFUNC_ParseBannerEntryData(char kind, char *data)
     entry->text = ESQPARS_ReplaceOwnedString(text, entry->text);
 
     if (entry->attr != 0)
-        MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_6, 412,
+        MEMORY_DeallocateMemory("LADFUNC.c", 412,
                                                entry->attr, 304);
 
-    entry->attr = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_7,
+    entry->attr = MEMORY_AllocateMemory("LADFUNC.c",
                       413, (long)pos, MEMF_PUBLIC + MEMF_CLEAR);
     if (entry->attr != 0)
         memcpy(entry->attr, attrs, (long)pos);
 
-    MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_8, 416, attrs,
+    MEMORY_DeallocateMemory("LADFUNC.c", 416, attrs,
                                            304);
     LADFUNC_UpdateHighlightState();
     return 1;

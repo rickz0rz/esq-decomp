@@ -147,20 +147,12 @@ char Global_STR_DOS_LIBRARY[12] = "dos.library";
 char Global_STR_INTUITION_LIBRARY[18] = "intuition.library";
 char Global_STR_UTILITY_LIBRARY[16] = "utility.library";
 char Global_STR_BATTCLOCK_RESOURCE[20] = "battclock.resource";
-char Global_STR_ESQ_C_1[6] = "ESQ.c";
-char Global_STR_ESQ_C_2[6] = "ESQ.c";
-char Global_STR_ESQ_C_3[6] = "ESQ.c";
-char Global_STR_ESQ_C_4[6] = "ESQ.c";
-char Global_STR_ESQ_C_5[6] = "ESQ.c";
+
 char Global_STR_CART[6] = "CART";
-char Global_STR_ESQ_C_6[6] = "ESQ.c";
+
 char Global_STR_SERIAL_READ[12] = "Serial.Read";
 char Global_STR_SERIAL_DEVICE[14] = "serial.device";
-char Global_STR_ESQ_C_7[6] = "ESQ.c";
-char Global_STR_ESQ_C_8[6] = "ESQ.c";
-char Global_STR_ESQ_C_9[6] = "ESQ.c";
-char Global_STR_ESQ_C_10[6] = "ESQ.c";
-char Global_STR_ESQ_C_11[6] = "ESQ.c";
+
 char ESQ_STR_NO_DF1_PRESENT[16] = "no df1 present";
 char Global_STR_GUIDE_START_VERSION_AND_BUILD[24] = "Ver %s.%ld Build %ld %s";
 char Global_STR_MAJOR_MINOR_VERSION[4] = "9.0";

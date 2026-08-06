@@ -57,7 +57,6 @@ extern char *GRAPHICS_AllocRaster(char *who, long line, long width,
                                                  long height);
 
 extern unsigned short WDISP_HighlightRasterHeightPx;
-extern char Global_STR_ESQDISP_C[];
 
 void ESQDISP_AllocateHighlightBitmaps(struct BitMap *bm)
 {
@@ -67,7 +66,7 @@ void ESQDISP_AllocateHighlightBitmaps(struct BitMap *bm)
 
     for (i = 0; i < 3; i++) {
         bm->Planes[i] = (PLANEPTR)
-            GRAPHICS_AllocRaster(Global_STR_ESQDISP_C, 79L, 696L,
+            GRAPHICS_AllocRaster("ESQDISP.c", 79L, 696L,
                                                 (long)WDISP_HighlightRasterHeightPx);
         BltClear(bm->Planes[i], (long)(WDISP_HighlightRasterHeightPx * 88), 0L);
     }

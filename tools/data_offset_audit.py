@@ -129,6 +129,50 @@ def asm_symbols(module):
     return defs, None
 
 
+def is_filename_string(sym, literals):
+    """True when `sym` names a source-file-name string that src/c now inlines.
+
+    Four naming shapes occur and every name-shaped pattern missed one:
+    Global_STR_BRUSH_C_1, Global_STR_ESQDISP_C (no index), Global_ESQPARS2_C_1
+    (no STR_ infix) and TLIBA1_STR_TLIBA1_DOT_C. So the rule is driven by the
+    CONTENT: some literal "<stem>.c" must exist in src/c, the symbol name must
+    contain that stem, and the name must end in the _C the convention uses.
+
+    tools/data_to_c.py applies the same rule when deciding not to emit one, so
+    the generator and this audit cannot disagree about which symbols are
+    deliberately absent.
+    """
+    name = sym.lstrip('_').upper()
+    if not (name.endswith('_C') or re.search(r'_C_\d+$', name)):
+        return False
+    return any(lit[:-2] in name for lit in literals)
+
+
+def omitted_symbols():
+    """Data symbols a C module deliberately does NOT define.
+
+    A source-file-name string such as "BRUSH.c" is the __FILE__ argument the
+    original passed to MEMORY_AllocateMemory. Those are written as literals at
+    the call sites now, so the data module no longer defines them and the
+    module's remaining symbols legitimately sit at lower offsets.
+
+    WITHOUT THIS THE AUDIT SILENTLY STOPS CHECKING. Its match rule required the
+    compiled object to define EVERY symbol the assembly module has; when one is
+    missing it skipped the module and still counted it as checked. Removing
+    these strings blinded it on 38 of 50 modules while it printed
+    "offsets agree".
+    """
+    out = set()
+    cdir = os.path.join(ROOT, 'src', 'c')
+    for fn in os.listdir(cdir):
+        if not fn.endswith('.c'):
+            continue
+        txt = open(os.path.join(cdir, fn), errors='replace').read()
+        for m in re.finditer(r'"([A-Za-z0-9_]+\.c)"', txt):
+            out.add(m.group(1))
+    return out
+
+
 def main():
     manifest = sys.argv[1] if len(sys.argv) > 1 else \
         os.path.join(ROOT, 'src', 'c', 'replacements-all.txt')
@@ -166,6 +210,9 @@ def main():
             cobjs[os.path.basename(p)] = (defs, size)
 
     bad = 0
+    unchecked = 0
+    omit_syms = set()          # filled per module, below
+    literals = {s.upper() for s in omitted_symbols()}
     for module, cfile in rows:
         a, err = asm_symbols(module)
         if a is None:
@@ -180,21 +227,60 @@ def main():
                 hit = (f, defs, size)
                 break
         if hit is None:
-            print('%-28s  no compiled object defines its symbols (build first)' % module)
+            # Retry allowing DELIBERATELY OMITTED symbols to be absent. A
+            # source-file-name string such as "BRUSH.c" is the __FILE__ argument
+            # the original passed to MEMORY_AllocateMemory; those are literals
+            # at the call sites now, so the data module no longer defines them.
+            # Anything ELSE missing is a real fault and still fails the match.
+            for f, (defs, size) in cobjs.items():
+                missing = set(a) - set(defs)
+                if not missing or missing == set(a):
+                    continue
+                if not all(is_filename_string(s, literals) for s in missing):
+                    continue
+                if set(a) - missing <= set(defs):
+                    hit = (f, defs, size)
+                    omit_syms = missing
+                    break
+        if hit is None:
+            print('%-28s  NOT CHECKED: no object defines its symbols' % module)
+            unchecked += 1
             continue
         f, defs, size = hit
         # A replaced module can sit at a nonzero offset inside a coalesced
         # object, so only the offsets RELATIVE to the module's first symbol
         # carry meaning. Anchor both sides on that symbol.
-        first = min(a, key=lambda k: a[k])
+        # Anchor on the first symbol the OBJECT actually defines: a replaced
+        # module can sit at a nonzero offset inside a coalesced object, and the
+        # module's first symbol may itself be one of the omitted strings.
+        order = sorted(a, key=lambda k: a[k])
+        present = [s for s in order if s in defs]
+        if not present:
+            print('%-28s  NOT CHECKED: object defines none of its symbols' % module)
+            unchecked += 1
+            continue
+        first = present[0]
         abase, cbase = a[first], defs[first]
-        diffs = [(s, a[s] - abase, defs[s] - cbase) for s in sorted(a, key=lambda k: a[k])
-                 if (defs[s] - cbase) != (a[s] - abase)]
+
+        # Size of each omitted symbol, from the gap to the next assembly label.
+        span = {}
+        for i, s in enumerate(order):
+            span[s] = (a[order[i + 1]] - a[s]) if i + 1 < len(order) else 0
+
+        diffs = []
+        for s in present:
+            drop = sum(span[o] for o in order
+                       if o in omit_syms and abase <= a[o] < a[s])
+            if (defs[s] - cbase) != (a[s] - abase - drop):
+                diffs.append((s, a[s] - abase - drop, defs[s] - cbase))
         if diffs:
             bad += 1
             print('%s  (%s)' % (module, f))
             for s, ao, co in diffs:
                 print('    %-46s asm=%-6d c=%-6d %+d' % (s, ao, co, co - ao))
+    if unchecked:
+        print('data_offset_audit: %d module(s) NOT CHECKED' % unchecked)
+        return 1
     if bad:
         print('data_offset_audit: %d module(s) with a layout disagreement' % bad)
         return 1

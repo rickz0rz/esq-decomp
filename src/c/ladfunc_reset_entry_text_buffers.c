@@ -57,7 +57,6 @@ extern char *ESQPARS_ReplaceOwnedString(char *newStr, char *old);
 extern void  LADFUNC_ClearBannerRectEntries(void);
 
 extern struct LadfuncTextEntry *LADFUNC_EntryPtrTable[];
-extern char Global_STR_LADFUNC_C_4[];
 
 void LADFUNC_ResetEntryTextBuffers(void)
 {
@@ -72,7 +71,7 @@ void LADFUNC_ResetEntryTextBuffers(void)
 
             if (len > 0 && LADFUNC_EntryPtrTable[i]->buf10 != 0)
                 MEMORY_DeallocateMemory(
-                    Global_STR_LADFUNC_C_4, 212L,
+                    "LADFUNC.c", 212L,
                     LADFUNC_EntryPtrTable[i]->buf10, len);
 
             LADFUNC_EntryPtrTable[i]->text6 =

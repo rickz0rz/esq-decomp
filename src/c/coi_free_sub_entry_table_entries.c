@@ -52,7 +52,6 @@ extern void  SCRIPT_DeallocateBufferArray(void *table, long stride,
                                                           long count);
 extern void  MEMORY_DeallocateMemory(char *who, long line, void *p,
                                                      long size);
-extern char Global_STR_COI_C_4[];
 
 void COI_FreeSubEntryTableEntries(unsigned char *ctx)
 {
@@ -81,7 +80,7 @@ void COI_FreeSubEntryTableEntries(unsigned char *ctx)
 
     if (e->count) {
         SCRIPT_DeallocateBufferArray(e->table, 30, (long)e->count);
-        MEMORY_DeallocateMemory(Global_STR_COI_C_4, 876, e->table,
+        MEMORY_DeallocateMemory("COI.c", 876, e->table,
                                                 (long)e->count * 4);
     }
 

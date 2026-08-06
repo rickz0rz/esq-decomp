@@ -69,7 +69,6 @@ extern char *Global_PTR_WORK_BUFFER;
 extern long  Global_REF_LONG_FILE_SCRATCH;
 extern char  Global_STR_G2[];
 extern char  Global_STR_G3[];
-extern char  Global_STR_DST_C_7[];
 
 long DST_LoadBannerPairFromFiles(struct DstBannerPair *pair)
 {
@@ -101,7 +100,7 @@ long DST_LoadBannerPairFromFiles(struct DstBannerPair *pair)
         DATETIME_CopyPairAndRecalc(pair->g3, a, b);
     }
 
-    MEMORY_DeallocateMemory(Global_STR_DST_C_7, 889L, buf,
+    MEMORY_DeallocateMemory("DST.c", 889L, buf,
                                             len + 1);
     DST_UpdateBannerQueue(pair);
     return 1;

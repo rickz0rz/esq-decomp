@@ -32,7 +32,6 @@ extern void *MEMORY_AllocateMemory(char *who, long line, long size,
 extern char *ESQPARS_ReplaceOwnedString(char *newText, char *old);
 
 extern char COI_STR_DEFAULT_TOKEN_TEMPLATE_B[];
-extern char Global_STR_COI_C_2[];
 
 struct CoiAnimOb {
     char  pad[28];
@@ -57,7 +56,7 @@ void COI_EnsureAnimObjectAllocated(struct CoiEntry *entry)
         return;
 
     entry->anim = (struct CoiAnimOb *)
-        MEMORY_AllocateMemory(Global_STR_COI_C_2, 1458L, 42L,
+        MEMORY_AllocateMemory("COI.c", 1458L, 42L,
                                               0x00010001L);
     entry->anim->tokenTemplate =
         ESQPARS_ReplaceOwnedString(COI_STR_DEFAULT_TOKEN_TEMPLATE_B,

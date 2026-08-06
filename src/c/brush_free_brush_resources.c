@@ -11,7 +11,6 @@
  */
 struct BrushRes { char pad[234]; struct BrushRes *next; };
 struct BrushResHead { struct BrushRes *first; };
-extern char Global_STR_BRUSH_C_9[];
 extern void MEMORY_DeallocateMemory(char *who, long line, void *p, long size);
 void BRUSH_FreeBrushResources(struct BrushResHead *h)
 {
@@ -20,7 +19,7 @@ void BRUSH_FreeBrushResources(struct BrushResHead *h)
 
     while (cur != 0) {
         next = cur->next;
-        MEMORY_DeallocateMemory(Global_STR_BRUSH_C_9, 887, cur, 238);
+        MEMORY_DeallocateMemory("BRUSH.c", 887, cur, 238);
         cur = next;
     }
     h->first = 0;

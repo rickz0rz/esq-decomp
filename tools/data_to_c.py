@@ -426,6 +426,8 @@ def to_c(path, spans, total):
             text = next(v for k, v in items if k == 's')
             if text.endswith(b'\0'):
                 text = text[:-1]
+            if inlined_filename_string(cname, text.decode('latin-1'), n):
+                continue
             if all(32 <= b < 127 for b in text):
                 lit = text.decode('latin-1').replace('\\', '\\\\').replace('"', '\\"')
                 out.append('char %s[%d] = "%s";' % (cname, n, lit))
@@ -498,6 +500,9 @@ def to_c(path, spans, total):
             elif k == 'l':
                 by += bytes([(v >> 24) & 0xff, (v >> 16) & 0xff,
                              (v >> 8) & 0xff, v & 0xff])
+        if inlined_filename_string(
+                cname, bytes(by).split(b'\0')[0].decode('ascii', 'replace'), len(by)):
+            continue
         lit = as_string_literal(by)
         if lit is not None:
             out.append('unsigned char %s[%d] = %s;' % (cname, n, lit))
@@ -517,6 +522,51 @@ def to_c(path, spans, total):
 # program are \\n (92 sites) and \\t (15).
 ESCAPES = {0x07: '\\a', 0x08: '\\b', 0x09: '\\t', 0x0a: '\\n',
            0x0b: '\\v', 0x0c: '\\f', 0x0d: '\\r'}
+
+
+FILENAME_VAL = re.compile(r'^([A-Za-z0-9_]+)\.c$')
+
+
+def inlined_filename_string(cname, text, span):
+    """True when this symbol is a __FILE__ string src/c now writes as a literal.
+
+    `text` is the string WITHOUT its terminator; `span` is the whole span the
+    symbol occupies in the module.
+
+    The original passed a source-file name and a line number to
+    MEMORY_AllocateMemory, so the data section carried copies of strings like
+    "BRUSH.c" -- nineteen in data/brush.s alone. Those are literals at the call
+    sites now, so emitting them here would resurrect dead data and make the
+    generator disagree with the tree.
+
+    TWO CONDITIONS, AND THE SECOND WAS LEARNED THE HARD WAY.
+
+    The name test is driven by the VALUE: some literal "<stem>.c" must match
+    and the symbol name must contain that stem. Four naming shapes occur --
+    Global_STR_BRUSH_C_1, Global_STR_ESQDISP_C, Global_ESQPARS2_C_1 and
+    TLIBA1_STR_TLIBA1_DOT_C -- so every name-shaped pattern missed one.
+
+    THE SPAN MUST BE AN EXACT FIT: the text plus its single NUL, nothing more.
+    Symbols that carry PADDING past the terminator -- Global_STR_KYBD_C is 10
+    bytes for a 7-byte string -- own that padding as part of the module's
+    layout, not as part of the string.
+
+    AND THE SPAN MUST BE EVEN, which is the condition that actually crashed the
+    machine. Almost every one of these is an `NStr`, which ends in `CNOP 0,2`
+    and is therefore even. `TLIBA1_STR_TLIBA1_DOT_C` is a raw
+    `DC.B "TLIBA1.c",0` -- NINE bytes -- and `_TLIBA1_FormatFallbackBuffer`
+    follows it immediately with `DS.W` pointer fields. Removing nine bytes puts
+    those words on an odd address, and a misaligned word access on a 68000 is
+    an address error: the emulator log shows the machine rebooting mid-run,
+    three exception lines and 1,201 log lines against one and 1,032 for a
+    healthy build, reproduced.
+    """
+    m = FILENAME_VAL.match(text)
+    if not m:
+        return False
+    if m.group(1).upper() not in cname.upper():
+        return False
+    return span == len(text) + 1 and span % 2 == 0
 
 
 def as_string_literal(by):

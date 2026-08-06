@@ -27,8 +27,6 @@ extern short NEWGRID_SampleTimeTextWidthPx;
 extern short NEWGRID_ColumnStartXPx;
 extern short NEWGRID_ColumnWidthPx;
 extern short NEWGRID_RowHeightPx;
-extern char  Global_STR_NEWGRID_C_1[];
-extern char  Global_STR_NEWGRID_C_2[];
 extern char  Global_STR_44_44_44[];
 
 extern void NEWGRID2_EnsureBuffersAllocated(void);
@@ -51,7 +49,7 @@ void NEWGRID_InitGridResources(void)
     NEWGRID_InitShowtimeBuckets();
 
     NEWGRID_MainRastPortPtr = MEMORY_AllocateMemory(
-        Global_STR_NEWGRID_C_1, 99, 100, MEMF_PUBLIC + MEMF_CLEAR);
+        "NEWGRID.c", 99, 100, MEMF_PUBLIC + MEMF_CLEAR);
     if (NEWGRID_MainRastPortPtr == 0)
         return;
     InitRastPort(NEWGRID_MainRastPortPtr);
@@ -60,7 +58,7 @@ void NEWGRID_InitGridResources(void)
     SetFont(NEWGRID_MainRastPortPtr, Global_HANDLE_PREVUEC_FONT);
 
     NEWGRID_HeaderRastPortPtr = MEMORY_AllocateMemory(
-        Global_STR_NEWGRID_C_2, 112, 100, MEMF_PUBLIC + MEMF_CLEAR);
+        "NEWGRID.c", 112, 100, MEMF_PUBLIC + MEMF_CLEAR);
     if (NEWGRID_HeaderRastPortPtr == 0)
         return;
     InitRastPort(NEWGRID_HeaderRastPortPtr);

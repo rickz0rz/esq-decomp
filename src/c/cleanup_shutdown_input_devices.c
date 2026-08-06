@@ -61,7 +61,6 @@ extern struct IOStdReq *Global_REF_IOSTDREQ_STRUCT_CONSOLE_DEVICE;
 extern void *Global_REF_DATA_INPUT_BUFFER;
 extern void *Global_REF_INPUTDEVICE_MSGPORT;
 extern void *Global_REF_CONSOLEDEVICE_MSGPORT;
-extern char  Global_STR_CLEANUP_C_5[];
 
 void CLEANUP_ShutdownInputDevices(void)
 {
@@ -69,7 +68,7 @@ void CLEANUP_ShutdownInputDevices(void)
     Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE->io_Data = Global_REF_DATA_INPUT_BUFFER;
     DoIO((struct IORequest *)Global_REF_IOSTDREQ_STRUCT_INPUT_DEVICE);
 
-    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_5, 127,
+    MEMORY_DeallocateMemory("CLEANUP.c", 127,
                                             Global_REF_DATA_INPUT_BUFFER,
                                             sizeof(struct InputEvent));
 

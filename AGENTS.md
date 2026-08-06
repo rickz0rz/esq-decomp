@@ -3090,6 +3090,51 @@ names the marker: `esq_capture_ctrl_bit3_stream.c` explains why a *different*
 file carries one and was dropped for saying so. The pattern now requires the
 marker to OPEN a header line.
 
+## Inlining a data string: TWO conditions, and the second crashes the machine
+
+`MEMORY_AllocateMemory(char *who, long line, ...)` takes a source-file name, so
+the DATA section carried 193 copies of strings like `"BRUSH.c"` -- nineteen in
+`data/brush.s` alone. 118 are now literals at the call sites and their
+definitions are gone.
+
+**A literal in a CODE object lands at the FRONT of the DATA hunk**, before every
+data module, so removing the definition mid-section and adding the literal at
+the front shifts everything above as ONE PIECE. Measured: every A4 and
+`esq-neardata.h` anchor moved by exactly +72, so every hardcoded distance
+survives. That is the same uniform-shift argument as the requester strings.
+
+A symbol qualifies only when BOTH hold, and `tools/data_to_c.py` enforces them:
+
+1. **The span is an EXACT FIT** -- the text plus its single NUL. 74 of these
+   carry padding past the terminator (`Global_STR_KYBD_C` is 10 bytes for a
+   7-byte string). That padding belongs to the module's layout.
+2. **The span is EVEN.** This is the one that matters, and it cost a long
+   detour. Almost every such string is an `NStr`, which ends in `CNOP 0,2` and
+   is therefore even. `TLIBA1_STR_TLIBA1_DOT_C` is a raw `DC.B "TLIBA1.c",0`
+   -- NINE bytes -- and `_TLIBA1_FormatFallbackBuffer` follows it immediately
+   with `DS.W` pointer fields. Remove nine bytes and those words land on an odd
+   address; a misaligned word access on a 68000 is an ADDRESS ERROR.
+
+**The failure looked nothing like an alignment fault.** The soak reported
+`DISPLAY FROZEN` with 3 exception lines and 1,201 log lines against 1 and 1,032
+for a healthy build, and the emulator log shows the machine REBOOTING mid-run.
+`data_offset_audit` passed, `check_pcrel_range` passed, every anchor was
+uniform, and the build linked clean.
+
+**What found it was that removing FEWER symbols broke it while removing MORE
+did not.** A 207-symbol build passed twice and wrote a byte-identical
+`curday.dat`; a 138-symbol build crashed reliably. That is not a dose-response,
+so the cause had to be one specific member -- and the only symbol in the failing
+set but not the passing one was the odd-sized one.
+
+> **`data_offset_audit.py` STOPPED CHECKING and still said "offsets agree".**
+> Its match rule required the compiled object to define EVERY symbol the
+> assembly module has; a deliberately-absent one made it skip the module and
+> count it as checked anyway. It was blind on 38 of 50 modules. It now knows
+> which symbols are legitimately absent, using the same rule as the generator,
+> reports `NOT CHECKED` and exits nonzero. Verified against a deliberate 2-byte
+> break, which it catches.
+
 ## A stale file in src/c is not inert
 
 ```sh

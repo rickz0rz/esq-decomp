@@ -89,16 +89,6 @@ extern char  DISKIO2_STR_DREV_2[];
 extern char  DISKIO2_STR_DREV_3[];
 extern char  DISKIO2_STR_DREV_4[];
 extern char  DISKIO2_STR_DREV_5[];
-extern char  Global_STR_DISKIO2_C_4[];
-extern char  Global_STR_DISKIO2_C_5[];
-extern char  Global_STR_DISKIO2_C_6[];
-extern char  Global_STR_DISKIO2_C_7[];
-extern char  Global_STR_DISKIO2_C_8[];
-extern char  Global_STR_DISKIO2_C_9[];
-extern char  Global_STR_DISKIO2_C_10[];
-extern char  Global_STR_DISKIO2_C_11[];
-extern char  Global_STR_DISKIO2_C_12[];
-extern char  Global_STR_DISKIO2_C_13[];
 
 extern char *Global_PTR_WORK_BUFFER;
 extern long  Global_REF_LONG_FILE_SCRATCH;
@@ -178,7 +168,7 @@ long DISKIO2_LoadCurDayDataFile(void)
 
     str = DISKIO_ConsumeCStringFromWorkBuffer();
     if (str == (char *)-1) {
-        MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_4, 520,
+        MEMORY_DeallocateMemory("DISKIO2.c", 520,
                                                 work, fileLen + 1);
         return -1;
     }
@@ -205,14 +195,14 @@ long DISKIO2_LoadCurDayDataFile(void)
         DISKIO_CurrentDriveRevisionIndex = 5;
         headerLen = 48;
     } else {
-        MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_5, 561,
+        MEMORY_DeallocateMemory("DISKIO2.c", 561,
                                                 work, fileLen + 1);
         return -1;
     }
 
     str = DISKIO_ConsumeCStringFromWorkBuffer();
     if (str == (char *)-1) {
-        MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_6, 570,
+        MEMORY_DeallocateMemory("DISKIO2.c", 570,
                                                 work, fileLen + 1);
         return -1;
     }
@@ -221,7 +211,7 @@ long DISKIO2_LoadCurDayDataFile(void)
     if (DISKIO_CurrentDriveRevisionIndex > 0) {
         str = DISKIO_ConsumeCStringFromWorkBuffer();
         if (str == (char *)-1) {
-            MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_7, 588,
+            MEMORY_DeallocateMemory("DISKIO2.c", 588,
                                                     work, fileLen + 1);
             return -1;
         }
@@ -249,16 +239,16 @@ long DISKIO2_LoadCurDayDataFile(void)
 
     for (n = 0; n < entryCount; n++) {
         entry = (struct DkEntry *)MEMORY_AllocateMemory(
-            Global_STR_DISKIO2_C_8, 634, 52, MEMF_PUBLIC | MEMF_CLEAR);
+            "DISKIO2.c", 634, 52, MEMF_PUBLIC | MEMF_CLEAR);
         if (entry == 0) {
             status = -1;
             goto finish;
         }
         title = (struct DkTitle *)MEMORY_AllocateMemory(
-            Global_STR_DISKIO2_C_9, 640, 500, MEMF_PUBLIC | MEMF_CLEAR);
+            "DISKIO2.c", 640, 500, MEMF_PUBLIC | MEMF_CLEAR);
         if (title == 0) {
             status = -1;
-            MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_10, 644,
+            MEMORY_DeallocateMemory("DISKIO2.c", 644,
                                                     entry, 52);
             goto finish;
         }
@@ -329,9 +319,9 @@ long DISKIO2_LoadCurDayDataFile(void)
             sparseLimit = (short)DISKIO_ParseLongFromWorkBuffer();
 
         if (status == -1) {
-            MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_11, 736,
+            MEMORY_DeallocateMemory("DISKIO2.c", 736,
                                                     entry, 52);
-            MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_12, 737,
+            MEMORY_DeallocateMemory("DISKIO2.c", 737,
                                                     title, 500);
             goto finish;
         }
@@ -343,7 +333,7 @@ long DISKIO2_LoadCurDayDataFile(void)
 finish:
     TEXTDISP_PrimaryGroupHeaderCode = groupCode;
     TEXTDISP_PrimaryGroupEntryCount = n;
-    MEMORY_DeallocateMemory(Global_STR_DISKIO2_C_13, 764, work,
+    MEMORY_DeallocateMemory("DISKIO2.c", 764, work,
                                             fileLen + 1);
 
     if (COI_LoadOiDataFile(groupCode) != -1) {

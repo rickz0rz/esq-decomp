@@ -61,7 +61,7 @@ char ED2_FMT_SCRSPD_PCT_D[10] = "SCRSPD=%d";
 char ED2_FMT_MR_PCT_D_SBS_PCT_D_SPORT_PCT_D[22] = "MR=%d SBS=%d Sport=%d";
 char ED2_FMT_CYCLE_PCT_C_CYCLEFREQ_PCT_D_AFTRORDR[34] = "Cycle=%c CycleFreq=%d AftrOrdr=%d";
 char Global_STR_CLOCKCMD_EQUALS_PCT_C[12] = "ClockCmd=%c";
-char Global_STR_ED2_C_1[6] = "ED2.c";
+
 char Global_STR_PI_CLU_POS1[20] = "PI[%d] Clu_pos1=%d";
 char Global_STR_CHAN_SOURCE_CALLLTRS_1[30] = "Chan=%s Source=%s CallLtrs=%s";
 char ED2_STR_NullFallbackChannel[6] = "NULL";
@@ -77,7 +77,7 @@ char ED2_STR_SPORTSPROG[12] = "SPORTSPROG ";
 char ED2_STR_DVIEW_USED[12] = "DVIEW_USED ";
 char ED2_STR_REPEATPROG[12] = "REPEATPROG ";
 char ED2_STR_PREVDAYSDATA[14] = "PREVDAYSDATA ";
-char Global_STR_ED2_C_2[6] = "ED2.c";
+
 char Global_STR_CLU_CLU_POS1[20] = "CLU[%d] Clu_pos1=%d";
 char Global_STR_CHAN_SOURCE_CALLLTRS_2[30] = "Chan=%s Source=%s CallLtrs=%s";
 char ED2_STR_NONE_SourceFlagSummary[6] = "None ";

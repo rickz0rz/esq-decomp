@@ -62,7 +62,6 @@ extern void BRUSH_NormalizeBrushNames(struct BrushListNode **head);
 
 extern long BRUSH_LoadInProgressFlag;
 extern long PARSEINI_ParsedDescriptorListHead;
-extern char Global_STR_BRUSH_C_8[];
 
 void BRUSH_PopulateBrushList(struct BrushDescriptor *desc,
                              struct BrushListNode **head)
@@ -84,7 +83,7 @@ void BRUSH_PopulateBrushList(struct BrushDescriptor *desc,
         node = BRUSH_LoadBrushAsset(desc);
         next = desc->next234;
 
-        MEMORY_DeallocateMemory(Global_STR_BRUSH_C_8, 845L,
+        MEMORY_DeallocateMemory("BRUSH.c", 845L,
                                                 desc, 238L);
         desc = next;
 

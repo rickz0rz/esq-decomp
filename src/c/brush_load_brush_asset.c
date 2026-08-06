@@ -171,13 +171,6 @@ extern long BRUSH_SnapshotWidth;
 extern long BRUSH_SnapshotDepth;
 extern char BRUSH_SnapshotHeader[];
 extern char BRUSH_STR_IFF_FORM[];
-extern char Global_STR_BRUSH_C_10[];
-extern char Global_STR_BRUSH_C_11[];
-extern char Global_STR_BRUSH_C_12[];
-extern char Global_STR_BRUSH_C_13[];
-extern char Global_STR_BRUSH_C_14[];
-extern char Global_STR_BRUSH_C_15[];
-extern char Global_STR_BRUSH_C_16[];
 
 struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
 {
@@ -217,7 +210,7 @@ struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
                 Seek(fh, 0L, -1L);
 
                 decode = decodeBase = MEMORY_AllocateMemory(
-                             Global_STR_BRUSH_C_10, 977L, 130000L,
+                             "BRUSH.c", 977L, 130000L,
                              MEMF_PUBLIC | MEMF_CLEAR);
 
                 if (decode != 0) {
@@ -263,7 +256,7 @@ struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
     if (failed == 0) {
 
         node = MEMORY_AllocateMemory(
-                   Global_STR_BRUSH_C_11, 1064L, 372L,
+                   "BRUSH.c", 1064L, 372L,
                    MEMF_PUBLIC | MEMF_CLEAR);
 
         if (node != 0) {
@@ -308,7 +301,7 @@ struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
             for (i = 0; i < (long)node->dims.depth && i < 5; i++) {
 
                 node->bitMap.Planes[i] = GRAPHICS_AllocRaster(
-                    Global_STR_BRUSH_C_12, 1134L, (long)node->dims.width,
+                    "BRUSH.c", 1134L, (long)node->dims.width,
                     (long)node->dims.height);
                 planeSave[i] = node->bitMap.Planes[i];
 
@@ -356,13 +349,13 @@ struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
                 while (node->dims.depth != 0 && i < 5) {
                     if (node->bitMap.Planes[i] != 0)
                         GRAPHICS_FreeRaster(
-                            Global_STR_BRUSH_C_13, 1202L,
+                            "BRUSH.c", 1202L,
                             node->bitMap.Planes[i], (long)node->dims.width,
                             (long)node->dims.height);
                     i++;
                 }
 
-                MEMORY_DeallocateMemory(Global_STR_BRUSH_C_14,
+                MEMORY_DeallocateMemory("BRUSH.c",
                                                         1205L, node, 372L);
                 node = 0;
             }
@@ -372,7 +365,7 @@ struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
     if (src->type == 11) {
 
         node = MEMORY_AllocateMemory(
-                   Global_STR_BRUSH_C_15, 1220L, 372L,
+                   "BRUSH.c", 1220L, 372L,
                    MEMF_PUBLIC | MEMF_CLEAR);
 
         if (node != 0) {
@@ -385,7 +378,7 @@ struct BrushNode *BRUSH_LoadBrushAsset(struct BrushSrc *src)
     }
 
     if (decodeBase != 0)
-        MEMORY_DeallocateMemory(Global_STR_BRUSH_C_16, 1236L,
+        MEMORY_DeallocateMemory("BRUSH.c", 1236L,
                                                 decodeBase, 130000L);
 
     return node;

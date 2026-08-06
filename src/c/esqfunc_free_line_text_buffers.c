@@ -10,14 +10,13 @@
  *            SAS/C version; see docs/compiler-version.md.
  */
 extern char *LADFUNC_LineTextBufferPtrs[];
-extern char  Global_STR_ESQFUNC_C_6[];
 extern void  MEMORY_DeallocateMemory(char *who, long line, char *p, long size);
 void ESQFUNC_FreeLineTextBuffers(void)
 {
     short i;
 
     for (i = 0; i < 20; i++) {
-        MEMORY_DeallocateMemory(Global_STR_ESQFUNC_C_6, 1235,
+        MEMORY_DeallocateMemory("ESQFUNC.c", 1235,
                                               LADFUNC_LineTextBufferPtrs[i], 60);
         LADFUNC_LineTextBufferPtrs[i] = 0;
     }

@@ -161,17 +161,6 @@ extern char  Global_STR_BATTCLOCK_RESOURCE[];
 extern char  Global_STR_CART[];
 extern char  Global_STR_SERIAL_READ[];
 extern char  Global_STR_SERIAL_DEVICE[];
-extern char  Global_STR_ESQ_C_1[];
-extern char  Global_STR_ESQ_C_2[];
-extern char  Global_STR_ESQ_C_3[];
-extern char  Global_STR_ESQ_C_4[];
-extern char  Global_STR_ESQ_C_5[];
-extern char  Global_STR_ESQ_C_6[];
-extern char  Global_STR_ESQ_C_7[];
-extern char  Global_STR_ESQ_C_8[];
-extern char  Global_STR_ESQ_C_9[];
-extern char  Global_STR_ESQ_C_10[];
-extern char  Global_STR_ESQ_C_11[];
 extern char  Global_STR_DF0_GRADIENT_INI_2[];
 extern char  Global_STR_DF0_DEFAULT_INI_1[];
 extern char  Global_STR_DF0_BRUSH_INI_1[];
@@ -486,7 +475,7 @@ void ESQ_MainInitAndRun(long argc, char **argv)
         Global_HANDLE_PREVUE_FONT = Global_HANDLE_TOPAZ_FONT;
 
     Global_REF_RASTPORT_1 = (struct RastPort *)
-        MEMORY_AllocateMemory(Global_STR_ESQ_C_1, 623L, 100L,
+        MEMORY_AllocateMemory("ESQ.c", 623L, 100L,
                                             MEMF_PUBLIC | MEMF_CLEAR);
     InitRastPort(Global_REF_RASTPORT_1);
     Global_REF_RASTPORT_1->BitMap = &Global_REF_696_400_BITMAP;
@@ -498,7 +487,7 @@ void ESQ_MainInitAndRun(long argc, char **argv)
         WDISP_HighlightRasterHeightPx = WDISP_HighlightRasterHeightPx - 1;
 
     Global_REF_RASTPORT_2 = (struct RastPort *)
-        MEMORY_AllocateMemory(Global_STR_ESQ_C_2, 645L, 100L,
+        MEMORY_AllocateMemory("ESQ.c", 645L, 100L,
                                             MEMF_PUBLIC | MEMF_CLEAR);
     InitRastPort(Global_REF_RASTPORT_2);
     Global_REF_RASTPORT_2->BitMap = &Global_REF_320_240_BITMAP;
@@ -511,7 +500,7 @@ void ESQ_MainInitAndRun(long argc, char **argv)
 
     for (i = 0; i < 4; i++) {
         WDISP_352x240RasterPtrTable[i] =
-            GRAPHICS_AllocRaster(Global_STR_ESQ_C_3, 668L,
+            GRAPHICS_AllocRaster("ESQ.c", 668L,
                                                 352L, 240L);
         BltClear(WDISP_352x240RasterPtrTable[i], 10560L, 0L);
     }
@@ -522,7 +511,7 @@ void ESQ_MainInitAndRun(long argc, char **argv)
         Global_REF_STR_CLOCK_FORMAT = &Global_JMPTBL_HALF_HOURS_12_HR_FMT;
 
     ESQ_HighlightMsgPort = (struct MsgPort *)
-        MEMORY_AllocateMemory(Global_STR_ESQ_C_4, 683L, 34L,
+        MEMORY_AllocateMemory("ESQ.c", 683L, 34L,
                                             MEMF_PUBLIC | MEMF_CLEAR);
     if (ESQ_HighlightMsgPort == 0)
         goto shutdown;
@@ -534,7 +523,7 @@ void ESQ_MainInitAndRun(long argc, char **argv)
     LIST_InitHeader(&ESQ_HighlightMsgPort->mp_MsgList);
 
     ESQ_HighlightReplyPort = (struct MsgPort *)
-        MEMORY_AllocateMemory(Global_STR_ESQ_C_5, 698L, 34L,
+        MEMORY_AllocateMemory("ESQ.c", 698L, 34L,
                                             MEMF_PUBLIC | MEMF_CLEAR);
     if (ESQ_HighlightReplyPort == 0)
         goto shutdown;
@@ -589,7 +578,7 @@ void ESQ_MainInitAndRun(long argc, char **argv)
     }
 
     ESQIFF_RecordBufferPtr =
-        MEMORY_AllocateMemory(Global_STR_ESQ_C_6, 854L, 9000L,
+        MEMORY_AllocateMemory("ESQ.c", 854L, 9000L,
                                             MEMF_PUBLIC | MEMF_CLEAR);
 
     WDISP_SerialMessagePortPtr = (struct MsgPort *)
@@ -619,7 +608,7 @@ void ESQ_MainInitAndRun(long argc, char **argv)
     ESQFUNC_AllocateLineTextBuffers();
 
     Global_REF_96_BYTES_ALLOCATED =
-        MEMORY_AllocateMemory(Global_STR_ESQ_C_7, 984L, 96L,
+        MEMORY_AllocateMemory("ESQ.c", 984L, 96L,
                                             MEMF_PUBLIC);
 
     InitBitMap(&Global_REF_696_400_BITMAP, 3L, 696L, 400L);
@@ -627,7 +616,7 @@ void ESQ_MainInitAndRun(long argc, char **argv)
 
     for (i = 0; i < 3; i++) {
         WDISP_BannerRowScratchRasterTable0[i] =
-            GRAPHICS_AllocRaster(Global_STR_ESQ_C_8, 991L,
+            GRAPHICS_AllocRaster("ESQ.c", 991L,
                                                 696L, 509L);
         BltClear(WDISP_BannerRowScratchRasterTable0[i], 0xaef8L, 0L);
     }
@@ -644,7 +633,7 @@ void ESQ_MainInitAndRun(long argc, char **argv)
 
     for (i = 3; i < 5; i++) {
         WDISP_DisplayContextPlanePointer0[i] =
-            GRAPHICS_AllocRaster(Global_STR_ESQ_C_9, 1008L,
+            GRAPHICS_AllocRaster("ESQ.c", 1008L,
                                                 696L, 241L);
         BltClear(WDISP_DisplayContextPlanePointer0[i], 0x52d8L, 0L);
     }
@@ -666,7 +655,7 @@ void ESQ_MainInitAndRun(long argc, char **argv)
 
     for (i = 0; i < 3; i++) {
         WDISP_LivePlaneRasterTable0[i] =
-            GRAPHICS_AllocRaster(Global_STR_ESQ_C_10, 1027L,
+            GRAPHICS_AllocRaster("ESQ.c", 1027L,
                                                 696L, 2L);
         BltClear(WDISP_LivePlaneRasterTable0[i], 176L, 0L);
     }
@@ -676,7 +665,7 @@ void ESQ_MainInitAndRun(long argc, char **argv)
     ESQSHARED_LivePlaneBase2 = WDISP_LivePlaneRasterTable0[2];
 
     WDISP_BannerWorkRasterPtr =
-        GRAPHICS_AllocRaster(Global_STR_ESQ_C_11, 1038L, 696L, 15L);
+        GRAPHICS_AllocRaster("ESQ.c", 1038L, 696L, 15L);
     WDISP_AccumulatorFlushPending = 0;
     NEWGRID_RefreshStateFlag = 0;
     NEWGRID_MessagePumpSuspendFlag = -1;

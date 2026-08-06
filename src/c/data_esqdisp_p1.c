@@ -12,4 +12,3 @@
  */
 
 short ESQDISP_SecondaryPropagationDoneFlag = 1;
-char Global_STR_ESQFUNC_C_1[10] = "ESQFUNC.c";

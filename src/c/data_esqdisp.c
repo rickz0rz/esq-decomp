@@ -11,7 +11,6 @@
  * rule that a data module must be a multiple of 4 bytes.
  */
 
-char Global_STR_ESQDISP_C[10] = "ESQDISP.c";
 unsigned char ESQDISP_StatusIndicatorColorCache[8] = {
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
 };

@@ -33,7 +33,6 @@ extern void *MEMORY_AllocateMemory(char *who, long line, long size,
 extern char *LADFUNC_LineTextBufferPtrs[];
 extern short LADFUNC_LineSlotWriteIndex;
 extern short LADFUNC_LineSlotSecondaryIndex;
-extern char Global_STR_ESQFUNC_C_5[];
 
 long ESQFUNC_AllocateLineTextBuffers(void)
 {
@@ -41,7 +40,7 @@ long ESQFUNC_AllocateLineTextBuffers(void)
 
     for (i = 0; i < 20; i++)
         LADFUNC_LineTextBufferPtrs[i] =
-            (char *)MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_5,
+            (char *)MEMORY_AllocateMemory("ESQFUNC.c",
                                                         1222L, 60L, 0x00010001L);
     LADFUNC_LineSlotSecondaryIndex = LADFUNC_LineSlotWriteIndex = 0;
     return 0;

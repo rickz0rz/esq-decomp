@@ -51,8 +51,6 @@ extern void *WDISP_SerialMessagePortPtr;
 extern struct Interrupt *Global_REF_INTB_RBF_INTERRUPT;
 extern char *Global_REF_INTB_RBF_64K_BUFFER;
 extern struct Interrupt *Global_REF_INTERRUPT_STRUCT_INTB_RBF;
-extern char Global_STR_CLEANUP_C_3[];
-extern char Global_STR_CLEANUP_C_4[];
 
 #include <exec/interrupts.h>
 #include <exec/io.h>
@@ -68,9 +66,9 @@ void CLEANUP_ClearRbfInterruptAndSerial(void)
 
     SetIntVector(11L, Global_REF_INTB_RBF_INTERRUPT);
 
-    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_3, 113L,
+    MEMORY_DeallocateMemory("CLEANUP.c", 113L,
                                             Global_REF_INTB_RBF_64K_BUFFER, 64000L);
-    MEMORY_DeallocateMemory(Global_STR_CLEANUP_C_4, 118L,
+    MEMORY_DeallocateMemory("CLEANUP.c", 118L,
                                             Global_REF_INTERRUPT_STRUCT_INTB_RBF,
                                             (long)sizeof(struct Interrupt));
 }

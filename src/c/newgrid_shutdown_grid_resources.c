@@ -10,7 +10,6 @@
  *            SAS/C version; see docs/compiler-version.md.
  */
 extern long NEWGRID_MainRastPortPtr;
-extern char Global_STR_NEWGRID_C_3[];
 extern void MEMORY_DeallocateMemory(char *who, long line, long ptr, long size);
 extern void NEWGRID2_FreeBuffersIfAllocated(void);
 extern void DISPTEXT_FreeBuffers(void);
@@ -19,7 +18,7 @@ extern short NEWGRID_GridResourcesInitializedFlag;
 void NEWGRID_ShutdownGridResources(void)
 {
     if (NEWGRID_MainRastPortPtr != 0)
-        MEMORY_DeallocateMemory(Global_STR_NEWGRID_C_3, 148,
+        MEMORY_DeallocateMemory("NEWGRID.c", 148,
                                                NEWGRID_MainRastPortPtr, 100);
     NEWGRID2_FreeBuffersIfAllocated();
     DISPTEXT_FreeBuffers();

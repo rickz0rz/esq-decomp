@@ -24,9 +24,6 @@ extern char *TEXTDISP_SecondaryEntryPtrTable[];
 extern char *TEXTDISP_PrimaryEntryPtrTable[];
 extern struct TitleRec *TEXTDISP_SecondaryTitlePtrTable[];
 extern struct TitleRec *TEXTDISP_PrimaryTitlePtrTable[];
-extern char  Global_STR_ESQPARS_C_2[];
-extern char  Global_STR_ESQPARS_C_3[];
-extern char  Global_STR_ESQPARS_C_4[];
 
 extern void SCRIPT_ResetCtrlContextAndClearStatusLine(void);
 extern void ESQIFF2_ClearLineHeadTailByMode(long mode);
@@ -72,7 +69,7 @@ void ESQPARS_RemoveGroupEntryAndReleaseStrings(short mode)
         while (title != 0 && j < 49) {
             str = title->slots[j];
             if (str != 0) {
-                MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_2,
+                MEMORY_DeallocateMemory("ESQPARS.c",
                     1025, str, (long)strlen(str) + 1);
                 title->slots[j] = 0;
             }
@@ -80,11 +77,11 @@ void ESQPARS_RemoveGroupEntryAndReleaseStrings(short mode)
         }
 
         if (title != 0)
-            MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_3, 1031,
+            MEMORY_DeallocateMemory("ESQPARS.c", 1031,
                                                   title, 500);
         COI_FreeEntryResources(entry);
         if (entry != 0)
-            MEMORY_DeallocateMemory(Global_STR_ESQPARS_C_4, 1040,
+            MEMORY_DeallocateMemory("ESQPARS.c", 1040,
                                                   entry, 52);
         i--;
     }

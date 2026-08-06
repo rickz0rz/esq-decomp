@@ -84,8 +84,6 @@ extern short TEXTDISP_PrimaryGroupEntryCount;
 extern struct DkTitle *TEXTDISP_PrimaryTitlePtrTable[];
 extern struct EsqDisplayContext *WDISP_DisplayContextBase;
 
-extern char Global_STR_ED2_C_1[];
-extern char Global_STR_ED2_C_2[];
 extern char Global_STR_PI_CLU_POS1[];
 extern char Global_STR_CHAN_SOURCE_CALLLTRS_1[];
 extern char Global_STR_TS_TITLE_TIME[];
@@ -143,7 +141,7 @@ void ED2_DrawEntryDetailsPanel(void)
         return;
 
     scratch = (char *)MEMORY_AllocateMemory(
-        Global_STR_ED2_C_1, 374, 1000, MEMF_PUBLIC | MEMF_CLEAR);
+        "ED2.c", 374, 1000, MEMF_PUBLIC | MEMF_CLEAR);
 
     SetRast(&WDISP_DisplayContextBase->rp2, 2L);
 
@@ -222,5 +220,5 @@ void ED2_DrawEntryDetailsPanel(void)
     TLIBA3_DrawCenteredWrappedTextLines(
         &WDISP_DisplayContextBase->rp2, panelText, 210L);
 
-    MEMORY_DeallocateMemory(Global_STR_ED2_C_2, 427, scratch, 1000);
+    MEMORY_DeallocateMemory("ED2.c", 427, scratch, 1000);
 }

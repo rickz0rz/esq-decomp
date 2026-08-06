@@ -14,4 +14,3 @@
 unsigned char NEWGRID_GridResourcesInitializedFlag[2] = {
     0x00, 0x00
 };
-char Global_STR_NEWGRID_C_1[10] = "NEWGRID.c";

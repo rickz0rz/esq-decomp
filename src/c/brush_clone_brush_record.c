@@ -24,8 +24,6 @@ struct Blob8  { long w[2]; };
 
 extern long BRUSH_PendingAlertCode;
 extern char BRUSH_SnapshotHeader[];
-extern char Global_STR_BRUSH_C_17[];
-extern char Global_STR_BRUSH_C_18[];
 
 extern char *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
@@ -38,7 +36,7 @@ char *BRUSH_CloneBrushRecord(char *src)
     long  i;
 
     dst = 0;
-    dst = MEMORY_AllocateMemory(Global_STR_BRUSH_C_17, 1248, 372,
+    dst = MEMORY_AllocateMemory("BRUSH.c", 1248, 372,
               MEMF_PUBLIC + MEMF_CLEAR);
     if (dst == 0)
         return dst;
@@ -86,7 +84,7 @@ char *BRUSH_CloneBrushRecord(char *src)
     i = 0;
     while (i < (long)*(unsigned char *)(dst + 184) && i < 5) {
         *(long *)(dst + (i << 2) + 144) = GRAPHICS_AllocRaster(
-            Global_STR_BRUSH_C_18, 1302,
+            "BRUSH.c", 1302,
             (long)*(unsigned short *)(dst + 176),
             (long)*(unsigned short *)(dst + 178));
 

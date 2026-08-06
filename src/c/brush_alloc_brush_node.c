@@ -66,7 +66,6 @@ struct BrushNode {
 
 extern void *MEMORY_AllocateMemory(char *who, long line,
                                                    long size, long flags);
-extern char  Global_STR_BRUSH_C_19[];
 extern struct BrushNode *BRUSH_LastAllocatedNode;
 
 void *BRUSH_AllocBrushNode(char *name, struct BrushNode *tail)
@@ -74,7 +73,7 @@ void *BRUSH_AllocBrushNode(char *name, struct BrushNode *tail)
     struct BrushNode *n;
 
     BRUSH_LastAllocatedNode = MEMORY_AllocateMemory(
-        Global_STR_BRUSH_C_19, 1352L, 238L, MEMF_PUBLIC | MEMF_CLEAR);
+        "BRUSH.c", 1352L, 238L, MEMF_PUBLIC | MEMF_CLEAR);
 
     if (BRUSH_LastAllocatedNode != 0) {
         strcpy(BRUSH_LastAllocatedNode->name, name);

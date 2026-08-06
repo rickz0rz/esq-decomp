@@ -30,15 +30,10 @@ char DST_STR_NO_OUT_TIME[14] = " NO OUT TIME ";
 char DST_STR_NO_DST_DATA[14] = " NO DST DATA ";
 char DST_STR_G2_COLON[6] = " g2:";
 char DST_STR_G3_COLON[6] = " g3:";
-char Global_STR_DST_C_1[6] = "DST.c";
-char Global_STR_DST_C_2[6] = "DST.c";
-char Global_STR_DST_C_3[6] = "DST.c";
-char Global_STR_DST_C_4[6] = "DST.c";
-char Global_STR_DST_C_5[6] = "DST.c";
-char Global_STR_DST_C_6[6] = "DST.c";
+
 char Global_STR_G2[4] = "g2";
 char Global_STR_G3[4] = "g3";
-char Global_STR_DST_C_7[6] = "DST.c";
+
 unsigned char DST_FMT_PCT_S_COLON_PCT_S_PCT_S_PCT_02D_PCT_[50] = "%s:  %s%s%02d, '%d (%03d) %2d:%02d:%02d %s %s %s\n";
 char DST_TAG_PM[4] = "PM";
 char DST_TAG_AM[4] = "AM";

@@ -94,8 +94,6 @@ extern void  LADFUNC_DisplayTextPackedPens(struct RastPort *rp, long x, long y,
 
 extern long ED_TextLimit;
 extern char Global_STR_SINGLE_SPACE_1[];
-extern char Global_STR_LADFUNC_C_14[];
-extern char Global_STR_LADFUNC_C_15[];
 
 void LADFUNC_DrawEntryLineWithAttrs(struct RastPort *rp, long row, char *text,
                                     char *attrArg)
@@ -124,7 +122,7 @@ void LADFUNC_DrawEntryLineWithAttrs(struct RastPort *rp, long row, char *text,
     if (maxCols > 40)
         maxCols = 40;
 
-    buf = MEMORY_AllocateMemory(Global_STR_LADFUNC_C_14, 712L,
+    buf = MEMORY_AllocateMemory("LADFUNC.c", 712L,
                                                maxCols + 1,
                                                MEMF_PUBLIC | MEMF_CLEAR);
     if (buf == 0)
@@ -204,6 +202,6 @@ void LADFUNC_DrawEntryLineWithAttrs(struct RastPort *rp, long row, char *text,
         LADFUNC_DisplayTextPackedPens(rp, x, y, (long)attrByte, buf);
     }
 
-    MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_15, 824L, buf,
+    MEMORY_DeallocateMemory("LADFUNC.c", 824L, buf,
                                            maxCols + 1);
 }

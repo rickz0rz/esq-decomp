@@ -53,14 +53,13 @@ extern void *MEMORY_AllocateMemory(char *who, long line, long size,
 extern void ESQ_TickGlobalCounters();
 
 extern struct Interrupt *Global_REF_INTERRUPT_STRUCT_INTB_VERTB;
-extern char Global_STR_ESQFUNC_C_1[];
 extern char Global_STR_VERTICAL_BLANK_INT[];
 extern char ESQ_VerticalBlankInterruptUserData[];
 
 void SETUP_INTERRUPT_INTB_VERTB(void)
 {
     Global_REF_INTERRUPT_STRUCT_INTB_VERTB = (struct Interrupt *)
-        MEMORY_AllocateMemory(Global_STR_ESQFUNC_C_1, 1159L,
+        MEMORY_AllocateMemory("ESQFUNC.c", 1159L,
                                             (long)sizeof(struct Interrupt),
                                             MEMF_PUBLIC);
 

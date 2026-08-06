@@ -25,11 +25,6 @@ extern struct LadEntry *LADFUNC_EntryPtrTable[];
 extern long  Global_REF_LONG_FILE_SCRATCH;
 extern char *Global_PTR_WORK_BUFFER;
 extern char  KYBD_PATH_DF0_LOCAL_ADS[];
-extern char  Global_STR_LADFUNC_C_9[];
-extern char  Global_STR_LADFUNC_C_10[];
-extern char  Global_STR_LADFUNC_C_11[];
-extern char  Global_STR_LADFUNC_C_12[];
-extern char  Global_STR_LADFUNC_C_13[];
 
 extern long  LADFUNC_ComposePackedPenByte(long hi, long lo);
 extern long  DISKIO_LoadFileToWorkBuffer(char *path);
@@ -85,12 +80,12 @@ long LADFUNC_LoadTextAdsFromFile(void)
 
         if (len > 0) {
             entry->text = MEMORY_AllocateMemory(
-                Global_STR_LADFUNC_C_9, 591, len + 1, MEMF_PUBLIC + MEMF_CLEAR);
+                "LADFUNC.c", 591, len + 1, MEMF_PUBLIC + MEMF_CLEAR);
             if (entry->text == 0)
                 return -1;
 
             entry->attr = MEMORY_AllocateMemory(
-                Global_STR_LADFUNC_C_10, 600, len, MEMF_PUBLIC + MEMF_CLEAR);
+                "LADFUNC.c", 600, len, MEMF_PUBLIC + MEMF_CLEAR);
             if (entry->attr == 0)
                 return -1;
 
@@ -113,11 +108,11 @@ long LADFUNC_LoadTextAdsFromFile(void)
             entry->text[pos] = 0;
         } else if (entry->text != 0) {
             len = strlen(entry->text);
-            MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_11, 638,
+            MEMORY_DeallocateMemory("LADFUNC.c", 638,
                                                    entry->text, len + 1);
             entry->text = 0;
             if (entry->attr != 0) {
-                MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_12,
+                MEMORY_DeallocateMemory("LADFUNC.c",
                                                        642, entry->attr, len);
                 entry->attr = 0;
             }
@@ -125,7 +120,7 @@ long LADFUNC_LoadTextAdsFromFile(void)
         row++;
     }
 
-    MEMORY_DeallocateMemory(Global_STR_LADFUNC_C_13, 653, buf,
+    MEMORY_DeallocateMemory("LADFUNC.c", 653, buf,
                                            size + 1);
     return 0;
 }

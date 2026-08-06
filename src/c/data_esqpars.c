@@ -11,12 +11,6 @@
  * rule that a data module must be a multiple of 4 bytes.
  */
 
-char Global_STR_ESQPARS_C_1[10] = "ESQPARS.c";
-char Global_STR_ESQPARS_C_2[10] = "ESQPARS.c";
-char Global_STR_ESQPARS_C_3[10] = "ESQPARS.c";
-char Global_STR_ESQPARS_C_4[10] = "ESQPARS.c";
-char Global_STR_ESQPARS_C_5[10] = "ESQPARS.c";
-char Global_STR_ESQPARS_C_6[10] = "ESQPARS.c";
 char Global_STR_RESET_COMMAND_RECEIVED[24] = "Reset command received";
 char ESQPARS_BannerSubcommandSet[4] = "23";
 char ESQPARS_DefaultEntryCodeString[4] = "00";

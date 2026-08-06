@@ -115,8 +115,6 @@ extern long  Global_REF_LONG_FILE_SCRATCH;
 
 extern char Global_STR_DF0_OI_PERCENT_2_LX_DAT_2[];
 extern char Global_STR_PERCENT_S_1[];
-extern char Global_STR_COI_C_1[];
-extern char Global_STR_COI_C_6[];
 extern char COI_STR_LINEFEED_CR_1[];
 extern char COI_STR_LINEFEED_CR_2[];
 extern char COI_STR_DEFAULT_TOKEN_TEMPLATE_A[];
@@ -205,7 +203,7 @@ long COI_LoadOiDataFile(unsigned char diskId)
     } else if (diskId == TEXTDISP_PrimaryGroupCode) {
         entryCount = TEXTDISP_PrimaryGroupEntryCount;
     } else {
-        MEMORY_DeallocateMemory(Global_STR_COI_C_6, 1198,
+        MEMORY_DeallocateMemory("COI.c", 1198,
                                                 Global_PTR_WORK_BUFFER,
                                                 fileLen + 1);
         return -1;
@@ -445,7 +443,7 @@ long COI_LoadOiDataFile(unsigned char diskId)
         }
     }
 
-    MEMORY_DeallocateMemory(Global_STR_COI_C_1, 1443, work,
+    MEMORY_DeallocateMemory("COI.c", 1443, work,
                                             fileLen + 1);
     return 0;
 }

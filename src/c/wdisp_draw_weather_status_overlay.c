@@ -109,7 +109,6 @@ extern char  *WDISP_WeatherStatusOverlayTextPtr;
 extern char  *WDISP_WeatherStatusTextPtr;
 extern char  *P_TYPE_WeatherCurrentMsgPtr;
 extern char  *Global_STR_PTR_NO_CURRENT_WEATHER_DATA_AVIALABLE;
-extern char   Global_STR_WDISP_C[];
 extern unsigned char WDISP_WeatherStatusCountdown;
 extern unsigned char WDISP_WeatherStatusBrushIndex;
 extern short  WDISP_WeatherStatusDigitChar;
@@ -258,7 +257,7 @@ void WDISP_DrawWeatherStatusOverlay(struct RastPort *rp, long width, long height
             cur += strlen(cur) + 1;
         }
 
-        MEMORY_DeallocateMemory(Global_STR_WDISP_C, 301L, dup, dupLen1);
+        MEMORY_DeallocateMemory("WDISP.c", 301L, dup, dupLen1);
         return;
     }
 

@@ -11,43 +11,18 @@
  * rule that a data module must be a multiple of 4 bytes.
  */
 
-char Global_STR_LADFUNC_C_2[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_3[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_4[10] = "LADFUNC.c";
 char LADFUNC_TAG_RS_ResetTriggerSet[4] = "RS";
 char LADFUNC_TAG_RS_ParseAllowedSet[4] = "RS";
-char Global_STR_LADFUNC_C_5[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_6[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_7[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_8[10] = "LADFUNC.c";
+
 char LADFUNC_FMT_AttrEscapePrefixCharHex[8] = "%c%02X";
 unsigned char LADFUNC_TextAdLineBreakBuffer[2] = {
     0x00, 0x00
 };
-char Global_STR_LADFUNC_C_9[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_10[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_11[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_12[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_13[10] = "LADFUNC.c";
+
 char Global_STR_SINGLE_SPACE_1[2] = " ";
-char Global_STR_LADFUNC_C_14[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_15[10] = "LADFUNC.c";
+
 char Global_STR_SINGLE_SPACE_2[2] = " ";
-char Global_STR_LADFUNC_C_16[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_17[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_18[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_19[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_20[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_21[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_22[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_23[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_24[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_25[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_26[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_27[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_28[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_29[10] = "LADFUNC.c";
-char Global_STR_LADFUNC_C_30[10] = "LADFUNC.c";
+
 unsigned char LADFUNC_STR_QuoteAndNewline[4] = "\"\n";
 char LADFUNC_STR_Quote[2] = "\"";
 char LADFUNC_FMT_ControlCharCaretEscape[6] = "^%lc";
