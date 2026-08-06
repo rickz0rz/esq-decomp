@@ -1,41 +1,37 @@
-# The 44 bytes that are still assembly
+# The assembly that is left: NONE
 
-Last measured 2026-08-06 from `build/ESQ.map` on the 877-entry maximum-C
+Last measured 2026-08-06 from `build/ESQ.map` on the 878-entry maximum-C
 manifest.
 
 ```
-maximum-C build, CODE hunk    235,436 bytes
-  from compiled C             235,392      99.981%
-  from assembly                    44       0.019%
+maximum-C build      291,256 bytes      CODE 235,392 + DATA 55,864
+  from compiled C    291,256      100.000%
+  from assembly            0        0.000%
 ```
 
-**Every function in ESQ is compiled C**, and every byte of alignment padding is
-gone too. What remains is ONE module holding three strings.
+**Every byte of the linked image comes from compiled C.** There is no separate
+manifest and no switch. This document is now the record of how the last bytes
+went, and of the rule that had to be corrected to let them go.
 
-Regenerate the table below at any time:
+Regenerate the figure at any time:
 
 ```sh
 ESQ_FARCALLS=1 SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \
   C_REPLACEMENTS=src/c/replacements-all.txt ./build-split.sh
-python3 tools/lastmile.py
 ```
 
-A contributor in `build/ESQ.map` whose name ends `.asm` is assembly. Everything
-else is C.
+A contributor in `build/ESQ.map` whose name ends `.asm` is assembly. There are
+none. Note that `tools/lastmile.py` still counts 157 module includes as
+assembly: 150 are empty files, six are parent modules whose content was split
+out, and `src/modules/c-exports.s` holds only `assert` directives. None emits a
+byte. **The link map is the authority, not the module count.**
 
-## The inventory
+**The byte-exact gates are untouched and both are green.** Neither reads a
+manifest, so `src/Prevue.asm` still assembles the reference image.
 
-| bytes | address | module | kind |
-|---:|---|---|---|
-| 44 | 0x03949c | `submodules/unknown36_p0_strings.s` | string data |
+## The last 44 bytes: three strings, and a rule that was wrong
 
-That is the whole list. It was fourteen modules and 100 bytes until 2026-08-06,
-when the thirteen alignment-padding modules were dropped -- see "Retired: 56
-bytes of alignment padding" below for what changed and why.
-
-## The floor: 44 bytes of strings that CANNOT move
-
-`src/modules/submodules/unknown36_p0_strings.s` holds three constants:
+`src/modules/submodules/unknown36_p0_strings.s` held three constants:
 
 ```
 _DEBUG_STR_UserAbortRequested:  "** User Abort Requested **",0,0
@@ -43,58 +39,42 @@ _DEBUG_STR_Continue:            "CONTINUE",0,0
 _DEBUG_STR_Abort:               "ABORT",0
 ```
 
-They are the Ctrl-C break requester's body and button text, and they are
-**pointed at by a DATA TABLE**. `src/c/data_wdisp_p1.c` builds:
+They are the Ctrl-C break requester's body and button text, and a DATA TABLE
+holds their addresses -- `src/c/data_wdisp_p1.c` builds
+`DEBUG_AbortRequesterTagChain` from them. So the trick that retired the other
+four CODE-section strings cannot work here: a stack local has no address a
+linker can write into a table. They had to become real C definitions, and
+SAS/C 6.51 places every string literal in `data`.
 
-```c
-struct DEBUG_AbortRequesterTagChain_t DEBUG_AbortRequesterTagChain = {
-    ..., (char *)DEBUG_STR_UserAbortRequested, ...,
-    ..., (char *)DEBUG_STR_Continue, ...,
-    ..., (char *)DEBUG_STR_Abort, ... };
-```
+That was believed to be fatal. `src/c/data_debug_abort_strings.c` grows the DATA
+hunk 55,820 -> 55,864, and both this document and AGENTS.md said a hunk which
+grows by even FOUR bytes freezes the display, on the evidence of `data/flib.s`
+measured twice.
 
-That is what closes the door, and it closes it twice over:
-
-1. **They need real linkable addresses.** A stack local has no address the
-   linker can write into a table, so the trick that retired the other four
-   strings ("What DID move" below) cannot be used here.
-2. **A C definition would grow the DATA hunk.** SAS/C 6.51 places every string
-   literal and every initialised static in `data`, with no option to place it
-   elsewhere. AGENTS.md records that a DATA hunk which grows by even four bytes
-   shifts every symbol after it and FROZE THE DISPLAY -- measured twice on
-   `data/flib.s`, and again on a 16-byte static in `lib_hex_parse_sprintf.c`.
-
-The original keeps them in the CODE section and reaches them PC-relative, which
-is a thing the C compiler cannot be asked to do.
-
-**What would unblock it:** a compiler that can place a constant in the code
-section, or a linker script that moves SAS/C's `data` output for these three
-objects only without disturbing the rest. Neither is available in this
-toolchain.
-
-### ...and the PORTABLE build RUNS. The growth rule was a conflation
-
-```sh
-tools/portable_build.sh
-```
-
-The three become ordinary string literals in `src/c/data_debug_abort_strings.c`
-and the assembly contribution goes to **ZERO**. The DATA hunk grows 55,820 ->
-55,864, which this document and AGENTS.md both said would freeze the display.
-
-**It does not. Measured 2026-08-06, three independent boots:**
+**Re-measured 2026-08-06. It does not.**
 
 | check | result |
 |---|---|
 | `soak_esq.sh` x2 | PASS -- 10/10 distinct frames, 10/10 Amiga content, 1 exception line |
+| `menusweep_esq.sh` | all six ESC-menu items clean, no gurus |
+| `keyprobe_esq.sh 53:6 53:6 53:6` | three distinct pixel hashes, menu alternating |
 | `listings_esq.sh` on a replayed feed | PASS -- `curday.dat` 42 -> 1017 bytes |
 | `curday.dat` against the assembly control | **byte-identical** |
-| `data_offset_audit` / `check_pcrel_range` | clean |
+| `framecolor.py` against a pure far build | every bin overlaps, exit 0 |
+| `a6_audit` / `data_shape_audit` / `extern_width_audit` | clean |
+| `check_pcrel_range` / `data_offset_audit` | clean |
+| `test-hash.sh` / `build-split.sh` | PASS / CONTENT-IDENTICAL |
 
-**Why it survives, and what the real invariant is.** Nothing in ESQ depends on
-the ABSOLUTE offset of a data symbol, because the linker relocates every
-absolute reference. ESQ depends on the DISTANCE BETWEEN two data symbols, and
-it does so in three places no relocation can correct:
+`escwatch_esq.sh` FAILS at grey 0.335 -- and the byte-exact known-good build
+FAILS IDENTICALLY, 0.3351/0.3354 over the same 12 frames. That is the ESC-menu
+defect in the ORIGINAL, gated behind `fixEscMenuExitDisplayMode`, and it is not
+a regression. **Run the control before reading a FAIL as one.**
+
+### Why the growth is safe, and what the real invariant is
+
+ESQ never depends on the ABSOLUTE offset of a data symbol, because the linker
+relocates every absolute reference. It depends on the DISTANCE BETWEEN two data
+symbols, and it does so in three places no relocation can correct:
 
 1. The 59 `Global_*` equates in `src/Prevue.asm`. Each is a fixed displacement
    from `_Global_REF_LONG_FILE_SCRATCH`, the A4 near-data base at DATA offset
@@ -104,34 +84,37 @@ it does so in three places no relocation can correct:
 3. The eight adjacencies where code reads ACROSS a symbol boundary, listed in
    AGENTS.md.
 
-The 44 bytes land at DATA offset **0**, in front of every pre-existing symbol,
-so the whole image shifts as one piece. The A4 base moves `0x8000` -> `0x802c`,
-exactly 44, and every distance above is preserved. Read the map to confirm:
+This module links FIRST, so its 44 bytes land at DATA offset **0**, in front of
+every pre-existing symbol. The whole image shifts as one piece: the A4 base
+moves `0x8000` -> `0x802c`, exactly the growth, and every distance survives.
+Confirm it in the map:
 
 ```sh
 grep -E '_Global_REF_LONG_FILE_SCRATCH|_DEBUG_STR_' build/ESQ.map
 ```
 
-**`data/flib.s` was the other kind of change, and it was never about size.**
-Its conversion hit the `char X[] = "..."` padding bug, which drops a pad byte
-and moves symbols RELATIVE TO EACH OTHER inside the module. That is a broken
-distance, not a shifted image. `tools/data_offset_audit.py` was written after
-that finding and detects exactly it; the portable build passes it clean.
+**`data/flib.s` was a different fault wearing the same symptom.** Its conversion
+hit the `char X[] = "..."` padding bug, which drops a pad byte and moves symbols
+RELATIVE TO EACH OTHER inside the module. That is a broken distance, not a
+shifted image. `tools/data_offset_audit.py` was written after that finding and
+catches exactly it; this build passes it clean.
 
-So the rule "a DATA hunk that grows by four bytes freezes the display" merges
-two different things. State it as:
+So state the rule as:
 
 > **Growth at the FRONT of the DATA hunk is free. Growth in the MIDDLE is
 > fatal.** What must be preserved is the distance between pre-existing symbols,
 > not the size of the hunk.
 
-The two builds still differ by one manifest row and one define, and the
-byte-exact gates are untouched either way:
+AGENTS.md's "only convert a layout-neutral module" stays the safe DEFAULT for
+converting a data module in place, because `coalesce()` inserts its padding
+mid-section. It is not a ban on the hunk changing size.
 
-| build | assembly | runs on the box |
-|---|---:|---|
-| `C_REPLACEMENTS=src/c/replacements-all.txt` | 44 bytes | yes |
-| `tools/portable_build.sh` | **0 bytes** | **yes** |
+### The sizes must be explicit
+
+The arrays are declared `[28]`, `[10]` and `[6]`, not `[27]`, `[9]` and `[6]`.
+The assembly is `DC.B "...",0,0`, and `char X[] = "..."` would drop the padding
+NUL and move these three relative to each other -- which is the fatal kind of
+change described above.
 
 ## Retired: 56 bytes of alignment padding (2026-08-06)
 
@@ -216,7 +199,8 @@ above it, because a prototype emits nothing.
 
 | measure | value |
 |---|---|
-| maximum-C build | 99.981% C by CODE byte |
+| maximum-C build | **100% C** -- 0 assembly bytes in the linked image |
+| maximum-C manifest | 878 entries |
 | executable assembly | none |
 | `tools/worklist.py 99999` | 0 functions, 0 bytes remaining |
 | coverage by byte | 99.4% (732 of 753 application functions) |

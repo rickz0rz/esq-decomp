@@ -1575,10 +1575,21 @@ been RUN.** Soak before treating a new size as good.
 still assembly and that is misleading: 150 of them are EMPTY files and 10 hold
 only an alignment pad. The honest number comes from the link map.
 
-**The maximum-C build is 99.98% C by CODE byte, and NO EXECUTABLE ASSEMBLY IS
-LEFT.** 235,392 bytes of 235,436 come from compiled C. The 44 bytes that remain
-are three string constants in ONE module. The alignment padding was dropped on
-2026-08-06.
+**THE MAXIMUM-C BUILD CONTAINS NO ASSEMBLY AT ALL (2026-08-06).** Every byte of
+the linked image -- 291,256, being CODE 235,392 and DATA 55,864 -- comes from
+compiled C. There is no separate manifest and no switch: this is the default
+`replacements-all.txt` build, 878 entries.
+
+The last 44 bytes were three string constants a DATA table holds the addresses
+of. Converting them grows the DATA hunk 55,820 -> 55,864, which this file said
+would freeze the display; it does not, and the corrected rule is under "The
+DATA section CAN move to C" below. Full evidence in
+`docs/remaining-assembly.md`.
+
+Note `tools/lastmile.py` still counts 157 module includes as assembly. 150 are
+empty files, six are parent modules whose content was split out, and
+`src/modules/c-exports.s` holds only `assert` directives. None emits a byte.
+**The link map is the authority, not the module count.**
 
 ```sh
 python3 tools/lastmile.py                  # module buckets, plus the code worklist
@@ -1598,11 +1609,12 @@ string-retirement pattern. Read it before assuming there is work left here.
 Measured 2026-08-06 from `build/ESQ.map` on the 877-entry manifest. ONE
 contributor, 44 bytes, and it is not a function.
 
-| bytes | what | why it cannot be C |
+| bytes | what | status |
 |---:|---|---|
-| 44 | three strings in `submodules/unknown36_p0_strings.s` | a DATA TABLE HOLDS THEIR ADDRESSES |
-| 8 | `submodules/unknown10_p1.s` | padding the disassembler read as code |
-| 48 | twelve four-byte `ALIGN_WORD` pads | padding |
+| 0 | -- | nothing is left |
+
+The three strings in `submodules/unknown36_p0_strings.s` were the last entry
+and are now `src/c/data_debug_abort_strings.c`.
 
 **FOUR MORE STRINGS WERE RETIRED ON 2026-08-04 AND THE PATTERN GENERALISES.**
 `"dos.library"`, `"*** Break: "`, `"intuition.library"` and `DOS_STR_CRLF` had
@@ -1622,34 +1634,36 @@ no address a linker can write into a table, and a C definition would be an
 initialised static in `data`. Splitting the module in two is what let the other
 two go -- see `unknown36_p0_strings_local.s`.
 
-**THE 56 BYTES OF PADDING COULD BE DELETED AND SHOULD NOT BE.** Replacing the
-pad modules with empty units would take the figure to 44 bytes, but that is
-REMOVING CONTENT the original has rather than converting it, and this project's
-product is a faithful reconstruction. Alignment filler is not assembly that
-wants to be C; it is bytes the image contains.
+**THE 56 BYTES OF PADDING WERE DELETED ON 2026-08-06**, after the reasoning
+above was overtaken: the maximum-C image does not have the original's layout in
+any case -- 235,392 CODE bytes against the reference's 211,348 -- so filler that
+aligned the ORIGINAL aligns nothing here. The byte-exact build still assembles
+every pad module, because it does not read a manifest.
 
-**THE STRING FLOOR IS STRUCTURAL, NOT UNFINISHED WORK.** Each of these blocks
-lives in the CODE section in the original and is reached PC-relative -- which is
-how the original keeps a constant out of its data image. SAS/C 6.51 puts every
-string literal and every initialised static in `data`, with no option to place
-it otherwise. And a DATA hunk that grows by even four bytes shifts every symbol
-after it: AGENTS.md records that `data/flib.s` did exactly that and froze the
-display, twice, reproducibly.
+**THE STRING FLOOR WAS NOT STRUCTURAL AFTER ALL, AND THE TEXT ABOVE IS KEPT
+BECAUSE IT WAS BELIEVED.** The reasoning was: each block lives in the CODE
+section in the original and is reached PC-relative, SAS/C 6.51 puts every string
+literal in `data` with no option to place it otherwise, and a DATA hunk that
+grows by four bytes freezes the display. The first two are true. **The third was
+a conflation, and it was the load-bearing one.**
 
-So the answer was to SPLIT the strings out of their modules and convert the
-FUNCTIONS around them. That is byte-neutral -- both gates pass across every
-split -- and it is what took `unknown36_p0.s`, `_main/a/a.s` and `unknown2b`
-from "blocked by a string" to "one module of pure data".
+Two ways out were listed and one was called absurd. Building a 26-character
+requester message a character at a time IS absurd, and it was also unnecessary:
+these three are read through a POINTER TABLE, so they need real addresses and a
+local could never have served. The other way out -- letting the DATA hunk grow
+-- turns out to cost nothing, because these bytes land at DATA offset 0 and
+shift the image as one piece. `src/c/data_debug_abort_strings.c` is the result
+and the build contains no assembly at all.
 
-Two ways out exist and neither is taken. A string could be built a character at
-a time into a local, which is what `lib_parse_command_line_and_run.c` does for
-`"con.10/10/320/80/"` and `"*"` -- correct where the string is short and used
-once, and absurd for a 26-character requester message. Or the DATA hunk could be
-allowed to grow, and the display would stop.
+Splitting the strings out of their modules was still the right move and is what
+took `unknown36_p0.s`, `_main/a/a.s` and `unknown2b` from "blocked by a string"
+to "one module of pure data". It is byte-neutral and both gates pass across
+every split.
 
-**A module count badly overstates what is left.** 173 module includes are still
-assembly and only 16 contribute a byte: 150 are empty files and 10 are alignment
-pads.
+**A module count badly overstates what is left.** 157 module includes are still
+assembly and NONE contributes a byte: 150 are empty files, six are parent
+modules whose content was split out, and `src/modules/c-exports.s` holds only
+`assert` directives.
 
 Regenerate it from `build/ESQ.map`; a contributor whose name ends `.asm` is
 assembly.
@@ -2800,11 +2814,12 @@ Four rules, and the last two are the ones that will bite:
    102 `<symbol> + <number>` offsets in `src/c/esq-neardata.h`, and the eight
    adjacencies above.
 
-   `tools/portable_build.sh` grows the DATA hunk 55,820 -> 55,864 and **RUNS** --
-   two soaks PASS and a replayed listings feed writes a `curday.dat`
-   byte-identical to the assembly control. Its 44 bytes land at DATA offset 0,
-   in front of everything, so the image shifts as one piece and the A4 base
-   moves `0x8000` -> `0x802c` with every distance intact.
+   `src/c/data_debug_abort_strings.c` grows the DATA hunk 55,820 -> 55,864 and
+   **RUNS** -- two soaks PASS, the menu sweep is clean on all six items, and a
+   replayed listings feed writes a `curday.dat` byte-identical to the assembly
+   control. Its 44 bytes land at DATA offset 0, in front of everything, so the
+   image shifts as one piece and the A4 base moves `0x8000` -> `0x802c` with
+   every distance intact.
 
    `data/flib.s` was a different fault wearing the same symptom. Its conversion
    hit the `char X[] = "..."` padding bug, which moves symbols RELATIVE TO EACH

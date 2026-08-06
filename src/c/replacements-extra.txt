@@ -326,3 +326,4 @@ modules/submodules/unknown2b_p1_p1.s                                   c/pad_sub
 modules/submodules/unknown10_p1.s                                      c/pad_submodules_unknown10_p1.c
 modules/submodules/unknown22_p1.s                                      c/pad_submodules_unknown22_p1.c
 modules/submodules/unknown40_p1.s                                      c/pad_submodules_unknown40_p1.c
+modules/submodules/unknown36_p0_strings.s                              c/data_debug_abort_strings.c

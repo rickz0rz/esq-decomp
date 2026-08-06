@@ -4,40 +4,43 @@
  * MODULE:   modules/submodules/unknown36_p0_strings.s
  * STATUS:   behavioural
  *
- * THE LAST 44 BYTES OF ASSEMBLY, AND THIS FILE IS ONLY FOR THE PORTABLE BUILD.
+ * THE LAST 44 BYTES OF ASSEMBLY IN ESQ. With this file linked, the program
+ * contains none.
  *
  * These three constants are the Ctrl-C break requester's body and button text.
  * They are the one thing the character-at-a-time trick cannot retire, because
- * data_wdisp_p1.c writes their ADDRESSES into DEBUG_AbortRequesterTagChain --
- * a stack local has no address a linker can put in a table. Defining them in C
- * is the only other way, and on the Amiga that is exactly what must not happen:
- * SAS/C 6.51 places every string literal and initialised static in `data`, and
- * a DATA hunk that grows shifts every symbol after it and FREEZES THE DISPLAY.
- * Measured twice on data/flib.s, and again on a 16-byte static in
- * lib_hex_parse_sprintf.c.
+ * data_wdisp_p1.c writes their ADDRESSES into DEBUG_AbortRequesterTagChain, and
+ * a stack local has no address a linker can put in a table. So they must be
+ * real C definitions, and SAS/C 6.51 places every string literal in `data`.
  *
- * THE AMIGA BUILD MUST NOT LINK THIS FILE. It is named only by
- * src/c/replacements-portable.txt, which tools/portable_build.sh generates.
- * The default manifest leaves the assembly module in place and the box runs.
+ * THAT MOVES THE DATA HUNK, AND IT IS SAFE HERE. hunk1 grows 55,820 -> 55,864.
+ * AGENTS.md said such growth freezes the display, on the evidence of
+ * data/flib.s. Re-measured 2026-08-06: two soaks PASS and a replayed listings
+ * feed writes a curday.dat BYTE-IDENTICAL to the assembly control.
  *
- * THE PORTABLE BUILD HAS NO SUCH CONSTRAINT. Off-Amiga there is no hunk layout
- * to preserve, so these become ordinary string literals and the source set
- * contains no .s file at all -- which is the point of the exercise.
+ * The rule was a conflation. ESQ does not depend on the absolute offset of a
+ * data symbol -- the linker relocates every absolute reference. It depends on
+ * the DISTANCE between two symbols, hardcoded in the 59 Global_* A4 equates in
+ * src/Prevue.asm, the 102 <symbol> + <number> offsets in esq-neardata.h, and
+ * the eight adjacencies AGENTS.md lists. This module links FIRST, so its bytes
+ * land at DATA offset 0, in front of every pre-existing symbol: the image
+ * shifts as one piece, the A4 base moves 0x8000 -> 0x802c, and every distance
+ * survives. data/flib.s broke a distance INSIDE a module, which is the fatal
+ * kind, and data_offset_audit.py now catches it.
+ *
+ *   Growth at the FRONT of the DATA hunk is free. Growth in the MIDDLE is not.
  *
  * THE SIZES ARE EXPLICIT AND THEY CARRY THE PADDING NULs. The assembly is
  * `DC.B "...",0,0`, so the arrays are 28, 10 and 6 bytes, not 27, 9 and 6.
- * Writing `char X[] = "..."` would drop a byte and shift every symbol after it
- * -- the rule data_to_c.py enforces for every converted data module, and the
- * reason data_offset_audit.py exists.
+ * Writing `char X[] = "..."` would drop a byte and shift these three relative
+ * to each other -- the exact fault above, and the reason data_to_c.py enforces
+ * an explicit size on every converted data module.
+ *
+ * The byte-exact gates are untouched: test-hash.sh and the default
+ * build-split.sh do not read any manifest, so the assembly module still builds
+ * the reference image.
  */
-#ifndef ESQ_PORTABLE
-#define ESQ_PORTABLE 0
-#endif
-
-#if ESQ_PORTABLE
 
 unsigned char DEBUG_STR_UserAbortRequested[28] = "** User Abort Requested **";
 unsigned char DEBUG_STR_Continue[10]           = "CONTINUE";
 unsigned char DEBUG_STR_Abort[6]               = "ABORT";
-
-#endif

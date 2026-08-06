@@ -39,6 +39,8 @@ Run `python3 tools/coverage.py` to regenerate every number in this section.
 | byte-exact restorations | 31 application functions, plus 3 library functions (34 files) |
 | source modules | 1,034, coalesced into 539 link units |
 | DATA section in C | 55,820 of 55,820 bytes (100%) |
+| assembly in the maximum-C build | **0 bytes** (was 6,664 at the start of the run) |
+| maximum-C manifest | 878 entries |
 | linked size | CODE 211,348 bytes, DATA 55,820 bytes |
 
 ### The maximum-C build
@@ -74,24 +76,32 @@ grows shifts every symbol after it and freezes the display.
 The thirteen alignment-padding modules were dropped on 2026-08-06. They aligned
 the ORIGINAL's layout, and the maximum-C image does not have that layout.
 
-### A build with no assembly at all
+### THE MAXIMUM-C BUILD CONTAINS NO ASSEMBLY
 
 ```sh
-tools/portable_build.sh
+ESQ_FARCALLS=1 SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \
+  C_REPLACEMENTS=src/c/replacements-all.txt ./build-split.sh
 ```
 
-Those last 44 bytes are three strings SAS/C can only place in the DATA hunk.
-Written as C they link with **zero** assembly -- the source set the port needs.
+Every byte of the linked image comes from compiled C. No separate manifest and
+no switch: this is the default maximum-C build.
 
-**And the binary RUNS**, which was not the expectation: two soaks pass and a
-replayed listings feed writes a `curday.dat` byte-identical to the assembly
-control. The strings land at DATA offset 0, so the image shifts as one piece
-and every hardcoded distance between data symbols survives. Growth at the FRONT
-of the DATA hunk is free; growth in the MIDDLE is what froze `data/flib.s`. See
-`docs/remaining-assembly.md`. The Amiga build is untouched and both byte gates
-stay green.
+```
+assembly      0 bytes
+C       291,256 bytes      CODE 235,392 + DATA 55,864
+```
 
-**`docs/remaining-assembly.md` is the byte-by-byte record**: every one of the
+The last three constants were the Ctrl-C requester strings, which a DATA table
+holds the addresses of. Defining them in C grows the DATA hunk 55,820 -> 55,864,
+which this project long believed would freeze the display. It does not, and
+`docs/remaining-assembly.md` explains why: growth at the FRONT of the hunk
+shifts the image as one piece, and ESQ depends on the DISTANCE between data
+symbols rather than on their absolute offsets.
+
+**The byte-exact gates are untouched.** Neither reads a manifest, so
+`src/Prevue.asm` still assembles the reference image and both stay green.
+
+**`docs/remaining-assembly.md` is the byte-by-byte record****`docs/remaining-assembly.md` is the byte-by-byte record**: every one of the
 100 bytes with its address and module, why each of the two blocks cannot be
 converted, what would unblock them, and the pattern that retired four other
 strings to get here.
