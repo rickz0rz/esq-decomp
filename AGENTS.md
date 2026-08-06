@@ -2863,9 +2863,16 @@ Four rules, and the last two are the ones that will bite:
    and 2 illegal/exception lines against 1 for a healthy build. **It was
    retired later by SPLITTING it**: `data/flib_p1.s` is converted by
    `src/c/data_flib_p1.c` and is linked today, so no `data_flib.c` exists.
-   Four data modules are still held out this way -- `data_ctasks.c`,
-   `data_kybd.c`, `data_locavail.c` and `data_tliba1.c` -- and the same
-   split-or-merge treatment is what would retire them.
+   **Every data module has since been retired the same way, and NO
+   `DO-NOT-LINK` FILE REMAINS ANYWHERE IN `src/c`.** All 50 data modules in
+   `src/Prevue.asm` carry a manifest row.
+
+   `data_ctasks.c`, `data_kybd.c`, `data_locavail.c` and `data_tliba1.c`
+   survived on disk for a while after their blocker was gone: each was split
+   into `_p1`/`_p2` and BOTH halves converted, but the whole-module file stayed,
+   still asserting a `DO-NOT-LINK` that was no longer true. `orphan_audit.py`
+   is what found them. **A `DO-NOT-LINK` header is a claim with a date on it --
+   re-test it before believing it.**
    `displib` (24) and `esqpars` (92) change the DATA hunk size by nothing and
    run.
 
