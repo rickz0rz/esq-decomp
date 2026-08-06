@@ -17,5 +17,23 @@ long ESQ_TestBit1Based(unsigned char *base, long bit)
     bit--;
     bitIndex = bit & 7;
     byteIndex = (unsigned short)bit >> 3;
-    return (base[byteIndex] & (1 << bitIndex)) != 0;
+    /* -1 WHEN THE BIT IS SET, NOT +1. The original ends
+     *     BTST D1,0(A0,D0.W) / SNE D0 / EXT.W D0 / EXT.L D0
+     * and Scc sets 0xFF, so sign-extending it twice gives -1. Returning +1
+     * inverts every caller: all ~25 of them test `== -1`, `!= -1`, or the
+     * `+ 1 == 0` spelling of the same thing, so with +1 the "bit is set" arm
+     * becomes unreachable everywhere.
+     *
+     * It is the mirror of the class this project already records. Scc followed
+     * by NEG.B and a widen gives +1; Scc followed by a bare widen gives -1.
+     * The two differ only by one instruction and the restoration took the
+     * wrong one.
+     *
+     * WHAT IT COST: DISKIO2_WriteCurDayDataFile writes a programme slot only
+     * when this returns -1, so curday.dat came out with its header, its channel
+     * records and NOT ONE PROGRAMME -- while the grid drew them correctly,
+     * because the display reads the entry tables directly and never calls this.
+     * No byte gate, audit or screen check can see it; it needs a real listings
+     * feed and a look at the file. */
+    return (base[byteIndex] & (1 << bitIndex)) ? -1L : 0L;
 }
