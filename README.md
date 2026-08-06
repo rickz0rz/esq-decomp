@@ -16,21 +16,35 @@ that broke it.
 Both byte gates pass on the current tree.
 
 ```
-assembly converted to C   99.4%   [########################################]
-                                  193,894 of 195,146 application bytes
+assembly converted to C    100%   [########################################]
+                                  0 assembly bytes in the linked maximum-C build
 ```
 
-`tools/worklist.py 99999` now reports **0 functions and 0 bytes remaining**.
-Every unrestored label left in `coverage.py`'s survey is an interior branch
-target or a fall-through fragment inside a function that IS restored -- twenty
-of the twenty-one are in `diskio1.s`, the module this project already documents
-as "26 labels and ONE function".
+**The conversion is finished.** `build/ESQ.map` lists no contributor whose name
+ends `.asm`. All 291,256 bytes of the image -- CODE 235,392 plus DATA 55,864 --
+come from compiled C, on the default 878-entry manifest with no switch.
+
+`tools/worklist.py 99999` reports **0 functions and 0 bytes remaining**.
+
+### The other number, 99.4%, and why it is not 100%
+
+`tools/coverage.py` reports 99.4% by byte, and it counts LABELS. Twenty-one are
+still open, and none of them is assembly in the build. Every one is an interior
+branch target or a fall-through fragment INSIDE a function that IS restored --
+twenty of the twenty-one are in `diskio1.s`, the module this project documents
+as "26 labels and ONE function". A C file replaces the whole module, so that
+code is compiled whether or not its label carries an entry.
+
+So the two figures measure different things and both are true: **100% of the
+BINARY is C, and 99.4% of the LABEL LIST is claimed.** The first is what the
+link map says; the second is an artifact of how the disassembly was named.
 
 Count the bytes, not the functions. The easy targets are small, so a function
 count reads higher than the real progress. By function count the same work is
 97%, which flatters it.
 
-Run `python3 tools/coverage.py` to regenerate every number in this section.
+Regenerate every number here with `python3 tools/coverage.py`, and the assembly
+figure from `build/ESQ.map` after a maximum-C build.
 
 | measure | value |
 |---|---|
@@ -51,49 +65,32 @@ map for that. A contributor in `build/ESQ.map` whose name ends `.asm` is
 assembly and everything else is C.
 
 ```
-maximum-C build, CODE hunk   99.98%  [########################################]
-                                     235,392 of 235,436 bytes come from C
+maximum-C build              100%   [########################################]
+                                    291,256 of 291,256 bytes come from C
 ```
 
 | measure | value |
 |---|---|
-| maximum-C manifest | 877 entries (`src/c/replacements-all.txt`) |
-| assembly remaining | 44 of 235,436 CODE bytes (0.02%), in ONE module |
-| module includes still assembly | 160, of which 150 are EMPTY |
+| maximum-C manifest | 878 entries (`src/c/replacements-all.txt`) |
+| assembly remaining | **0 bytes** |
+| linked size | CODE 235,392 + DATA 55,864 = 291,256 bytes |
+| module includes still assembly | 157, none of which emits a byte |
 | modules holding real code | ZERO (`python3 tools/lastmile.py`) |
 
-**No executable assembly is left, and no padding either.** Every function in
-the program is compiled C. What remains is 44 bytes in a single module:
-`submodules/unknown36_p0_strings.s`, holding three strings.
+Of those 157 includes, 150 are EMPTY files, six are parent modules whose content
+was split out, and `src/modules/c-exports.s` holds only `assert` directives.
+**The link map is the authority, not the module count.**
 
-Four other CODE-section strings were retired by building them a character at a
-time into stack locals, which keeps the text in CODE where the original has it.
-The three that remain cannot move: `data_wdisp_p1.c` builds a requester tag
-chain holding their ADDRESSES, so they need real linkable symbols, and a C
-definition would be an initialised static in `data` -- and a DATA hunk that
-grows shifts every symbol after it and freezes the display.
-
-The thirteen alignment-padding modules were dropped on 2026-08-06. They aligned
-the ORIGINAL's layout, and the maximum-C image does not have that layout.
-
-### THE MAXIMUM-C BUILD CONTAINS NO ASSEMBLY
+Build it with:
 
 ```sh
 ESQ_FARCALLS=1 SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \
   C_REPLACEMENTS=src/c/replacements-all.txt ./build-split.sh
 ```
 
-Every byte of the linked image comes from compiled C. No separate manifest and
-no switch: this is the default maximum-C build.
-
-```
-assembly      0 bytes
-C       291,256 bytes      CODE 235,392 + DATA 55,864
-```
-
 The last three constants were the Ctrl-C requester strings, which a DATA table
 holds the addresses of. Defining them in C grows the DATA hunk 55,820 -> 55,864,
-which this project long believed would freeze the display. It does not, and
+which this project long believed would freeze the display. It does not.
 `docs/remaining-assembly.md` explains why: growth at the FRONT of the hunk
 shifts the image as one piece, and ESQ depends on the DISTANCE between data
 symbols rather than on their absolute offsets.
@@ -101,10 +98,9 @@ symbols rather than on their absolute offsets.
 **The byte-exact gates are untouched.** Neither reads a manifest, so
 `src/Prevue.asm` still assembles the reference image and both stay green.
 
-**`docs/remaining-assembly.md` is the byte-by-byte record****`docs/remaining-assembly.md` is the byte-by-byte record**: every one of the
-100 bytes with its address and module, why each of the two blocks cannot be
-converted, what would unblock them, and the pattern that retired four other
-strings to get here.
+**`docs/remaining-assembly.md` is the record**: how the last bytes went, the
+rule that had to be corrected to let them go, the evidence that the result
+runs, and the pattern that retired four other strings on the way.
 
 Three things once recorded as impossible are now done. The SAS/C arithmetic
 helpers are C (`src/c/lib_math_helpers.c`), so every divide and multiply in the
