@@ -74,6 +74,19 @@ grows shifts every symbol after it and freezes the display.
 The thirteen alignment-padding modules were dropped on 2026-08-06. They aligned
 the ORIGINAL's layout, and the maximum-C image does not have that layout.
 
+### A build with no assembly at all
+
+```sh
+tools/portable_build.sh
+```
+
+Those last 44 bytes are blocked only by the Amiga hunk layout. Off-Amiga they
+are ordinary string literals, so this variant links with **zero** assembly --
+the source set the port needs. The binary it produces does not run on the box,
+because the strings grow the DATA hunk and shift every symbol after it; that is
+the point of keeping it a separate manifest. The Amiga build is untouched and
+both byte gates stay green.
+
 **`docs/remaining-assembly.md` is the byte-by-byte record**: every one of the
 100 bytes with its address and module, why each of the two blocks cannot be
 converted, what would unblock them, and the pattern that retired four other

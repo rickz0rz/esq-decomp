@@ -72,6 +72,29 @@ section, or a linker script that moves SAS/C's `data` output for these three
 objects only without disturbing the rest. Neither is available in this
 toolchain.
 
+### ...but the PORTABLE build has no such constraint
+
+```sh
+tools/portable_build.sh
+```
+
+Off-Amiga there is no hunk layout to preserve, so the three become ordinary
+string literals in `src/c/data_debug_abort_strings.c` and the assembly
+contribution goes to **ZERO**. That is the source set the port needs.
+
+**The binary it produces is NOT a working Amiga build, by construction.** The
+44 bytes land in hunk1, which goes 55,820 -> 55,864 and shifts 20,471 DATA
+bytes -- exactly the growth that froze the display on `data/flib.s`. Its value
+is that the C compiles and links with no assembly whatever, not that it runs.
+
+The two builds differ by ONE manifest row and one define. The Amiga manifest
+is untouched, so both byte gates stay green either way:
+
+| build | assembly | runs on the box |
+|---|---:|---|
+| `C_REPLACEMENTS=src/c/replacements-all.txt` | 44 bytes | yes |
+| `tools/portable_build.sh` | **0 bytes** | no -- DATA hunk grows |
+
 ## Retired: 56 bytes of alignment padding (2026-08-06)
 
 Thirteen modules whose entire content was filler -- an `ALIGN_WORD`, which
