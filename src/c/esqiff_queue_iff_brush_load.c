@@ -58,7 +58,7 @@ void ESQIFF_QueueIffBrushLoad(long mode)
                 (char *)ESQIFF_BannerBrushResourceCursor, ESQIFF_STR_WEATHER) == 0
             || mode == 2) {
             if (WDISP_WeatherStatusCountdown > 0
-                && WDISP_WeatherStatusDigitChar != 48) {
+                && WDISP_WeatherStatusDigitChar != '0') {
                 CTASKS_PendingIffBrushDescriptor =
                     BRUSH_AllocBrushNode(ESQIFF_BannerBrushResourceCursor, 0);
                 CTASKS_PendingIffBrushDescriptor->kind = 11;

@@ -77,7 +77,7 @@ void ESQFUNC_ProcessUiFrameTick(void)
             if (Global_REF_LONG_DF0_LOGO_LST_DATA == 0 && Global_UIBusyFlag == 0)
                 ESQIFF_ExternalAssetFlags = ESQIFF_ExternalAssetFlags & 0xfffd;
 
-            if (ED_DiagGraphModeChar != 78 && Global_REF_LONG_GFX_G_ADS_DATA == 0
+            if (ED_DiagGraphModeChar != 'N' && Global_REF_LONG_GFX_G_ADS_DATA == 0
                 && Global_UIBusyFlag == 0)
                 ESQIFF_ExternalAssetFlags = ESQIFF_ExternalAssetFlags & 0xfffe;
 
@@ -87,7 +87,7 @@ void ESQFUNC_ProcessUiFrameTick(void)
 
             if (ESQIFF_LogoBrushListCount < 1) {
                 ESQIFF_ServiceExternalAssetSourceState(0);
-            } else if (ED_DiagGraphModeChar != 78
+            } else if (ED_DiagGraphModeChar != 'N'
                        && ESQIFF_GAdsBrushListCount < 2
                        && Global_UIBusyFlag == 0) {
                 ESQIFF_ServiceExternalAssetSourceState(1);

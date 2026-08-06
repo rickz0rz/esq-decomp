@@ -324,7 +324,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
         Global_REF_STR_USE_24_HR_CLOCK = c;
         if (c != 89 && c != 78)
             Global_REF_STR_USE_24_HR_CLOCK = 78;
-        if (Global_REF_STR_USE_24_HR_CLOCK == 89)
+        if (Global_REF_STR_USE_24_HR_CLOCK == 'Y')
             Global_REF_STR_CLOCK_FORMAT = &Global_JMPTBL_HALF_HOURS_24_HR_FMT;
         else
             Global_REF_STR_CLOCK_FORMAT = &Global_JMPTBL_HALF_HOURS_12_HR_FMT;
@@ -381,7 +381,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
             CONFIG_EnsurePc1GfxAssignedFlag = 78;
     }
 
-    if (CONFIG_EnsurePc1GfxAssignedFlag == 89)
+    if (CONFIG_EnsurePc1GfxAssignedFlag == 'Y')
         DISKIO_EnsurePc1MountedAndGfxAssigned();
 
     if ((long)pos < len - 1) {
@@ -401,7 +401,7 @@ void DISKIO_ParseConfigBuffer(char *buf, long len)
         if (c != 89 && c != 78)
             CONFIG_LRBN_FlagChar = 89;
         /* Three stores in one path: the transition reads the flag. */
-        if (CONFIG_LRBN_FlagChar != 89) {
+        if (CONFIG_LRBN_FlagChar != 'Y') {
             CONFIG_LRBN_FlagChar = 89;
             SCRIPT_BeginBannerCharTransition(
                 (long)CONFIG_BannerCopperHeadByte, 0L);

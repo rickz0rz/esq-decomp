@@ -167,11 +167,11 @@ long NEWGRID_ProcessScheduleState(struct GridCtx *ctx, short baseRow, short stat
                     ctx, NEWGRID_SelectedPrimaryEntryIndex,
                     (short)(baseRow + NEWGRID_ScheduleRowOffset));
 
-            if (GCOMMAND_DigitalMplexEnabledFlag != 89)
+            if (GCOMMAND_DigitalMplexEnabledFlag != 'Y')
                 return NEWGRID_ScheduleWorkflowState;
 
             if (progressed && NEWGRID_ScheduleSelectionCodeCache < 1) {
-                code = (GCOMMAND_MplexDetailLayoutFlag == 78) ? 36 : 52;
+                code = (GCOMMAND_MplexDetailLayoutFlag == 'N') ? 36 : 52;
                 NEWGRID_ValidateSelectionCode(ctx, code);
                 NEWGRID_ScheduleSelectionCodeCache = NEWGRID_GetGridModeIndex();
         }

@@ -168,7 +168,7 @@ void LOCAVAIL_UpdateFilterStateMachine(struct LocavailCtx *ctx,
             return;
 
         case 2:
-            if (ED_DiagGraphModeChar == 78
+            if (ED_DiagGraphModeChar == 'N'
                 || ESQIFF_GAdsBrushListCount == 0)
                 LOCAVAIL_ResetFilterCursorState(st);
             return;

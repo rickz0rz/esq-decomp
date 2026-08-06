@@ -109,7 +109,7 @@ long NEWGRID_SelectNextMode(void)
         else
             NEWGRID_ModeCandidateIndex++;
 
-        if (CONFIG_ModeCycleEnabledFlag == 89) {
+        if (CONFIG_ModeCycleEnabledFlag == 'Y') {
             switch (mode - 5) {
             case 0: done = (GCOMMAND_NicheModeCycleCount != 0);        break;
             case 1: done = (CONFIG_NicheModeCycleBudget_Y != 0);       break;

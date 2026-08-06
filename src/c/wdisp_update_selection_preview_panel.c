@@ -83,7 +83,7 @@ long WDISP_UpdateSelectionPreviewPanel(struct PreviewCtx *ctx,
          * and emits the reload block below, which is unreachable there as well. */
         reloadEnabled = 0;
         if (reloadEnabled) {
-            if (WDISP_WeatherStatusDigitChar != 48
+            if (WDISP_WeatherStatusDigitChar != '0'
                 && WDISP_WeatherStatusCountdown != 0
                 && WDISP_WeatherCycleOffsetCount <= 1
                 && P_TYPE_WeatherBrushRefreshPendingFlag == 0)

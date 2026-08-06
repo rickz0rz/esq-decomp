@@ -48,9 +48,7 @@ char Global_STR_LADFUNC_C_27[10] = "LADFUNC.c";
 char Global_STR_LADFUNC_C_28[10] = "LADFUNC.c";
 char Global_STR_LADFUNC_C_29[10] = "LADFUNC.c";
 char Global_STR_LADFUNC_C_30[10] = "LADFUNC.c";
-unsigned char LADFUNC_STR_QuoteAndNewline[4] = {
-    0x22, 0x0a, 0x00, 0x00
-};
+unsigned char LADFUNC_STR_QuoteAndNewline[4] = "\"\n";
 char LADFUNC_STR_Quote[2] = "\"";
 char LADFUNC_FMT_ControlCharCaretEscape[6] = "^%lc";
 char LADFUNC_FMT_ReplacementQuoteChar[4] = "%lc";

@@ -18,8 +18,8 @@ long ED_IsConfirmKey(void)
     long result;
 
     switch (ED_LastKeyCode) {
-    case 0x59:
-    case 0x79:  result = 0; break;
+    case 'Y':
+    case 'y':  result = 0; break;
     default:    result = 1; break;
     }
     return result;

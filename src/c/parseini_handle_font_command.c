@@ -139,29 +139,29 @@ void PARSEINI_HandleFontCommand(char *cmd)
 
     switch ((short)(unsigned char)*cmd++) {
 
-    case 0x32:
+    case '2':
         WDISP_SPrintf(cmdBuf, Global_STR_PERCENT_S_2, cmd);
         Execute(cmdBuf, 0L, 0L);
         return;
 
-    case 0x33:
+    case '3':
         switch ((short)(unsigned char)*cmd++) {
 
-        case 0x34:
+        case '4':
             ED1_WaitForFlagAndClearBit0();
             return;
 
-        case 0x35:
-            if (CONFIG_ParseiniLogoScanEnabledFlag == 89)
+        case '5':
+            if (CONFIG_ParseiniLogoScanEnabledFlag == 'Y')
                 PARSEINI_ScanLogoDirectory();
             ED1_WaitForFlagAndClearBit1();
             return;
 
-        case 0x36:
+        case '6':
             ESQFUNC_RebuildPwBrushListFromTagTable();
             return;
 
-        case 0x37:
+        case '7':
             if (PARSEINI_TestMemoryAndOpenTopazFont(
                     &Global_HANDLE_H26F_FONT,
                     &Global_STRUCT_TEXTATTR_H26F_FONT) == 0)
@@ -171,7 +171,7 @@ void PARSEINI_HandleFontCommand(char *cmd)
             SetFont(Global_REF_RASTPORT_1, Global_HANDLE_H26F_FONT);
             return;
 
-        case 0x38:
+        case '8':
             if (PARSEINI_TestMemoryAndOpenTopazFont(
                     &Global_HANDLE_PREVUEC_FONT,
                     &Global_STRUCT_TEXTATTR_PREVUEC_FONT) == 0)
@@ -191,25 +191,25 @@ void PARSEINI_HandleFontCommand(char *cmd)
             TLIBA3_SetFontForAllViewModes(Global_HANDLE_PREVUEC_FONT);
             return;
 
-        case 0x39:
+        case '9':
             PARSEINI_TestMemoryAndOpenTopazFont(
                 &Global_HANDLE_PREVUE_FONT,
                 &Global_STRUCT_TEXTATTR_PREVUE_FONT);
             return;
 
-        case 0x51:
+        case 'Q':
             DISKIO2_ParseIniFileFromDisk();
             return;
 
-        case 0x61:
+        case 'a':
             ESQIFF_HandleBrushIniReloadHotkey(97L);
             return;
 
-        case 0x62:
+        case 'b':
             PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_GRADIENT_INI_3);
             return;
 
-        case 0x63:
+        case 'c':
             if (SCRIPT_CheckPathExists(Global_STR_DF0_BANNER_INI_2) == 0)
                 return;
 
@@ -224,11 +224,11 @@ void PARSEINI_HandleFontCommand(char *cmd)
             ESQIFF_QueueIffBrushLoad(1L);
             return;
 
-        case 0x64:
+        case 'd':
             PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_DEFAULT_INI_2);
             return;
 
-        case 0x73:
+        case 's':
             PARSEINI_ParseIniBufferAndDispatch(Global_STR_DF0_SOURCECFG_INI_1);
             TEXTDISP_ApplySourceConfigAllEntries();
             return;
@@ -237,20 +237,20 @@ void PARSEINI_HandleFontCommand(char *cmd)
             return;
         }
 
-    case 0x34:
+    case '4':
         switch ((short)(unsigned char)*cmd++) {
 
-        case 0x30:
+        case '0':
             ED1_EnterEscMenu();
             ED1_ExitEscMenu();
             return;
 
-        case 0x31:
+        case '1':
             ED1_EnterEscMenu();
             ED1_DrawDiagnosticsScreen();
             return;
 
-        case 0x32:
+        case '2':
             ED1_EnterEscMenu();
             ESQFUNC_DrawEscMenuVersion();
             return;

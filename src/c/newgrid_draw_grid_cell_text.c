@@ -68,7 +68,7 @@ void NEWGRID_DrawGridCellText(struct RastPort *rp, char *primary,
         while (len > 0 && primary[len - 1] == ' ')
             len--;
         x = centreX - TextLength(rp, primary, len) / 2;
-        if (CTASKS_STR_C == 83)
+        if (CTASKS_STR_C == 'S')
             y = baseY;
         else
             y = altY;
@@ -81,7 +81,7 @@ void NEWGRID_DrawGridCellText(struct RastPort *rp, char *primary,
         while (len > 0 && secondary[len - 1] == ' ')
             len--;
         x = centreX - TextLength(rp, secondary, len) / 2;
-        if (CTASKS_STR_C == 83)
+        if (CTASKS_STR_C == 'S')
             y = altY;
         else
             y = baseY;

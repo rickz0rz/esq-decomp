@@ -133,7 +133,7 @@ void WDISP_DrawWeatherStatusOverlay(struct RastPort *rp, long width, long height
     lineIndex = lineCount = 0;
 
     if (WDISP_WeatherStatusCountdown != 0 &&
-        WDISP_WeatherStatusDigitChar != 48) {
+        WDISP_WeatherStatusDigitChar != '0') {
 
         if (WDISP_WeatherStatusBrushIndex == 1)
             brush = BRUSH_FindBrushByPredicate(

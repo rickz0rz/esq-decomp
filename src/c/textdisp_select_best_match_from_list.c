@@ -300,7 +300,7 @@ long TEXTDISP_SelectBestMatchFromList(void *arg, short count, short channel,
         if (bestScore < 61)
             TEXTDISP_BannerCharSelected = 100;
 
-        if (TEXTDISP_BannerCharSelected == 100)
+        if (TEXTDISP_BannerCharSelected == 'd')
             return 2;
 
         if (TEXTDISP_ActiveGroupId != 0)

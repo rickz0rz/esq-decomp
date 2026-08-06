@@ -178,7 +178,7 @@ long NEWGRID_ProcessShowtimesWorkflow(void *ctx, short arg)
             NEWGRID_ShowtimesWorkflowState = NEWGRID_HandleShowtimesState(
                 ctx, &NEWGRID_ShowtimesSelectionContextPtr);
 
-        if (GCOMMAND_DigitalPpvEnabledFlag != 89)
+        if (GCOMMAND_DigitalPpvEnabledFlag != 'Y')
             goto returnState;
 
         if (advanced != 0 && NEWGRID_ShowtimesColumnAdjust < 1) {

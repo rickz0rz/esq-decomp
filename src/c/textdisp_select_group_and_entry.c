@@ -56,7 +56,7 @@ long TEXTDISP_SelectGroupAndEntry(char *source, char *out, short mode)
     }
 
     if (best == 2) {
-        if (TEXTDISP_BannerCharSelected == 100)
+        if (TEXTDISP_BannerCharSelected == 'd')
             TEXTDISP_CurrentMatchIndex = TEXTDISP_BannerFallbackEntryIndex[0];
         else
             TEXTDISP_CurrentMatchIndex = TEXTDISP_BannerSelectedEntryIndex[0];

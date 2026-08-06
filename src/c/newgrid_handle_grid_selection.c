@@ -67,7 +67,7 @@ long NEWGRID_HandleGridSelection(char *panel, short sel)
                 NEWGRID_GridSelectionEntryIndex, (long)sel);
             if (touched != 0 && NEWGRID_GridSelectionColumnAdjust < 1
                 && NEWGRID_GridSelectionWorkflowState == 5
-                && CONFIG_NewgridSelectionCode48_49EnabledFlag == 89) {
+                && CONFIG_NewgridSelectionCode48_49EnabledFlag == 'Y') {
                 NEWGRID_ValidateSelectionCode(panel, 48);
                 NEWGRID_GridSelectionColumnAdjust = NEWGRID_GetGridModeIndex();
             }
@@ -79,7 +79,7 @@ long NEWGRID_HandleGridSelection(char *panel, short sel)
         break;
     }
 
-    if (CONFIG_NewgridSelectionCode32EnabledFlag == 89 && touched != 0
+    if (CONFIG_NewgridSelectionCode32EnabledFlag == 'Y' && touched != 0
         && NEWGRID_GridSelectionColumnAdjust < 1) {
         NEWGRID_ValidateSelectionCode(panel, 32);
         NEWGRID_GridSelectionColumnAdjust = NEWGRID_GetGridModeIndex();

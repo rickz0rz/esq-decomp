@@ -115,7 +115,7 @@ long NEWGRID_DrawSelectionMarkers(struct GridCtx *ctx, short col, short row,
     }
 
     last = DISPTEXT_IsCurrentLineLast();
-    if (last != 0 && row == 3 && CONFIG_NewgridPlaceholderBevelFlag == 89)
+    if (last != 0 && row == 3 && CONFIG_NewgridPlaceholderBevelFlag == 'Y')
         BEVEL_DrawHorizontalBevel(rp,
             (long)NEWGRID_ColumnStartXPx + 36, 0L, 695L,
             (long)NEWGRID_RowHeightPx + DISPTEXT_ControlMarkerXOffsetPx - 1);

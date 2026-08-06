@@ -171,20 +171,20 @@ void CLEANUP_ProcessAlerts(void)
             ESQDISP_DrawStatusBanner(1L);
     }
 
-    if (ESQ_AlertType235ModeFlagChar == 89 && event == 2) {
+    if (ESQ_AlertType235ModeFlagChar == 'Y' && event == 2) {
         ESQDISP_StatusBannerClampGateFlag = 0;
         ESQDISP_DrawStatusBanner(0L);
         ESQDISP_StatusBannerClampGateFlag = 1;
     }
 
-    if ((ESQ_AlertType235ModeFlagChar == 89 && event == 5) ||
-        (ESQ_AlertType235ModeFlagChar != 89 && event == 2)) {
+    if ((ESQ_AlertType235ModeFlagChar == 'Y' && event == 5) ||
+        (ESQ_AlertType235ModeFlagChar != 'Y' && event == 2)) {
         PARSEINI_UpdateClockFromRtc();
         DST_RefreshBannerBuffer();
         ESQDISP_DrawStatusBanner(0L);
     }
 
-    if (ESQ_AlertType235ModeFlagChar == 89 && event == 3) {
+    if (ESQ_AlertType235ModeFlagChar == 'Y' && event == 3) {
         BANNER_ResetPendingFlag = 1;
         WDISP_BannerCharRangeStart = (short)DISPLIB_NormalizeValueByStep(
             (long)(CLOCK_HalfHourSlotIndex + 1), 1L, 48L);
@@ -192,7 +192,7 @@ void CLEANUP_ProcessAlerts(void)
             (long)(CLOCK_HalfHourSlotIndex + 2), 1L, 48L);
     }
 
-    if (ESQ_AlertType4ModeFlagChar == 89 && event == 4) {
+    if (ESQ_AlertType4ModeFlagChar == 'Y' && event == 4) {
         WDISP_BannerCharRangeStart = WDISP_BannerCharRangeStart + 1;
         WDISP_BannerCharRangeStart = (short)DISPLIB_NormalizeValueByStep(
             (long)WDISP_BannerCharRangeStart, 1L, 48L);

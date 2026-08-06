@@ -88,7 +88,7 @@ void ESQIFF_ReloadExternalAssetCatalogBuffers(long mode)
     if (CTASKS_IffTaskDoneFlag == 0)
         return;
 
-    if (mode == 1 && ED_DiagGraphModeChar != 78
+    if (mode == 1 && ED_DiagGraphModeChar != 'N'
         && DISKIO_DriveWriteProtectStatusCodeDrive1 == 0) {
         Forbid();
         BRUSH_FreeBrushList(&ESQIFF_GAdsBrushListHead, 0L);

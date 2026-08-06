@@ -18,13 +18,8 @@ char Global_STR_P_TYPE_C_4[10] = "P_TYPE.c";
 char Global_STR_P_TYPE_C_5[10] = "P_TYPE.c";
 char P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Write[16] = "df0:PromoId.Dat";
 char P_TYPE_STR_CURDAY_COLON_WriteSection[8] = "CURDAY:";
-unsigned char P_TYPE_FMT_PCT_03D_PCT_02D[20] = {
-    0x20, 0x25, 0x30, 0x33, 0x64, 0x20, 0x25, 0x30, 0x32, 0x64, 0x0a, 0x54,
-    0x59, 0x50, 0x45, 0x53, 0x3a, 0x20, 0x00, 0x00
-};
-unsigned char P_TYPE_STR_NO_DATA[10] = {
-    0x4e, 0x6f, 0x20, 0x44, 0x61, 0x74, 0x61, 0x0a, 0x0a, 0x00
-};
+unsigned char P_TYPE_FMT_PCT_03D_PCT_02D[20] = " %03d %02d\nTYPES: ";
+unsigned char P_TYPE_STR_NO_DATA[10] = "No Data\n\n";
 char P_TYPE_STR_NXTDAY_COLON_WriteSection[8] = "NXTDAY:";
 char P_TYPE_PATH_DF0_COLON_PROMOID_DOT_DAT_Load[16] = "df0:PromoId.Dat";
 char P_TYPE_STR_CURDAY_COLON_LoadSection[8] = "CURDAY:";

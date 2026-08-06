@@ -14,7 +14,7 @@ extern unsigned char TEXTDISP_BannerCharFallback;
 long SCRIPT_GetBannerCharOrFallback(void)
 {
     long c;
-    if (TEXTDISP_BannerCharSelected == 100)
+    if (TEXTDISP_BannerCharSelected == 'd')
         c = TEXTDISP_BannerCharFallback;
     else
         c = TEXTDISP_BannerCharSelected;

@@ -87,7 +87,7 @@ void TEXTDISP_DrawHighlightFrame(struct HighlightCtx *ctx)
     ESQIFF_RunCopperDropTransition();
     ESQIFF_RestoreBasePaletteTriples();
 
-    if (CONFIG_LRBN_FlagChar == 89) {
+    if (CONFIG_LRBN_FlagChar == 'Y') {
         if (WDISP_DisplayContextBase->flags & 4)
             cols = 2;
         else

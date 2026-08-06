@@ -34,7 +34,7 @@ long SCRIPT_BeginBannerCharTransition(short target, unsigned short rate)
 
     result = 0;
 
-    if (CONFIG_LRBN_FlagChar != 89)
+    if (CONFIG_LRBN_FlagChar != 'Y')
         return result;
 
     if (target < 130)

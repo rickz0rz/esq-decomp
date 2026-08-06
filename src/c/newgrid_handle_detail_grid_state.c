@@ -64,7 +64,7 @@ long NEWGRID_HandleDetailGridState(struct GridPanel *panel, long ctx, short sel)
         DISPTEXT_SetLayoutParams(612, 20,
                                                  GCOMMAND_MplexDetailLayoutPen);
 
-        if (GCOMMAND_MplexDetailLayoutFlag == 78)
+        if (GCOMMAND_MplexDetailLayoutFlag == 'N')
             NEWGRID_DrawGridEntry(&panel->rp, entry, aux, slot, 2, 1, 4);
         else
             NEWGRID_DrawGridEntry(&panel->rp, entry, aux, slot, 3, 1, 4);

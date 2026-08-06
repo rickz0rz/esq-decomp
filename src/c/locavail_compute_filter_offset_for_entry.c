@@ -103,7 +103,7 @@ void LOCAVAIL_ComputeFilterOffsetForEntry(char *token, struct FilterCtx *ctx)
             }
             break;
         case 2:
-            if (ED_DiagGraphModeChar == 78 || ESQIFF_GAdsBrushListCount == 0) {
+            if (ED_DiagGraphModeChar == 'N' || ESQIFF_GAdsBrushListCount == 0) {
                 best = -1;
                 bestSub = -1;
             }

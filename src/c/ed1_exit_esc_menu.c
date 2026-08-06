@@ -90,9 +90,9 @@ void ED1_ExitEscMenu(void)
     LOCAVAIL_FilterPrevClassId = -1;
 
     if (ED_SavedDiagGraphModeChar != ED_DiagGraphModeChar) {
-        if (ED_DiagGraphModeChar != 78 && ED_SavedDiagGraphModeChar == 78)
+        if (ED_DiagGraphModeChar != 'N' && ED_SavedDiagGraphModeChar == 'N')
             ED1_WaitForFlagAndClearBit0();
-        if (ED_DiagGraphModeChar == 78 && ED_SavedDiagGraphModeChar != 78) {
+        if (ED_DiagGraphModeChar == 'N' && ED_SavedDiagGraphModeChar != 'N') {
             BRUSH_FreeBrushList(&ESQIFF_GAdsBrushListHead, 0);
             ESQIFF_GAdsBrushListCount = 0;
         }

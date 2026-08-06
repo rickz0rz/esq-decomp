@@ -2850,11 +2850,17 @@ Four rules, and the last two are the ones that will bite:
 
 2. **A TEXT ARRAY IS EMITTED AS A STRING LITERAL, and the size still governs.**
    `data_to_c.py` writes `unsigned char X[15] = "df0:curday.dat";` where the
-   bytes are printable ASCII followed by NOTHING BUT NUL. C fills the remainder
-   of a short initialiser with zeros, so the emitted bytes are identical --
-   verified by compiling both forms and comparing the object. 23 of 844 byte
-   arrays qualify; the rest are palettes, copper lists and tables, where hex is
-   the honest spelling.
+   bytes are printable ASCII, or one of the escapable control characters,
+   followed by NOTHING BUT NUL. C fills the remainder of a short initialiser
+   with zeros, so the emitted bytes are identical -- verified by compiling both
+   forms and comparing the object. 120 of 844 byte arrays qualify; the rest are
+   palettes, copper lists and tables, where hex is the honest spelling.
+
+   **ONLY NAMED ESCAPES.** An octal escape such as `\033` swallows a following
+   digit -- `"\0331"` is one character, not two -- so a numeric escape cannot
+   sit next to arbitrary text. The two that occur are `\n` (92 sites) and `\t`
+   (15). A run of control bytes with no printable character in it is refused:
+   that is data, not text.
 
    Two cases are deliberately left as hex. A run with **no trailing NUL** is not
    a string: `ESQ_TAG_36[2]` is the two characters `36` and a literal would

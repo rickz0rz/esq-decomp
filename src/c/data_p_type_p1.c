@@ -12,31 +12,15 @@
  */
 
 char P_TYPE_STR_SOURCE_CONFIG[14] = "SOURCE CONFIG";
-unsigned char PARSEINI_DelimSpaceTab_Section1[4] = {
-    0x20, 0x09, 0x00, 0x00
-};
+unsigned char PARSEINI_DelimSpaceTab_Section1[4] = " \t";
 char Global_STR_PARSEINI_C_1[12] = "PARSEINI.c";
-unsigned char PARSEINI_DelimSpaceTab_Section2[4] = {
-    0x20, 0x09, 0x00, 0x00
-};
-unsigned char PARSEINI_DelimSpaceTab_Section4_5[4] = {
-    0x20, 0x09, 0x00, 0x00
-};
-unsigned char PARSEINI_DelimSpaceTab_Section6[4] = {
-    0x20, 0x09, 0x00, 0x00
-};
-unsigned char PARSEINI_DelimSpaceTab_Section7[4] = {
-    0x20, 0x09, 0x00, 0x00
-};
-unsigned char PARSEINI_DelimSpaceTab_Section8[4] = {
-    0x20, 0x09, 0x00, 0x00
-};
+unsigned char PARSEINI_DelimSpaceTab_Section2[4] = " \t";
+unsigned char PARSEINI_DelimSpaceTab_Section4_5[4] = " \t";
+unsigned char PARSEINI_DelimSpaceTab_Section6[4] = " \t";
+unsigned char PARSEINI_DelimSpaceTab_Section7[4] = " \t";
+unsigned char PARSEINI_DelimSpaceTab_Section8[4] = " \t";
 char Global_STR_PARSEINI_C_2[12] = "PARSEINI.c";
 long PARSEINI_CurrentRangeTableIndex = 4294967295;
-unsigned char PARSEINI_DelimSpaceTab_RangeKey[4] = {
-    0x20, 0x09, 0x00, 0x00
-};
-unsigned char PARSEINI_DelimSpaceSemicolonTab_RangeValue[4] = {
-    0x20, 0x3b, 0x09, 0x00
-};
+unsigned char PARSEINI_DelimSpaceTab_RangeKey[4] = " \t";
+unsigned char PARSEINI_DelimSpaceSemicolonTab_RangeValue[4] = " ;\t";
 char PARSEINI_TAG_TABLE[6] = "TABLE";

@@ -130,13 +130,13 @@ long NEWGRID_ProcessSecondaryState(struct GridCtx *ctx, short row)
                 if (progressed
                     && NEWGRID_SecondarySelectionHintCounter < 1
                     && NEWGRID_SecondaryWorkflowState == 5
-                    && CONFIG_NewgridSelectionCode48_49EnabledFlag == 89) {
+                    && CONFIG_NewgridSelectionCode48_49EnabledFlag == 'Y') {
                     NEWGRID_ValidateSelectionCode(ctx, 49L);
                     NEWGRID_SecondarySelectionHintCounter = NEWGRID_GetGridModeIndex();
                 }
             }
 
-            if (GCOMMAND_DigitalNicheEnabledFlag == 89
+            if (GCOMMAND_DigitalNicheEnabledFlag == 'Y'
                 && progressed
                 && NEWGRID_SecondarySelectionHintCounter < 1) {
                 NEWGRID_ValidateSelectionCode(ctx, 33L);

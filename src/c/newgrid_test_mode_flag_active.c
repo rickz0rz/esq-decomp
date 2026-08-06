@@ -14,9 +14,9 @@ extern unsigned char CONFIG_NewgridSelectionCode34AltEnabledFlag;
 long NEWGRID_TestModeFlagActive(long mode)
 {
     long r;
-    if (mode == 0 && CONFIG_NewgridSelectionCode34PrimaryEnabledFlag == 89)
+    if (mode == 0 && CONFIG_NewgridSelectionCode34PrimaryEnabledFlag == 'Y')
         r = 1;
-    else if (mode == 1 && CONFIG_NewgridSelectionCode34AltEnabledFlag == 89)
+    else if (mode == 1 && CONFIG_NewgridSelectionCode34AltEnabledFlag == 'Y')
         r = 1;
     else
         r = 0;

@@ -61,7 +61,7 @@ long NEWGRID_ProcessAltEntryState(char *panel, short sel, short lines)
         }
         NEWGRID_AltEntryWorkflowState = NEWGRID_HandleAltGridState(panel,
             NEWGRID_AltEntryCursor, (long)sel);
-        if (CONFIG_NewgridSelectionCode35EnabledFlag != 89)
+        if (CONFIG_NewgridSelectionCode35EnabledFlag != 'Y')
             break;
         if (touched != 0 && NEWGRID_AltEntryAttemptCounter < 1) {
             NEWGRID_ValidateSelectionCode(panel, 51);

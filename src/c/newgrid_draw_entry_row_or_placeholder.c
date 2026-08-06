@@ -67,7 +67,7 @@ void NEWGRID_DrawEntryRowOrPlaceholder(void *rp, void *entry, void *ctx,
     case 2:
         if (NEWGRID_EntryPlaceholderModeFlag != 0)
             NEWGRID_DrawGridEntry(rp, entry, ctx, (long)x, (long)y,
-                                  (CONFIG_NewgridPlaceholderBevelFlag == 89)
+                                  (CONFIG_NewgridPlaceholderBevelFlag == 'Y')
                                       ? 1L : 0L,
                                   2L);
         else

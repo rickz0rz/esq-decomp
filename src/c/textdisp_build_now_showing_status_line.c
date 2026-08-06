@@ -156,7 +156,7 @@ void TEXTDISP_BuildNowShowingStatusLine(short mode, short index, short slot)
                                                     1440L,
                                                     CONFIG_TimeWindowMinutes) !=
             0) {
-        if (TEXTDISP_BannerCharSelected == 100)
+        if (TEXTDISP_BannerCharSelected == 'd')
             special = TEXTDISP_BannerFallbackIsSpecialFlag;
         else
             special = TEXTDISP_BannerSelectedIsSpecialFlag;

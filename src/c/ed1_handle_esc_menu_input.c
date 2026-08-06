@@ -50,7 +50,7 @@ void ED1_HandleEscMenuInput(void)
         break;
 
     case 1:
-        if (ED_DiagTextModeChar == 76) {
+        if (ED_DiagTextModeChar == 'L') {
             ED_DrawAdNumberPrompt();
             ED_MenuStateId = 2;
         } else {
@@ -59,7 +59,7 @@ void ED1_HandleEscMenuInput(void)
         break;
 
     case 2:
-        if (ED_DiagTextModeChar == 76) {
+        if (ED_DiagTextModeChar == 'L') {
             ED_DrawAdNumberPrompt();
             ED_MenuStateId = 3;
         } else {

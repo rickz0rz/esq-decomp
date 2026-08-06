@@ -96,7 +96,7 @@ void SCRIPT_DispatchPlaybackCursorCommand(struct CmdSlot *slot)
         TEXTDISP_CurrentMatchIndex = -1;
         ESQ_SetCopperEffect_OnEnableHighlight();
         TEXTDISP_SetRastForMode(0L);
-        if (CONFIG_MSN_FlagChar == 77)
+        if (CONFIG_MSN_FlagChar == 'M')
             SCRIPT_UpdateSerialShadowFromCtrlByte(3L);
         else
             SCRIPT_UpdateSerialShadowFromCtrlByte(1L);

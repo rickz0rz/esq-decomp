@@ -49,7 +49,7 @@ void NEWGRID_DrawGridCellBackground(struct GridPanel *panel, short col,
         RectFill(rp, x0, y0, x1, y1);
     }
 
-    if (span == 3 && CONFIG_NewgridPlaceholderBevelFlag == 89)
+    if (span == 3 && CONFIG_NewgridPlaceholderBevelFlag == 'Y')
         BEVEL_DrawBeveledFrame(rp, x0, y0, x1, y1);
     else
         BEVEL_DrawBevelFrameWithTopRight(rp, x0, y0, x1, y1);

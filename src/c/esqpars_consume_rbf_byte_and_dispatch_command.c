@@ -410,7 +410,7 @@ void ESQPARS_ConsumeRbfByteAndDispatchCommand(void)
             DATACErrs++;
         else if (BYTE_AT(ESQIFF_RecordBufferPtr, 6) >= 60)
             DATACErrs++;
-        else if (CTASKS_STR_1 != 50)
+        else if (CTASKS_STR_1 != '2')
             DATACErrs++;
         else
             ESQPARS_ApplyRtcBytesAndPersist(ESQIFF_RecordBufferPtr);

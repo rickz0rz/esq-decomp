@@ -238,7 +238,7 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
             (long)CLEANUP_AlignedStatusMatchIndex,
             (long)CLEANUP_AlignedStatusClockEntryIndex,
             CLEANUP_AlignedStatusClockEntryBuffer, 0L);
-    } else if (templateCode == 79) {
+    } else if (templateCode == 'O') {
         CLEANUP_AlignedStatusAltTimeBuffer[0] = 0;
         TLIBA1_BuildClockFormatEntryIfVisible(
             (long)CLEANUP_AlignedStatusMatchIndex,
@@ -246,7 +246,7 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
             CLEANUP_AlignedStatusAltTimeBuffer, 1L);
     }
 
-    if (templateCode == 69) {
+    if (templateCode == 'E') {
         titleEntry = TEXTDISP_PrimaryTitlePtrTable[TEXTDISP_CurrentMatchIndex];
         entryCycle = CLEANUP_AlignedStatusEntryCycleTable[TEXTDISP_CurrentMatchIndex];
         bannerIndex = 0;
@@ -277,7 +277,7 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
                    CLEANUP_AlignedStatusEntryCycleTable[TEXTDISP_CurrentMatchIndex]]);
         titleState = 2;
 
-    } else if (templateCode == 70) {
+    } else if (templateCode == 'F') {
         if (CLEANUP_AlignedStatusMatchIndex != -1 &&
             CLEANUP_AlignedStatusClockEntryBuffer[0] != 0) {
             strcpy(templateText, CLEANUP_AlignedStatusClockEntryBuffer);
@@ -288,7 +288,7 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
         }
         titleState = 2;
 
-    } else if (templateCode == 71) {
+    } else if (templateCode == 'G') {
         if (CLEANUP_AlignedStatusMatchIndex != -1 &&
             CLEANUP_AlignedStatusClockEntryBuffer[0] != 0) {
             strcpy(templateText, CLEANUP_AlignedStatusClockEntryBuffer);
@@ -299,7 +299,7 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
         }
         titleState = 2;
 
-    } else if (templateCode == 78) {
+    } else if (templateCode == 'N') {
         if (CLEANUP_AlignedStatusMatchIndex == -1)
             return;
         if (CLEANUP_AlignedStatusClockEntryBuffer[0] == 0)
@@ -307,7 +307,7 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
         strcpy(templateText, CLEANUP_AlignedStatusClockEntryBuffer);
         titleState = 2;
 
-    } else if (templateCode == 79) {
+    } else if (templateCode == 'O') {
         if (CLEANUP_AlignedStatusMatchIndex == -1)
             return;
         if (CLEANUP_AlignedStatusAltTimeBuffer[0] == 0)
@@ -321,7 +321,7 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
         CLEANUP_AlignedStatusClockEntryIndex = -1;
     }
 
-    if (effectCode == 53)
+    if (effectCode == '5')
         ESQ_SetCopperEffect_OffDisableHighlight();
 
     ESQIFF_RunCopperDropTransition();
@@ -357,7 +357,7 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
 
     TEXTDISP_CurrentMatchIndexSaved = TEXTDISP_CurrentMatchIndex;
 
-    if (templateCode == 48 && templateText[0] == 0) {
+    if (templateCode == '0' && templateText[0] == 0) {
         TEXTDISP_DrawChannelBanner((long)mode, 3L);
         ESQ_SetCopperEffect_OnEnableHighlight();
         CLEANUP_AlignedStatusSuffixBuffer[0] = 0;
@@ -366,7 +366,7 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
         return;
     }
 
-    if (TEXTDISP_BannerCharSelected == 100)
+    if (TEXTDISP_BannerCharSelected == 'd')
         bannerIndex = TEXTDISP_BannerCharFallback;
     else
         bannerIndex = TEXTDISP_BannerCharSelected;
@@ -399,7 +399,7 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
                                         templateText);
 
     if (titleState == 1) {
-        if (TEXTDISP_BannerCharSelected == 100)
+        if (TEXTDISP_BannerCharSelected == 'd')
             special = TEXTDISP_BannerFallbackIsSpecialFlag;
         else
             special = TEXTDISP_BannerSelectedIsSpecialFlag;
@@ -408,7 +408,7 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
             strcpy(CLEANUP_AlignedStatusSuffixBuffer,
                    Global_STR_ALIGNED_NOW_SHOWING);
 
-            if (TEXTDISP_BannerCharSelected == 100)
+            if (TEXTDISP_BannerCharSelected == 'd')
                 special = TEXTDISP_BannerFallbackValidFlag;
             else
                 special = TEXTDISP_BannerSelectedValidFlag;
@@ -464,8 +464,8 @@ void CLEANUP_RenderAlignedStatusScreen(short mode, short effectCode,
                                             CLEANUP_AlignedStatusSuffixBuffer);
     }
 
-    if (titleState != 2 || templateCode == 70 || templateCode == 71 ||
-        templateCode == 78 || templateCode == 79) {
+    if (titleState != 2 || templateCode == 'F' || templateCode == 'G' ||
+        templateCode == 'N' || templateCode == 'O') {
         TEXTDISP_BuildChannelLabel(0L);
         CLEANUP_BuildAlignedStatusLine(TEXTDISP_ChannelLabelBuffer,
                                        (long)TEXTDISP_ActiveGroupId,

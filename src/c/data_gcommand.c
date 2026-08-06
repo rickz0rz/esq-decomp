@@ -280,24 +280,11 @@ unsigned char GCOMMAND_BannerPhaseIndexCurrent[4] = {
 unsigned char GCOMMAND_HighlightHoldoffTickCount[2] = {
     0x00, 0x00
 };
-unsigned char GCOMMAND_FMT_PCT_S_COLON[6] = {
-    0x25, 0x73, 0x3a, 0x0a, 0x00, 0x00
-};
-unsigned char GCOMMAND_STR_GRADIENT[12] = {
-    0x5b, 0x47, 0x52, 0x41, 0x44, 0x49, 0x45, 0x4e, 0x54, 0x5d, 0x0a, 0x00
-};
-unsigned char GCOMMAND_FMT_COLOR_PCT_D_PCT_D[16] = {
-    0x0a, 0x43, 0x4f, 0x4c, 0x4f, 0x52, 0x25, 0x64, 0x20, 0x3d, 0x20, 0x25,
-    0x64, 0x0a, 0x00, 0x00
-};
-unsigned char GCOMMAND_FMT_PCT_D_PCT_03X[14] = {
-    0x20, 0x20, 0x20, 0x25, 0x64, 0x20, 0x3d, 0x20, 0x25, 0x30, 0x33, 0x58,
-    0x0a, 0x00
-};
-unsigned char GCOMMAND_FMT_TABLE_DONE_WITH_LEADING_BLANK_LINE[16] = {
-    0x0a, 0x54, 0x41, 0x42, 0x4c, 0x45, 0x20, 0x3d, 0x20, 0x44, 0x4f, 0x4e,
-    0x45, 0x0a, 0x0a, 0x00
-};
+unsigned char GCOMMAND_FMT_PCT_S_COLON[6] = "%s:\n";
+unsigned char GCOMMAND_STR_GRADIENT[12] = "[GRADIENT]\n";
+unsigned char GCOMMAND_FMT_COLOR_PCT_D_PCT_D[16] = "\nCOLOR%d = %d\n";
+unsigned char GCOMMAND_FMT_PCT_D_PCT_03X[14] = "   %d = %03X\n";
+unsigned char GCOMMAND_FMT_TABLE_DONE_WITH_LEADING_BLANK_LINE[16] = "\nTABLE = DONE\n\n";
 long GCOMMAND_BannerFadeResetPendingFlag = 65536;
 short GCOMMAND_DriveProbeRequestedFlag = 1;
 char Global_STR_INPUTDEVICE[12] = "inputdevice";

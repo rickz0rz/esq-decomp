@@ -121,7 +121,7 @@ long DST_UpdateBannerQueue(struct DstBannerPair *pair)
         changed = 1;
     }
 
-    if (ESQ_SecondarySlotModeFlagChar == 89) {
+    if (ESQ_SecondarySlotModeFlagChar == 'Y') {
 
         if (pair->slot1 != 0) {
 

@@ -64,7 +64,7 @@ void WDISP_DrawWeatherStatusSummary(struct RastPort *rp, long width,
 
     SetRast(rp, 0L);
 
-    if (TLIBA1_DayEntryModeCounter > 0 && WDISP_WeatherStatusDigitChar != 48) {
+    if (TLIBA1_DayEntryModeCounter > 0 && WDISP_WeatherStatusDigitChar != '0') {
         for (i = 0; i < 3; i++)
             WDISP_DrawWeatherStatusDayEntry(rp, i, width, height);
         return;

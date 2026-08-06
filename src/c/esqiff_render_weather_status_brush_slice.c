@@ -78,7 +78,7 @@ short ESQIFF_RenderWeatherStatusBrushSlice(struct GridPanel *panel,
             (long)brush->originX + x, (long)width, &panel->rp,
             (long)ESQIFF_WeatherSliceSourceOffset);
         if (brush->kind == 11 && ESQIFF_WeatherSliceValidateGateFlag == 1
-            && CONFIG_NewgridSelectionCode16EnabledFlag == 89) {
+            && CONFIG_NewgridSelectionCode16EnabledFlag == 'Y') {
             NEWGRID_ValidateSelectionCode(panel, 16);
             ESQIFF_WeatherSliceValidateGateFlag = 0;
         }

@@ -20,7 +20,7 @@ void LADFUNC_UpdateHighlightState(void)
     long i;
 
     WDISP_HighlightIndex = WDISP_HighlightActive = 0;
-    if (ED_DiagTextModeChar == 78)
+    if (ED_DiagTextModeChar == 'N')
         return;
     for (i = 0; i < 46; i++) {
         struct LadfuncRect *r = LADFUNC_EntryPtrTable[i];

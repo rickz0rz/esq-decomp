@@ -316,7 +316,7 @@ state4:
         else
             NEWGRID_SelectionMarkerPenState = 0xff;
 
-        if (span == 3 && CONFIG_NewgridPlaceholderBevelFlag == 89)
+        if (span == 3 && CONFIG_NewgridPlaceholderBevelFlag == 'Y')
             cellH = 20;
         else
             cellH = 2;
@@ -357,7 +357,7 @@ maybeDrawMarkers:
         goto returnState;
     }
 
-    if (span == 3 && CONFIG_NewgridPlaceholderBevelFlag == 89
+    if (span == 3 && CONFIG_NewgridPlaceholderBevelFlag == 'Y'
         && DISPTEXT_IsCurrentLineLast() == 0) {
 
         NEWGRID_DrawGridCell(ctx->panel, firstEntry, 0L);

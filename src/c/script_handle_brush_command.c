@@ -190,7 +190,7 @@ long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
 
         case 51:
             TEXTDISP_CurrentMatchIndex = -1;
-            if (ESQ_DefaultNoFlagChar == 89)
+            if (ESQ_DefaultNoFlagChar == 'Y')
                 SCRIPT_PlaybackCursor = 1;
             else
                 SCRIPT_PlaybackCursor = 2;
@@ -222,7 +222,7 @@ long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
                 digitOffset = 3;
             SCRIPT_ChannelRangeDigitChar =
                 (unsigned char)payload[digitOffset];
-            if (SCRIPT_ChannelRangeDigitChar == 48) {
+            if (SCRIPT_ChannelRangeDigitChar == '0') {
                 ok = 0;
                 break;
             }
@@ -238,7 +238,7 @@ long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
             break;
 
         case 53:
-            if (CONFIG_LRBN_FlagChar != 89) {
+            if (CONFIG_LRBN_FlagChar != 'Y') {
                 SCRIPT_PendingBannerTargetChar = -1;
                 SCRIPT_PlaybackCursor = 1;
                 break;
@@ -374,7 +374,7 @@ long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
         break;
 
     case 11:
-        if (CTASKS_STR_1 != 49)
+        if (CTASKS_STR_1 != '1')
             break;
         if (strlen(payload) != 12)
             break;
@@ -405,7 +405,7 @@ long SCRIPT_HandleBrushCommand(void *ctx, char *payload, long len)
             break;
         }
         if (LOCAVAIL_FilterModeFlag != 1) {
-            if (ED_DiagGraphModeChar != 78 && ESQIFF_GAdsBrushListCount != 0)
+            if (ED_DiagGraphModeChar != 'N' && ESQIFF_GAdsBrushListCount != 0)
                 goto cursor4;
             if (WDISP_HighlightActive != 0)
                 goto cursor4;

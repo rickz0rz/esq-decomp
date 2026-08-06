@@ -511,6 +511,14 @@ def to_c(path, spans, total):
     return '\n'.join(out)
 
 
+# ONLY NAMED ESCAPES. An octal escape such as \\033 would swallow a following
+# digit -- "\\0331" is one character, not two -- so a numeric escape cannot be
+# emitted safely next to arbitrary text. The two that actually occur in this
+# program are \\n (92 sites) and \\t (15).
+ESCAPES = {0x07: '\\a', 0x08: '\\b', 0x09: '\\t', 0x0a: '\\n',
+           0x0b: '\\v', 0x0c: '\\f', 0x0d: '\\r'}
+
+
 def as_string_literal(by):
     """A C string literal for `by`, or None if hex is the honest spelling.
 
@@ -536,15 +544,26 @@ def as_string_literal(by):
     if len(by) < 3:
         return None
     i = 0
-    while i < len(by) and 0x20 <= by[i] < 0x7f:
+    while i < len(by) and (0x20 <= by[i] < 0x7f or by[i] in ESCAPES):
         i += 1
     if i < 2 or any(c != 0 for c in by[i:]):
         return None
-    text = bytes(by[:i]).decode('ascii')
+    if not any(0x20 <= c < 0x7f for c in by[:i]):
+        return None                     # all control bytes is not text
+    out = []
+    for c in by[:i]:
+        if c in ESCAPES:
+            out.append(ESCAPES[c])
+        elif c == 0x5c:
+            out.append('\\\\')
+        elif c == 0x22:
+            out.append('\\"')
+        else:
+            out.append(chr(c))
+    text = ''.join(out)
     if '??' in text:                    # a trigraph would change meaning
         return None
-    esc = text.replace('\\', '\\\\').replace('"', '\\"')
-    return '"%s"' % esc
+    return '"%s"' % text
 
 
 def layout_check(path):

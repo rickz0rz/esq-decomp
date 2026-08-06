@@ -34,53 +34,53 @@ void NEWGRID_ValidateSelectionCode(struct GridPanel *panel, long code)
 
     switch (code) {
     case 16:
-        if (CONFIG_NewgridSelectionCode16EnabledFlag == 89)
+        if (CONFIG_NewgridSelectionCode16EnabledFlag == 'Y')
             panel->selection = code;
         break;
 
     case 32:
-        if (CONFIG_NewgridSelectionCode32EnabledFlag == 89)
+        if (CONFIG_NewgridSelectionCode32EnabledFlag == 'Y')
             panel->selection = code;
         break;
 
     case 48:
-        if (CONFIG_NewgridSelectionCode48_49EnabledFlag == 89)
+        if (CONFIG_NewgridSelectionCode48_49EnabledFlag == 'Y')
             panel->selection = code;
         break;
 
     case 33:
-        if (GCOMMAND_DigitalNicheEnabledFlag == 89)
+        if (GCOMMAND_DigitalNicheEnabledFlag == 'Y')
             panel->selection = code;
         break;
 
     case 49:
-        if (CONFIG_NewgridSelectionCode48_49EnabledFlag == 89
-            && GCOMMAND_DigitalNicheEnabledFlag == 89)
+        if (CONFIG_NewgridSelectionCode48_49EnabledFlag == 'Y'
+            && GCOMMAND_DigitalNicheEnabledFlag == 'Y')
             panel->selection = code;
         break;
 
     case 34:
     case 50:
-        if (CONFIG_NewgridSelectionCode34PrimaryEnabledFlag == 89
-            || CONFIG_NewgridSelectionCode34AltEnabledFlag == 89)
+        if (CONFIG_NewgridSelectionCode34PrimaryEnabledFlag == 'Y'
+            || CONFIG_NewgridSelectionCode34AltEnabledFlag == 'Y')
             panel->selection = code;
         break;
 
     case 35:
     case 51:
-        if (CONFIG_NewgridSelectionCode35EnabledFlag == 89)
+        if (CONFIG_NewgridSelectionCode35EnabledFlag == 'Y')
             panel->selection = code;
         break;
 
     case 36:
     case 52:
-        if (GCOMMAND_DigitalMplexEnabledFlag == 89)
+        if (GCOMMAND_DigitalMplexEnabledFlag == 'Y')
             panel->selection = code;
         break;
 
     case 37:
     case 53:
-        if (GCOMMAND_DigitalPpvEnabledFlag == 89)
+        if (GCOMMAND_DigitalPpvEnabledFlag == 'Y')
             panel->selection = code;
         break;
 

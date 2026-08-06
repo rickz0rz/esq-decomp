@@ -93,7 +93,7 @@ void DST_BuildBannerTimeEntry(short slot, unsigned char day, short *outRow,
 
     base = DATETIME_BuildFromBaseDay(&block, &block, 54, (long)block.baseDay);
 
-    if (ESQ_SecondarySlotModeFlagChar == 89)
+    if (ESQ_SecondarySlotModeFlagChar == 'Y')
         secondary = DATETIME_ClassifyValueInRange(DST_BannerWindowSecondary, base);
     else
         secondary = 0;

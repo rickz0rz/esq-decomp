@@ -68,7 +68,7 @@ long NEWGRID_HandleShowtimesState(struct GridPanel *panel,
         if (selector > 48)
             selector -= 48;
 
-        if (GCOMMAND_PpvDetailLayoutFlag == 78)
+        if (GCOMMAND_PpvDetailLayoutFlag == 'N')
             NEWGRID_DrawGridEntry(&panel->rp, ctx->entry, ctx->aux,
                                   (long)selector, 2, 1, -1);
         else
