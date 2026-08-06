@@ -1,16 +1,18 @@
-# The 100 bytes that are still assembly
+# The 44 bytes that are still assembly
 
-Last measured 2026-08-04 from `build/ESQ.map` on the 864-entry maximum-C
+Last measured 2026-08-06 from `build/ESQ.map` on the 877-entry maximum-C
 manifest.
 
 ```
-maximum-C build, CODE hunk    235,484 bytes
-  from compiled C             235,384      99.958%
-  from assembly                   100       0.042%
+maximum-C build, CODE hunk    235,436 bytes
+  from compiled C             235,392      99.981%
+  from assembly                    44       0.019%
 ```
 
-**Every function in ESQ is compiled C.** Not one of these 100 bytes is
-executable. Regenerate the table below at any time:
+**Every function in ESQ is compiled C**, and every byte of alignment padding is
+gone too. What remains is ONE module holding three strings.
+
+Regenerate the table below at any time:
 
 ```sh
 ESQ_FARCALLS=1 SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \
@@ -26,23 +28,12 @@ else is C.
 | bytes | address | module | kind |
 |---:|---|---|---|
 | 44 | 0x03949c | `submodules/unknown36_p0_strings.s` | string data |
-| 8 | 0x037b9c | `submodules/unknown10_p1.s` | padding |
-| 4 | 0x039644 | `submodules/unknown40_p1.s` | padding |
-| 4 | 0x038578 | `submodules/unknown22_p1.s` | padding |
-| 4 | 0x03745c | `submodules/unknown2b_p1_p1.s` | padding |
-| 4 | 0x0356cc | `groups/b/a/tliba3_p5_p0_p1.s` | padding |
-| 4 | 0x023e88 | `groups/a/z/locavail2_p0.s` | padding |
-| 4 | 0x022d24 | `groups/a/x/ladfunc2_p1.s` | padding |
-| 4 | 0x01f2a0 | `groups/a/t/gcommand2_p1.s` | padding |
-| 4 | 0x00e2e8 | `groups/a/j/dst2_p2.s` | padding |
-| 4 | 0x007e90 | `groups/a/f/ctasks_p1.s` | padding |
-| 4 | 0x0045ac | `groups/a/c/cleanup2_p1_p0_p1.s` | padding |
-| 4 | 0x000b04 | `groups/a/a/app_p2.s` | padding |
-| 4 | 0x000558 | `groups/_main/b/bb_p1.s` | padding |
 
-**44 bytes of string data. 56 bytes of alignment padding. 0 bytes of code.**
+That is the whole list. It was fourteen modules and 100 bytes until 2026-08-06,
+when the thirteen alignment-padding modules were dropped -- see "Retired: 56
+bytes of alignment padding" below for what changed and why.
 
-## Block 1: 44 bytes of strings that CANNOT move
+## The floor: 44 bytes of strings that CANNOT move
 
 `src/modules/submodules/unknown36_p0_strings.s` holds three constants:
 
@@ -66,7 +57,7 @@ That is what closes the door, and it closes it twice over:
 
 1. **They need real linkable addresses.** A stack local has no address the
    linker can write into a table, so the trick that retired the other four
-   strings (below) cannot be used here.
+   strings ("What DID move" below) cannot be used here.
 2. **A C definition would grow the DATA hunk.** SAS/C 6.51 places every string
    literal and every initialised static in `data`, with no option to place it
    elsewhere. AGENTS.md records that a DATA hunk which grows by even four bytes
@@ -81,25 +72,34 @@ section, or a linker script that moves SAS/C's `data` output for these three
 objects only without disturbing the rest. Neither is available in this
 toolchain.
 
-## Block 2: 56 bytes of alignment padding
+## Retired: 56 bytes of alignment padding (2026-08-06)
 
-Thirteen modules whose entire content is `ALIGN_WORD` -- which `src/macros.s`
-defines as `DC.W $0000`, two bytes -- plus `submodules/unknown10_p1.s`, eight
-bytes the disassembler rendered as instructions and which are really the tail
-of a string plus filler. Each 2-byte pad becomes 4 in the map because a hunk
-object is longword-sized.
+Thirteen modules whose entire content was filler -- an `ALIGN_WORD`, which
+`src/macros.s` defines as `DC.W $0000`, or a couple of bytes the disassembler
+rendered as instructions because that is what a disassembler does with padding.
+`ORI.B #0,D0` is `0000 0000`; `MOVEQ #97,D0` is `7061`, the ASCII "pa" left over
+from a preceding string.
 
-**These could be deleted and deliberately are not.** Replacing each pad module
-with an empty translation unit would take the figure to 44 bytes and 99.98%,
-and it was tested. It is rejected on principle:
+They aligned the ORIGINAL's layout, and the maximum-C image does not have that
+layout: 235,436 CODE bytes against the reference's 211,348, every function a
+different size, and `gen_units.py` coalescing to 4-byte boundaries by itself.
 
-> Alignment filler is not assembly waiting to become C. It is content the
-> original image contains. Deleting it would make the rebuild LESS faithful in
-> exchange for a decimal place, and this project's product is a faithful
-> reconstruction.
+**They could not be converted, only removed, and that was measured.**
+`char p[2] = {0,0}`, `char p[2] = "\0"` and the `const` form all emit
+`HUNK_DATA` with `HUNK_CODE` of zero. Bytes reach the code section only as
+instruction operands inside a function, and no C emits exactly `DC.W 0` -- an
+empty function is `RTS`, `0x4E75`.
 
-There is also no C construct that emits inter-module padding into the code
-section, so "converting" them was never on the table -- only removing them.
+Each is replaced by a deliberately empty translation unit, `src/c/pad_*.c`. One
+file per module, because `gen_all_manifest.py` de-duplicates extra rows by C
+FILE and that guard is worth keeping: two modules sharing a real restoration
+would link duplicate symbols.
+
+The assembly modules stay on disk; `src/Prevue.asm` is what the byte-exact build
+assembles.
+
+Verified byte-identical output on a replayed listings feed, plus both byte
+gates, all audits and a soak.
 
 ## What DID move, and the pattern that moved it
 
@@ -155,7 +155,7 @@ above it, because a prototype emits nothing.
 
 | measure | value |
 |---|---|
-| maximum-C build | 99.958% C by CODE byte |
+| maximum-C build | 99.981% C by CODE byte |
 | executable assembly | none |
 | `tools/worklist.py 99999` | 0 functions, 0 bytes remaining |
 | coverage by byte | 99.4% (732 of 753 application functions) |

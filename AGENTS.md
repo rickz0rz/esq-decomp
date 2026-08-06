@@ -130,7 +130,7 @@ Both were discovered the hard way; both are enforced by `build-split.sh`.
 **1. Objects are longword-sized.** Hunk objects store section sizes in
 longwords, so an object whose content is 2 (mod 4) bytes gets padded, shifting
 everything after it. `gen_units.py` therefore coalesces consecutive modules
-until each unit lands on a 4-byte boundary — which is why 1,033 source modules
+until each unit lands on a 4-byte boundary — which is why 1,034 source modules
 become 539 link units. Source files stay fine-grained. Only the assembly grouping
 is coarser. **You can still edit any module in isolation.**
 
@@ -1059,6 +1059,101 @@ Four rules that keep the record trustworthy:
    none, because the whole value of a `SASC-MISMATCH` block is that it can be
    trusted on recheck.
 
+## THREE DEFECTS NO GATE COULD SEE, AND THE HARNESS THAT FOUND THEM (2026-08-05/06)
+
+The maximum-C build received and stored NO LISTINGS AT ALL, and had never been
+able to -- the 824-entry build from a16264a5 fails the same way. Every claim
+that it was "proven end to end" rested on `serial_esq.sh`, which sends only the
+`'A'` and `'f'` frames and NEVER SENT A LISTINGS RECORD. A whole protocol path
+had no coverage. Two separate defects were hiding in it and neither is visible
+to any byte gate, audit or screen-based check.
+
+### 1. A `_Return` EPILOGUE CAN DO REAL WORK
+
+This file already warned that a `_Return` label truncates `refbytes.py`'s
+extract -- but only as a SIZE caveat, "add the epilogue back before judging the
+delta". The dangerous half is that the epilogue can CONTAIN WORK:
+
+    ESQIFF2_ApplyIncomingStatusPacket_Return:
+        MOVE.W  #1,_ESQIFF_StatusPacketReadyFlag
+        MOVEM.L (A7)+,D2/D6-D7/A3
+        RTS
+
+The restoration reproduced all 266 bytes of the function and none of the 14
+bytes of the epilogue, so it never set the flag. The dispatcher's `'C'` arm
+DISCARDS every channel group record while that flag is 0.
+
+```sh
+python3 tools/return_epilogue_audit.py          # the manifest
+python3 tools/return_epilogue_audit.py --all    # every restoration
+```
+
+It strips pure stack-unwinding and the return-value move into D0, and reports
+any epilogue storing to a global the restoration never mentions. Filtering the
+D0 move mattered: without it 14 of 16 hits were return values and would have
+buried the one real case.
+
+### 2. `Scc` ALONE RETURNS -1. `Scc` PLUS `NEG.B` RETURNS +1
+
+`ESQ_TestBit1Based` ends:
+
+    BTST D1,0(A0,D0.W) / SNE D0 / EXT.W D0 / EXT.L D0
+
+`Scc` sets 0xFF, so sign-extending twice gives **-1**. The restoration wrote
+`return (...) != 0`, which is **+1**, and that inverts every caller: ALL ~25 of
+them test `== -1`, `!= -1`, or the `+ 1 == 0` spelling, so the "bit is set" arm
+became unreachable program-wide.
+
+`DISKIO2_WriteCurDayDataFile` writes a programme slot only when this returns
+-1, so curday.dat came out with its header, its channel records and NOT ONE
+PROGRAMME -- while the grid drew the programmes correctly, because the display
+reads the entry tables directly and never calls this.
+
+**A restoration whose result is only ever COMPARED, never used as a value, has
+no size tell and no byte tell.** The two spellings are one instruction apart.
+Check which one the original has before writing `!= 0`.
+
+### 3. THE DATA SOURCE VARIES, SO A/B RUNS ARE NOT COMPARABLE
+
+PrevueCommander pulls its line-up and programmes from a Channels DVR server at
+RUN TIME, and the answer is not the same twice:
+
+    control  5 channels starting [WJBK]     15 programme frames
+    max-C    5 channels starting [WJBKDT4]  14 programme frames
+
+FOUR bisect results were drawn against that moving input and all four had to be
+re-run. Two conclusions were flatly wrong: the build was accused of inventing a
+channel "2.5" and reordering the line-up, and it had done neither -- the
+commander genuinely sent 2.4, 2.5, 2, 2.1, 2.2 that run.
+
+```sh
+tools/listings_esq.sh <binary> <label> [secs]           # live commander
+REPLAY=<commander.log> tools/listings_esq.sh <bin> <l>  # DETERMINISTIC
+```
+
+**Use REPLAY for any comparison.** `tools/rbf_replay.py` reads the hex a
+`output: Verbose` run prints and sends it at roughly 2400 baud, so both builds
+see the same frames in the same order and the same arrival pattern.
+
+The harness also RESETS curday.dat from `tools/fixtures/curday.dat.empty` before
+every run, because **ESQ PERSISTS LISTINGS TO THE DRIVE**: once any build has
+completed a load, every later boot shows listings without receiving any --
+including a build that cannot receive them. Run the assembly build once and
+every maximum-C run after it looks fine.
+
+### What actually found it
+
+Not the file diff -- the SCREENSHOT. Both builds drew programmes on screen
+while only one wrote them to disk, which is what said the receive and parse
+path was fine and sent the search to the writer. Every bisect before that had
+reverted receive-and-parse code and changed nothing, because nothing there was
+broken.
+
+`listings_esq.sh` captures the screen, dbg.log, err.log and hb.log. Note the
+window lookup: the owner name is lowercase `fs-uae` and it needs
+`kCGWindowListOptionAll` -- matching 'FS-UAE' on the on-screen-only list finds
+nothing and the capture SILENTLY does not happen.
+
 ## Running it: the only oracle for a maximum-C build
 
 Neither gate can judge `replacements-all.txt` — behavioural restorations differ
@@ -1432,7 +1527,7 @@ far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
 BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
 278-entry parent, also clean and additionally proven on all six ESC-menu items.
 
-`src/c/replacements-all.txt` is the one to grow. It stands at **861 entries**,
+`src/c/replacements-all.txt` is the one to grow. It stands at **877 entries**,
 every DATA module among them, with 28 restorations held out as unsafe to link.
 It went 440 -> 464 from new restorations and 464 -> 614 from SPLITTING modules,
 which is the cheaper lever of the two and was sitting unused. It went 770 -> 790
@@ -1480,9 +1575,10 @@ been RUN.** Soak before treating a new size as good.
 still assembly and that is misleading: 150 of them are EMPTY files and 10 hold
 only an alignment pad. The honest number comes from the link map.
 
-**The maximum-C build is 99.93% C by CODE byte, and NO EXECUTABLE ASSEMBLY IS
-LEFT.** 235,168 bytes of 235,328 come from compiled C. The 160 bytes that remain
-are 104 bytes of string constants and 56 bytes of alignment padding.
+**The maximum-C build is 99.98% C by CODE byte, and NO EXECUTABLE ASSEMBLY IS
+LEFT.** 235,392 bytes of 235,436 come from compiled C. The 44 bytes that remain
+are three string constants in ONE module. The alignment padding was dropped on
+2026-08-06.
 
 ```sh
 python3 tools/lastmile.py                  # module buckets, plus the code worklist
@@ -1499,8 +1595,8 @@ everything else is C.
 module with its address, both blocks with what would unblock them, and the
 string-retirement pattern. Read it before assuming there is work left here.
 
-Measured 2026-08-04 from `build/ESQ.map` on the 861-entry manifest. 16
-contributors, 160 bytes, not one of them a function.
+Measured 2026-08-06 from `build/ESQ.map` on the 877-entry manifest. ONE
+contributor, 44 bytes, and it is not a function.
 
 | bytes | what | why it cannot be C |
 |---:|---|---|
@@ -1707,7 +1803,12 @@ module, byte-neutral, with both gates green.
 
 **Verified by RUNNING it, which is the only oracle that applies here.** Neither
 byte gate can judge a C build, and until `tools/serial_esq.sh` existed nothing
-reached the write path at all. Driven over the serial line, the maximum-C build
+reached the write path at all.
+
+> **BUT serial_esq.sh SENDS ONLY `'A'` AND `'f'`, AND THAT IS NOT THE LISTINGS
+> PATH.** A build with the whole listings path dead passes it with all 18 files
+> identical to the control. Use `tools/listings_esq.sh` for anything that has to
+> exercise a real feed -- see "THREE DEFECTS NO GATE COULD SEE" above. Driven over the serial line, the maximum-C build
 writes the same 18 files at the same sizes as the byte-exact assembly build, and
 `tools/fileiodiff.py` reports them IDENTICAL after masking clock stamps --
 `local.ads`, `qtable.ini`, `oinfo.dat`, `dbg.log` and the fonts among them.

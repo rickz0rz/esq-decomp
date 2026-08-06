@@ -37,7 +37,7 @@ Run `python3 tools/coverage.py` to regenerate every number in this section.
 | application functions | 753 (195,146 bytes) |
 | restored to C | 732 (193,894 bytes, 99.4% by byte, 97% by count) |
 | byte-exact restorations | 31 application functions, plus 3 library functions (34 files) |
-| source modules | 1,033, coalesced into 539 link units |
+| source modules | 1,034, coalesced into 539 link units |
 | DATA section in C | 55,820 of 55,820 bytes (100%) |
 | linked size | CODE 211,348 bytes, DATA 55,820 bytes |
 
@@ -49,20 +49,20 @@ map for that. A contributor in `build/ESQ.map` whose name ends `.asm` is
 assembly and everything else is C.
 
 ```
-maximum-C build, CODE hunk   99.96%  [########################################]
-                                     235,384 of 235,484 bytes come from C
+maximum-C build, CODE hunk   99.98%  [########################################]
+                                     235,392 of 235,436 bytes come from C
 ```
 
 | measure | value |
 |---|---|
-| maximum-C manifest | 861 entries (`src/c/replacements-all.txt`) |
-| assembly remaining | 100 of 235,484 CODE bytes (0.04%) |
-| module includes still assembly | 173, of which 150 are EMPTY and 10 are pads |
+| maximum-C manifest | 877 entries (`src/c/replacements-all.txt`) |
+| assembly remaining | 44 of 235,436 CODE bytes (0.02%), in ONE module |
+| module includes still assembly | 160, of which 150 are EMPTY |
 | modules holding real code | ZERO (`python3 tools/lastmile.py`) |
 
-**No executable assembly is left.** Every function in the program is compiled
-C. The 100 bytes that remain are 44 bytes of string constants and 56 bytes of
-alignment padding, spread over 14 modules.
+**No executable assembly is left, and no padding either.** Every function in
+the program is compiled C. What remains is 44 bytes in a single module:
+`submodules/unknown36_p0_strings.s`, holding three strings.
 
 Four other CODE-section strings were retired by building them a character at a
 time into stack locals, which keeps the text in CODE where the original has it.
@@ -71,10 +71,8 @@ chain holding their ADDRESSES, so they need real linkable symbols, and a C
 definition would be an initialised static in `data` -- and a DATA hunk that
 grows shifts every symbol after it and freezes the display.
 
-The 56 bytes of padding could be deleted to reach 44, and deliberately are not.
-Alignment filler is not assembly waiting to become C; it is content the
-original image contains, and removing it would make the rebuild less faithful,
-not more.
+The thirteen alignment-padding modules were dropped on 2026-08-06. They aligned
+the ORIGINAL's layout, and the maximum-C image does not have that layout.
 
 **`docs/remaining-assembly.md` is the byte-by-byte record**: every one of the
 100 bytes with its address and module, why each of the two blocks cannot be
