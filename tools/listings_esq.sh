@@ -108,6 +108,23 @@ mkdir -p "$BACKUP"
 # creates them from nothing. The default seeds a 42-byte header-only
 # curday.dat, and a header that promises records the file does not contain is
 # not obviously the same thing as no file at all.
+# PRISTINE=<dir> restores the WHOLE drive from a snapshot before the run, which
+# is what makes an A/B comparison trustworthy. Without it the drive accumulates
+# state and the same binary can pass and then fail: a max-C build that passed
+# this harness repeatedly on 2026-08-07 later failed eight times in a row while
+# the assembly control passed, and the binaries were byte-identical (cmp). Take
+# the snapshot from a fresh copy of the drive:
+#
+#   cp -Rp ~/Downloads/Prevue ~/Downloads/Prevue-pristine
+#   PRISTINE=~/Downloads/Prevue-pristine tools/listings_esq.sh <bin> <label>
+#
+# NOTE the drive's own ESQ is overwritten by the candidate and is NOT in the
+# harness backup, so a snapshot is the only way to get the shipped binary back.
+if [ -n "${PRISTINE:-}" ] && [ -d "$PRISTINE" ]; then
+    rm -rf "$PREVUE" && cp -Rp "$PRISTINE" "$PREVUE"
+    echo "  drive restored from $PRISTINE"
+fi
+
 if [ "${RESET:-seed}" = "delete" ]; then
     rm -f "$PREVUE/curday.dat" "$PREVUE/nxtday.dat"
     BEFORE=0
