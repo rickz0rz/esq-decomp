@@ -32,6 +32,16 @@
 # BASELINE=<file> overrides the empty curday.dat used for the reset. The default
 # is tools/fixtures/curday.dat.empty, which is the 42-byte header-only file.
 #
+# RESET=delete REMOVES curday.dat and nxtday.dat instead of seeding the
+# baseline, so ESQ builds them from nothing. USE IT TO SEPARATE TWO FAILURES
+# THAT LOOK ALIKE. Measured 2026-08-07: with the baseline seeded, the
+# maximum-C build hit `Software Failure 8100 000F` -- AN_BadFreeAddr -- and
+# stored nothing; with the files DELETED the guru did not occur at all and ESQ
+# sat on its own `System Initializing` screen instead. So the 42-byte header,
+# which promises records the file does not contain, is what the bad free comes
+# from. The assembly control passes either way, which is what makes the
+# difference attributable.
+#
 # WHAT A PASS LOOKS LIKE
 #
 #   curday.dat  42 -> 23739 bytes      listings arrived and were stored
@@ -93,10 +103,21 @@ mkdir -p "$BACKUP"
 
 # THE ANTI-TRAP RESET. Without this the run proves nothing: a previous load's
 # data is still on the drive and every build reads it back.
-cp "$BASELINE" "$PREVUE/curday.dat"
-: > "$PREVUE/nxtday.dat"
-BEFORE=$(stat -f%z "$PREVUE/curday.dat")
-echo "  listings state reset: curday.dat = $BEFORE bytes"
+#
+# RESET=delete REMOVES the two files instead of seeding the baseline, so ESQ
+# creates them from nothing. The default seeds a 42-byte header-only
+# curday.dat, and a header that promises records the file does not contain is
+# not obviously the same thing as no file at all.
+if [ "${RESET:-seed}" = "delete" ]; then
+    rm -f "$PREVUE/curday.dat" "$PREVUE/nxtday.dat"
+    BEFORE=0
+    echo "  listings state reset: curday.dat and nxtday.dat DELETED"
+else
+    cp "$BASELINE" "$PREVUE/curday.dat"
+    : > "$PREVUE/nxtday.dat"
+    BEFORE=$(stat -f%z "$PREVUE/curday.dat")
+    echo "  listings state reset: curday.dat = $BEFORE bytes"
+fi
 
 cp "$BIN" "$PREVUE/ESQ" || { echo "  ERROR: cannot stage the binary"; exit 1; }
 
