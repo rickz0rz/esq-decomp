@@ -11,6 +11,59 @@ equivalence instead, and each one failed the same way. Small unexplained fixes
 accumulated until the result stopped working. Nobody could then name the change
 that broke it.
 
+## Building
+
+Three builds. The first two are the byte-exact gates and take no options. The
+third is the C reconstruction.
+
+```sh
+./test-hash.sh                                    # gate 1: exact SHA-256
+./build-split.sh                                  # gate 2: content match
+```
+
+```sh
+ESQ_FARCALLS=1 \
+SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \
+C_REPLACEMENTS=src/c/replacements-all.txt \
+  ./build-split.sh                                # the maximum-C build
+```
+
+Both `build-split.sh` forms write `build/ESQ`; the maximum-C binary is 331,728
+bytes. `test-hash.sh` builds to a temporary file and only reports the hash, so
+it leaves `build/ESQ` alone.
+
+**The maximum-C build exits 1, and that is expected.** `build-split.sh` always
+compares against the byte-exact reference, and a C build differs from it by
+construction -- 224,424 bytes of CODE against the reference's 211,348. A
+nonzero exit here is not a failure.
+
+Read the audit block instead. Every line must be clean, and several stop the
+build on a hit:
+
+```
+data_shape_audit: 835 C files checked (manifest), 0 disagreement(s)
+extern_width_audit: clean
+check_pcrel_range: clean (56 PC-relative calls, 0 truncated)
+data_offset_audit: 50 data module(s) checked, offsets agree
+```
+
+### What each option is for
+
+Every one of these fails in a way that blames the wrong thing if it is missing.
+
+| option | why |
+|---|---|
+| `ESQ_FARCALLS=1` | rewrites the assembly's 16-bit PC-relative calls to absolute. Without it the link fails on range. |
+| `CODE=FAR` | the same for the C side. Without it `vlink` reports `Error 28` against arbitrary files. |
+| `DATA=FAR` | globals as absolute longs rather than A4-relative. |
+| `CODENAME=S_0 DATANAME=S_1` | puts C output in ESQ's own sections. Without it the link fails with `Unsupported relocation type R_PC`. |
+| `NOSTKCHK` | drops SAS/C's stack-check prologue. The original has none, so every function otherwise mismatches by 8 leading bytes. |
+| `IDLEN=128` | stops `sc` truncating external symbols at 33 characters. |
+
+Neither gate reads a manifest, so no amount of C work can move them. See
+**The two gates** below for what they actually prove, and **Toolchain** for what
+has to be installed.
+
 ## Status
 
 Both byte gates pass on the current tree.
@@ -81,12 +134,7 @@ Of those 157 includes, 150 are EMPTY files, six are parent modules whose content
 was split out, and `src/modules/c-exports.s` holds only `assert` directives.
 **The link map is the authority, not the module count.**
 
-Build it with:
-
-```sh
-ESQ_FARCALLS=1 SCOPTS="NOSTKCHK DATA=FAR CODE=FAR CODENAME=S_0 DATANAME=S_1 IDLEN=128" \
-  C_REPLACEMENTS=src/c/replacements-all.txt ./build-split.sh
-```
+Build it with the command under **Building** above.
 
 The last three constants were the Ctrl-C requester strings, which a DATA table
 holds the addresses of. Defining them in C grows the DATA hunk 55,820 -> 55,864,
@@ -132,10 +180,7 @@ hunt for the real one.
 
 ## The two gates
 
-```sh
-./test-hash.sh      # monolithic vasm build, exact SHA-256 match
-./build-split.sh    # separately assembled and linked build, content match
-```
+Both commands are under **Building** above. This section is what they prove.
 
 `test-hash.sh` hashes the whole file against
 `6bd4760d1cf0706297ef169461ed0d7b7f0b079110a78e34d89223499e7c2fa2`.
