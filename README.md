@@ -28,7 +28,7 @@ C_REPLACEMENTS=src/c/replacements-all.txt \
   ./build-split.sh                                # the maximum-C build
 ```
 
-Both `build-split.sh` forms write `build/ESQ`; the maximum-C binary is 331,728
+Both `build-split.sh` forms write `build/ESQ`; the maximum-C binary is 331,252
 bytes. `test-hash.sh` builds to a temporary file and only reports the hash, so
 it leaves `build/ESQ` alone.
 
@@ -74,7 +74,7 @@ assembly converted to C    100%   [########################################]
 ```
 
 **The conversion is finished.** `build/ESQ.map` lists no contributor whose name
-ends `.asm`. All 291,256 bytes of the image -- CODE 235,392 plus DATA 55,864 --
+ends `.asm`. All 280,360 bytes of the image -- CODE 224,424 plus DATA 55,936 --
 come from compiled C, on the default 878-entry manifest with no switch.
 
 `tools/worklist.py 99999` reports **0 functions and 0 bytes remaining**.
@@ -108,7 +108,7 @@ figure from `build/ESQ.map` after a maximum-C build.
 | DATA section in C | 55,820 of 55,820 bytes (100%) |
 | assembly in the maximum-C build | **0 bytes** (was 6,664 at the start of the run) |
 | maximum-C manifest | 878 entries |
-| linked size | CODE 211,348 bytes, DATA 55,820 bytes |
+| linked size, byte-exact reference | CODE 211,348 bytes, DATA 55,820 bytes |
 
 ### The maximum-C build
 
@@ -119,14 +119,14 @@ assembly and everything else is C.
 
 ```
 maximum-C build              100%   [########################################]
-                                    291,256 of 291,256 bytes come from C
+                                    280,360 of 280,360 bytes come from C
 ```
 
 | measure | value |
 |---|---|
 | maximum-C manifest | 878 entries (`src/c/replacements-all.txt`) |
 | assembly remaining | **0 bytes** |
-| linked size | CODE 235,392 + DATA 55,864 = 291,256 bytes |
+| linked size | CODE 224,424 + DATA 55,936 = 280,360 bytes |
 | module includes still assembly | 157, none of which emits a byte |
 | modules holding real code | ZERO (`python3 tools/lastmile.py`) |
 
@@ -138,7 +138,8 @@ Build it with the command under **Building** above.
 
 The last three constants were the Ctrl-C requester strings, which a DATA table
 holds the addresses of. Defining them in C grows the DATA hunk 55,820 -> 55,864,
-which this project long believed would freeze the display. It does not.
+which this project long believed would freeze the display. It does not. (The
+hunk stands at 55,936 today; later work moved it again for the same reason.)
 `docs/remaining-assembly.md` explains why: growth at the FRONT of the hunk
 shifts the image as one piece, and ESQ depends on the DISTANCE between data
 symbols rather than on their absolute offsets.
@@ -251,16 +252,16 @@ builds cannot disagree about content or ordering.
 Hunk objects store section sizes in longwords. An object whose content is 2
 modulo 4 bytes gets padded, which shifts everything after it. `gen_units.py`
 therefore joins consecutive modules until each unit lands on a 4-byte boundary.
-That is why 1,015 source modules become 531 link units. You can still edit any
+That is why 1,034 source modules become 539 link units in the default build. You can still edit any
 module on its own.
 
 ## The C phase
 
-Replace assembly with C one leaf subroutine at a time. Compile it with SAS/C
-6.51. Accept the result when the emitted bytes match the assembly it replaces.
-If a function does not match, leave it in assembly and move on. A partial
-decompilation that builds correctly is worth more than a complete one that does
-not.
+The conversion is finished, so this section is the workflow for the remaining
+question: making a restoration BYTE-EXACT rather than merely behavioural. Work
+one function at a time and compile it with SAS/C 6.51. Accept the result when
+the emitted bytes match the assembly it replaces. A partial decompilation that
+builds correctly is worth more than a complete one that does not.
 
 ```sh
 tools/cmatch.sh <file.c> <Label>            # compile and diff against the reference
@@ -288,8 +289,10 @@ byte check can see: reading a global one level too shallow, and declaring a word
 global one byte wide so the read takes the high half.
 
 `data_adjacency_audit.py` answers a question the DATA section raises rather than
-the code: which symbols the program reads across. There are eight, and each has
-to become one struct before `src/data` can stop being assembly.
+the code: which symbols the program reads across. There are eight. All of
+`src/data` is C now, so they are a constraint on MOVING a data symbol rather
+than on converting one -- see `AGENTS.md` on what may be inlined and what may
+not.
 
 `merge_module_c.py` builds one C unit per module out of the per-function
 restorations, for modules `split_module.py` cannot cut. Always pass `--verify`:
@@ -303,7 +306,7 @@ Five manifests exist, each for a different question:
 | `replacements.txt` | 23 | byte-exact only, so the build must stay content-identical |
 | `replacements-runnable.txt` | 278 | proven on all six ESC-menu items |
 | `replacements-tranche.txt` | 293 | the largest set proven without `ESQ_FARCALLS` |
-| `replacements-all.txt` | 790 | every restoration, judged by running it |
+| `replacements-all.txt` | 878 | every restoration, judged by running it |
 | `replacements-canary.txt` | 20 | a deliberate mismatch, to prove the gate can fail |
 
 `replacements-all.txt` needs `ESQ_FARCALLS=1`. That flag widens the assembly's
@@ -330,6 +333,24 @@ python3 tools/framecolor.py <label-a> <label-b>             # compare two runs b
 python3 tools/menuresidue.py <png>...                       # ESC-menu grey left on screen
 ```
 
+Those judge the SCREEN. Two more drive the serial line, and they are the only
+ones that reach the code which writes to the drive:
+
+```sh
+tools/serial_esq.sh   <binary> <label> [secs]               # select + config frames
+REPLAY=<log> tools/listings_esq.sh <binary> <label> [secs]  # a real listings feed
+python3 tools/fileiodiff.py <label-a> <label-b>             # compare what two runs wrote
+```
+
+**`listings_esq.sh` is the strongest oracle in the tree.** ESQ is a broadcast
+receiver: with no head-end feeding it, nothing marks data dirty and nothing is
+written, so a keyboard-only harness cannot reach the write path however it is
+driven. Always use `REPLAY=` with a captured log -- a live commander pulls from
+a DVR server and does not return the same answer twice, which invalidated four
+bisects before it was noticed. The test is whether `curday.dat` grew, and the
+harness resets it first, because ESQ PERSISTS LISTINGS: once any build has
+completed a load, every later boot shows listings without receiving any.
+
 ESQ redraws a clock every second. Identical consecutive frames therefore mean
 the display stopped, which is a hang the boot probe cannot see.
 
@@ -337,6 +358,11 @@ the display stopped, which is a hang the boot probe cannot see.
 the ESC menu. It presses ESC twice and then shoots on a timer with no further
 input, so a permanent fault reads differently from a redraw still in progress.
 It exits nonzero if the menu background survives the close.
+
+**`escwatch_esq.sh` FAILS on the byte-exact known-good build too**, at the same
+grey and over the same frames. The defect is in the ORIGINAL and
+`fixEscMenuExitDisplayMode` is the switch for it. Run the known-good before
+reading that failure as a regression.
 
 A build can animate correctly and still draw the wrong picture, because a wrong
 constant changes a colour without stopping the display. Soak the known-good
@@ -352,6 +378,7 @@ reliable and a FAIL is not, because a busy host can miss the marker.
 - `AGENTS.md` — the working agreement, and the first thing to read
 - `docs/tranche-target.md` — the current restoration target and the loop to follow
 - `docs/blocked-shapes.md` — what cannot be restored, and what each class would take
+- `docs/remaining-assembly.md` — how the last assembly bytes went, and the rule that let them
 - `docs/reference-binary.md` — what the reference hash is and is not
 - `docs/compiler-version.md` — known codegen divergences and the compiler hunt
 - `docs/*-format.md` — the on-disk data formats ESQ reads
