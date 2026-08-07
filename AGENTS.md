@@ -3,6 +3,28 @@
 Reverse-engineering of ESQ, the Prevue Guide channel-listings program for the
 Amiga. Abandoned software; the goal is a faithful, buildable reconstruction.
 
+## Where the project stands (2026-08-06)
+
+Read this before anything below, because much of this file was written while
+work was in progress and describes obstacles that are now cleared.
+
+| | |
+|---|---|
+| byte-exact gates | both green, and neither reads a manifest |
+| maximum-C build | **no assembly at all** -- 280,360 bytes, CODE 224,424 + DATA 55,936 |
+| manifest | `src/c/replacements-all.txt`, 878 entries, generated |
+| jump-table thunks | all 464 deleted |
+| `DO-NOT-LINK` files | none remain; every restoration on disk is linked |
+| still open | 34 restorations are `exact`, 853 are `behavioural` (`tools/mismatches.py`) |
+
+So the live questions are the COMPILER (which version emits the original's call
+encoding) and the PORT (running this C off the Amiga). Sections below that talk
+about "the last mile", "growing a manifest" or "what is left in assembly" are
+history, and each says so where it matters.
+
+**Build it with the command in README.md under Building.** That is the single
+copy; do not paste another one here.
+
 ## The prime directive
 
 **Every change must be proven byte-equivalent by a build. No exceptions.**
@@ -69,6 +91,10 @@ or the module list.
 6. Correct the module and unit counts in **Two constraints that will bite you**.
 7. Correct the exact-rate table in **Progress is measured in BYTES**.
 8. Correct any manifest entry count quoted in prose in this file.
+9. Correct the **Where the project stands** table at the top, and the linked
+   size wherever it appears. The maximum-C image changes size whenever a
+   restoration lands, and three sections quote it.
+10. Run `python3 tools/mismatches.py` for the `exact` and `behavioural` counts.
 
 Do not refresh one file and skip the other. `README.md` and this file must
 agree. A reader who finds two different counts cannot tell which one is current.
@@ -988,9 +1014,9 @@ The restoration record says so unambiguously:
 
 | bucket | exact | behavioural | exact rate |
 |---|---:|---:|---:|
-| intra-unit (`6100`) | **13** | 280 | 4% |
-| no-calls | **16** | 141 | 10% |
-| cross-unit (`4EBA`) | **0** | 260 | **0%** |
+| intra-unit (`6100`) | **13** | 263 | 5% |
+| no-calls | **18** | 129 | 12% |
+| cross-unit (`4EBA`) | **0** | 251 | **0%** |
 
 Zero of 260. Every function whose original calls are `4EBA` is capped at
 `behavioural` under 6.51, and the cap is the call opcode alone — same size, same
@@ -1560,7 +1586,7 @@ far-call flag: **293 entries, check_pcrel_range clean, `a6_audit` clean, and it
 BOOTS** (`tools/soak_esq.sh` PASS). `src/c/replacements-runnable.txt` is its
 278-entry parent, also clean and additionally proven on all six ESC-menu items.
 
-`src/c/replacements-all.txt` is the one to grow. It stands at **877 entries**,
+`src/c/replacements-all.txt` is the one to grow. It stands at **878 entries**,
 every DATA module among them, with 28 restorations held out as unsafe to link.
 It went 440 -> 464 from new restorations and 464 -> 614 from SPLITTING modules,
 which is the cheaper lever of the two and was sitting unused. It went 770 -> 790
@@ -1609,12 +1635,13 @@ still assembly and that is misleading: 150 of them are EMPTY files and 10 hold
 only an alignment pad. The honest number comes from the link map.
 
 **THE MAXIMUM-C BUILD CONTAINS NO ASSEMBLY AT ALL (2026-08-06).** Every byte of
-the linked image -- 291,256, being CODE 235,392 and DATA 55,864 -- comes from
+the linked image -- 280,360, being CODE 224,424 and DATA 55,936 -- comes from
 compiled C. There is no separate manifest and no switch: this is the default
 `replacements-all.txt` build, 878 entries.
 
 The last 44 bytes were three string constants a DATA table holds the addresses
-of. Converting them grows the DATA hunk 55,820 -> 55,864, which this file said
+of. Converting them grows the DATA hunk 55,820 -> 55,864 (55,936 today, after
+later work moved it again for the same reason), which this file said
 would freeze the display; it does not, and the corrected rule is under "The
 DATA section CAN move to C" below. Full evidence in
 `docs/remaining-assembly.md`.
@@ -1639,7 +1666,7 @@ everything else is C.
 module with its address, both blocks with what would unblock them, and the
 string-retirement pattern. Read it before assuming there is work left here.
 
-Measured 2026-08-06 from `build/ESQ.map` on the 877-entry manifest. ONE
+Measured 2026-08-06 from `build/ESQ.map` on the 878-entry manifest. ONE
 contributor, 44 bytes, and it is not a function.
 
 | bytes | what | status |
@@ -1669,7 +1696,7 @@ two go -- see `unknown36_p0_strings_local.s`.
 
 **THE 56 BYTES OF PADDING WERE DELETED ON 2026-08-06**, after the reasoning
 above was overtaken: the maximum-C image does not have the original's layout in
-any case -- 235,392 CODE bytes against the reference's 211,348 -- so filler that
+any case -- 224,424 CODE bytes against the reference's 211,348 -- so filler that
 aligned the ORIGINAL aligns nothing here. The byte-exact build still assembles
 every pad module, because it does not read a manifest.
 
@@ -3231,11 +3258,17 @@ exclusion has a reason attached.
 
 ## The C phase
 
-Replace assembly with C **one leaf subroutine at a time**, compiled by SAS/C
-6.51, and accept the result only when the emitted bytes are identical to the
-assembly it replaces. If a function cannot be made to match, **leave it in
-assembly and move on** — a partial decompilation that builds correctly is worth
-far more than a complete one that does not.
+**THE CONVERSION IS FINISHED, so read this as the workflow for the REMAINING
+question: making a restoration byte-exact rather than merely behavioural.** The
+maximum-C build contains no assembly, so "leave it in assembly and move on" is
+no longer an available move -- there is nothing to leave it in. What is left is
+that 34 restorations are `exact` and 853 are `behavioural`, which is a compiler
+question before it is a source question. See `docs/compiler-version.md`.
+
+Work one function at a time, compile it with SAS/C 6.51, and accept the result
+only when the emitted bytes are identical to the assembly it replaces. A partial
+decompilation that builds correctly is worth far more than a complete one that
+does not.
 
 Never reach for inline assembly to close a gap. That is the exact move that
 produced the "odd regressions that don't make sense" in every prior attempt.
