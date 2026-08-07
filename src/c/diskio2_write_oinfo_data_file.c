@@ -31,7 +31,14 @@ extern void DISKIO_WriteDecimalField(long fh, long v);
 extern void DISKIO_WriteBufferedBytes(long fh, char *p, long len);
 extern void DISKIO_CloseBufferedFileAndFlush(long fh);
 extern long  DISKIO2_OinfoFileHandle;
-extern char  TEXTDISP_PrimaryGroupCode;
+/* UNSIGNED, and that is measured rather than assumed. This field carries a
+ * group code that exceeds 127 in practice: the assembly control writes 217 to
+ * oinfo.dat and a plain `char` here sign-extends 0xD9 to -39, which is exactly
+ * what the maximum-C build wrote before this line was corrected. Every other
+ * reader that casts it wide should be checked the same way, ONE AT A TIME --
+ * a blanket char -> unsigned char sweep over all 201 such declarations breaks
+ * the listings parse and shows ER007. */
+extern unsigned char TEXTDISP_PrimaryGroupCode;
 extern char *ESQIFF_PrimaryLineHeadPtr;
 extern char *ESQIFF_PrimaryLineTailPtr;
 extern char  CTASKS_PATH_OINFO_DAT[];
