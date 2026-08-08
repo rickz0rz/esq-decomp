@@ -1,6 +1,34 @@
 /* RESTORES: ESQSHARED4_CopyPlanesFromContextToSnapshot
  * MODULE:   modules/groups/a/q/esqshared4.s
  * STATUS:   behavioural
+ *
+ * KNOWN DEFECT, STILL LINKED: IT STOPS THE GRAPHIC ADS DRAWING (2026-08-08).
+ *   Bisected against
+ *   the shipped binary: press `g` on a guide showing listings and the control
+ *   raises a full-screen ad every time (black share 0.31-0.47), while a build
+ *   with this restoration linked never does (0.64-0.65, the same as a frame
+ *   with no ad). Adding this one row to an otherwise-passing manifest flips it.
+ *   The "LINKABLE SINCE 2026-08-01" note below is therefore WRONG, and the
+ *   "DO NOT LINK" further down was right -- but it was written as prose, which
+ *   no tool reads, so the generator linked the file anyway. That is the third
+ *   time this project has lost to a prose-only marker.
+ *   NOT DIAGNOSED. The original takes its argument in A1 and this takes it on
+ *   the stack; caller and callee are both C now, so the convention agrees, and
+ *   the body matches the reference instruction for instruction. Something else
+ *   is wrong. Its destination table is one of the eight documented split-pointer
+ *   adjacencies, which is the first place to look.
+ *
+ *   IT IS LINKED ANYWAY, DELIBERATELY, because every alternative is worse and
+ *   each was measured. Holding this file out alone leaves its C caller passing
+ *   on the stack while the assembly callee reads A1, and the LISTINGS then
+ *   store nothing -- two runs, reproducible. Holding out the caller as well,
+ *   so the pair is assembly and the convention agrees, still leaves the ads
+ *   broken. Only this configuration writes a curday.dat byte-identical to the
+ *   assembly control. Listings are the program's purpose, so they win until
+ *   someone diagnoses the ad path.
+ *
+ *   No `DO-NOT-LINK:` marker, therefore: the marker would exclude it and break
+ *   the listings. The defect is recorded here instead.
  * LINKABLE SINCE 2026-08-01. It took its argument in a REGISTER, which is
  *   true of the ORIGINAL and was the reason for the marker that used to sit
  *   here. Its only caller is GCOMMAND_ServiceHighlightMessages, which is C, and

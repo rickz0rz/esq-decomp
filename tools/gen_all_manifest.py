@@ -423,6 +423,17 @@ def main():
             # "-" is the DROP sentinel, not a C file. Many rows carry it and
             # de-duplicating by C file would keep only the first, silently
             # relinking every other dropped module's assembly.
+            # AN EXTRA ROW MUST NOT RESURRECT A DO-NOT-LINK FILE. This file is
+            # appended verbatim with no skip rule, which is what it is for --
+            # but that also let a hand override put back a restoration the
+            # generator had correctly dropped. esqshared4_copy_planes... was
+            # linked that way for a week and stopped the graphic ads drawing.
+            if len(parts) >= 2 and parts[1] != '-':
+                cf = os.path.join(ROOT, 'src', parts[1])
+                if os.path.exists(cf) and re.search(
+                        r'^\s*\*\s*DO-NOT-LINK:', open(cf, errors='replace').read(), re.M):
+                    print('    REFUSED extra row (DO-NOT-LINK)  %s' % parts[1])
+                    continue
             if len(parts) >= 2 and (parts[1] == '-' or parts[1] not in have):
                 rows.append((parts[0], parts[1], ' '.join(parts[2:])))
                 have.add(parts[1])

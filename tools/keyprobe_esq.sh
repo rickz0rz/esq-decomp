@@ -99,9 +99,17 @@ i=0
 for spec in "$@"; do
     i=$((i+1))
     code="${spec%%:*}"; wait="${spec##*:}"
-    osascript -e "tell application \"System Events\" to key code $code" >/dev/null 2>&1
+    # A trailing S on the key code means SHIFT, so an upper-case letter can be
+    # sent: `5:4` is g and `5S:4` is G. ESQ distinguishes the two -- g cycles
+    # the graphic ads and G the local ads -- and without a modifier every
+    # letter key reached the program in lower case only.
+    mod=""
+    case "$code" in
+    *S) code="${code%S}"; mod=" using shift down" ;;
+    esac
+    osascript -e "tell application \"System Events\" to key code $code$mod" >/dev/null 2>&1
     sleep "$wait"
-    shot "$(printf '%02d_key%s' "$i" "$code")"
+    shot "$(printf '%02d_key%s%s' "$i" "$code" "${mod:+S}")"
 done
 
 pkill -f fs-uae 2>/dev/null; sleep 2
