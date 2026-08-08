@@ -2,16 +2,8 @@
  * MODULE:   modules/groups/a/w/ladfunc_p1.s
  * STATUS:   behavioural
  *
- * DO-NOT-LINK: BISECTED RUNTIME FAULT (2026-08-07). One of three restorations
- *   that stop the maximum-C build storing listings; see
- *   gcommand_validate_preset_table.c for the method. NOT YET DIAGNOSED.
- *   The lead: the two allocations use `len` and `len + 1`, and the free path
- *   recovers the size with `strlen(entry->text)`. AmigaOS FreeMem is
- *   size-sensitive, so any path where the decode loop stops early -- it exits
- *   on `*cursor == 0` as well as on `pos < len` -- frees a different size than
- *   was allocated, which is exactly AN_BadFreeAddr. The header note below says
- *   the deallocation path matches the original in kind and order, so check
- *   that claim against the reference before changing it.
+ * FIXED 2026-08-07: the struct was missing two bytes of padding; see the
+ * note on struct LadEntry below.
  *
  * SASC-MISMATCH: a5-frame-cursor
  *   ref:     4e55ffd848e72f0048780001487800026100105e4879000069441b40ffe34eba22304fef000c5280660670ff600002182c39000080002b7900008004fff46100f81e7e00702ebe806c0001e22007e58041f900009fc4d1c02b50fffc4eba21ce206dfffc30804eba21c4206dfffc314000024eba21b220404a1866fc538891c028082b40ffde2b40fff84a846f1a206dffde4a1067127003b0106606578454adffde52adffde60e24a846f000110200452802f3c000100012f004878024f4879000069cc4eba34bc4fef0010206dfffc214000064a80660670ff6000016a2f3c000100012f04487802584879000069d64eba34904fef0010206dfffc2140000a660670ff600001407a002b6dfff8ffdeba846c000098206dffde4a106700008e10107203b001666452adffde206dffde1018488048c02f002b48ffde6100fa42720012007000102dffe32e802f0161000f442b6dffdeffde72001200206dffde1410488248c22e821b40ffe32f41001c6100fa0e720012002e812f2f001c61000f384fef000c1b40ffe36018226dfffc20690006d1c510802069000ad1c5528510adffe352adffde6000ff66226dfffc206900062248d3c54211606a206dfffc4aa800066760226dfffc206900064a1866fc538891e900062808200452802f002f2900064878027e4879000069e04eba337a4fef001091c8226dfffc234800064aa9000a67202f042f29000a487802824879000069ea4eba33524fef0010206dfffc42a8000a52876000fe1a200652802f002f2dfff44878028d4879000069f44eba332870004ced00f4ffc44e5d4e75
@@ -26,11 +18,20 @@
 #define MEMF_CLEAR  0x10000L
 
 struct LadEntry {
-    short  flags0;
-    short  flags2;
-    char  *text;                /* +6 */
-    char  *attr;                /* +10 */
+    short  flags0;              /* +0  MOVE.W D0,(A0)   */
+    short  flags2;              /* +2  MOVE.W D0,2(A0)  */
+    short  pad4;                /* +4  NOT OPTIONAL -- see below */
+    char  *text;                /* +6  6(A1) in the original  */
+    char  *attr;                /* +10 10(A1) in the original */
 };
+/* THE PAD IS THE FIX FOR A GURU. Without it C packs `text` at +4 and `attr`
+ * at +8, because two shorts need no padding before a pointer on the 68000.
+ * The original addresses them at 6(A1) and 10(A1) -- the offsets the comments
+ * here always claimed. Every allocation was therefore stored two bytes low and
+ * later freed from a pointer read out of the wrong field, which is
+ * AN_BadFreeAddr (Software Failure 8100 000F) and no listings written.
+ * Bisected 2026-08-07. A struct whose comments name byte offsets is worth
+ * checking against what the compiler actually lays out. */
 
 extern struct LadEntry *LADFUNC_EntryPtrTable[];
 extern long  Global_REF_LONG_FILE_SCRATCH;
