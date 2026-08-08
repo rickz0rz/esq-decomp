@@ -28,13 +28,18 @@ C_REPLACEMENTS=src/c/replacements-all.txt \
   ./build-split.sh                                # the maximum-C build
 ```
 
-Both `build-split.sh` forms write `build/ESQ`; the maximum-C binary is 331,252
+Both `build-split.sh` forms write `build/ESQ`; the maximum-C binary is 331,248
 bytes. `test-hash.sh` builds to a temporary file and only reports the hash, so
 it leaves `build/ESQ` alone.
 
+`CCACHE_DIR=<dir>` caches compiled objects, keyed on the source, the headers and
+the options. A cold build is 1m29 and a warm one 10s, with byte-identical
+output. It is unset by default and never affects a gate; set it when building
+many manifests over the same sources, as a bisect does.
+
 **The maximum-C build exits 1, and that is expected.** `build-split.sh` always
 compares against the byte-exact reference, and a C build differs from it by
-construction -- 224,424 bytes of CODE against the reference's 211,348. A
+construction -- 224,420 bytes of CODE against the reference's 211,348. A
 nonzero exit here is not a failure.
 
 Read the audit block instead. Every line must be clean, and several stop the
@@ -74,7 +79,7 @@ assembly converted to C    100%   [########################################]
 ```
 
 **The conversion is finished.** `build/ESQ.map` lists no contributor whose name
-ends `.asm`. All 280,360 bytes of the image -- CODE 224,424 plus DATA 55,936 --
+ends `.asm`. All 280,356 bytes of the image -- CODE 224,420 plus DATA 55,936 --
 come from compiled C, on the default 878-entry manifest with no switch.
 
 `tools/worklist.py 99999` reports **0 functions and 0 bytes remaining**.
@@ -119,14 +124,14 @@ assembly and everything else is C.
 
 ```
 maximum-C build              100%   [########################################]
-                                    280,360 of 280,360 bytes come from C
+                                    280,356 of 280,356 bytes come from C
 ```
 
 | measure | value |
 |---|---|
 | maximum-C manifest | 878 entries (`src/c/replacements-all.txt`) |
 | assembly remaining | **0 bytes** |
-| linked size | CODE 224,424 + DATA 55,936 = 280,360 bytes |
+| linked size | CODE 224,420 + DATA 55,936 = 280,356 bytes |
 | module includes still assembly | 157, none of which emits a byte |
 | modules holding real code | ZERO (`python3 tools/lastmile.py`) |
 
@@ -337,10 +342,19 @@ Those judge the SCREEN. Two more drive the serial line, and they are the only
 ones that reach the code which writes to the drive:
 
 ```sh
-tools/serial_esq.sh   <binary> <label> [secs]               # select + config frames
-REPLAY=<log> tools/listings_esq.sh <binary> <label> [secs]  # a real listings feed
+tools/serial_esq.sh <binary> <label> [secs]                 # select + config frames
+PRISTINE=<dir> REPLAY=<log> \
+  tools/listings_esq.sh <binary> <label> [secs]             # a real listings feed
 python3 tools/fileiodiff.py <label-a> <label-b>             # compare what two runs wrote
 ```
+
+**Always pass `PRISTINE=`.** The harness resets only `curday.dat` and
+`nxtday.dat`, so without it the drive accumulates state and the SAME BINARY can
+pass and then fail -- that happened, byte-identical by `cmp`, and every
+measurement taken against the moving baseline was worthless. Snapshot a fresh
+drive once with `cp -Rp ~/Downloads/Prevue ~/Downloads/Prevue-pristine`. The
+drive's own `ESQ` is overwritten by the candidate and is not in the harness
+backup, so the snapshot is the only way to get the shipped binary back.
 
 **`listings_esq.sh` is the strongest oracle in the tree.** ESQ is a broadcast
 receiver: with no head-end feeding it, nothing marks data dirty and nothing is

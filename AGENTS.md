@@ -3,7 +3,7 @@
 Reverse-engineering of ESQ, the Prevue Guide channel-listings program for the
 Amiga. Abandoned software; the goal is a faithful, buildable reconstruction.
 
-## Where the project stands (2026-08-06)
+## Where the project stands (2026-08-07)
 
 Read this before anything below, because much of this file was written while
 work was in progress and describes obstacles that are now cleared.
@@ -11,11 +11,12 @@ work was in progress and describes obstacles that are now cleared.
 | | |
 |---|---|
 | byte-exact gates | both green, and neither reads a manifest |
-| maximum-C build | **no assembly at all** -- 280,360 bytes, CODE 224,424 + DATA 55,936 |
+| maximum-C build | **no assembly at all** -- 280,356 bytes, CODE 224,420 + DATA 55,936 |
 | manifest | `src/c/replacements-all.txt`, 878 entries, generated |
 | jump-table thunks | all 464 deleted |
 | `DO-NOT-LINK` files | none remain; every restoration on disk is linked |
 | still open | 34 restorations are `exact`, 853 are `behavioural` (`tools/mismatches.py`) |
+| listings path | **verified** -- `curday.dat`, `oinfo.dat`, `nxtday.dat` and `config.dat` byte-identical to the assembly control on a pristine drive |
 
 So the live questions are the COMPILER (which version emits the original's call
 encoding) and the PORT (running this C off the Amiga). Sections below that talk
@@ -703,7 +704,7 @@ A4 equates and the 102 offsets in `esq-neardata.h` hardcode. See "SOLVED: an
 all-C DATA section" above.
 
 **And the prize is small.** Every routine in the program with an sc.lib
-equivalent totals **2,026 bytes of 224,424 CODE, or 0.9%** -- the three
+equivalent totals **2,026 bytes of 224,420 CODE, or 0.9%** -- the three
 arithmetic helpers (274), `strcat`/`stricmp`/`strncpy` (176), the octal
 formatter (72), sprintf and its v-form (106), the Ctrl-C requester (286), and
 the buffered stdio pair (1,112).
@@ -1213,6 +1214,92 @@ window lookup: the owner name is lowercase `fs-uae` and it needs
 `kCGWindowListOptionAll` -- matching 'FS-UAE' on the on-screen-only list finds
 nothing and the capture SILENTLY does not happen.
 
+## SOLVED: two bytes of struct padding, and how much they cost (2026-08-07)
+
+The maximum-C build stored NO LISTINGS and gurued `8100 000F`, AN_BadFreeAddr,
+while the assembly control passed. One declaration was wrong:
+
+```c
+struct LadEntry {
+    short  flags0;   /* +0  */
+    short  flags2;   /* +2  */
+    short  pad4;     /* +4  <-- WAS MISSING */
+    char  *text;     /* +6  -- 6(A1) in the original  */
+    char  *attr;     /* +10 -- 10(A1) in the original */
+};
+```
+
+Two shorts need no padding before a pointer on the 68000, so C packed `text` at
++4 and `attr` at +8. The original addresses them at `6(A1)` and `10(A1)`. Every
+allocation was stored two bytes low and later freed through a pointer read out
+of the wrong field.
+
+**THE COMMENTS IN THAT STRUCT ALREADY NAMED THE RIGHT OFFSETS. The declaration
+did not produce them.** A struct whose comments carry byte offsets is worth
+checking against what the compiler actually lays out -- `tools/objbytes.py` on
+the compiled object says where each member really went. This is the same family
+as the byte-wide extern and the one-level-too-shallow read: the C names the
+right thing and reads the wrong bytes.
+
+### A PREFIX BISECT OVER-ATTRIBUTES MEMORY CORRUPTION
+
+The bisect named THREE files and only one was faulty. Excluding
+`gcommand_validate_preset_table.c`, `ladfunc_load_text_ads_from_file.c` and
+`a_merged.c` together made the build pass, so all three were marked
+`DO-NOT-LINK`. After the padding fix the other two passed **with no change at
+all**.
+
+A file that merely shifts the image enough to expose a corruption reads exactly
+like the cause. **After fixing a memory bug, re-test the other suspects before
+diagnosing them.** Two of them cost hours of analysis that found nothing,
+because there was nothing there.
+
+### THE DRIVE MUST BE PRISTINE OR THE MEASUREMENT IS NOISE
+
+`tools/listings_esq.sh` reset `curday.dat` and `nxtday.dat` and left the rest of
+the drive alone, so state accumulated and the same binary passed and then failed
+-- byte-identical, checked with `cmp`. Nothing measured against that baseline
+meant anything.
+
+```sh
+cp -Rp ~/Downloads/Prevue ~/Downloads/Prevue-pristine     # once, from a fresh drive
+PRISTINE=~/Downloads/Prevue-pristine REPLAY=<log> tools/listings_esq.sh <bin> <label>
+```
+
+`PRISTINE=<dir>` restores the whole drive first. The drive's own `ESQ` is
+overwritten by the candidate and is NOT in the harness backup, so a snapshot is
+the only way to get the shipped binary back. `RESET=delete` additionally removes
+`curday.dat`/`nxtday.dat` rather than seeding the 42-byte header-only baseline;
+that baseline is what turns this class of fault into a guru rather than a quiet
+failure, so the two settings separate failures that otherwise look alike.
+
+### A BISECT NEEDS THE OBJECT CACHE, or it is not affordable
+
+`CCACHE_DIR` in `build-split.sh` keys each object on its source, the headers and
+the options. Cold build 1m29, warm 10s, **byte-identical output** -- verified by
+building the same manifest twice and comparing, not assumed. Thirty-plus probes
+are impractical without it. It is opt-in and unset by default, so no ordinary
+build or byte gate is affected.
+
+```sh
+CCACHE_DIR=/tmp/esqccache ESQ_FARCALLS=1 SCOPTS="..." C_REPLACEMENTS=... ./build-split.sh
+```
+
+Three more things a manifest bisect needs, each of which cost a failed link
+before it was understood: a probe must not split a register-argument
+caller/callee pair, or the callee reads its argument from the wrong place and
+gurus; the `esqshared4` family and a few data labels lack the leading underscore
+C expects, so mixed configurations of them fail one way or the other; and a
+module whose C replacement also dropped jump-table thunks breaks any assembly
+that still calls them.
+
+### `merge_module_c.py` NOW HONOURS `DO-NOT-LINK`
+
+It did not, so a restoration `gen_all_manifest.py` had correctly excluded came
+straight back through a merged unit. That is the "a prose warning protects
+nothing" failure again, one tool short of complete. Every tool that writes a
+manifest row must read the marker.
+
 ## Running it: the only oracle for a maximum-C build
 
 Neither gate can judge `replacements-all.txt` — behavioural restorations differ
@@ -1635,7 +1722,7 @@ still assembly and that is misleading: 150 of them are EMPTY files and 10 hold
 only an alignment pad. The honest number comes from the link map.
 
 **THE MAXIMUM-C BUILD CONTAINS NO ASSEMBLY AT ALL (2026-08-06).** Every byte of
-the linked image -- 280,360, being CODE 224,424 and DATA 55,936 -- comes from
+the linked image -- 280,356, being CODE 224,420 and DATA 55,936 -- comes from
 compiled C. There is no separate manifest and no switch: this is the default
 `replacements-all.txt` build, 878 entries.
 
@@ -1696,7 +1783,7 @@ two go -- see `unknown36_p0_strings_local.s`.
 
 **THE 56 BYTES OF PADDING WERE DELETED ON 2026-08-06**, after the reasoning
 above was overtaken: the maximum-C image does not have the original's layout in
-any case -- 224,424 CODE bytes against the reference's 211,348 -- so filler that
+any case -- 224,420 CODE bytes against the reference's 211,348 -- so filler that
 aligned the ORIGINAL aligns nothing here. The byte-exact build still assembles
 every pad module, because it does not read a manifest.
 
@@ -2037,7 +2124,7 @@ python3 tools/remove_jmptbl.py            # report
 python3 tools/remove_jmptbl.py --write    # apply
 ```
 
-CODE went 235,392 -> **224,424**, a saving of 10,968 bytes, and the program
+CODE went 235,392 -> **224,420**, a saving of 10,968 bytes, and the program
 loses one call and one frame per former thunk call. All 47 files were then DELETED, and their
 manifest rows now read `-`.
 
