@@ -1,3 +1,12 @@
+# The three DO-NOT-LINK restorations of 2026-08-07 relink as ASSEMBLY, and
+# that assembly calls the jump-table thunks and reads the __FILE__ and
+# library-name strings. So the drop-sentinel rows and the a_strings row are
+# withdrawn: the tables and strings come back from assembly. Restore them
+# when those three restorations are fixed and relinked.
+# data/ladfunc_p2.s also stays assembly: it defines the Global_STR_LADFUNC_C_*
+# __FILE__ strings, which are literals in C now but which the relinked
+# ladfunc assembly still references.
+#
 # A C FILE OF "-" IS THE DROP SENTINEL: the module contributes neither
 # assembly nor an object. It retires a module whose content became
 # unnecessary rather than being rewritten -- the 46 jump tables, whose
@@ -88,7 +97,6 @@ data/esqpars2.s                                                        c/data_es
 data/flib_p1.s                                                         c/data_flib_p1.c
 data/gcommand.s                                                        c/data_gcommand.c
 data/kybd_p2.s                                                         c/data_kybd_p2.c
-data/ladfunc_p2.s                                                      c/data_ladfunc_p2.c
 data/locavail_p2.s                                                     c/data_locavail_p2.c
 data/newgrid_p1.s                                                      c/data_newgrid_p1.c
 data/p_type.s                                                          c/data_p_type.c
@@ -100,16 +108,6 @@ data/tliba1_p2.s                                                       c/data_tl
 # WHOLE, because a C file replaces the whole module, so only the tables whose
 # every target already has a C restoration appear here.
 
-modules/groups/a/f/xjump.s                                             -
-modules/groups/a/k/xjump2.s                                            -
-modules/groups/a/l/xjump.s                                             -
-modules/groups/a/r/xjump.s                                             -
-modules/groups/a/u/xjump.s                                             -
-modules/groups/a/z/xjump.s                                             -
-modules/groups/b/a/script2b.s                                          -
-modules/groups/b/a/textdisp2_p0_p0_p1_p0.s                             -
-modules/groups/b/a/tliba2_p2_p0.s                                      -
-modules/groups/b/a/tliba3_p5_p0_tliba3_jmptbl_gcommand_applyhighlightflag.s -
 
 # SAS/C LIBRARY MODULES. These are runtime code, not application code, so they
 # are functional analogues where the original reaches A4 near-data that a
@@ -153,9 +151,6 @@ modules/groups/a/q/esqshared4_esqshared4_copyplanesfromcontexttosnapshot.s c/esq
 modules/groups/a/a/app2_esq_deccolorstep.s                             c/esq_dec_color_step.c
 modules/groups/a/a/app2_p3.s                                           c/esq_dec_copper_lists_primary.c
 modules/groups/a/a/app2_p3_p1.s                                        c/esq_dec_copper_lists_alt_skip_index4.c
-modules/groups/a/d/xjump.s                                             -
-modules/groups/a/p/esqshared_p3.s                                      -
-modules/groups/a/s/xjump.s                                             -
 
 # unknown22.s was SPLIT so these three could move. What stays behind is
 # __CXD22/__CXD33, the divide helpers SAS/C emits calls to, which return the
@@ -182,10 +177,6 @@ modules/submodules/unknown40_battclock_getsecondsfrombatterybackedclock.s c/lib_
 modules/submodules/unknown40_battclock_writesecondstobatterybackedclock.s c/lib_battclock_write.c
 modules/submodules/unknown10.s                                         c/lib_hex_parse_sprintf.c
 modules/submodules/unknown10_handle_openentrywithflags.s               c/lib_handle_open_entry_with_flags.c
-modules/groups/a/k/ed1b_p0.s                                           -
-modules/groups/b/a/script_p1_p0.s                                      -
-modules/groups/a/t/xjump.s                                             -
-modules/groups/b/a/p_typebb_p0_p0.s                                    -
 # The SAS/C arithmetic helpers. Six symbols, three routines. Linking this
 # REQUIRES tools/d1_remainder_audit.py to report zero: a C function cannot
 # return the remainder in D1, so every `%` in src/c was rewritten first.
@@ -239,32 +230,6 @@ modules/submodules/unknown27_p0.s                                      c/lib_for
 #
 # It also returns `MOVEQ #0,D0` before its RTS, matching the original's D0=0.
 modules/groups/a/a/app2_p8_esq_tickglobalcounters.s                    c/esq_tick_global_counters.c
-modules/groups/a/a/xjump.s                                             -
-modules/groups/_main/a/xjump.s                                         -
-modules/groups/_main/b/xjump.s                                         -
-modules/groups/a/b/xjump.s                                             -
-modules/groups/a/c/xjump.s                                             -
-modules/groups/a/i/xjump.s                                             -
-modules/groups/a/j/xjump.s                                             -
-modules/groups/a/v/xjump.s                                             -
-modules/groups/a/x/xjump.s                                             -
-modules/groups/a/e/xjump.s                                             -
-modules/groups/a/g/xjump.s                                             -
-modules/groups/a/m/xjump.s                                             -
-modules/groups/a/w/xjump.s                                             -
-modules/groups/a/n/esqiffbb_p1_p0.s                                    -
-modules/groups/a/o/esqpars_p1.s                                        -
-modules/groups/a/y/xjump.s                                             -
-modules/groups/b/a/newgrid_p4_p1_p0.s                                  -
-modules/groups/b/a/script3b_p1.s                                       -
-modules/groups/a/h/xjump.s                                             -
-modules/groups/b/a/newgrid2_p2.s                                       -
-modules/groups/b/a/parseini_p2_p1_p0.s                                 -
-modules/groups/a/k/xjump.s                                             -
-modules/groups/a/n/esqfunc_p4_p0.s                                     -
-modules/groups/b/a/textdisp_p3.s                                       -
-modules/groups/b/a/tliba1_p1_p1.s                                      -
-modules/groups/b/a/wdisp_p1_p1.s                                       -
 modules/groups/a/i/displib.s                                           c/displib_find_previous_valid_entry_index.c
 modules/groups/a/n/esqfunc_p5.s                                        c/esqfunc_trim_text_to_pixel_width_word_boundary.c
 modules/groups/a/y/locavail_p2_p0.s                                    c/locavail_map_filter_token_char_to_class.c
@@ -314,7 +279,6 @@ modules/groups/a/q/esqshared4_p1.s                                     c/esqshar
 modules/groups/a/a/app_esq_pollctrlinput.s                             c/esq_poll_ctrl_input.c
 modules/groups/a/z/locavail2_locavail2_autorequestnoop.s               c/locavail2_auto_request_noop.c
 modules/groups/a/z/locavail2_locavail2_displayalertdelayandreboot.s    c/locavail2_display_alert_delay_and_reboot.c
-modules/groups/_main/a/a_strings.s                                      c/strings_now_local_main_a.c
 modules/submodules/unknown2b_p1_p0.s                                    c/strings_now_local_dos_crlf.c
 modules/submodules/unknown36_p0_strings_local.s                         c/strings_now_local_unknown36.c
 

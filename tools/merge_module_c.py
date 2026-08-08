@@ -387,7 +387,7 @@ def main():
     restores = restores_map()
     done, already_merged = manifest_modules()
 
-    ready, blocked = [], []
+    ready, blocked, blocked_by = [], [], []
     for mod in module_list():
         # `/submodules/` used to be skipped outright, on the assumption that
         # everything there is SAS/C runtime that must never be decompiled. That
@@ -400,6 +400,19 @@ def main():
             continue
         labels = labels_of(mod)
         if len(labels) < 2:
+            continue
+        # A restoration marked DO-NOT-LINK must not come back through a merged
+        # unit. gen_all_manifest.py honours the marker and this tool did not, so
+        # a file the generator had excluded was merged and relinked anyway --
+        # which is the "a prose warning protects nothing" failure with the
+        # machine-readable marker, one tool short.
+        blocked = [l for l in labels
+                   if l in restores
+                   and re.search(r'^\s*\*?\s*DO-NOT-LINK:',
+                                 open(os.path.join(C_DIR, restores[l]),
+                                      errors='replace').read(), re.M)]
+        if blocked:
+            blocked_by.append((mod, restores[blocked[0]]))
             continue
         if not all(l in restores for l in labels):
             continue

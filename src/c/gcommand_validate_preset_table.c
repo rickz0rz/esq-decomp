@@ -2,6 +2,19 @@
  * MODULE:   modules/groups/a/u/gcommand3b_p0_gcommand_validatepresettable.s
  * STATUS:   behavioural
  *
+ * DO-NOT-LINK: BISECTED RUNTIME FAULT (2026-08-07). With this restoration in
+ *   the maximum-C manifest the program stores no listings and gurus
+ *   `8100 000F` (AN_BadFreeAddr). Ten-round prefix bisect on a pristine drive,
+ *   both endpoints validated; removing this row and two others makes the full
+ *   manifest write a curday.dat byte-identical to the assembly control.
+ *   NOT YET DIAGNOSED. The lead: this file and its caller model the same
+ *   memory differently. parseini_parse_range_key_value.c declares the
+ *   parameter `struct RangeRow { short count[16]; short v[48]; }` -- 48 value
+ *   slots per row -- while this file uses `value[16][64]`. Both address a slot
+ *   at the same byte, so they agree for the first 48; the CopyMem here moves
+ *   0x820 bytes across the GCOMMAND_DefaultPresetTable / GCOMMAND_PresetValueTable
+ *   boundary, which is correct in the original but worth re-checking in C.
+ *
  * Validates a working preset table. If every row passes, the table is copied
  * over the DEFAULT table under Disable/Enable, the reset flag is raised and the
  * banner bounds are refreshed.

@@ -102,6 +102,29 @@ while read -r u; do
             fail=$((fail + 1)); echo "  FAILED (missing): $cfile"
             continue
         fi
+        # OPT-IN OBJECT CACHE. Objects are named by sequence number and wiped
+        # each run, so nothing is reused -- fine for a one-off build, and the
+        # dominant cost when probing many manifests over the SAME sources, as a
+        # bisect does. With CCACHE_DIR set, an object is keyed by the content
+        # of every input that can change its bytes: the source, the headers,
+        # the shared options and the per-file options. A merged unit also
+        # depends on the files it includes, so its key folds in all of src/c.
+        # Unset by default, so no ordinary build or byte gate is affected.
+        ckey=""
+        if [ -n "${CCACHE_DIR:-}" ]; then
+            case "$cfile" in
+            *_merged.c) ckey=$(cat "$cfile" src/c/*.c src/c/*.h 2>/dev/null | \
+                               shasum -a 256 | cut -c1-40) ;;
+            *)          ckey=$(cat "$cfile" src/c/*.h 2>/dev/null | \
+                               shasum -a 256 | cut -c1-40) ;;
+            esac
+            ckey="${ckey}_$(printf '%s|%s' "$SCOPTS" "$extra" | shasum -a 256 | cut -c1-16)"
+            if [ -f "$CCACHE_DIR/$ckey.o" ]; then
+                cp "$CCACHE_DIR/$ckey.o" "$cobj"
+                echo "$cobj" >> "$BUILD/objlist"
+                continue
+            fi
+        fi
         rm -rf "$cwork"; mkdir -p "$cwork"; cp "$cfile" "$cwork/u.c"
         cp src/c/*.h "$cwork/" 2>/dev/null || true   # see cmatch.sh
         # A merged unit (tools/merge_module_c.py) is nothing but #include lines
@@ -139,6 +162,7 @@ while read -r u; do
             grep -iE 'error [0-9]+:|^(error)|Invalid' "$cwork/log" | head -3 || true
         else
             cp "$cwork/u.o" "$cobj"
+            [ -n "$ckey" ] && { mkdir -p "$CCACHE_DIR"; cp "$cobj" "$CCACHE_DIR/$ckey.o"; }
             echo "  cc $cfile${extra:+ [+$extra]} -> $(python3 tools/objbytes.py "$cobj" | sed -n 's/^code: //p')"
             echo "$cobj" >> "$BUILD/objlist"
         fi

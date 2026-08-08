@@ -2,6 +2,16 @@
  * MODULE:   modules/groups/_main/a/a.s   (1 of its 4 labels)
  * STATUS:   behavioural
  *
+ * DO-NOT-LINK: BISECTED RUNTIME FAULT (2026-08-07). This file and
+ *   lib_esq_shutdown_and_return.c are merged into a_merged.c, which replaces
+ *   modules/groups/_main/a/a.s, and that unit is one of three restorations
+ *   that stop the maximum-C build storing listings. The bisect names the UNIT,
+ *   so either function may be at fault. NOT YET DIAGNOSED. Both carry known
+ *   divergences already documented here: the command-line buffer is an alloca
+ *   in the original and a fixed local here, and the shutdown is a functional
+ *   ANALOGUE using dos.library Exit(). Marked on both files because the
+ *   manifest replaces the whole module.
+ *
  * The program's entry point: THE FIRST BYTE OF THE CODE SECTION, entered by the
  * OS with the command line in A0 and its length in D0.
  *

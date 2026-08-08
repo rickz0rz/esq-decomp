@@ -3,6 +3,12 @@
  * MODULE:   modules/groups/_main/a/a.s   (2 of its 4 labels)
  * STATUS:   behavioural
  *
+ * DO-NOT-LINK: BISECTED RUNTIME FAULT (2026-08-07). See
+ *   lib_esq_startup_entry.c. The two are merged into a_merged.c and the bisect
+ *   names that unit, not one function. This file holds the program's one live
+ *   ANALOGUE -- dos.library Exit() in place of the original's stack switch --
+ *   which makes it the more likely of the two, but that is not established.
+ *
  * The program's exit path. It runs the teardown, then restores the stack
  * pointer the entry saved and returns to the OS -- from whatever depth it was
  * called at.
